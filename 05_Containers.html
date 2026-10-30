@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>05 · Containers</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <script>
+    window.onload = () => {
+      const ancho = document.getElementById('ancho');
+      const mostrarAncho = () => ancho.textContent = window.innerWidth;
+      mostrarAncho();
+      window.addEventListener('resize', mostrarAncho);
+    };
+  </script>
+</head>
+<body>
+
+  <!--
+    CONTENEDOR
+    Caja que envuelve el contenido y hace tres cosas:
+    - lo centra horizontalmente (margin-left y margin-right: auto)
+    - le da un ancho máximo (max-width) que cambia en cada breakpoint
+    - le añade un relleno lateral de 0.75rem (12 px) por lado para que el texto no toque los bordes
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Containers</h1>
+
+    <p class="text-center fs-4">
+      Ancho del viewport: <strong id="ancho"></strong> px
+    </p>
+
+    <!--
+      BREAKPOINTS: anchos de viewport a partir de los cuales el diseño puede cambiar.
+      Cada uno tiene un infijo que aparece en las clases (col-md-6, d-lg-none, container-xl...).
+
+        xs   → desde 0 px      (sin infijo)
+        sm   → desde 576 px
+        md   → desde 768 px
+        lg   → desde 992 px
+        xl   → desde 1200 px
+        xxl  → desde 1400 px   (nuevo en Bootstrap 5)
+
+      Cada badge solo se ve en su rango de anchos gracias a d-none / d-{breakpoint}-inline.
+    -->
+    <p class="text-center fs-4">
+      Breakpoint activo:
+      <span class="badge text-bg-danger d-inline d-sm-none">xs (&lt; 576 px)</span>
+      <span class="badge text-bg-warning d-none d-sm-inline d-md-none">sm (≥ 576 px)</span>
+      <span class="badge text-bg-info d-none d-md-inline d-lg-none">md (≥ 768 px)</span>
+      <span class="badge text-bg-primary d-none d-lg-inline d-xl-none">lg (≥ 992 px)</span>
+      <span class="badge text-bg-success d-none d-xl-inline d-xxl-none">xl (≥ 1200 px)</span>
+      <span class="badge text-bg-dark d-none d-xxl-inline">xxl (≥ 1400 px)</span>
+    </p>
+  </div>
+
+  <!--
+    TIPOS DE CONTENEDOR
+    Cada banda gris ocupa todo el ancho de la ventana; la zona azul es el contenedor.
+    Al redimensionar vemos en qué breakpoint deja cada uno de estar al 100 %.
+
+    Las bandas van fuera de cualquier contenedor para poder ocupar todo el ancho.
+  -->
+  <div class="mt-4">
+
+    <!-- .container: 100 % solo en xs; después ancho fijo: 540, 720, 960, 1140 y 1320 px -->
+    <div class="bg-secondary-subtle py-2 mb-2">
+      <div class="container bg-primary-subtle border border-primary-subtle py-2">.container</div>
+    </div>
+
+    <!-- .container-{breakpoint}: 100 % HASTA ese breakpoint; desde él se comporta como .container -->
+    <!-- .container-sm se comporta igual que .container -->
+    <div class="bg-secondary-subtle py-2 mb-2">
+      <div class="container-sm bg-primary-subtle border border-primary-subtle py-2">.container-sm</div>
+    </div>
+
+    <div class="bg-secondary-subtle py-2 mb-2">
+      <div class="container-md bg-primary-subtle border border-primary-subtle py-2">.container-md</div>
+    </div>
+
+    <div class="bg-secondary-subtle py-2 mb-2">
+      <div class="container-lg bg-primary-subtle border border-primary-subtle py-2">.container-lg</div>
+    </div>
+
+    <div class="bg-secondary-subtle py-2 mb-2">
+      <div class="container-xl bg-primary-subtle border border-primary-subtle py-2">.container-xl</div>
+    </div>
+
+    <div class="bg-secondary-subtle py-2 mb-2">
+      <div class="container-xxl bg-primary-subtle border border-primary-subtle py-2">.container-xxl</div>
+    </div>
+
+    <!-- .container-fluid: siempre al 100 %. Para paneles, dashboards o bandas a ancho completo -->
+    <div class="bg-secondary-subtle py-2 mb-2">
+      <div class="container-fluid bg-primary-subtle border border-primary-subtle py-2">.container-fluid</div>
+    </div>
+  </div>
+
+  <div class="container my-5">
+    <!--
+      MOBILE-FIRST
+      Las media queries de Bootstrap usan min-width: una clase con infijo se aplica
+      desde ese breakpoint HACIA ARRIBA, nunca hacia abajo.
+
+      Leemos la lista de izquierda a derecha:
+      - text-center    → base, desde 0 px (móvil): centrado
+      - text-md-start  → desde 768 px sobrescribe la anterior: a la izquierda
+      - text-xl-end    → desde 1200 px sobrescribe la anterior: a la derecha
+      Un breakpoint sin clase propia (sm, lg, xxl) hereda la del inferior más cercano.
+    -->
+    <p class="text-center text-md-start text-xl-end border rounded p-3 fs-5">
+      text-center text-md-start text-xl-end
+    </p>
+  </div>
+
+</body>
+</html>
