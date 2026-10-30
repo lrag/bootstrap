@@ -18,6 +18,23 @@
 
   <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
   <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <script>
+    // window.onload: el código se ejecuta cuando la página ha terminado de cargar,
+    // así los elementos del <body> ya existen aunque el script esté en el <head>
+    window.onload = () => {
+      // document.documentElement es el elemento <html>: le cambiamos el atributo data-bs-theme
+      const temaActual = document.getElementById('tema-actual');
+
+      document.querySelectorAll('[data-tema]').forEach(boton => {
+        boton.addEventListener('click', () => {
+          const tema = boton.dataset.tema;
+          document.documentElement.setAttribute('data-bs-theme', tema);
+          temaActual.textContent = tema;
+        });
+      });
+    };
+  </script>
 </head>
 <body>
   <div class="container">
@@ -25,7 +42,7 @@
 
     <!--
       Botones para cambiar el atributo de <html> sin editar el fichero.
-      Lo hace el script del final; en el inspector (F12 → Elementos) vemos cómo cambia el atributo.
+      Lo hace el script del <head>; en el inspector (F12 → Elementos) vemos cómo cambia el atributo.
     -->
     <div class="text-center my-4">
       <div class="btn-group" role="group" aria-label="Modo de color">
@@ -95,18 +112,5 @@
       </div>
     </div>
   </div>
-
-  <script>
-    // document.documentElement es el elemento <html>: le cambiamos el atributo data-bs-theme
-    const temaActual = document.getElementById('tema-actual');
-
-    document.querySelectorAll('[data-tema]').forEach(boton => {
-      boton.addEventListener('click', () => {
-        const tema = boton.dataset.tema;
-        document.documentElement.setAttribute('data-bs-theme', tema);
-        temaActual.textContent = tema;
-      });
-    });
-  </script>
 </body>
 </html>

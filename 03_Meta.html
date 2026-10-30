@@ -35,12 +35,24 @@
 
   <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
   <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <script>
+    // window.onload: el código se ejecuta cuando la página ha terminado de cargar,
+    // así los elementos del <body> ya existen aunque el script esté en el <head>
+    window.onload = () => {
+      // Muestra el ancho del viewport (innerWidth) y lo actualiza al cambiar el tamaño de la ventana
+      const ancho = document.getElementById('ancho');
+      const mostrarAncho = () => ancho.textContent = window.innerWidth;
+      mostrarAncho();
+      window.addEventListener('resize', mostrarAncho);
+    };
+  </script>
 </head>
 <body>
   <div class="container">
     <h1 class="text-center mt-5 text-success">Meta viewport</h1>
 
-    <!-- Ancho del viewport que ve el CSS (lo rellena el script del final) -->
+    <!-- Ancho del viewport que ve el CSS (lo rellena el script del <head>) -->
     <p class="text-center fs-4">
       Ancho del viewport: <strong id="ancho"></strong> px
     </p>
@@ -66,13 +78,5 @@
       <div class="col-12 col-md-4"><div class="p-3 border bg-body-tertiary">Columna 3</div></div>
     </div>
   </div>
-
-  <script>
-    // Muestra el ancho del viewport (innerWidth) y lo actualiza al cambiar el tamaño de la ventana
-    const ancho = document.getElementById('ancho');
-    const mostrarAncho = () => ancho.textContent = window.innerWidth;
-    mostrarAncho();
-    window.addEventListener('resize', mostrarAncho);
-  </script>
 </body>
 </html>
