@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>06 A · Rejilla: filas y columnas</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    SISTEMA DE REJILLA
+    Divide el ancho disponible en 12 columnas y está construido con flexbox.
+    Siempre tiene la misma estructura de tres niveles:
+
+      .container  →  .row  →  .col
+
+    - .row   : contenedor flex (display: flex; flex-wrap: wrap). Agrupa las columnas en horizontal.
+    - .col   : hijos directos de la fila. Solo las columnas pueden ser hijas de .row.
+    - El contenido va siempre DENTRO de las columnas, nunca directamente en la fila.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Rejilla: filas y columnas</h1>
+
+    <!--
+      LAS 12 COLUMNAS
+      Doce columnas .col-1: cada una ocupa 1/12 del ancho de la fila.
+      Todo el sistema se basa en repartir estas 12 partes.
+    -->
+    <h2 class="h4 mt-5">Las 12 columnas</h2>
+    <div class="row">
+      <div class="col-1"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">1</div></div>
+      <div class="col-1"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">2</div></div>
+      <div class="col-1"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">3</div></div>
+      <div class="col-1"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">4</div></div>
+      <div class="col-1"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">5</div></div>
+      <div class="col-1"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">6</div></div>
+      <div class="col-1"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">7</div></div>
+      <div class="col-1"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">8</div></div>
+      <div class="col-1"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">9</div></div>
+      <div class="col-1"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">10</div></div>
+      <div class="col-1"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">11</div></div>
+      <div class="col-1"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">12</div></div>
+    </div>
+
+    <!--
+      UNA FILA CON TRES COLUMNAS
+      .col sin número: las columnas se reparten el ancho a partes iguales.
+    -->
+    <h2 class="h4 mt-5">Una fila con tres columnas</h2>
+    <div class="row">
+      <div class="col"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">col</div></div>
+      <div class="col"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">col</div></div>
+      <div class="col"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">col</div></div>
+    </div>
+
+    <!--
+      EL HUECO ENTRE COLUMNAS (GUTTER)
+      Cada columna tiene un relleno lateral (padding) de 0.75rem por lado:
+      entre dos columnas suman 1.5rem (24 px). Ese hueco es el gutter.
+
+      En la primera fila pintamos el fondo en la propia .col: el relleno queda DENTRO
+      del color y no vemos el hueco; parece una sola franja.
+      En la segunda pintamos un div dentro de cada .col: ahora el relleno queda FUERA
+      del color y vemos el hueco entre columnas.
+
+      Por eso el contenido (y su fondo) va siempre en un elemento dentro de la columna.
+    -->
+    <h2 class="h4 mt-5">El hueco entre columnas (gutter)</h2>
+
+    <p class="mb-1">Fondo en la propia <code>.col</code>:</p>
+    <div class="row mb-3">
+      <div class="col bg-success-subtle border border-success-subtle py-2">col</div>
+      <div class="col bg-success-subtle border border-success-subtle py-2">col</div>
+      <div class="col bg-success-subtle border border-success-subtle py-2">col</div>
+    </div>
+
+    <p class="mb-1">Fondo en un <code>div</code> dentro de cada <code>.col</code>:</p>
+    <div class="row">
+      <div class="col"><div class="bg-success-subtle border border-success-subtle py-2">div dentro de col</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle py-2">div dentro de col</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle py-2">div dentro de col</div></div>
+    </div>
+
+    <!--
+      LA FILA Y SU MARGEN NEGATIVO
+      La .row tiene un margen negativo de 0.75rem a cada lado. Así compensa el relleno
+      de la primera y la última columna, y el contenido queda alineado con el borde
+      del contenedor (igual que este texto y el título).
+
+      Con el fondo en la .row vemos que la fila sobresale del contenedor por los dos lados.
+    -->
+    <h2 class="h4 mt-5">La fila y su margen negativo</h2>
+    <p>Este párrafo está directamente en el contenedor: su borde izquierdo marca dónde empieza el contenido.</p>
+    <div class="row bg-warning-subtle py-2">
+      <div class="col"><div class="bg-primary-subtle border border-primary-subtle py-2">col</div></div>
+      <div class="col"><div class="bg-primary-subtle border border-primary-subtle py-2">col</div></div>
+    </div>
+
+    <!--
+      UNA .row SIEMPRE DENTRO DE UN CONTENEDOR (O DE OTRA COLUMNA)
+      Fuera de un contenedor no hay relleno que compense el margen negativo:
+      la fila es más ancha que la ventana y aparece scroll horizontal.
+
+      Si descomentamos este bloque y lo movemos fuera del .container, lo vemos:
+
+      <div class="row">
+        <div class="col">col</div>
+        <div class="col">col</div>
+      </div>
+    -->
+
+    <div class="mb-5"></div>
+  </div>
+
+</body>
+</html>
