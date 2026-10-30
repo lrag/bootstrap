@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <!--
+    ELEMENTO <meta>
+    Etiqueta de metadatos: información SOBRE el documento que no se muestra en la página.
+    - Siempre va dentro del <head>.
+    - Es un elemento vacío (void element): no tiene contenido ni etiqueta de cierre </meta>.
+    - Cada <meta> es una pareja nombre-valor expresada con atributos (charset, name + content...).
+  -->
+
+  <!-- meta charset: codificación de caracteres. Debe ir la primera para que tildes y eñes se lean bien -->
+  <meta charset="utf-8">
+
+  <!--
+    META VIEWPORT
+    El viewport es el área visible donde el navegador pinta la página.
+
+    SIN esta meta, el navegador del móvil simula una pantalla de escritorio de unos 980 px,
+    pinta la página a ese tamaño y luego la reduce para que quepa: todo se ve diminuto
+    y los breakpoints de Bootstrap creen que están en un escritorio.
+
+    CON esta meta le decimos: "usa el ancho real del dispositivo y no apliques zoom".
+    - width=device-width → el ancho de la página es el del dispositivo en píxeles CSS
+                           (un iPhone de 1170 px físicos con densidad x3 mide 390 px CSS).
+    - initial-scale=1    → zoom inicial al 100 %.
+
+    La meta NO hace la página responsive: solo hace que el navegador diga la verdad sobre
+    su ancho, para que las media queries de Bootstrap (sm, md, lg...) puedan funcionar.
+
+    PRUEBA:
+    1. Abre la página, pulsa F12 y activa el modo dispositivo (Ctrl+Shift+M). Elige un móvil.
+    2. Observa el ancho que muestra la página y el breakpoint activo.
+    3. Comenta la línea de abajo, guarda y recarga (F5). Compara.
+  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>03 · Meta viewport</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Meta viewport</h1>
+
+    <!-- Ancho del viewport que ve el CSS (lo rellena el script del final) -->
+    <p class="text-center fs-4">
+      Ancho del viewport: <strong id="ancho"></strong> px
+    </p>
+
+    <!--
+      Indicador del breakpoint activo: cada badge solo se ve en su rango de anchos
+      gracias a las clases de visibilidad responsive d-none / d-{breakpoint}-inline.
+      Sin la meta viewport, en un móvil verás "lg" en lugar de "xs".
+    -->
+    <p class="text-center fs-4">
+      Breakpoint activo:
+      <span class="badge text-bg-danger d-inline d-sm-none">xs (&lt; 576 px)</span>
+      <span class="badge text-bg-warning d-none d-sm-inline d-md-none">sm (≥ 576 px)</span>
+      <span class="badge text-bg-info d-none d-md-inline d-lg-none">md (≥ 768 px)</span>
+      <span class="badge text-bg-primary d-none d-lg-inline d-xl-none">lg (≥ 992 px)</span>
+      <span class="badge text-bg-success d-none d-xl-inline d-xxl-none">xl (≥ 1200 px)</span>
+      <span class="badge text-bg-dark d-none d-xxl-inline">xxl (≥ 1400 px)</span>
+    </p>
+
+    <!--
+      Rejilla de ejemplo: en móvil (xs) cada columna ocupa todo el ancho y se apilan;
+      a partir de md se ponen tres en fila. Sin la meta, en el móvil saldrán en fila y diminutas.
+    -->
+    <div class="row g-3 mt-3">
+      <div class="col-12 col-md-4"><div class="p-3 border bg-body-tertiary">Columna 1</div></div>
+      <div class="col-12 col-md-4"><div class="p-3 border bg-body-tertiary">Columna 2</div></div>
+      <div class="col-12 col-md-4"><div class="p-3 border bg-body-tertiary">Columna 3</div></div>
+    </div>
+  </div>
+
+  <script>
+    // Muestra el ancho del viewport (innerWidth) y lo actualiza al cambiar el tamaño de la ventana
+    const ancho = document.getElementById('ancho');
+    const mostrarAncho = () => ancho.textContent = window.innerWidth;
+    mostrarAncho();
+    window.addEventListener('resize', mostrarAncho);
+  </script>
+</body>
+</html>
