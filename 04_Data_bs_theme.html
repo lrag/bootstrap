@@ -20,19 +20,19 @@
   <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
 
   <script>
-    // window.onload: el código se ejecuta cuando la página ha terminado de cargar,
-    // así los elementos del <body> ya existen aunque el script esté en el <head>
     window.onload = () => {
       // document.documentElement es el elemento <html>: le cambiamos el atributo data-bs-theme
       const temaActual = document.getElementById('tema-actual');
 
-      document.querySelectorAll('[data-tema]').forEach(boton => {
-        boton.addEventListener('click', () => {
-          const tema = boton.dataset.tema;
-          document.documentElement.setAttribute('data-bs-theme', tema);
-          temaActual.textContent = tema;
-        });
-      });
+      document.getElementById('btn-claro').onclick = () => {
+        document.documentElement.setAttribute('data-bs-theme', 'light');
+        temaActual.textContent = 'light';
+      };
+
+      document.getElementById('btn-oscuro').onclick = () => {
+        document.documentElement.setAttribute('data-bs-theme', 'dark');
+        temaActual.textContent = 'dark';
+      };
     };
   </script>
 </head>
@@ -46,8 +46,8 @@
     -->
     <div class="text-center my-4">
       <div class="btn-group" role="group" aria-label="Modo de color">
-        <button type="button" class="btn btn-outline-primary" data-tema="light">Claro</button>
-        <button type="button" class="btn btn-outline-primary" data-tema="dark">Oscuro</button>
+        <button type="button" class="btn btn-outline-primary" id="btn-claro">Claro</button>
+        <button type="button" class="btn btn-outline-primary" id="btn-oscuro">Oscuro</button>
       </div>
       <p class="mt-2 mb-0">data-bs-theme = <code id="tema-actual">light</code></p>
     </div>
