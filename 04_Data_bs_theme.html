@@ -1,0 +1,112 @@
+<!doctype html>
+<!--
+  DATA-BS-THEME (Bootstrap 5.3+)
+  Atributo que fija el modo de color: "light" (claro, el de por defecto) o "dark" (oscuro).
+
+  Al ponerlo en <html> afecta a toda la página. Bootstrap redefine sus variables CSS
+  (--bs-body-bg, --bs-body-color, --bs-border-color...) para ese modo, y todos los
+  componentes que las usan cambian de color a la vez, sin tocar ni una clase.
+
+  Si lo quitamos, la página es clara: light es el valor por defecto.
+-->
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>04 · data-bs-theme</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">data-bs-theme</h1>
+
+    <!--
+      Botones para cambiar el atributo de <html> sin editar el fichero.
+      Lo hace el script del final; en el inspector (F12 → Elementos) vemos cómo cambia el atributo.
+    -->
+    <div class="text-center my-4">
+      <div class="btn-group" role="group" aria-label="Modo de color">
+        <button type="button" class="btn btn-outline-primary" data-tema="light">Claro</button>
+        <button type="button" class="btn btn-outline-primary" data-tema="dark">Oscuro</button>
+      </div>
+      <p class="mt-2 mb-0">data-bs-theme = <code id="tema-actual">light</code></p>
+    </div>
+
+    <!--
+      Muestrario de componentes: no llevan ninguna clase de modo de color,
+      y aun así todos se adaptan al tema activo.
+    -->
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-body">
+            <h2 class="h5 card-title">Card</h2>
+            <p class="card-text">El fondo, el texto y el borde salen de las variables del tema.</p>
+            <button type="button" class="btn btn-primary">Primario</button>
+            <button type="button" class="btn btn-secondary">Secundario</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <form class="h-100">
+          <label for="nombre" class="form-label">Formulario</label>
+          <input type="text" id="nombre" class="form-control mb-2" placeholder="Nombre">
+          <select class="form-select" aria-label="Opciones">
+            <option>Opción 1</option>
+            <option>Opción 2</option>
+          </select>
+        </form>
+      </div>
+
+      <div class="col-md-6">
+        <div class="alert alert-success mb-0" role="alert">Alert de éxito</div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="alert alert-danger mb-0" role="alert">Alert de error</div>
+      </div>
+
+      <div class="col-12">
+        <table class="table table-striped mb-0">
+          <thead>
+            <tr><th scope="col">#</th><th scope="col">Producto</th><th scope="col">Precio</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Teclado</td><td>25 €</td></tr>
+            <tr><td>2</td><td>Ratón</td><td>15 €</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!--
+      El atributo también funciona en un elemento concreto: solo cambia esa zona.
+      Esta card es siempre oscura, sea cual sea el tema de la página.
+      Y al revés: con la página en oscuro, data-bs-theme="light" deja una zona clara.
+    -->
+    <div class="card mt-4 mb-5" data-bs-theme="dark">
+      <div class="card-body">
+        <h2 class="h5 card-title">Siempre oscura</h2>
+        <p class="card-text mb-0">Esta card tiene <code>data-bs-theme="dark"</code> en su propio elemento.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // document.documentElement es el elemento <html>: le cambiamos el atributo data-bs-theme
+    const temaActual = document.getElementById('tema-actual');
+
+    document.querySelectorAll('[data-tema]').forEach(boton => {
+      boton.addEventListener('click', () => {
+        const tema = boton.dataset.tema;
+        document.documentElement.setAttribute('data-bs-theme', tema);
+        temaActual.textContent = tema;
+      });
+    });
+  </script>
+</body>
+</html>
