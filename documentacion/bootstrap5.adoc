@@ -417,9 +417,311 @@ Los `.98` evitan que dos media queries coincidan en el mismo píxel.
 . Añadir un título con `text-center text-lg-start` y comprobar en qué breakpoint cambia la alineación.
 . Mostrar un mensaje solo en móvil con `d-md-none` y otro solo desde tablet con `d-none d-md-block`.
 
+== Sistema de rejilla
+
+Filas y columnas sobre flexbox: doce columnas que se reparten, se recolocan y se adaptan a cada breakpoint.
+
+En las capturas de este capítulo, las cajas de color son el contenido de cada columna, y el hueco entre ellas es el _gutter_.
+
+=== Filas y columnas
+
+La rejilla de Bootstrap divide el ancho disponible en *12 columnas* y está construida con *flexbox*.
+Siempre tiene la misma estructura de tres niveles:
+
+[source,html]
+----
+<div class="container">      <!-- 1. contenedor -->
+  <div class="row">          <!-- 2. fila -->
+    <div class="col">…</div> <!-- 3. columnas -->
+    <div class="col">…</div>
+  </div>
+</div>
+----
+
+`.row`:: Contenedor flex (`display: flex; flex-wrap: wrap`). Agrupa columnas en horizontal.
+`.col-*`:: Hijos directos de la fila. Solo ellos pueden ser hijos de `.row`.
+El contenido:: Va siempre _dentro_ de las columnas, nunca directamente en la fila.
+
+==== Cómo se forma el hueco entre columnas
+
+Cada columna tiene un relleno lateral de la mitad del gutter: 0.75rem por lado, 1.5rem entre dos columnas.
+La fila tiene un margen negativo del mismo tamaño para que la primera y la última columna queden alineadas con el borde del contenedor.
+
+.Tres columnas `.col` con el gutter por defecto
+image::03_filas.png[Tres columnas iguales]
+
+IMPORTANT: Una `.row` debe ir dentro de un contenedor (o de otra columna): si no, su margen negativo provoca scroll horizontal.
+
+=== Columnas automáticas
+
+`.col` sin número:: Todas las columnas se reparten el espacio *a partes iguales*, sean cuantas sean.
+`.col-auto`:: La columna mide *lo que mida su contenido*. Las `.col` restantes se reparten lo que sobra.
+
+.Dos y cinco columnas `.col`
+image::03_auto_iguales.png[Columnas iguales]
+
+[source,html]
+----
+<div class="row">
+  <div class="col-auto">…</div>  <!-- ancho del contenido -->
+  <div class="col">…</div>       <!-- el resto del espacio -->
+  <div class="col-auto">…</div>
+</div>
+----
+
+.`.col-auto` a los lados y `.col` en el centro
+image::03_auto_col_auto.png[Columnas col-auto]
+
+=== Columnas de ancho fijo
+
+`.col-{n}` ocupa *n de las 12 columnas*. El ancho es un porcentaje: `col-4` = 4/12 = 33,33 %.
+Se pueden mezclar con `.col`, que se reparten lo que quede.
+
+.`col-4 + col-8`, `col-3 + col-6 + col-3` y `col-6 + col + col`
+image::03_fijas.png[Columnas de ancho fijo]
+
+*Si la suma pasa de 12*, las columnas que no caben bajan a una nueva línea (`flex-wrap: wrap`):
+
+.`col-9 + col-4`: 13 columnas, la segunda baja
+image::03_fijas_desborde.png[Columnas que bajan de línea]
+
+TIP: Para forzar un salto de línea sin cerrar la fila: `<div class="w-100"></div>` entre dos columnas.
+
+=== Clases responsive
+
+`.col-{breakpoint}-{n}` aplica el ancho *desde ese breakpoint hacia arriba* (mobile-first).
+Por debajo, si no hay otra clase, la columna ocupa el 100 % y las columnas se *apilan*.
+
+[source,html]
+----
+<div class="row g-2">
+  <div class="col-12 col-md-6 col-xl-3">…</div>
+  <div class="col-12 col-md-6 col-xl-3">…</div>
+  <div class="col-12 col-md-6 col-xl-3">…</div>
+  <div class="col-12 col-md-6 col-xl-3">…</div>
+</div>
+----
+
+[cols="2m,1,1,1",options="header"]
+|===
+|Clases |xs / sm |md / lg |xl / xxl
+|col-12 col-md-6 col-xl-3 |1 por fila |2 por fila |4 por fila
+|===
+
+.xs (400 px): apiladas
+image::03_responsive_xs.png[Columnas apiladas]
+
+.md (800 px): dos por fila
+image::03_responsive_md.png[Dos columnas por fila]
+
+.xl (1250 px): cuatro por fila
+image::03_responsive_xl.png[Cuatro columnas por fila]
+
+`.col-{breakpoint}` sin número: columnas iguales desde ese breakpoint y apiladas por debajo.
+
+.`.col-md` en xs (apiladas) y en md (en fila)
+image::03_responsive_col_md_xs.png[col-md en xs]
+
+image::03_responsive_col_md_md.png[col-md en md]
+
+WARNING: *Error típico:* pensar que `col-md-6` es «media columna solo en tablet».
+Es media columna *desde* tablet: también en portátil y escritorio.
+
+=== Offset: desplazar columnas
+
+`.offset-{n}` y `.offset-{breakpoint}-{n}` añaden un margen izquierdo de *n columnas*.
+Útil para centrar o dejar huecos sin columnas vacías.
+
+.`col-4 offset-4`, `col-6 offset-3` (centrada) y `col-md-6 offset-md-3`
+image::03_offset.png[Columnas con offset]
+
+Alternativa con márgenes automáticos de flexbox: `ms-auto` empuja la columna hacia la derecha.
+
+.`col-3` y `col-3 ms-auto`
+image::03_offset_ms_auto.png[Columna con ms-auto]
+
+=== Order: cambiar el orden visual
+
+Las columnas se muestran en el orden del HTML.
+Con `.order-{0..5}`, `.order-first` y `.order-last` (y sus versiones responsive) cambiamos el orden *visual* sin tocar el HTML.
+
+[source,html]
+----
+<div class="row g-2">
+  <div class="col-md-4">1º en el HTML</div>
+  <div class="col-md-4 order-first order-md-last">2º en el HTML</div>
+  <div class="col-md-4">3º en el HTML</div>
+</div>
+----
+
+.xs: la segunda columna sube la primera
+image::03_order_xs.png[Orden en móvil]
+
+.md: la segunda columna pasa a ser la última
+image::03_order_md.png[Orden desde md]
+
+Caso típico: en móvil, el contenido principal antes que la barra lateral.
+
+CAUTION: *Accesibilidad:* `order` solo cambia lo que se ve.
+Lectores de pantalla y navegación con tabulador siguen el orden del HTML, así que el HTML debe tener ya un orden lógico.
+
+=== Gutters: el espacio entre columnas
+
+El gutter por defecto es de *1.5rem* (24 px) en horizontal y 0 en vertical.
+Se cambia *en la fila* con una escala de 0 a 5:
+
+[cols="1m,2",options="header"]
+|===
+|Clase |Afecta a
+|g-{n} |Horizontal y vertical
+|gx-{n} |Solo horizontal (entre columnas)
+|gy-{n} |Solo vertical (entre líneas)
+|g-md-{n}… |Versiones responsive
+|===
+
+[cols="1,2",options="header"]
+|===
+|n |Valor
+|0 |0
+|1 / 2 / 3 |0.25rem / 0.5rem / 1rem
+|4 |1.5rem (el de por defecto en horizontal)
+|5 |3rem
+|===
+
+.`g-0`: sin hueco
+image::03_gutters_g0.png[Gutter 0]
+
+.`g-5`: hueco grande en las dos direcciones
+image::03_gutters_g5.png[Gutter 5]
+
+.`gx-1 gy-4`: poco hueco horizontal, mucho vertical
+image::03_gutters_gx1_gy4.png[Gutter horizontal 1 y vertical 4]
+
+NOTE: Sin `gy-*`, al apilarse en móvil las columnas quedan pegadas una encima de otra.
+`g-*` o `gy-*` es la forma correcta de separarlas, mejor que añadir márgenes a cada columna.
+
+=== `row-cols-*`: columnas por fila
+
+En lugar de dar ancho a cada columna, `.row-cols-{n}` en la *fila* indica *cuántas columnas caben por línea*.
+Las columnas solo llevan `.col`. Ideal para listas de elementos iguales: cards, productos, galerías.
+
+[source,html]
+----
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
+  <div class="col">…</div>  <!-- 1 por fila en xs, 2 desde sm, 4 desde lg -->
+  …
+</div>
+----
+
+.xs: una por fila
+image::03_row_cols_xs.png[row-cols en xs]
+
+.sm: dos por fila
+image::03_row_cols_sm.png[row-cols en sm]
+
+.lg: cuatro por fila
+image::03_row_cols_lg.png[row-cols en lg]
+
+Admite de `row-cols-1` a `row-cols-6` y `row-cols-auto` (cada columna con el ancho de su contenido).
+
+=== Anidado
+
+Dentro de una columna podemos poner una *nueva `.row`*, que vuelve a tener 12 columnas *relativas al ancho de esa columna*, no al de la página.
+No hace falta otro contenedor.
+
+[source,html]
+----
+<div class="row">
+  <div class="col-md-8">
+    <div class="row">            <!-- nueva fila: 12 columnas dentro de las 8 -->
+      <div class="col-6">…</div>
+      <div class="col-6">…</div>
+    </div>
+  </div>
+  <div class="col-md-4">…</div>
+</div>
+----
+
+.Dos `col-6` anidadas dentro de una `col-md-8`
+image::03_anidado.png[Rejilla anidada]
+
+=== Práctica: tres layouts
+
+==== Layout 1: blog con contenido y barra lateral
+
+Contenido de 8 columnas y lateral de 4 desde lg; apilados en móvil con el contenido primero.
+
+[source,html]
+----
+<div class="row g-3">
+  <div class="col-12">Cabecera</div>
+  <div class="col-lg-8">Artículo</div>
+  <div class="col-lg-4">Lateral</div>
+  <div class="col-12">Pie</div>
+</div>
+----
+
+.Layout de blog en xs y en lg
+image::03_layout_blog_xs.png[Blog en móvil]
+
+image::03_layout_blog_lg.png[Blog en escritorio]
+
+==== Layout 2: catálogo de productos
+
+Un producto por fila en móvil, 2 desde sm, 3 desde md y 4 desde xl, con `row-cols-*` y `g-*`.
+
+[source,html]
+----
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3">
+  <div class="col">Producto 1</div>
+  …
+</div>
+----
+
+.Catálogo en sm y en xl
+image::03_layout_catalogo_sm.png[Catálogo en sm]
+
+image::03_layout_catalogo_xl.png[Catálogo en xl]
+
+==== Layout 3: panel con menú, contenido y avisos
+
+Tres columnas desde lg (2 + 7 + 3). En móvil el contenido va primero con `order`; el contenido tiene una rejilla anidada con tarjetas de datos.
+
+[source,html]
+----
+<div class="row g-3">
+  <div class="col-lg-2 order-2 order-lg-1">Menú</div>
+  <div class="col-lg-7 order-1 order-lg-2">
+    Contenido
+    <div class="row g-2">
+      <div class="col-sm-4">Dato 1</div>
+      <div class="col-sm-4">Dato 2</div>
+      <div class="col-sm-4">Dato 3</div>
+    </div>
+  </div>
+  <div class="col-lg-3 order-3">Avisos</div>
+</div>
+----
+
+.Panel en xs y en lg
+image::03_layout_panel_xs.png[Panel en móvil]
+
+image::03_layout_panel_lg.png[Panel en escritorio]
+
+==== Ejercicio
+
+. Maquetar los tres layouts en páginas separadas, con cajas de color en lugar de contenido real.
+. Comprobar cada uno en xs, md y xl con el modo dispositivo de F12.
+. En el layout 1, hacer que el lateral pase a la izquierda desde lg sin cambiar el HTML.
+. En el layout 2, quitar `g-3` y observar qué ocurre al apilarse en móvil.
+. En el layout 3, centrar el bloque de datos en una columna de 6 con `offset` en lugar de tres datos.
+
 == Referencias
 
 * https://getbootstrap.com/docs/5.3/getting-started/introduction/[Documentación oficial de Bootstrap 5.3]
 * https://getbootstrap.com/docs/5.3/layout/containers/[Containers]
 * https://getbootstrap.com/docs/5.3/layout/breakpoints/[Breakpoints]
 * https://getbootstrap.com/docs/5.3/customize/color-modes/[Color modes]
+* https://getbootstrap.com/docs/5.3/layout/grid/[Grid system]
+* https://getbootstrap.com/docs/5.3/layout/columns/[Columns]
+* https://getbootstrap.com/docs/5.3/layout/gutters/[Gutters]

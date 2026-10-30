@@ -10,6 +10,31 @@ const guia = nombre => pathToFileURL(path.join(__dirname, '..', 'guia_html', nom
 
 const GUIA_01 = guia('01_introducción.html');
 const GUIA_02 = guia('02_contenedores.html');
+const GUIA_03 = guia('03_rejilla.html');
+
+// Capturas de la rejilla: [fichero, selector de la demo, anchos de ventana]
+// Si hay varios anchos, el fichero lleva el sufijo del breakpoint (03_responsive_xs.png...)
+const ANCHOS = { xs: 400, sm: 600, md: 800, lg: 1000, xl: 1250 };
+const CAPTURAS_03 = [
+  ['03_filas',           '#filas .demo >> nth=0',       ['lg']],
+  ['03_auto_iguales',    '#automaticas .demo >> nth=0', ['lg']],
+  ['03_auto_col_auto',   '#automaticas .demo >> nth=1', ['lg']],
+  ['03_fijas',           '#fijas .demo >> nth=0',       ['lg']],
+  ['03_fijas_desborde',  '#fijas .demo >> nth=1',       ['lg']],
+  ['03_responsive',      '#responsive .demo >> nth=0',  ['xs', 'md', 'xl']],
+  ['03_responsive_col_md', '#responsive .demo >> nth=1', ['xs', 'md']],
+  ['03_offset',          '#offset .demo >> nth=0',      ['lg']],
+  ['03_offset_ms_auto',  '#offset .demo >> nth=1',      ['lg']],
+  ['03_order',           '#order .demo >> nth=0',       ['xs', 'md']],
+  ['03_gutters_g0',      '#gutters .demo >> nth=0',     ['lg']],
+  ['03_gutters_g5',      '#gutters .demo >> nth=1',     ['lg']],
+  ['03_gutters_gx1_gy4', '#gutters .demo >> nth=2',     ['lg']],
+  ['03_row_cols',        '#row-cols .demo >> nth=0',    ['xs', 'sm', 'lg']],
+  ['03_anidado',         '#anidado .demo >> nth=0',     ['lg']],
+  ['03_layout_blog',     '#practica .demo >> nth=0',    ['xs', 'lg']],
+  ['03_layout_catalogo', '#practica .demo >> nth=1',    ['sm', 'xl']],
+  ['03_layout_panel',    '#practica .demo >> nth=2',    ['xs', 'lg']],
+];
 
 async function capturarElemento(page, selector, fichero) {
   await page.locator(selector).first().screenshot({ path: path.join(DESTINO, fichero) });
@@ -60,6 +85,21 @@ async function capturarElemento(page, selector, fichero) {
     const page = await browser.newPage({ viewport: { width: ancho, height: 900 } });
     await page.goto(GUIA_02, { waitUntil: 'networkidle' });
     await capturarElemento(page, 'p.text-center.text-md-start.text-xl-end', `02_mobile_first_${bp}.png`);
+    await page.close();
+  }
+
+  // 03 · Demos de la rejilla, una página por ancho de ventana
+  for (const [bp, ancho] of Object.entries(ANCHOS)) {
+    const pendientes = CAPTURAS_03.filter(([, , bps]) => bps.includes(bp));
+    if (!pendientes.length) continue;
+    const page = await browser.newPage({ viewport: { width: ancho, height: 900 } });
+    await page.goto(GUIA_03, { waitUntil: 'networkidle' });
+    // El indicador fijo de breakpoint taparía parte de las demos
+    await page.addStyleTag({ content: '.indicador { display: none !important; }' });
+    for (const [nombre, selector, bps] of pendientes) {
+      const fichero = bps.length > 1 ? `${nombre}_${bp}.png` : `${nombre}.png`;
+      await capturarElemento(page, selector, fichero);
+    }
     await page.close();
   }
 
