@@ -64,6 +64,22 @@
     Al redimensionar vemos en qué breakpoint deja cada uno de estar al 100 %.
 
     Las bandas van fuera de cualquier contenedor para poder ocupar todo el ancho.
+
+    ANCHO DE .container EN CADA BREAKPOINT
+    El breakpoint es el ancho de la VENTANA; el contenedor es algo más estrecho
+    para que siempre quede margen a los lados.
+
+      Breakpoint   La ventana mide desde   .container mide
+      xs           0 px                    100 %
+      sm           576 px                  540 px
+      md           768 px                  720 px
+      lg           992 px                  960 px
+      xl           1200 px                 1140 px
+      xxl          1400 px                 1320 px
+
+    Ejemplo: con la ventana a 862 px estamos en md → el contenedor mide 720 px
+    y quedan (862 - 720) / 2 = 71 px a cada lado.
+    El ancho incluye el relleno (box-sizing: border-box): el contenido útil es 720 - 2 × 12 = 696 px.
   -->
   <div class="mt-4">
 
