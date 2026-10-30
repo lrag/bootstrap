@@ -27,11 +27,6 @@
 
     La meta NO hace la página responsive: solo hace que el navegador diga la verdad sobre
     su ancho, para que las media queries de Bootstrap (sm, md, lg...) puedan funcionar.
-
-    PRUEBA:
-    1. Abre la página, pulsa F12 y activa el modo dispositivo (Ctrl+Shift+M). Elige un móvil.
-    2. Observa el ancho que muestra la página y el breakpoint activo.
-    3. Comenta la línea de abajo, guarda y recarga (F5). Compara.
   -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -53,7 +48,7 @@
     <!--
       Indicador del breakpoint activo: cada badge solo se ve en su rango de anchos
       gracias a las clases de visibilidad responsive d-none / d-{breakpoint}-inline.
-      Sin la meta viewport, en un móvil verás "lg" en lugar de "xs".
+      Sin la meta viewport, en un móvil vemos "lg" en lugar de "xs".
     -->
     <p class="text-center fs-4">
       Breakpoint activo:
@@ -65,10 +60,6 @@
       <span class="badge text-bg-dark d-none d-xxl-inline">xxl (≥ 1400 px)</span>
     </p>
 
-    <!--
-      Rejilla de ejemplo: en móvil (xs) cada columna ocupa todo el ancho y se apilan;
-      a partir de md se ponen tres en fila. Sin la meta, en el móvil saldrán en fila y diminutas.
-    -->
     <div class="row g-3 mt-3">
       <div class="col-12 col-md-4"><div class="p-3 border bg-body-tertiary">Columna 1</div></div>
       <div class="col-12 col-md-4"><div class="p-3 border bg-body-tertiary">Columna 2</div></div>
