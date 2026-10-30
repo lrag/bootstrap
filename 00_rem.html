@@ -10,19 +10,18 @@
   <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
 
   <script>
-    window.onload = () => {
+    function cambiarBase(px) {
       const base = document.getElementById('base');
+      document.documentElement.style.fontSize = px + 'px';
+      base.textContent = px;
+    }
 
-      const cambiarBase = px => {
-        document.documentElement.style.fontSize = px + 'px';
-        base.textContent = px;
-      };
-
+    window.onload = () => {
       document.getElementById('btn-12').onclick = () => cambiarBase(12);
       document.getElementById('btn-16').onclick = () => cambiarBase(16);
       document.getElementById('btn-20').onclick = () => cambiarBase(20);
       document.getElementById('btn-24').onclick = () => cambiarBase(24);
-    };
+    }
   </script>
 </head>
 <body>
@@ -39,21 +38,23 @@
     Si cambia el font-size de <html>, cambia todo lo que esté medido en rem.
     Eso ocurre, por ejemplo, cuando alguien aumenta el tamaño de letra en la configuración
     del navegador porque ve mal. Los botones de la página simulan ese cambio.
-  -->
-  <div class="container">
-    <h1 class="text-center mt-5 text-success">rem</h1>
 
-    <p class="text-center fs-4 mb-2">
+    rem es CSS puro: no tiene nada que ver con Bootstrap. Por eso hasta el último bloque
+    usamos solo CSS inline (atributo style). Las medidas que nos interesan están en rem o en px
+    a propósito; el resto (colores, bordes...) solo da aspecto.
+  -->
+  <div style="max-width: 960px; margin: 0 auto; padding: 0 0.75rem;">
+    <h1 style="text-align: center; margin-top: 3rem; color: #198754;">rem</h1>
+
+    <p style="text-align: center; font-size: 1.5rem; margin-bottom: 0.5rem;">
       Ahora mismo <strong>1rem = <span id="base">16</span> px</strong>
     </p>
 
-    <div class="text-center mb-5">
-      <div class="btn-group" role="group" aria-label="Tamaño de letra de html">
-        <button type="button" class="btn btn-outline-primary" id="btn-12">12 px</button>
-        <button type="button" class="btn btn-outline-primary" id="btn-16">16 px</button>
-        <button type="button" class="btn btn-outline-primary" id="btn-20">20 px</button>
-        <button type="button" class="btn btn-outline-primary" id="btn-24">24 px</button>
-      </div>
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <button type="button" id="btn-12" style="padding: 0.375rem 0.75rem; border: 1px solid #0d6efd; background: white; color: #0d6efd; border-radius: 0.375rem;">12 px</button>
+      <button type="button" id="btn-16" style="padding: 0.375rem 0.75rem; border: 1px solid #0d6efd; background: white; color: #0d6efd; border-radius: 0.375rem;">16 px</button>
+      <button type="button" id="btn-20" style="padding: 0.375rem 0.75rem; border: 1px solid #0d6efd; background: white; color: #0d6efd; border-radius: 0.375rem;">20 px</button>
+      <button type="button" id="btn-24" style="padding: 0.375rem 0.75rem; border: 1px solid #0d6efd; background: white; color: #0d6efd; border-radius: 0.375rem;">24 px</button>
     </div>
 
     <!--
@@ -62,17 +63,13 @@
       Al cambiar la base, la barra en rem crece o encoge; la de px se queda igual.
       Lo mismo con el texto: 1.5rem = 24 px solo mientras la base sea 16 px.
     -->
-    <h2 class="h4">rem frente a px</h2>
+    <h2 style="font-size: 1.5rem;">rem frente a px</h2>
 
-    <div class="mb-2">
-      <div class="bg-primary-subtle border border-primary-subtle py-2 px-2" style="width: 10rem">width: 10rem</div>
-    </div>
-    <div class="mb-4">
-      <div class="bg-secondary-subtle border border-secondary-subtle py-2 px-2" style="width: 160px">width: 160px</div>
-    </div>
+    <div style="width: 10rem; padding: 0.5rem; margin-bottom: 0.5rem; background: #cfe2ff; border: 1px solid #9ec5fe;">width: 10rem</div>
+    <div style="width: 160px; padding: 0.5rem; margin-bottom: 1.5rem; background: #e2e3e5; border: 1px solid #c4c8cb;">width: 160px</div>
 
-    <p class="mb-1" style="font-size: 1.5rem">Texto con font-size: 1.5rem</p>
-    <p class="mb-5" style="font-size: 24px">Texto con font-size: 24px</p>
+    <p style="font-size: 1.5rem; margin-bottom: 0.25rem;">Texto con font-size: 1.5rem</p>
+    <p style="font-size: 24px; margin-bottom: 3rem;">Texto con font-size: 24px</p>
 
     <!--
       REM FRENTE A EM
@@ -81,28 +78,24 @@
       rem siempre mira a <html>: aunque lo anidemos, 1.2rem es siempre 1.2 veces la base.
       Por eso rem es más predecible.
     -->
-    <h2 class="h4">rem frente a em</h2>
+    <h2 style="font-size: 1.5rem;">rem frente a em</h2>
 
-    <div class="row g-4 mb-5">
-      <div class="col-md-6">
-        <div class="border p-2" style="font-size: 1.2em">
-          1.2em
-          <div class="border p-2" style="font-size: 1.2em">
-            1.2em dentro de 1.2em
-            <div class="border p-2" style="font-size: 1.2em">
-              1.2em dentro de 1.2em dentro de 1.2em
-            </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-start; margin-bottom: 3rem;">
+      <div style="flex: 1 1 300px; font-size: 1.2em; padding: 0.5rem; border: 1px solid #dee2e6;">
+        1.2em
+        <div style="font-size: 1.2em; padding: 0.5rem; border: 1px solid #dee2e6;">
+          1.2em dentro de 1.2em
+          <div style="font-size: 1.2em; padding: 0.5rem; border: 1px solid #dee2e6;">
+            1.2em dentro de 1.2em dentro de 1.2em
           </div>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="border p-2" style="font-size: 1.2rem">
-          1.2rem
-          <div class="border p-2" style="font-size: 1.2rem">
-            1.2rem dentro de 1.2rem
-            <div class="border p-2" style="font-size: 1.2rem">
-              1.2rem dentro de 1.2rem dentro de 1.2rem
-            </div>
+      <div style="flex: 1 1 300px; font-size: 1.2rem; padding: 0.5rem; border: 1px solid #dee2e6;">
+        1.2rem
+        <div style="font-size: 1.2rem; padding: 0.5rem; border: 1px solid #dee2e6;">
+          1.2rem dentro de 1.2rem
+          <div style="font-size: 1.2rem; padding: 0.5rem; border: 1px solid #dee2e6;">
+            1.2rem dentro de 1.2rem dentro de 1.2rem
           </div>
         </div>
       </div>
@@ -110,6 +103,7 @@
 
     <!--
       BOOTSTRAP USA REM
+      Este bloque sí usa clases de Bootstrap.
       Los márgenes y rellenos de Bootstrap (m-*, p-*), los gutters y los tamaños de letra
       están en rem. Su escala de espaciado:
         1 → 0.25rem (4 px)   2 → 0.5rem (8 px)   3 → 1rem (16 px)   4 → 1.5rem (24 px)   5 → 3rem (48 px)
