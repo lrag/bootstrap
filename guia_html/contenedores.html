@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contenedores y breakpoints</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    pre { background: var(--bs-tertiary-bg); padding: 1rem; border-radius: var(--bs-border-radius); }
+    /* Bandas de la demo: el color marca el contenedor y el borde punteado el ancho total */
+    .banda { border: 1px dashed var(--bs-border-color); margin-bottom: .5rem; }
+    .banda > div { background: var(--bs-primary-bg-subtle); border: 1px solid var(--bs-primary-border-subtle); padding: .5rem 0; font-family: var(--bs-font-monospace); font-size: .875rem; }
+    .banda > div > span { background: var(--bs-body-bg); }
+  </style>
+</head>
+<body>
+
+  <header class="bg-primary text-white py-5 mb-4">
+    <div class="container">
+      <p class="text-uppercase small mb-1">Curso de Bootstrap 5 · Sesión 1 · Punto 2</p>
+      <h1 class="display-5 fw-bold">Contenedores y breakpoints</h1>
+      <p class="lead mb-0">Dónde empieza y acaba el contenido, en qué anchos cambia el diseño y por qué se piensa primero en el móvil.</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <nav class="mb-5" aria-label="Índice">
+      <ol class="list-group list-group-numbered list-group-horizontal-lg">
+        <li class="list-group-item"><a href="#contenedor">Qué es un contenedor</a></li>
+        <li class="list-group-item"><a href="#breakpoints">Los seis breakpoints</a></li>
+        <li class="list-group-item"><a href="#tipos">Tipos de contenedor</a></li>
+        <li class="list-group-item"><a href="#demo">Demo en vivo</a></li>
+        <li class="list-group-item"><a href="#mobile-first">Mobile-first</a></li>
+        <li class="list-group-item"><a href="#practica">Práctica</a></li>
+      </ol>
+    </nav>
+
+    <!-- 1. Qué es un contenedor -->
+    <section id="contenedor" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">1. ¿Qué es un contenedor?</h2>
+      <p>
+        El contenedor es el <strong>elemento de maquetación más básico</strong> de Bootstrap: una caja que
+        envuelve el contenido, lo <strong>centra</strong> horizontalmente, le da un <strong>ancho máximo</strong>
+        según el tamaño de pantalla y le añade un <strong>relleno lateral</strong> para que el texto no toque los bordes.
+      </p>
+      <div class="row g-4">
+        <div class="col-md-6">
+<pre><code>&lt;body&gt;
+  &lt;div class="container"&gt;
+    &lt;!-- todo el contenido aquí --&gt;
+  &lt;/div&gt;
+&lt;/body&gt;</code></pre>
+        </div>
+        <div class="col-md-6">
+          <ul class="list-group">
+            <li class="list-group-item"><strong>Centrado:</strong> <code>margin-left: auto; margin-right: auto</code>.</li>
+            <li class="list-group-item"><strong>Ancho máximo:</strong> <code>max-width</code> distinto en cada breakpoint.</li>
+            <li class="list-group-item"><strong>Relleno lateral:</strong> <code>0.75rem</code> por lado (la mitad del gutter de 1.5rem).</li>
+            <li class="list-group-item"><strong>Imprescindible para la rejilla:</strong> las <code>.row</code> tienen márgenes negativos que el relleno del contenedor compensa.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="alert alert-info mt-4 mb-0" role="alert">
+        Los contenedores <strong>se pueden anidar</strong>, pero casi nunca hace falta. Lo habitual es uno por sección
+        (cabecera, contenido, pie) o uno solo para toda la página.
+      </div>
+    </section>
+
+    <!-- 2. Breakpoints -->
+    <section id="breakpoints" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">2. Los seis breakpoints</h2>
+      <p>
+        Un <strong>breakpoint</strong> (punto de ruptura) es un ancho de viewport a partir del cual el diseño puede cambiar.
+        Bootstrap 5 define seis, y cada uno tiene un <strong>infijo</strong> que aparece en el nombre de las clases
+        (<code>col-<strong>md</strong>-6</code>, <code>d-<strong>lg</strong>-none</code>, <code>container-<strong>xl</strong></code>…).
+      </p>
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th scope="col">Breakpoint</th>
+              <th scope="col">Infijo</th>
+              <th scope="col">Desde</th>
+              <th scope="col">Dispositivo típico</th>
+              <th scope="col">Ancho de <code>.container</code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Extra small</th><td><em>ninguno</em></td><td>0 px</td><td>Móvil vertical</td><td>100 %</td></tr>
+            <tr><th scope="row">Small</th><td><code>sm</code></td><td>576 px</td><td>Móvil horizontal</td><td>540 px</td></tr>
+            <tr><th scope="row">Medium</th><td><code>md</code></td><td>768 px</td><td>Tablet</td><td>720 px</td></tr>
+            <tr><th scope="row">Large</th><td><code>lg</code></td><td>992 px</td><td>Portátil</td><td>960 px</td></tr>
+            <tr><th scope="row">Extra large</th><td><code>xl</code></td><td>1200 px</td><td>Escritorio</td><td>1140 px</td></tr>
+            <tr><th scope="row">Extra extra large</th><td><code>xxl</code></td><td>1400 px</td><td>Pantalla grande</td><td>1320 px</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="alert alert-warning h-100 mb-0" role="alert">
+            <strong>xs no tiene infijo.</strong> No existe <code>col-xs-6</code> (sí existía en Bootstrap 3).
+            Una clase sin infijo, como <code>col-6</code>, se aplica desde 0 px.
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="alert alert-secondary h-100 mb-0" role="alert">
+            <strong>xxl es nuevo en Bootstrap 5.</strong> Bootstrap 4 solo llegaba hasta xl (1200 px).
+          </div>
+        </div>
+      </div>
+      <p class="mt-4 mb-0">
+        Los breakpoints se definen en Sass (mapa <code>$grid-breakpoints</code>), así que se pueden cambiar al compilar
+        Bootstrap. Desde la 5.3 también están expuestos como variables CSS <code>--bs-breakpoint-md</code>, etc.,
+        aunque solo como información: las variables CSS no funcionan dentro de una media query.
+      </p>
+    </section>
+
+    <!-- 3. Tipos de contenedor -->
+    <section id="tipos" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">3. Tipos de contenedor</h2>
+      <div class="row row-cols-1 row-cols-lg-3 g-4 mb-4">
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="h5 card-title"><code>.container</code></h3>
+              <p class="card-text">Ancho fijo que salta en cada breakpoint. Al 100 % solo en móvil (xs). El más habitual.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="h5 card-title"><code>.container-fluid</code></h3>
+              <p class="card-text">Siempre al 100 % del ancho. Para paneles, dashboards o bandas a ancho completo.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="h5 card-title"><code>.container-{breakpoint}</code></h3>
+              <p class="card-text">Al 100 % <strong>hasta</strong> ese breakpoint; a partir de él se comporta como <code>.container</code>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="h5">Ancho de cada contenedor según el breakpoint</h3>
+      <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle">
+          <thead>
+            <tr>
+              <th scope="col" class="text-start">Clase</th>
+              <th scope="col">xs<br><small class="fw-normal">&lt; 576</small></th>
+              <th scope="col">sm<br><small class="fw-normal">≥ 576</small></th>
+              <th scope="col">md<br><small class="fw-normal">≥ 768</small></th>
+              <th scope="col">lg<br><small class="fw-normal">≥ 992</small></th>
+              <th scope="col">xl<br><small class="fw-normal">≥ 1200</small></th>
+              <th scope="col">xxl<br><small class="fw-normal">≥ 1400</small></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row" class="text-start"><code>.container</code></th><td class="table-success">100 %</td><td>540</td><td>720</td><td>960</td><td>1140</td><td>1320</td></tr>
+            <tr><th scope="row" class="text-start"><code>.container-sm</code></th><td class="table-success">100 %</td><td>540</td><td>720</td><td>960</td><td>1140</td><td>1320</td></tr>
+            <tr><th scope="row" class="text-start"><code>.container-md</code></th><td class="table-success">100 %</td><td class="table-success">100 %</td><td>720</td><td>960</td><td>1140</td><td>1320</td></tr>
+            <tr><th scope="row" class="text-start"><code>.container-lg</code></th><td class="table-success">100 %</td><td class="table-success">100 %</td><td class="table-success">100 %</td><td>960</td><td>1140</td><td>1320</td></tr>
+            <tr><th scope="row" class="text-start"><code>.container-xl</code></th><td class="table-success">100 %</td><td class="table-success">100 %</td><td class="table-success">100 %</td><td class="table-success">100 %</td><td>1140</td><td>1320</td></tr>
+            <tr><th scope="row" class="text-start"><code>.container-xxl</code></th><td class="table-success">100 %</td><td class="table-success">100 %</td><td class="table-success">100 %</td><td class="table-success">100 %</td><td class="table-success">100 %</td><td>1320</td></tr>
+            <tr><th scope="row" class="text-start"><code>.container-fluid</code></th><td class="table-success">100 %</td><td class="table-success">100 %</td><td class="table-success">100 %</td><td class="table-success">100 %</td><td class="table-success">100 %</td><td class="table-success">100 %</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-body-secondary small mb-0">
+        Los anchos fijos son <code>max-width</code> en píxeles. <code>.container</code> y <code>.container-sm</code> se comportan igual.
+      </p>
+    </section>
+
+    <!-- 4. Demo -->
+    <section id="demo" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">4. Demo en vivo</h2>
+      <p>
+        Cada banda punteada ocupa todo el ancho; la zona coloreada es el contenedor. Al redimensionar la ventana
+        (o en el modo dispositivo de F12) se ve en qué breakpoint deja cada uno de estar al 100 %.
+      </p>
+      <p class="fs-5">
+        Viewport: <strong id="ancho"></strong> px ·
+        Breakpoint: <span class="badge text-bg-primary" id="bp"></span>
+      </p>
+    </section>
+  </main>
+
+  <!-- Las bandas van fuera del <main class="container"> para que puedan ocupar todo el ancho -->
+  <div class="mb-5">
+    <div class="banda"><div class="container"><span>.container</span></div></div>
+    <div class="banda"><div class="container-sm"><span>.container-sm</span></div></div>
+    <div class="banda"><div class="container-md"><span>.container-md</span></div></div>
+    <div class="banda"><div class="container-lg"><span>.container-lg</span></div></div>
+    <div class="banda"><div class="container-xl"><span>.container-xl</span></div></div>
+    <div class="banda"><div class="container-xxl"><span>.container-xxl</span></div></div>
+    <div class="banda"><div class="container-fluid"><span>.container-fluid</span></div></div>
+  </div>
+
+  <div class="container">
+
+    <!-- 5. Mobile-first -->
+    <section id="mobile-first" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">5. El enfoque mobile-first</h2>
+      <p>
+        Bootstrap se diseña <strong>primero para el móvil</strong> y luego se va ampliando para pantallas mayores.
+        Técnicamente significa que sus media queries usan <code>min-width</code>: una clase con infijo se aplica
+        <strong>desde ese breakpoint hacia arriba</strong>, nunca hacia abajo.
+      </p>
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <p class="mb-1">Lo que hace Bootstrap por dentro (simplificado):</p>
+<pre><code>/* Sin infijo: desde 0 px (móvil) */
+.text-center { text-align: center; }
+
+/* md: desde 768 px hacia arriba */
+@media (min-width: 768px) {
+  .text-md-start { text-align: left; }
+}</code></pre>
+        </div>
+        <div class="col-lg-6">
+          <p class="mb-1">Cómo se usa en el HTML:</p>
+<pre><code>&lt;p class="text-center text-md-start"&gt;
+  Centrado en móvil, a la izquierda desde tablet
+&lt;/p&gt;
+
+&lt;div class="col-12 col-md-6 col-xl-4"&gt;
+  Ancho completo → mitad → tercio
+&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+
+      <h3 class="h5 mt-4">Cómo se lee una lista de clases responsive</h3>
+      <ol>
+        <li>La clase <strong>sin infijo</strong> es el estilo base: el del móvil.</li>
+        <li>Cada clase con infijo <strong>sobrescribe</strong> la anterior a partir de su breakpoint.</li>
+        <li>Si un breakpoint no tiene clase, <strong>hereda</strong> la del breakpoint inferior más cercano.</li>
+      </ol>
+
+      <p class="mb-2">Ejemplo en vivo:</p>
+      <p class="text-center text-md-start text-xl-end border rounded p-3 mb-4">
+        <code>text-center text-md-start text-xl-end</code> → centrado en móvil, izquierda desde md, derecha desde xl.
+      </p>
+
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="alert alert-success h-100 mb-0" role="alert">
+            <strong>Por qué mobile-first:</strong> el móvil es la pantalla más limitada y hoy la más usada.
+            Partir de lo sencillo y añadir complejidad es más fácil que recortar un diseño de escritorio.
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="alert alert-secondary h-100 mb-0" role="alert">
+            <strong>¿Y hacia abajo?</strong> En Sass existe <code>media-breakpoint-down(md)</code>, que genera
+            <code>max-width: 767.98px</code>. Los .98 evitan que dos media queries coincidan en el mismo píxel.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Práctica -->
+    <section id="practica" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">6. Práctica</h2>
+      <div class="card border-success">
+        <div class="card-body">
+          <h3 class="h5 card-title">Contenedores y breakpoints</h3>
+          <ol class="mb-0">
+            <li>Crear una página con tres bloques: cabecera con <code>.container-fluid</code>, contenido con <code>.container</code> y pie con <code>.container-lg</code>, cada uno con un color de fondo distinto.</li>
+            <li>Redimensionar la ventana y anotar en qué anchos cambia cada bloque.</li>
+            <li>Añadir un título con <code>text-center text-lg-start</code> y comprobar en qué breakpoint cambia la alineación.</li>
+            <li>Mostrar un mensaje solo en móvil con <code>d-md-none</code> y otro solo desde tablet con <code>d-none d-md-block</code>.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer class="border-top py-4 text-center text-body-secondary small">
+    Curso de Bootstrap 5 · Contenedores y breakpoints ·
+    Referencia: <a href="https://getbootstrap.com/docs/5.3/layout/containers/">Containers</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/layout/breakpoints/">Breakpoints</a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Indicador de ancho y breakpoint de la demo
+    const puntos = [['xxl', 1400], ['xl', 1200], ['lg', 992], ['md', 768], ['sm', 576], ['xs', 0]];
+    function actualizar() {
+      const w = window.innerWidth;
+      document.getElementById('ancho').textContent = w;
+      document.getElementById('bp').textContent = puntos.find(([, min]) => w >= min)[0];
+    }
+    actualizar();
+    window.addEventListener('resize', actualizar);
+  </script>
+</body>
+</html>
