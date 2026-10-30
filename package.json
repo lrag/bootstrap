@@ -1,0 +1,19 @@
+{
+  "name": "ws_bootstrap5",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "capturas": "node documentacion/capturas.js",
+    "doc": "asciidoctor documentacion/bootstrap5.adoc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@asciidoctor/cli": "^4.0.0",
+    "@asciidoctor/core": "^3.0.4",
+    "playwright": "^1.64.1"
+  }
+}

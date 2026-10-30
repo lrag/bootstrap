@@ -1,0 +1,425 @@
+= Curso de Bootstrap 5
+Luis Ramón Álvarez
+:lang: es
+:doctype: article
+:toc: left
+:toclevels: 2
+:toc-title: Índice
+:sectnums:
+:sectanchors:
+:data-uri:
+:webfonts!:
+:imagesdir: .
+:figure-caption: Figura
+:table-caption: Tabla
+:example-caption: Ejemplo
+:note-caption: Nota
+:tip-caption: Consejo
+:important-caption: Importante
+:warning-caption: Aviso
+:caution-caption: Precaución
+:last-update-label: Última actualización
+:version-label: Versión
+:bs-version: 5.3.8
+:bs-cdn: https://cdn.jsdelivr.net/npm/bootstrap@{bs-version}/dist
+
+Apuntes del curso práctico de Bootstrap 5.3: maquetación responsive, componentes y personalización del framework.
+
+== Introducción y entorno
+
+Qué es Bootstrap, qué cambia respecto a la versión 4 y cómo preparar una plantilla base.
+
+=== ¿Qué es Bootstrap?
+
+Bootstrap es un *framework de front-end* de código abierto, creado en Twitter en 2011, que reúne CSS y JavaScript listos para usar.
+Permite maquetar interfaces *responsive* y coherentes aplicando clases en el HTML, sin escribir apenas CSS propio.
+
+Rejilla:: Sistema de 12 columnas basado en flexbox con seis breakpoints, pensado mobile-first.
+Utilidades:: Clases de una sola responsabilidad: espaciado, color, flex, bordes, sombras, visibilidad…
+Componentes:: Navbar, cards, modales, formularios, carrusel… con estilos y comportamiento incluidos.
+Personalización:: Variables CSS `--bs-*` y código fuente en Sass para adaptarlo a cualquier marca.
+
+=== Qué cambia respecto a Bootstrap 4
+
+[cols="1h,2,3",options="header"]
+|===
+|Aspecto |Bootstrap 4 |Bootstrap 5.3
+
+|jQuery
+|Obligatorio para los componentes JS
+|*Eliminado*: JavaScript nativo
+
+|Breakpoints
+|5 (xs, sm, md, lg, xl)
+|6: se añade `xxl` (≥ 1400 px)
+
+|Utilidades
+|Conjunto fijo
+|Ampliadas y extensibles con la API de utilidades
+
+|Personalización
+|Solo con Sass
+|Variables CSS `--bs-*` además de Sass
+
+|Modos de color
+|No
+|Claro y oscuro con `data-bs-theme`
+
+|RTL
+|No
+|Soporte para idiomas de derecha a izquierda
+
+|Atributos data
+|`data-toggle`
+|`data-bs-toggle` (prefijo `bs`)
+
+|Internet Explorer
+|IE 10 y 11
+|Sin soporte
+|===
+
+=== Instalación
+
+==== Opción A: CDN
+
+La más rápida: no requiere instalar nada. Ideal para prototipos y para empezar.
+
+En el `<head>`:
+
+[source,html,subs="attributes+"]
+----
+<link href="{bs-cdn}/css/bootstrap.min.css" rel="stylesheet">
+----
+
+El JavaScript (incluye Popper):
+
+[source,html,subs="attributes+"]
+----
+<script src="{bs-cdn}/js/bootstrap.bundle.min.js" defer></script>
+----
+
+==== Opción B: npm
+
+Para proyectos reales: control de versiones, Sass y compilación propia.
+
+[source,bash]
+----
+npm init -y
+npm install bootstrap@5.3
+----
+
+Los ficheros quedan en `node_modules/bootstrap/`:
+
+* `dist/css/bootstrap.min.css`: CSS compilado.
+* `dist/js/bootstrap.bundle.min.js`: JavaScript con Popper.
+* `scss/`: código fuente Sass.
+
+==== Descarga directa
+
+También se pueden descargar los ficheros compilados y servirlos desde el propio proyecto, sin CDN ni npm:
+
+[source,html]
+----
+<link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+----
+
+NOTE: `bootstrap.bundle.min.js` incluye *Popper*, necesario para dropdowns, tooltips y popovers.
+`bootstrap.min.js` no lo incluye y habría que cargarlo aparte.
+
+=== Estructura de una plantilla base
+
+[source,html,subs="attributes+"]
+----
+<!doctype html> <!--1-->
+<html lang="es" data-bs-theme="light"> <!--2-->
+<head>
+  <meta charset="utf-8"> <!--3-->
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!--4-->
+  <title>Mi primera página con Bootstrap</title>
+  <link href="{bs-cdn}/css/bootstrap.min.css" rel="stylesheet"> <!--5-->
+  <script src="{bs-cdn}/js/bootstrap.bundle.min.js" defer></script> <!--6-->
+</head>
+<body>
+  <div class="container">
+    <h1>¡Hola, Bootstrap!</h1>
+  </div>
+</body>
+</html>
+----
+<1> Activa el modo estándar del navegador. Sin él, Bootstrap se ve mal.
+<2> `lang`: idioma del documento, importante para accesibilidad. `data-bs-theme`: modo de color de toda la página.
+<3> Codificación de caracteres. Debe ir la primera para que tildes y eñes se lean bien.
+<4> Meta viewport: imprescindible para que el diseño responsive funcione en móviles.
+<5> CSS en el `<head>`: evita que la página se pinte sin estilos.
+<6> JavaScript con `defer`.
+
+==== ¿Script en el `<head>` o al final del `<body>`?
+
+Un `<script>` normal detiene el análisis del HTML hasta que se descarga y ejecuta. Hay dos formas de evitarlo:
+
+Al final del `<body>`:: Es lo que hace la plantilla oficial. El contenido ya está pintado cuando empieza la descarga y el DOM existe cuando se ejecuta.
+En el `<head>` con `defer`:: El script se descarga en paralelo mientras se analiza el HTML y se ejecuta cuando el documento está completo. Los scripts con `defer` respetan su orden de aparición.
+
+=== El elemento `<meta>`
+
+`<meta>` es el elemento de *metadatos*: información sobre el documento que no se muestra en la página y que leen el navegador, los buscadores o las redes sociales.
+
+* Va siempre dentro del `<head>`.
+* Es un *elemento vacío* (_void element_): no tiene contenido ni etiqueta de cierre.
+* Cada `<meta>` es una pareja nombre-valor expresada con atributos.
+
+[cols="1m,2,3m",options="header"]
+|===
+|Atributo |Para qué |Ejemplo
+
+|charset
+|Codificación del documento
+|<meta charset="utf-8">
+
+|name + content
+|Metadato con nombre
+|<meta name="viewport" content="...">
+
+|http-equiv + content
+|Simula una cabecera HTTP
+|<meta http-equiv="refresh" content="5">
+
+|property + content
+|Open Graph (redes sociales)
+|<meta property="og:title" content="...">
+|===
+
+Otros `<meta name="...">` habituales: `description`, `author`, `robots` y `theme-color`.
+
+=== La meta viewport
+
+El *viewport* es el área visible donde el navegador pinta la página.
+
+Cuando aparecieron los smartphones, casi todas las webs estaban pensadas para escritorio.
+Para que no se vieran rotas, los navegadores móviles simulan un viewport de unos *980 px*: pintan la página a ese tamaño y luego la reducen para que quepa en la pantalla.
+
+[source,html]
+----
+<meta name="viewport" content="width=device-width, initial-scale=1">
+----
+
+`width=device-width`:: El ancho de la página es el del dispositivo en *píxeles CSS*, no físicos. Un iPhone de 1170 píxeles físicos con densidad ×3 mide 390 px CSS.
+`initial-scale=1`:: Zoom inicial al 100 %.
+
+IMPORTANT: La meta *no hace la página responsive*: solo hace que el navegador diga la verdad sobre su ancho, para que las media queries de Bootstrap puedan funcionar.
+
+.La misma página en un iPhone emulado
+[cols="1a,1a",options="header",frame=none,grid=none]
+|===
+|Sin meta viewport: 980 px, breakpoint `md` |Con meta viewport: 390 px, breakpoint `xs`
+
+|image::01_viewport_sin_meta.png[Página reducida a 980 px de ancho]
+|image::01_viewport_con_meta.png[Página adaptada a 390 px de ancho]
+|===
+
+Sin la meta, el diseño de escritorio se reduce hasta hacerse ilegible. Con ella, la página usa el ancho real y se activa el diseño móvil.
+
+TIP: Para probarlo en las herramientas de desarrollo (F12 → modo dispositivo), el emulador debe estar como dispositivo *móvil*.
+En Chrome y Edge, en modo «Responsive» con tipo «Desktop» no se aplica la reducción: la página se maqueta a 980 px pero aparece a tamaño normal con scroll horizontal.
+Basta con elegir un modelo concreto (por ejemplo, «iPhone 12 Pro»).
+
+=== Modos de color con `data-bs-theme`
+
+Desde la versión 5.3, el atributo `data-bs-theme` fija el modo de color: `light` (por defecto) o `dark`.
+Bootstrap redefine sus variables CSS (`--bs-body-bg`, `--bs-body-color`, `--bs-border-color`…) y todos los componentes cambian de color a la vez, sin tocar ninguna clase.
+
+En `<html>`:: Afecta a toda la página.
+En un elemento concreto:: Solo cambia esa zona.
+
+[source,html]
+----
+<html lang="es" data-bs-theme="dark">
+...
+<div class="card" data-bs-theme="dark">…</div>
+----
+
+Para cambiarlo con JavaScript basta con modificar el atributo del elemento `<html>`:
+
+[source,javascript]
+----
+document.documentElement.setAttribute('data-bs-theme', 'dark');
+----
+
+.La misma sección en modo claro y en modo oscuro
+image::01_tema_claro.png[Sección en modo claro]
+
+image::01_tema_oscuro.png[Sección en modo oscuro]
+
+La card de la derecha tiene su propio `data-bs-theme="dark"`, por eso es oscura en los dos casos.
+
+=== Práctica: la primera plantilla
+
+. Crear una carpeta de proyecto y abrirla en VS Code.
+. Crear un fichero `index.html` con la plantilla base.
+. Abrirlo en el navegador y comprobar en F12 → Red que se cargan el CSS y el JS de Bootstrap.
+. Añadir un párrafo con la clase `lead` y un botón con `class="btn btn-primary"`.
+. Cambiar `data-bs-theme` a `dark` y observar qué cambia.
+. _Opcional:_ instalar Bootstrap con npm y enlazar los ficheros de `node_modules` en lugar del CDN.
+
+== Contenedores y breakpoints
+
+Dónde empieza y acaba el contenido, en qué anchos cambia el diseño y por qué se piensa primero en el móvil.
+
+=== ¿Qué es un contenedor?
+
+El contenedor es el *elemento de maquetación más básico* de Bootstrap: una caja que envuelve el contenido, lo *centra* horizontalmente, le da un *ancho máximo* según el tamaño de pantalla y le añade un *relleno lateral* para que el texto no toque los bordes.
+
+[source,html]
+----
+<body>
+  <div class="container">
+    <!-- todo el contenido aquí -->
+  </div>
+</body>
+----
+
+Centrado:: `margin-left: auto; margin-right: auto`.
+Ancho máximo:: `max-width` distinto en cada breakpoint.
+Relleno lateral:: `0.75rem` por lado (la mitad del gutter de 1.5rem).
+Imprescindible para la rejilla:: Las `.row` tienen márgenes negativos que el relleno del contenedor compensa.
+
+NOTE: Los contenedores se pueden anidar, pero casi nunca hace falta.
+Lo habitual es uno por sección (cabecera, contenido, pie) o uno solo para toda la página.
+
+=== Los seis breakpoints
+
+Un *breakpoint* (punto de ruptura) es un ancho de viewport a partir del cual el diseño puede cambiar.
+Bootstrap 5 define seis, y cada uno tiene un *infijo* que aparece en el nombre de las clases (`col-**md**-6`, `d-**lg**-none`, `container-**xl**`…).
+
+[cols="2h,1,1,2,2",options="header"]
+|===
+|Breakpoint |Infijo |Desde |Dispositivo típico |Ancho de `.container`
+
+|Extra small |_ninguno_ |0 px |Móvil vertical |100 %
+|Small |`sm` |576 px |Móvil horizontal |540 px
+|Medium |`md` |768 px |Tablet |720 px
+|Large |`lg` |992 px |Portátil |960 px
+|Extra large |`xl` |1200 px |Escritorio |1140 px
+|Extra extra large |`xxl` |1400 px |Pantalla grande |1320 px
+|===
+
+WARNING: *xs no tiene infijo.* No existe `col-xs-6` (sí existía en Bootstrap 3). Una clase sin infijo, como `col-6`, se aplica desde 0 px.
+
+NOTE: *xxl es nuevo en Bootstrap 5.* Bootstrap 4 solo llegaba hasta xl (1200 px).
+
+Los breakpoints se definen en Sass (mapa `$grid-breakpoints`), así que se pueden cambiar al compilar Bootstrap.
+Desde la 5.3 también están expuestos como variables CSS (`--bs-breakpoint-md`, etc.), aunque solo como información: las variables CSS no funcionan dentro de una media query.
+
+=== Tipos de contenedor
+
+`.container`:: Ancho fijo que salta en cada breakpoint. Al 100 % solo en móvil (xs). El más habitual.
+`.container-fluid`:: Siempre al 100 % del ancho. Para paneles, dashboards o bandas a ancho completo.
+`.container-{breakpoint}`:: Al 100 % *hasta* ese breakpoint; a partir de él se comporta como `.container`.
+
+.Ancho de cada contenedor según el breakpoint (px)
+[cols="2m,1,1,1,1,1,1",options="header"]
+|===
+|Clase |xs (< 576) |sm (≥ 576) |md (≥ 768) |lg (≥ 992) |xl (≥ 1200) |xxl (≥ 1400)
+
+|.container |*100 %* |540 |720 |960 |1140 |1320
+|.container-sm |*100 %* |540 |720 |960 |1140 |1320
+|.container-md |*100 %* |*100 %* |720 |960 |1140 |1320
+|.container-lg |*100 %* |*100 %* |*100 %* |960 |1140 |1320
+|.container-xl |*100 %* |*100 %* |*100 %* |*100 %* |1140 |1320
+|.container-xxl |*100 %* |*100 %* |*100 %* |*100 %* |*100 %* |1320
+|.container-fluid |*100 %* |*100 %* |*100 %* |*100 %* |*100 %* |*100 %*
+|===
+
+Los anchos fijos son `max-width` en píxeles. `.container` y `.container-sm` se comportan igual.
+
+=== Los contenedores en cada breakpoint
+
+En las capturas, cada banda punteada ocupa todo el ancho de la ventana y la zona coloreada es el contenedor.
+Se ve en qué breakpoint deja cada uno de estar al 100 %.
+
+.xs: ventana de 400 px
+image::02_contenedores_xs.png[Contenedores a 400 px]
+
+.sm: ventana de 600 px
+image::02_contenedores_sm.png[Contenedores a 600 px]
+
+.md: ventana de 800 px
+image::02_contenedores_md.png[Contenedores a 800 px]
+
+.lg: ventana de 1000 px
+image::02_contenedores_lg.png[Contenedores a 1000 px]
+
+.xl: ventana de 1250 px
+image::02_contenedores_xl.png[Contenedores a 1250 px]
+
+.xxl: ventana de 1450 px
+image::02_contenedores_xxl.png[Contenedores a 1450 px]
+
+=== El enfoque mobile-first
+
+Bootstrap se diseña *primero para el móvil* y luego se va ampliando para pantallas mayores.
+Técnicamente significa que sus media queries usan `min-width`: una clase con infijo se aplica *desde ese breakpoint hacia arriba*, nunca hacia abajo.
+
+Lo que hace Bootstrap por dentro (simplificado):
+
+[source,css]
+----
+/* Sin infijo: desde 0 px (móvil) */
+.text-center { text-align: center; }
+
+/* md: desde 768 px hacia arriba */
+@media (min-width: 768px) {
+  .text-md-start { text-align: left; }
+}
+----
+
+Cómo se usa en el HTML:
+
+[source,html]
+----
+<p class="text-center text-md-start">
+  Centrado en móvil, a la izquierda desde tablet
+</p>
+
+<div class="col-12 col-md-6 col-xl-4">
+  Ancho completo → mitad → tercio
+</div>
+----
+
+==== Cómo se lee una lista de clases responsive
+
+. La clase *sin infijo* es el estilo base: el del móvil.
+. Cada clase con infijo *sobrescribe* la anterior a partir de su breakpoint.
+. Si un breakpoint no tiene clase, *hereda* la del breakpoint inferior más cercano.
+
+El mismo párrafo con `text-center text-md-start text-xl-end` en tres anchos de ventana:
+
+.xs (400 px): centrado
+image::02_mobile_first_xs.png[Texto centrado]
+
+.md (800 px): a la izquierda
+image::02_mobile_first_md.png[Texto alineado a la izquierda]
+
+.xl (1250 px): a la derecha
+image::02_mobile_first_xl.png[Texto alineado a la derecha]
+
+TIP: *Por qué mobile-first:* el móvil es la pantalla más limitada y hoy la más usada.
+Partir de lo sencillo y añadir complejidad es más fácil que recortar un diseño de escritorio.
+
+NOTE: *¿Y hacia abajo?* En Sass existe `media-breakpoint-down(md)`, que genera `max-width: 767.98px`.
+Los `.98` evitan que dos media queries coincidan en el mismo píxel.
+
+=== Práctica: contenedores y breakpoints
+
+. Crear una página con tres bloques: cabecera con `.container-fluid`, contenido con `.container` y pie con `.container-lg`, cada uno con un color de fondo distinto.
+. Redimensionar la ventana y anotar en qué anchos cambia cada bloque.
+. Añadir un título con `text-center text-lg-start` y comprobar en qué breakpoint cambia la alineación.
+. Mostrar un mensaje solo en móvil con `d-md-none` y otro solo desde tablet con `d-none d-md-block`.
+
+== Referencias
+
+* https://getbootstrap.com/docs/5.3/getting-started/introduction/[Documentación oficial de Bootstrap 5.3]
+* https://getbootstrap.com/docs/5.3/layout/containers/[Containers]
+* https://getbootstrap.com/docs/5.3/layout/breakpoints/[Breakpoints]
+* https://getbootstrap.com/docs/5.3/customize/color-modes/[Color modes]
