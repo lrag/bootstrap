@@ -310,11 +310,11 @@ npm install bootstrap@5.3</code></pre>
     // Selector de tema de la demo: cambia data-bs-theme en <html>
     document.querySelectorAll('[data-tema]').forEach(boton => {
       boton.addEventListener('click', () => {
-        const tema = boton.dataset.tema;
-        document.documentElement.setAttribute('data-bs-theme', tema);
-        document.getElementById('tema-actual').textContent = tema;
-      });
-    });
+        const tema = boton.dataset.tema
+        document.documentElement.setAttribute('data-bs-theme', tema)
+        document.getElementById('tema-actual').textContent = tema
+      })
+    })
   </script>
 </body>
 </html>

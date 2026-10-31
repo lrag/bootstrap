@@ -243,7 +243,7 @@ Para cambiarlo con JavaScript basta con modificar el atributo del elemento `<htm
 
 [source,javascript]
 ----
-document.documentElement.setAttribute('data-bs-theme', 'dark');
+document.documentElement.setAttribute('data-bs-theme', 'dark')
 ----
 
 .La misma sección en modo claro y en modo oscuro

@@ -11,16 +11,16 @@
 
   <script>
     function cambiarBase(px) {
-      const base = document.getElementById('base');
-      document.documentElement.style.fontSize = px + 'px';
-      base.textContent = px;
+      const base = document.getElementById('base')
+      document.documentElement.style.fontSize = px + 'px'
+      base.textContent = px
     }
 
     window.onload = () => {
-      document.getElementById('btn-12').onclick = () => cambiarBase(12);
-      document.getElementById('btn-16').onclick = () => cambiarBase(16);
-      document.getElementById('btn-20').onclick = () => cambiarBase(20);
-      document.getElementById('btn-24').onclick = () => cambiarBase(24);
+      document.getElementById('btn-12').onclick = () => cambiarBase(12)
+      document.getElementById('btn-16').onclick = () => cambiarBase(16)
+      document.getElementById('btn-20').onclick = () => cambiarBase(20)
+      document.getElementById('btn-24').onclick = () => cambiarBase(24)
     }
   </script>
 </head>

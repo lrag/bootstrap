@@ -22,18 +22,18 @@
   <script>
     window.onload = () => {
       // document.documentElement es el elemento <html>: le cambiamos el atributo data-bs-theme
-      const temaActual = document.getElementById('tema-actual');
+      const temaActual = document.getElementById('tema-actual')
 
       document.getElementById('btn-claro').onclick = () => {
-        document.documentElement.setAttribute('data-bs-theme', 'light');
-        temaActual.textContent = 'light';
-      };
+        document.documentElement.setAttribute('data-bs-theme', 'light')
+        temaActual.textContent = 'light'
+      }
 
       document.getElementById('btn-oscuro').onclick = () => {
-        document.documentElement.setAttribute('data-bs-theme', 'dark');
-        temaActual.textContent = 'dark';
-      };
-    };
+        document.documentElement.setAttribute('data-bs-theme', 'dark')
+        temaActual.textContent = 'dark'
+      }
+    }
   </script>
 </head>
 <body>

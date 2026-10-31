@@ -289,14 +289,14 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // Indicador de ancho y breakpoint de la demo
-    const puntos = [['xxl', 1400], ['xl', 1200], ['lg', 992], ['md', 768], ['sm', 576], ['xs', 0]];
+    const puntos = [['xxl', 1400], ['xl', 1200], ['lg', 992], ['md', 768], ['sm', 576], ['xs', 0]]
     function actualizar() {
-      const w = window.innerWidth;
-      document.getElementById('ancho').textContent = w;
-      document.getElementById('bp').textContent = puntos.find(([, min]) => w >= min)[0];
+      const w = window.innerWidth
+      document.getElementById('ancho').textContent = w
+      document.getElementById('bp').textContent = puntos.find(([, min]) => w >= min)[0]
     }
-    actualizar();
-    window.addEventListener('resize', actualizar);
+    actualizar()
+    window.addEventListener('resize', actualizar)
   </script>
 </body>
 </html>

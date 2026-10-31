@@ -9,6 +9,10 @@ Este workspace contiene el material (ejemplos, ejercicios y prácticas) del curs
 - Las páginas de guía son material de referencia del instructor, **no se usan durante el curso**. Cada una es un HTML autocontenido con Bootstrap 5.3.8 por CDN, explicación del punto, ejemplos de código y una práctica al final, siguiendo el estilo de [guia_html/introduccion.html](guia_html/introduccion.html).
 - El resto de la estructura de carpetas aún no está decidida; no reorganizar ficheros sin preguntar.
 
+## Convenciones de código
+
+- **JavaScript sin punto y coma (`;`) al final de las líneas**, en todo el proyecto: bloques `<script>` de los HTML, ficheros `.js` y ejemplos de código JS de la documentación. Como sin `;` JavaScript inserta el fin de sentencia automáticamente, evitar empezar una línea con `(`, `[` o `` ` `` cuando la anterior sea una expresión. El CSS sí lleva `;`.
+
 ## Datos generales
 
 Curso práctico de 16 horas, en 4 sesiones de 4 horas, sobre **Bootstrap 5.3** (rama 5.x vigente, con modos de color, variables CSS y sin jQuery): al acabar, el alumnado sabe maquetar interfaces responsive y personalizar el framework.

@@ -41,11 +41,11 @@
     // así los elementos del <body> ya existen aunque el script esté en el <head>
     window.onload = () => {
       // Muestra el ancho del viewport (innerWidth) y lo actualiza al cambiar el tamaño de la ventana
-      const ancho = document.getElementById('ancho');
-      const mostrarAncho = () => ancho.textContent = window.innerWidth;
-      mostrarAncho();
-      window.addEventListener('resize', mostrarAncho);
-    };
+      const ancho = document.getElementById('ancho')
+      const mostrarAncho = () => ancho.textContent = window.innerWidth
+      mostrarAncho()
+      window.addEventListener('resize', mostrarAncho)
+    }
   </script>
 </head>
 <body>
