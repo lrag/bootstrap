@@ -11,7 +11,14 @@ Este workspace contiene el material (ejemplos, ejercicios y prácticas) del curs
 
 ## Convenciones de código
 
+Se aplican a los ficheros de clase numerados de la raíz (`00_rem.html`, `05_Containers.html`…). Las páginas de [guia_html/](guia_html/) son visuales y no tienen por qué seguirlas.
+
 - **JavaScript sin punto y coma (`;`) al final de las líneas**, en todo el proyecto: bloques `<script>` de los HTML, ficheros `.js` y ejemplos de código JS de la documentación. Como sin `;` JavaScript inserta el fin de sentencia automáticamente, evitar empezar una línea con `(`, `[` o `` ` `` cuando la anterior sea una expresión. El CSS sí lleva `;`.
+- **JavaScript en el `<head>`**, en un `<script>` después del de Bootstrap (que va con `defer`), con el código dentro de `window.onload = () => { ... }`. No al final del `<body>`.
+- **Un manejador específico por elemento**: cada botón con su `id` y su `document.getElementById('...').onclick = ...`. Nada de bucles genéricos con `querySelectorAll(...).forEach` y atributos `data-*`.
+- **Sin comentarios dentro del JavaScript**: el JS se explica de viva voz. Los comentarios van en el HTML.
+- **Comentarios del HTML en primera persona del plural** («vemos», «usamos», «le decimos al navegador») o en forma impersonal («se descarga»). Nunca dirigidos al alumno en segunda persona («verás», «abre», «puedes»), ni pasos numerados para que los siga.
+- Bootstrap se carga desde [recursos/bootstrap/](recursos/bootstrap/) salvo en los ficheros que tratan precisamente del CDN.
 
 ## Datos generales
 
