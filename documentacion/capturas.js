@@ -10,42 +10,39 @@ const guia = nombre => pathToFileURL(path.join(__dirname, '..', 'guia_html', nom
 
 const GUIA_01 = guia('01_introducción.html')
 const GUIA_02 = guia('02_contenedores.html')
-const GUIA_03 = guia('03_rejilla.html')
-const ESPACIADO = pathToFileURL(path.join(__dirname, '..', '06_Espaciado.html')).href
+const GUIA_03 = guia('03_espaciado.html')
+const GUIA_04 = guia('04_rejilla.html')
 
-// Capturas del espaciado: [fichero, índice del h2 de la sección, anchos de ventana]
-// Se captura la franja entre el h2 de la sección y el siguiente (o el final del contenedor)
-const CAPTURAS_04 = [
-  ['04_espaciado_escala',     0, ['lg']],
-  ['04_espaciado_lados',      1, ['lg']],
-  ['04_espaciado_margin',     2, ['lg']],
-  ['04_espaciado_margin_auto', 3, ['lg']],
-  ['04_espaciado_start_end',  4, ['lg']],
-  ['04_espaciado_responsive', 5, ['xs', 'md']],
-]
-
-// Capturas de la rejilla: [fichero, selector de la demo, anchos de ventana]
-// Si hay varios anchos, el fichero lleva el sufijo del breakpoint (03_responsive_xs.png...)
+// Capturas de las demos: [fichero, selector de la demo, anchos de ventana]
+// Si hay varios anchos, el fichero lleva el sufijo del breakpoint (04_responsive_xs.png...)
 const ANCHOS = { xs: 400, sm: 600, md: 800, lg: 1000, xl: 1250 }
 const CAPTURAS_03 = [
-  ['03_filas',           '#filas .demo >> nth=0',       ['lg']],
-  ['03_auto_iguales',    '#automaticas .demo >> nth=0', ['lg']],
-  ['03_auto_col_auto',   '#automaticas .demo >> nth=1', ['lg']],
-  ['03_fijas',           '#fijas .demo >> nth=0',       ['lg']],
-  ['03_fijas_desborde',  '#fijas .demo >> nth=1',       ['lg']],
-  ['03_responsive',      '#responsive .demo >> nth=0',  ['xs', 'md', 'xl']],
-  ['03_responsive_col_md', '#responsive .demo >> nth=1', ['xs', 'md']],
-  ['03_offset',          '#offset .demo >> nth=0',      ['lg']],
-  ['03_offset_ms_auto',  '#offset .demo >> nth=1',      ['lg']],
-  ['03_order',           '#order .demo >> nth=0',       ['xs', 'md']],
-  ['03_gutters_g0',      '#gutters .demo >> nth=0',     ['lg']],
-  ['03_gutters_g5',      '#gutters .demo >> nth=1',     ['lg']],
-  ['03_gutters_gx1_gy4', '#gutters .demo >> nth=2',     ['lg']],
-  ['03_row_cols',        '#row-cols .demo >> nth=0',    ['xs', 'sm', 'lg']],
-  ['03_anidado',         '#anidado .demo >> nth=0',     ['lg']],
-  ['03_layout_blog',     '#practica .demo >> nth=0',    ['xs', 'lg']],
-  ['03_layout_catalogo', '#practica .demo >> nth=1',    ['sm', 'xl']],
-  ['03_layout_panel',    '#practica .demo >> nth=2',    ['xs', 'lg']],
+  ['03_espaciado_escala',      '#escala .demo >> nth=0',      ['lg']],
+  ['03_espaciado_lados',       '#lados .demo >> nth=0',       ['lg']],
+  ['03_espaciado_margin',      '#margin .demo >> nth=0',      ['lg']],
+  ['03_espaciado_margin_auto', '#margin-auto .demo >> nth=0', ['lg']],
+  ['03_espaciado_start_end',   '#start-end .demo >> nth=0',   ['lg']],
+  ['03_espaciado_responsive',  '#responsive .demo >> nth=0',  ['xs', 'md']],
+]
+const CAPTURAS_04 = [
+  ['04_filas',           '#filas .demo >> nth=0',       ['lg']],
+  ['04_auto_iguales',    '#automaticas .demo >> nth=0', ['lg']],
+  ['04_auto_col_auto',   '#automaticas .demo >> nth=1', ['lg']],
+  ['04_fijas',           '#fijas .demo >> nth=0',       ['lg']],
+  ['04_fijas_desborde',  '#fijas .demo >> nth=1',       ['lg']],
+  ['04_responsive',      '#responsive .demo >> nth=0',  ['xs', 'md', 'xl']],
+  ['04_responsive_col_md', '#responsive .demo >> nth=1', ['xs', 'md']],
+  ['04_offset',          '#offset .demo >> nth=0',      ['lg']],
+  ['04_offset_ms_auto',  '#offset .demo >> nth=1',      ['lg']],
+  ['04_order',           '#order .demo >> nth=0',       ['xs', 'md']],
+  ['04_gutters_g0',      '#gutters .demo >> nth=0',     ['lg']],
+  ['04_gutters_g5',      '#gutters .demo >> nth=1',     ['lg']],
+  ['04_gutters_gx1_gy4', '#gutters .demo >> nth=2',     ['lg']],
+  ['04_row_cols',        '#row-cols .demo >> nth=0',    ['xs', 'sm', 'lg']],
+  ['04_anidado',         '#anidado .demo >> nth=0',     ['lg']],
+  ['04_layout_blog',     '#practica .demo >> nth=0',    ['xs', 'lg']],
+  ['04_layout_catalogo', '#practica .demo >> nth=1',    ['sm', 'xl']],
+  ['04_layout_panel',    '#practica .demo >> nth=2',    ['xs', 'lg']],
 ]
 
 async function capturarElemento(page, selector, fichero) {
@@ -100,42 +97,21 @@ async function capturarElemento(page, selector, fichero) {
     await page.close()
   }
 
-  // 03 · Demos de la rejilla, una página por ancho de ventana
-  for (const [bp, ancho] of Object.entries(ANCHOS)) {
-    const pendientes = CAPTURAS_03.filter(([, , bps]) => bps.includes(bp))
-    if (!pendientes.length) continue
-    const page = await browser.newPage({ viewport: { width: ancho, height: 900 } })
-    await page.goto(GUIA_03, { waitUntil: 'networkidle' })
-    // El indicador fijo de breakpoint taparía parte de las demos
-    await page.addStyleTag({ content: '.indicador { display: none !important; }' })
-    for (const [nombre, selector, bps] of pendientes) {
-      const fichero = bps.length > 1 ? `${nombre}_${bp}.png` : `${nombre}.png`
-      await capturarElemento(page, selector, fichero)
+  // 03 y 04 · Demos del espaciado y de la rejilla, una página por ancho de ventana
+  for (const [url, capturas] of [[GUIA_03, CAPTURAS_03], [GUIA_04, CAPTURAS_04]]) {
+    for (const [bp, ancho] of Object.entries(ANCHOS)) {
+      const pendientes = capturas.filter(([, , bps]) => bps.includes(bp))
+      if (!pendientes.length) continue
+      const page = await browser.newPage({ viewport: { width: ancho, height: 900 } })
+      await page.goto(url, { waitUntil: 'networkidle' })
+      // El indicador fijo de breakpoint taparía parte de las demos
+      await page.addStyleTag({ content: '.indicador { display: none !important; }' })
+      for (const [nombre, selector, bps] of pendientes) {
+        const fichero = bps.length > 1 ? `${nombre}_${bp}.png` : `${nombre}.png`
+        await capturarElemento(page, selector, fichero)
+      }
+      await page.close()
     }
-    await page.close()
-  }
-
-  // 04 · Secciones de la página de espaciado, una página por ancho de ventana
-  for (const [bp, ancho] of Object.entries(ANCHOS)) {
-    const pendientes = CAPTURAS_04.filter(([, , bps]) => bps.includes(bp))
-    if (!pendientes.length) continue
-    const page = await browser.newPage({ viewport: { width: ancho, height: 900 } })
-    await page.goto(ESPACIADO, { waitUntil: 'networkidle' })
-    for (const [nombre, indice, bps] of pendientes) {
-      const clip = await page.evaluate(i => {
-        const titulos = [...document.querySelectorAll('h2')]
-        const contenedor = document.querySelector('.container').getBoundingClientRect()
-        const arriba = titulos[i].getBoundingClientRect().top + scrollY
-        const abajo = i + 1 < titulos.length
-          ? titulos[i + 1].getBoundingClientRect().top + scrollY - 24
-          : contenedor.bottom + scrollY
-        return { x: contenedor.left, y: arriba - 8, width: contenedor.width, height: abajo - arriba + 8 }
-      }, indice)
-      const fichero = bps.length > 1 ? `${nombre}_${bp}.png` : `${nombre}.png`
-      await page.screenshot({ path: path.join(DESTINO, fichero), clip, fullPage: true })
-      console.log('✔', fichero)
-    }
-    await page.close()
   }
 
   await browser.close()

@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Utilidades de espaciado</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    pre { background: var(--bs-tertiary-bg); padding: 1rem; border-radius: var(--bs-border-radius); margin-bottom: 0; }
+    .demo { background: var(--bs-tertiary-bg); border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius); padding: 1rem; margin-bottom: 1rem; }
+    /* La caja gris es la que lleva el espaciado; lo que asoma alrededor del contenido es el relleno o el margen */
+    .espacio { background: var(--bs-secondary-bg-subtle); border: 1px solid var(--bs-border-color); }
+    .etiqueta { font-family: var(--bs-font-monospace); font-size: .8rem; margin-bottom: .25rem; }
+    /* Contenido en verde si el espaciado lo pone Bootstrap; en azul si lo pone CSS normal */
+    .bs { background: var(--bs-success-bg-subtle); border: 1px solid var(--bs-success-border-subtle); }
+    .css { background: var(--bs-primary-bg-subtle); border: 1px solid var(--bs-primary-border-subtle); }
+    .indicador { position: fixed; right: 1rem; bottom: 1rem; z-index: 1030; }
+    .relleno-responsive { padding: .5rem; }
+    @media (min-width: 768px) {
+      .relleno-responsive { padding: 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="bg-primary text-white py-5 mb-4">
+    <div class="container">
+      <p class="text-uppercase small mb-1">Curso de Bootstrap 5 · Sesión 1 · Punto 4</p>
+      <h1 class="display-5 fw-bold">Utilidades de espaciado</h1>
+      <p class="lead mb-0">Márgenes y rellenos con clases: una letra para qué, otra para dónde y un número para cuánto.</p>
+    </div>
+  </header>
+
+  <!-- Indicador fijo de breakpoint para seguir la demo responsive al redimensionar -->
+  <div class="indicador">
+    <span class="badge text-bg-dark fs-6 shadow">
+      <span id="ancho"></span> px ·
+      <span class="d-inline d-sm-none">xs</span><span class="d-none d-sm-inline d-md-none">sm</span><span class="d-none d-md-inline d-lg-none">md</span><span class="d-none d-lg-inline d-xl-none">lg</span><span class="d-none d-xl-inline d-xxl-none">xl</span><span class="d-none d-xxl-inline">xxl</span>
+    </span>
+  </div>
+
+  <main class="container">
+
+    <nav class="mb-5" aria-label="Índice">
+      <ol class="list-group list-group-numbered">
+        <li class="list-group-item"><a href="#nombre">Cómo se forma el nombre</a></li>
+        <li class="list-group-item"><a href="#escala">La escala</a></li>
+        <li class="list-group-item"><a href="#lados">Los lados</a></li>
+        <li class="list-group-item"><a href="#margin">Margin</a></li>
+        <li class="list-group-item"><a href="#margin-auto">Margin auto</a></li>
+        <li class="list-group-item"><a href="#start-end">Start y end</a></li>
+        <li class="list-group-item"><a href="#responsive">Espaciado responsive</a></li>
+        <li class="list-group-item"><a href="#practica">Práctica</a></li>
+      </ol>
+    </nav>
+
+    <!-- 1. Cómo se forma el nombre -->
+    <section id="nombre" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">1. Cómo se forma el nombre</h2>
+      <p>
+        Las utilidades de espaciado son clases que aplican <strong>una sola propiedad CSS</strong>: un margen o un relleno.
+        El nombre tiene tres partes, siempre en este orden: <strong>qué</strong>, <strong>dónde</strong> y <strong>cuánto</strong>.
+      </p>
+<pre class="mb-4"><code>{qué}{dónde}-{cuánto}        p  y  - 2   →   py-2</code></pre>
+
+      <div class="row g-4">
+        <div class="col-lg-3">
+          <h3 class="h6">Qué</h3>
+          <table class="table table-sm">
+            <tbody>
+              <tr><td><code>p</code></td><td><code>padding</code>: relleno, por <strong>dentro</strong> del borde</td></tr>
+              <tr><td><code>m</code></td><td><code>margin</code>: margen, por <strong>fuera</strong> del borde</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-lg-6">
+          <h3 class="h6">Dónde</h3>
+          <table class="table table-sm">
+            <thead><tr><th></th><th>Viene de</th><th>Significa</th><th>CSS (con <code>p</code>)</th></tr></thead>
+            <tbody>
+              <tr><td><code>t</code></td><td><strong>t</strong>op</td><td>arriba</td><td><code>padding-top</code></td></tr>
+              <tr><td><code>b</code></td><td><strong>b</strong>ottom</td><td>abajo</td><td><code>padding-bottom</code></td></tr>
+              <tr><td><code>s</code></td><td><strong>s</strong>tart</td><td>donde empieza el texto (izquierda)</td><td><code>padding-left</code></td></tr>
+              <tr><td><code>e</code></td><td><strong>e</strong>nd</td><td>donde acaba el texto (derecha)</td><td><code>padding-right</code></td></tr>
+              <tr><td><code>x</code></td><td>eje X</td><td>izquierda y derecha</td><td><code>padding-left</code> + <code>padding-right</code></td></tr>
+              <tr><td><code>y</code></td><td>eje Y</td><td>arriba y abajo</td><td><code>padding-top</code> + <code>padding-bottom</code></td></tr>
+              <tr><td><em>(nada)</em></td><td></td><td>los cuatro lados</td><td><code>padding</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-lg-3">
+          <h3 class="h6">Cuánto</h3>
+          <table class="table table-sm">
+            <tbody>
+              <tr><td><code>0</code></td><td>0</td></tr>
+              <tr><td><code>1</code></td><td>0.25rem · 4 px</td></tr>
+              <tr><td><code>2</code></td><td>0.5rem · 8 px</td></tr>
+              <tr><td><code>3</code></td><td>1rem · 16 px</td></tr>
+              <tr><td><code>4</code></td><td>1.5rem · 24 px</td></tr>
+              <tr><td><code>5</code></td><td>3rem · 48 px</td></tr>
+              <tr><td><code>auto</code></td><td>solo para <code>margin</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p>
+        Todos los valores van en <code>rem</code>: si cambia el tamaño de letra base del navegador, el espaciado crece
+        en proporción al texto. <code>x</code> e <code>y</code> son los ejes de una gráfica: <code>x</code> el horizontal,
+        <code>y</code> el vertical.
+      </p>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="alert alert-info mb-0" role="alert">
+            Bootstrap declara estas utilidades con <code>!important</code>, para que ganen siempre a cualquier otra regla.
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="alert alert-warning mb-0" role="alert">
+            En Bootstrap 4 los lados eran <code>l</code> y <code>r</code>: <code>pl-3</code>, <code>ml-auto</code>.
+            En Bootstrap 5 son <code>ps-3</code>, <code>ms-auto</code>.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. La escala -->
+    <section id="escala" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">2. La escala</h2>
+      <p>
+        Del 0 al 5. No es lineal: los saltos crecen (4, 8, 16, 24 y 48 px).
+        El gris es el relleno; el verde, el contenido.
+      </p>
+      <div class="demo">
+        <div class="d-flex flex-wrap gap-3 align-items-start">
+          <div><p class="etiqueta">p-0</p><div class="espacio p-0"><div class="bs px-2">contenido</div></div></div>
+          <div><p class="etiqueta">p-1</p><div class="espacio p-1"><div class="bs px-2">contenido</div></div></div>
+          <div><p class="etiqueta">p-2</p><div class="espacio p-2"><div class="bs px-2">contenido</div></div></div>
+          <div><p class="etiqueta">p-3</p><div class="espacio p-3"><div class="bs px-2">contenido</div></div></div>
+          <div><p class="etiqueta">p-4</p><div class="espacio p-4"><div class="bs px-2">contenido</div></div></div>
+          <div><p class="etiqueta">p-5</p><div class="espacio p-5"><div class="bs px-2">contenido</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Los lados -->
+    <section id="lados" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">3. Los lados</h2>
+      <p>
+        La letra del medio dice dónde se aplica. A la izquierda, la clase de Bootstrap (contenido en
+        <span class="bs px-1">verde</span>); a la derecha, lo mismo con CSS normal (contenido en <span class="css px-1">azul</span>).
+      </p>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-6"><p class="etiqueta">class="py-2"</p><div class="espacio py-2"><div class="bs">contenido</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">padding-top: 0.5rem; padding-bottom: 0.5rem</p><div class="espacio" style="padding-top: .5rem; padding-bottom: .5rem"><div class="css">contenido</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">class="px-5"</p><div class="espacio px-5"><div class="bs">contenido</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">padding-left: 3rem; padding-right: 3rem</p><div class="espacio" style="padding-left: 3rem; padding-right: 3rem"><div class="css">contenido</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">class="pt-4"</p><div class="espacio pt-4"><div class="bs">contenido</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">padding-top: 1.5rem</p><div class="espacio" style="padding-top: 1.5rem"><div class="css">contenido</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">class="ps-5"</p><div class="espacio ps-5"><div class="bs">contenido</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">padding-left: 3rem</p><div class="espacio" style="padding-left: 3rem"><div class="css">contenido</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Margin -->
+    <section id="margin" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">4. Margin</h2>
+      <p>
+        El margen es espacio por <strong>fuera</strong> del borde. Para verlo, la caja de contenido va dentro de una caja gris:
+        el gris que asoma alrededor es el margen.
+      </p>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-6"><p class="etiqueta">class="m-3"</p><div class="espacio"><div class="bs m-3">contenido</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">margin: 1rem</p><div class="espacio"><div class="css" style="margin: 1rem">contenido</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">class="mx-5"</p><div class="espacio"><div class="bs mx-5">contenido</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">margin-left: 3rem; margin-right: 3rem</p><div class="espacio"><div class="css" style="margin-left: 3rem; margin-right: 3rem">contenido</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Margin auto -->
+    <section id="margin-auto" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">5. Margin auto</h2>
+      <p>Con un ancho fijo, el margen automático reparte el espacio sobrante:</p>
+      <ul>
+        <li><code>mx-auto</code>: el mismo margen a los dos lados, así que la caja queda <strong>centrada</strong>.</li>
+        <li><code>ms-auto</code>: todo el margen a la izquierda, así que la caja se va a la <strong>derecha</strong>.</li>
+      </ul>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-6"><p class="etiqueta">class="mx-auto"</p><div class="espacio"><div class="bs mx-auto" style="width: 150px">150 px centrado</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">margin-left: auto; margin-right: auto</p><div class="espacio"><div class="css" style="width: 150px; margin-left: auto; margin-right: auto">150 px centrado</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">class="ms-auto"</p><div class="espacio"><div class="bs ms-auto" style="width: 150px">150 px a la derecha</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">margin-left: auto</p><div class="espacio"><div class="css" style="width: 150px; margin-left: auto">150 px a la derecha</div></div></div>
+        </div>
+      </div>
+      <div class="alert alert-info mb-0" role="alert">
+        Sin ancho, el margen automático no hace nada visible: un <code>div</code> ya ocupa todo el ancho y no sobra espacio que repartir.
+      </div>
+    </section>
+
+    <!-- 6. Start y end -->
+    <section id="start-end" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">6. Start y end: por qué no se llaman left y right</h2>
+      <p>
+        <code>s</code> y <code>e</code> no significan izquierda y derecha, sino <strong>donde empieza</strong> y
+        <strong>donde acaba</strong> el texto. En español empieza a la izquierda, pero en árabe, hebreo, persa o urdu
+        se escribe de derecha a izquierda y empieza a la derecha.
+      </p>
+
+      <h3 class="h5">El atributo <code>dir</code></h3>
+      <div class="row g-4 mb-4">
+        <div class="col-lg-5">
+<pre><code>&lt;html lang="ar" dir="rtl"&gt;</code></pre>
+          <p class="small text-body-secondary mt-2 mb-0">
+            Se hereda: puede ponerse en <code>&lt;html&gt;</code> o en un único elemento.
+            Con <code>dir="auto"</code> el navegador decide según el primer carácter del texto.
+          </p>
+        </div>
+        <div class="col-lg-7">
+          <p class="mb-2">El navegador ordena solo las letras dentro de una palabra, pero sin <code>dir="rtl"</code>:</p>
+          <ul class="mb-0">
+            <li>el texto queda alineado a la izquierda;</li>
+            <li>los elementos de una línea se colocan de izquierda a derecha;</li>
+            <li><em>start</em> y <em>end</em> siguen significando izquierda y derecha.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="h5">Propiedades lógicas de CSS</h3>
+      <p>Dicen «al principio» o «al final»; el navegador las traduce a un lado según el <code>dir</code>.</p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Propiedad lógica</th><th><code>dir="ltr"</code></th><th><code>dir="rtl"</code></th></tr></thead>
+        <tbody>
+          <tr><td><code>margin-inline-start</code></td><td><code>margin-left</code></td><td><code>margin-right</code></td></tr>
+          <tr><td><code>margin-inline-end</code></td><td><code>margin-right</code></td><td><code>margin-left</code></td></tr>
+          <tr><td><code>padding-inline-start</code></td><td><code>padding-left</code></td><td><code>padding-right</code></td></tr>
+          <tr><td><code>padding-inline-end</code></td><td><code>padding-right</code></td><td><code>padding-left</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="h5">Ejemplo: un botón con una lupa</h3>
+      <p>
+        Queremos separación <strong>entre</strong> la lupa y el texto, así que la lupa lleva un margen al final.
+        En árabe la lupa aparece siempre a la derecha, porque ahí empieza el texto: lo que hay que mirar es el
+        <strong>hueco</strong>. Si la lupa se pega al texto, el margen se ha ido al lado de fuera.
+        (بحث significa «buscar».)
+      </p>
+      <div class="demo">
+        <div class="row g-3 align-items-center">
+          <div class="col-md-5 etiqueta mb-0">margin-inline-end: 1rem</div>
+          <div class="col-md-4">
+            <button type="button" class="btn css"><span style="margin-inline-end: 1rem">🔍</span>Buscar</button>
+            <button type="button" class="btn css" dir="rtl"><span style="margin-inline-end: 1rem">🔍</span>بحث</button>
+          </div>
+          <div class="col-md-3 small text-success-emphasis">Hueco correcto en los dos</div>
+
+          <div class="col-md-5 etiqueta mb-0">margin-right: 1rem</div>
+          <div class="col-md-4">
+            <button type="button" class="btn css"><span style="margin-right: 1rem">🔍</span>Buscar</button>
+            <button type="button" class="btn css" dir="rtl"><span style="margin-right: 1rem">🔍</span>بحث</button>
+          </div>
+          <div class="col-md-3 small text-danger-emphasis">En árabe se pega al texto</div>
+
+          <div class="col-md-5 etiqueta mb-0">class="me-3" con bootstrap.min.css</div>
+          <div class="col-md-4">
+            <button type="button" class="btn bs"><span class="me-3">🔍</span>Buscar</button>
+            <button type="button" class="btn bs" dir="rtl"><span class="me-3">🔍</span>بحث</button>
+          </div>
+          <div class="col-md-3 small text-danger-emphasis">Igual que margin-right</div>
+        </div>
+      </div>
+
+      <h3 class="h5">Las dos hojas de estilos de Bootstrap</h3>
+      <p>
+        <code>me-3</code> no se adapta sola porque Bootstrap no usa propiedades lógicas en sus utilidades.
+        Trae dos hojas de estilos con los mismos nombres de clase y los lados invertidos:
+      </p>
+      <table class="table table-sm mb-3">
+        <thead><tr><th>Fichero</th><th>Regla</th></tr></thead>
+        <tbody>
+          <tr><td><code>bootstrap.min.css</code></td><td><code>.me-3 { margin-right: 1rem !important; }</code></td></tr>
+          <tr><td><code>bootstrap.rtl.min.css</code></td><td><code>.me-3 { margin-left: 1rem !important; }</code></td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-primary mb-0" role="alert">
+        Una web de derecha a izquierda con Bootstrap necesita las dos cosas: <code>dir="rtl"</code> en <code>&lt;html&gt;</code>
+        para el navegador y <code>bootstrap.rtl.min.css</code> para las clases. El HTML no cambia; por eso las clases se llaman
+        <em>start</em> y <em>end</em>.
+      </div>
+    </section>
+
+    <!-- 7. Espaciado responsive -->
+    <section id="responsive" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">7. Espaciado responsive</h2>
+      <p>
+        Como en los contenedores, se puede añadir un breakpoint en medio del nombre:
+        <code>{qué}{dónde}-{breakpoint}-{cuánto}</code>. Es mobile-first: <code>p-2 p-md-5</code> aplica
+        <code>p-2</code> en móvil y, a partir de md (768 px), <code>p-5</code>.
+      </p>
+      <div class="row g-4 mb-3">
+        <div class="col-lg-5">
+<pre><code>&lt;div class="p-2 p-md-5"&gt;…&lt;/div&gt;</code></pre>
+        </div>
+        <div class="col-lg-7">
+<pre><code>.relleno-responsive { padding: 0.5rem; }
+
+@media (min-width: 768px) {
+  .relleno-responsive { padding: 3rem; }
+}</code></pre>
+        </div>
+      </div>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-6"><p class="etiqueta">class="p-2 p-md-5"</p><div class="espacio p-2 p-md-5"><div class="bs">contenido</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">.relleno-responsive (CSS con @media)</p><div class="espacio relleno-responsive"><div class="css">contenido</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Práctica -->
+    <section id="practica" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">8. Práctica</h2>
+      <div class="card border-success">
+        <div class="card-body">
+          <h3 class="h5 card-title">Ejercicio</h3>
+          <ol class="mb-0">
+            <li>Crear una caja con un título y un párrafo, y darle relleno con <code>p-*</code> hasta que el texto respire.</li>
+            <li>Separar varias cajas seguidas con <code>mb-*</code> en lugar de <code>&lt;br&gt;</code>.</li>
+            <li>Centrar una caja de 300 px de ancho con <code>mx-auto</code>.</li>
+            <li>Hacer que el relleno sea pequeño en móvil y grande desde lg.</li>
+            <li>Escribir el CSS normal equivalente de cada clase usada.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-top py-4 text-center text-body-secondary small">
+    Curso de Bootstrap 5 · Utilidades de espaciado ·
+    Referencia: <a href="https://getbootstrap.com/docs/5.3/utilities/spacing/">Spacing</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/getting-started/rtl/">RTL</a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const ancho = document.getElementById('ancho')
+    const mostrarAncho = () => ancho.textContent = window.innerWidth
+    mostrarAncho()
+    window.addEventListener('resize', mostrarAncho)
+  </script>
+</body>
+</html>
