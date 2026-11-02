@@ -181,35 +181,42 @@
       empieza a la derecha.
 
       Ejemplo: un botón con una lupa delante del texto. Queremos separación ENTRE la lupa
-      y el texto, así que le ponemos a la lupa un margen al final: me-3.
-        - En español la lupa va a la izquierda y el margen queda a su derecha.
-        - En árabe todo se invierte: la lupa va a la derecha y me-3 pone el margen a su izquierda.
-      La misma clase funciona en los dos sentidos.
+      y el texto, así que le ponemos a la lupa un margen al final.
+      En árabe la lupa siempre aparece a la derecha, porque ahí empieza el texto.
+      Lo que hay que mirar es el HUECO: si queda entre la lupa y el texto, está bien;
+      si la lupa se pega al texto, el margen se ha ido al lado de fuera.
 
-      Con margin-right (lo que era mr-3 en Bootstrap 4), en árabe el margen queda en el lado
-      de fuera: la lupa se pega al texto y el hueco se va al borde del botón.
-      En CSS normal el equivalente exacto de me-3 es margin-inline-end.
+        - margin-inline-end: "margen al final" de verdad. Hueco correcto en los dos idiomas.
+        - margin-right: siempre a la derecha. En árabe la lupa se pega al texto.
+        - me-3: con bootstrap.min.css se comporta igual que margin-right.
+
+      ¿Por qué me-3 falla? Bootstrap trae DOS hojas de estilos:
+        bootstrap.min.css      → izquierda a derecha: .me-3 { margin-right: 1rem }
+        bootstrap.rtl.min.css  → derecha a izquierda: .me-3 { margin-left: 1rem }
+      Los nombres de las clases son los mismos en las dos. Para una web en árabe se carga
+      la versión rtl y se pone <html dir="rtl">: el HTML no cambia, solo la hoja de estilos.
+      Por eso las clases se llaman start y end y no left y right.
 
       بحث significa "buscar" en árabe.
     -->
     <h2 class="h4 mt-5">Start y end: por qué no se llaman left y right</h2>
 
-    <p class="mb-1"><code>class="me-3"</code> en la lupa</p>
-    <p class="mb-3">
-      <button type="button" class="btn bg-success-subtle border border-success-subtle"><span class="me-3">🔍</span>Buscar</button>
-      <button type="button" class="btn bg-success-subtle border border-success-subtle" dir="rtl"><span class="me-3">🔍</span>بحث</button>
-    </p>
-
-    <p class="mb-1"><code>style="margin-inline-end: 1rem"</code> en la lupa</p>
+    <p class="mb-1"><code>style="margin-inline-end: 1rem"</code> en la lupa (hueco correcto en los dos)</p>
     <p class="mb-3">
       <button type="button" class="btn bg-primary-subtle border border-primary-subtle"><span style="margin-inline-end: 1rem">🔍</span>Buscar</button>
       <button type="button" class="btn bg-primary-subtle border border-primary-subtle" dir="rtl"><span style="margin-inline-end: 1rem">🔍</span>بحث</button>
     </p>
 
-    <p class="mb-1"><code>style="margin-right: 1rem"</code> en la lupa (en árabe queda en el lado equivocado)</p>
-    <p class="mb-4">
+    <p class="mb-1"><code>style="margin-right: 1rem"</code> en la lupa (en árabe se pega al texto)</p>
+    <p class="mb-3">
       <button type="button" class="btn bg-primary-subtle border border-primary-subtle"><span style="margin-right: 1rem">🔍</span>Buscar</button>
       <button type="button" class="btn bg-primary-subtle border border-primary-subtle" dir="rtl"><span style="margin-right: 1rem">🔍</span>بحث</button>
+    </p>
+
+    <p class="mb-1"><code>class="me-3"</code> en la lupa con <code>bootstrap.min.css</code> (igual que margin-right)</p>
+    <p class="mb-4">
+      <button type="button" class="btn bg-success-subtle border border-success-subtle"><span class="me-3">🔍</span>Buscar</button>
+      <button type="button" class="btn bg-success-subtle border border-success-subtle" dir="rtl"><span class="me-3">🔍</span>بحث</button>
     </p>
 
     <!--
