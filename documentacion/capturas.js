@@ -11,6 +11,18 @@ const guia = nombre => pathToFileURL(path.join(__dirname, '..', 'guia_html', nom
 const GUIA_01 = guia('01_introducción.html')
 const GUIA_02 = guia('02_contenedores.html')
 const GUIA_03 = guia('03_rejilla.html')
+const ESPACIADO = pathToFileURL(path.join(__dirname, '..', '06_Espaciado.html')).href
+
+// Capturas del espaciado: [fichero, índice del h2 de la sección, anchos de ventana]
+// Se captura la franja entre el h2 de la sección y el siguiente (o el final del contenedor)
+const CAPTURAS_04 = [
+  ['04_espaciado_escala',     0, ['lg']],
+  ['04_espaciado_lados',      1, ['lg']],
+  ['04_espaciado_margin',     2, ['lg']],
+  ['04_espaciado_margin_auto', 3, ['lg']],
+  ['04_espaciado_start_end',  4, ['lg']],
+  ['04_espaciado_responsive', 5, ['xs', 'md']],
+]
 
 // Capturas de la rejilla: [fichero, selector de la demo, anchos de ventana]
 // Si hay varios anchos, el fichero lleva el sufijo del breakpoint (03_responsive_xs.png...)
@@ -99,6 +111,29 @@ async function capturarElemento(page, selector, fichero) {
     for (const [nombre, selector, bps] of pendientes) {
       const fichero = bps.length > 1 ? `${nombre}_${bp}.png` : `${nombre}.png`
       await capturarElemento(page, selector, fichero)
+    }
+    await page.close()
+  }
+
+  // 04 · Secciones de la página de espaciado, una página por ancho de ventana
+  for (const [bp, ancho] of Object.entries(ANCHOS)) {
+    const pendientes = CAPTURAS_04.filter(([, , bps]) => bps.includes(bp))
+    if (!pendientes.length) continue
+    const page = await browser.newPage({ viewport: { width: ancho, height: 900 } })
+    await page.goto(ESPACIADO, { waitUntil: 'networkidle' })
+    for (const [nombre, indice, bps] of pendientes) {
+      const clip = await page.evaluate(i => {
+        const titulos = [...document.querySelectorAll('h2')]
+        const contenedor = document.querySelector('.container').getBoundingClientRect()
+        const arriba = titulos[i].getBoundingClientRect().top + scrollY
+        const abajo = i + 1 < titulos.length
+          ? titulos[i + 1].getBoundingClientRect().top + scrollY - 24
+          : contenedor.bottom + scrollY
+        return { x: contenedor.left, y: arriba - 8, width: contenedor.width, height: abajo - arriba + 8 }
+      }, indice)
+      const fichero = bps.length > 1 ? `${nombre}_${bp}.png` : `${nombre}.png`
+      await page.screenshot({ path: path.join(DESTINO, fichero), clip, fullPage: true })
+      console.log('✔', fichero)
     }
     await page.close()
   }

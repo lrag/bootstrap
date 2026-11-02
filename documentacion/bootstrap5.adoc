@@ -716,6 +716,226 @@ image::03_layout_panel_lg.png[Panel en escritorio]
 . En el layout 2, quitar `g-3` y observar qué ocurre al apilarse en móvil.
 . En el layout 3, centrar el bloque de datos en una columna de 6 con `offset` en lugar de tres datos.
 
+== Utilidades de espaciado
+
+Las utilidades de espaciado son clases que aplican *una sola propiedad CSS*: un margen o un relleno.
+Evitan escribir CSS propio para lo más habitual de cualquier maquetación: separar unos elementos de otros.
+
+=== Cómo se forma el nombre
+
+El nombre tiene tres partes, siempre en este orden: *qué*, *dónde* y *cuánto*.
+
+----
+{qué}{dónde}-{cuánto}        p  y  - 2   →   py-2
+----
+
+[cols="1m,3",options="header"]
+|===
+|Qué |Significado
+|p |`padding`: relleno, espacio por *dentro* del borde
+|m |`margin`: margen, espacio por *fuera* del borde
+|===
+
+[cols="1m,2,2,3m",options="header"]
+|===
+|Dónde |Viene de |Significa |CSS equivalente (con `p`)
+|t |**t**op |arriba |padding-top
+|b |**b**ottom |abajo |padding-bottom
+|s |**s**tart |donde empieza el texto (izquierda en español) |padding-left
+|e |**e**nd |donde acaba el texto (derecha en español) |padding-right
+|x |eje X |izquierda y derecha |padding-left + padding-right
+|y |eje Y |arriba y abajo |padding-top + padding-bottom
+|_(nada)_ | |los cuatro lados |padding
+|===
+
+`x` e `y` son los ejes de una gráfica: `x` el horizontal, `y` el vertical.
+
+[cols="1m,2m,1",options="header"]
+|===
+|Cuánto |Valor |Con base de 16 px
+|0 |0 |0
+|1 |0.25rem |4 px
+|2 |0.5rem |8 px
+|3 |1rem |16 px
+|4 |1.5rem |24 px
+|5 |3rem |48 px
+|auto |auto |solo para `margin`
+|===
+
+Todos los valores van en `rem`: si cambia el tamaño de letra base del navegador, el espaciado crece en proporción al texto.
+
+Algunos ejemplos y su CSS equivalente:
+
+[cols="1m,3m",options="header"]
+|===
+|Bootstrap |CSS normal
+|p-3 |padding: 1rem;
+|py-2 |padding-top: 0.5rem; padding-bottom: 0.5rem;
+|px-5 |padding-left: 3rem; padding-right: 3rem;
+|mt-5 |margin-top: 3rem;
+|mb-3 |margin-bottom: 1rem;
+|mx-auto |margin-left: auto; margin-right: auto;
+|ms-auto |margin-left: auto;
+|===
+
+NOTE: Bootstrap declara estas utilidades con `!important`, para que ganen siempre a cualquier otra regla.
+Los equivalentes de la tabla lo omiten.
+
+WARNING: En Bootstrap 4 los lados eran `l` (_left_) y `r` (_right_): `pl-3`, `ml-auto`, `mr-2`.
+En Bootstrap 5 ya no existen; ahora son `ps-3`, `ms-auto`, `me-2`.
+Los ejemplos de Internet con `ml-auto` o `pr-3` son de Bootstrap 4.
+
+En las capturas siguientes, la caja exterior es gris y el gris que asoma alrededor es el espaciado.
+La caja de contenido va en verde si el espaciado lo pone una clase de Bootstrap y en azul si lo pone CSS normal.
+
+=== La escala
+
+Del 0 al 5. No es lineal: los saltos crecen (4, 8, 16, 24 y 48 px).
+
+.De `p-0` a `p-5`
+image::04_espaciado_escala.png[Escala de relleno de p-0 a p-5]
+
+=== Los lados
+
+La letra del medio dice dónde se aplica. `x` e `y` ahorran escribir dos propiedades.
+
+.`py-2`, `px-5`, `pt-4` y `ps-5`, cada una con su equivalente en CSS
+image::04_espaciado_lados.png[Relleno en cada lado]
+
+=== Margin
+
+El margen es espacio por *fuera* del borde.
+Para verlo, la caja de contenido va dentro de una caja gris: el gris que asoma alrededor es el margen.
+
+.`m-3` y `mx-5`
+image::04_espaciado_margin.png[Márgenes]
+
+=== Margin auto
+
+Con un ancho fijo, el margen automático reparte el espacio sobrante:
+
+* `mx-auto`: el mismo margen a los dos lados, así que la caja queda *centrada*.
+* `ms-auto`: todo el margen a la izquierda, así que la caja se va a la *derecha*.
+
+Es la forma clásica de centrar un bloque.
+Sin ancho no hace nada visible: un `div` ya ocupa todo el ancho y no sobra espacio que repartir.
+
+.`mx-auto` y `ms-auto` en una caja de 200 px
+image::04_espaciado_margin_auto.png[Margin auto]
+
+=== Start y end: por qué no se llaman left y right
+
+`s` y `e` no significan izquierda y derecha, sino *donde empieza* y *donde acaba* el texto.
+En español empieza a la izquierda, pero en árabe, hebreo, persa o urdu se escribe de derecha a izquierda y empieza a la derecha.
+
+==== El atributo `dir`
+
+El sentido de escritura se indica en el HTML con el atributo `dir`, normalmente una sola vez en `<html>`:
+
+[source,html]
+----
+<html lang="ar" dir="rtl">
+----
+
+El navegador ordena por sí solo las letras árabes o hebreas dentro de una palabra, pero sin `dir="rtl"` la maquetación sigue siendo de izquierda a derecha:
+
+* el texto queda alineado a la izquierda;
+* los elementos de una línea se colocan de izquierda a derecha;
+* `start` y `end` siguen significando izquierda y derecha.
+
+`dir` se hereda, así que también puede ponerse en un único elemento.
+Con `dir="auto"` el navegador decide según el primer carácter del texto, lo que resulta útil para contenido que escribe el usuario.
+
+==== Propiedades lógicas de CSS
+
+CSS tiene propiedades *lógicas* que dicen «al principio» o «al final» en lugar de «a la izquierda» o «a la derecha».
+El navegador las traduce a un lado concreto según el `dir` del elemento:
+
+[cols="2m,2m,2m",options="header"]
+|===
+|Propiedad lógica |Con `dir="ltr"` |Con `dir="rtl"`
+|margin-inline-start |margin-left |margin-right
+|margin-inline-end |margin-right |margin-left
+|padding-inline-start |padding-left |padding-right
+|padding-inline-end |padding-right |padding-left
+|===
+
+==== Ejemplo: un botón con una lupa
+
+Un botón con una lupa delante del texto. Queremos separación *entre* la lupa y el texto, así que le ponemos a la lupa un margen al final.
+En árabe la lupa aparece siempre a la derecha, porque ahí empieza el texto.
+Lo que hay que mirar es el *hueco*: si queda entre la lupa y el texto, está bien; si la lupa se pega al texto, el margen se ha ido al lado de fuera.
+
+[source,html]
+----
+<button dir="rtl"><span style="margin-inline-end: 1rem">🔍</span>بحث</button>
+----
+
+(بحث significa «buscar» en árabe.)
+
+.La misma lupa en español y en árabe con `margin-inline-end`, `margin-right` y `me-3`
+image::04_espaciado_start_end.png[Botones con lupa en español y en árabe]
+
+* `margin-inline-end`: hueco correcto en los dos idiomas.
+* `margin-right`: en árabe la lupa se pega al texto.
+* `me-3`: con `bootstrap.min.css` se comporta igual que `margin-right`.
+
+==== Las dos hojas de estilos de Bootstrap
+
+`me-3` no se adapta sola porque Bootstrap no usa propiedades lógicas en sus utilidades. Trae *dos hojas de estilos*:
+
+[cols="2m,3m",options="header"]
+|===
+|Fichero |Regla
+|bootstrap.min.css |.me-3 { margin-right: 1rem !important; }
+|bootstrap.rtl.min.css |.me-3 { margin-left: 1rem !important; }
+|===
+
+Los nombres de las clases son los mismos en las dos.
+Para una web en árabe se carga la versión rtl y se pone `<html dir="rtl">`: el HTML no cambia, solo la hoja de estilos.
+Por eso las clases se llaman _start_ y _end_ y no _left_ y _right_.
+
+IMPORTANT: Una web de derecha a izquierda con Bootstrap necesita las dos cosas:
+`dir="rtl"` en `<html>`, para que el navegador coloque el texto y los elementos, y `bootstrap.rtl.min.css`, para que las clases de espaciado vayan al lado correcto.
+
+=== Espaciado responsive
+
+Igual que en los contenedores y en la rejilla, se puede añadir un breakpoint en medio del nombre:
+
+----
+{qué}{dónde}-{breakpoint}-{cuánto}     p-md-5
+----
+
+Es mobile-first: `p-2 p-md-5` aplica `p-2` en móvil y, a partir de md (768 px), `p-5`.
+En CSS normal no basta con un `style=""`: hace falta una media query.
+
+[source,css]
+----
+.relleno-responsive {
+  padding: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .relleno-responsive {
+    padding: 3rem;
+  }
+}
+----
+
+.xs: `p-2`
+image::04_espaciado_responsive_xs.png[Espaciado responsive en xs]
+
+.md: `p-5`
+image::04_espaciado_responsive_md.png[Espaciado responsive en md]
+
+=== Práctica: espaciado
+
+. Crear una caja con un título y un párrafo, y darle relleno con `p-*` hasta que el texto respire.
+. Separar varias cajas seguidas con `mb-*` en lugar de `<br>`.
+. Centrar una caja de 300 px de ancho con `mx-auto`.
+. Hacer que el relleno sea pequeño en móvil y grande desde lg.
+. Escribir el CSS normal equivalente de cada clase usada.
+
 == Referencias
 
 * https://getbootstrap.com/docs/5.3/getting-started/introduction/[Documentación oficial de Bootstrap 5.3]
@@ -725,3 +945,5 @@ image::03_layout_panel_lg.png[Panel en escritorio]
 * https://getbootstrap.com/docs/5.3/layout/grid/[Grid system]
 * https://getbootstrap.com/docs/5.3/layout/columns/[Columns]
 * https://getbootstrap.com/docs/5.3/layout/gutters/[Gutters]
+* https://getbootstrap.com/docs/5.3/utilities/spacing/[Spacing]
+* https://getbootstrap.com/docs/5.3/getting-started/rtl/[RTL]
