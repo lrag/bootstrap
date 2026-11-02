@@ -87,7 +87,24 @@
 
     <!--
       LOS LADOS
-      La letra del medio dice dónde se aplica. x e y ahorran escribir dos propiedades.
+      La letra del medio dice dónde se aplica. Vienen del inglés:
+
+        t  → top     → arriba                                → padding-top
+        b  → bottom  → abajo                                 → padding-bottom
+        s  → start   → donde empieza la línea (izquierda)    → padding-left
+        e  → end     → donde acaba la línea (derecha)        → padding-right
+        x  → eje X   → izquierda y derecha a la vez          → padding-left + padding-right
+        y  → eje Y   → arriba y abajo a la vez               → padding-top + padding-bottom
+        (ninguna)    → los cuatro lados                      → padding
+
+      x e y son los ejes de una gráfica: x el horizontal, y el vertical.
+      s y e dependen del sentido de escritura: en español start es la izquierda,
+      pero en árabe o hebreo es la derecha (lo vemos más abajo con dir="rtl").
+
+      En Bootstrap 4 eran l (left) y r (right): pl-3, ml-auto, mr-2...
+      En Bootstrap 5 ya no existen; ahora son ps-3, ms-auto, me-2.
+      Los ejemplos de Internet con ml-auto o pr-3 son de Bootstrap 4.
+
       py-2 es la que usamos en las cajas de la rejilla para darles algo de altura.
     -->
     <h2 class="h4 mt-5">Los lados: <code>t</code>, <code>b</code>, <code>s</code>, <code>e</code>, <code>x</code>, <code>y</code></h2>
