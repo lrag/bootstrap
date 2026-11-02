@@ -417,10 +417,10 @@ Los `.98` evitan que dos media queries coincidan en el mismo píxel.
 . Añadir un título con `text-center text-lg-start` y comprobar en qué breakpoint cambia la alineación.
 . Mostrar un mensaje solo en móvil con `d-md-none` y otro solo desde tablet con `d-none d-md-block`.
 
-== Utilidades de espaciado
+== Flexbox y utilidades
 
-Las utilidades de espaciado son clases que aplican *una sola propiedad CSS*: un margen o un relleno.
-Evitan escribir CSS propio para lo más habitual de cualquier maquetación: separar unos elementos de otros.
+Las utilidades son clases de Bootstrap que aplican *una sola propiedad CSS*.
+Este capítulo cubre las de espaciado, que separan unos elementos de otros, y las de flexbox, que los colocan, reparten el espacio y los alinean.
 
 === Cómo se forma el nombre
 
@@ -629,12 +629,148 @@ image::03_espaciado_responsive_xs.png[Espaciado responsive en xs]
 .md: `p-5`
 image::03_espaciado_responsive_md.png[Espaciado responsive en md]
 
-=== Práctica: espaciado
+=== Flexbox: contenedor, ejes y dirección
+
+Flexbox es CSS puro: coloca elementos en fila o en columna, reparte el espacio entre ellos y los alinea.
+Bootstrap solo le pone clases.
+La propia rejilla está hecha con flexbox: `.row` es un contenedor flex.
+
+Siempre hay *dos niveles*:
+
+* *Contenedor flex*: el elemento con `d-flex` (`display: flex`).
+* *Elementos flex*: sus hijos directos, que pasan a colocarse en fila.
+
+Y *dos ejes*:
+
+* *Eje principal*: la dirección en la que se colocan los elementos (en fila, el horizontal). Lo controla `justify-content`.
+* *Eje cruzado*: el perpendicular (en fila, el vertical). Lo controla `align-items`.
+
+Si la dirección cambia a columna, los ejes se intercambian.
+
+[cols="2m,2m,3",options="header"]
+|===
+|Bootstrap |CSS |Efecto
+|d-flex |display: flex |Los hijos se colocan uno al lado del otro
+|d-inline-flex |display: inline-flex |Igual, pero el contenedor solo ocupa lo que su contenido
+|flex-row |flex-direction: row |En fila (por defecto)
+|flex-column |flex-direction: column |En columna: los ejes se intercambian
+|flex-row-reverse |flex-direction: row-reverse |Fila con el orden visual invertido
+|flex-column-reverse |flex-direction: column-reverse |Columna con el orden visual invertido
+|===
+
+.Sin `d-flex`, con `d-flex` y con `flex-row-reverse`
+image::03_flex_contenedor.png[Contenedor flex]
+
+=== Reparto en el eje principal: `justify-content-*`
+
+Decide qué se hace con el espacio que sobra en la fila.
+
+[cols="2m,2m,3",options="header"]
+|===
+|Bootstrap |CSS |Efecto
+|justify-content-start |justify-content: flex-start |Todo al principio (por defecto)
+|justify-content-end |justify-content: flex-end |Todo al final
+|justify-content-center |justify-content: center |Todo en el centro
+|justify-content-between |justify-content: space-between |Primero y último pegados a los bordes, el resto repartido
+|justify-content-around |justify-content: space-around |El mismo espacio alrededor de cada uno (en los bordes, la mitad)
+|justify-content-evenly |justify-content: space-evenly |Todos los huecos iguales, también los de los bordes
+|===
+
+.Los seis valores de `justify-content`
+image::03_flex_justify.png[justify-content]
+
+=== Alineación en el eje cruzado: `align-items-*`
+
+En fila, el eje cruzado es el vertical: para que se note, el contenedor necesita más altura que sus elementos.
+
+[cols="2m,2m,3",options="header"]
+|===
+|Bootstrap |CSS |Efecto
+|align-items-stretch |align-items: stretch |Estirados a toda la altura (por defecto)
+|align-items-start |align-items: flex-start |Arriba
+|align-items-center |align-items: center |Centrados en vertical
+|align-items-end |align-items: flex-end |Abajo
+|align-items-baseline |align-items: baseline |Alineados por la línea base del texto
+|===
+
+.Los valores de `align-items` y el centrado en las dos direcciones
+image::03_flex_align.png[align-items]
+
+TIP: `justify-content-center align-items-center` centra un elemento en las dos direcciones.
+Es la forma más sencilla de centrar algo en CSS.
+
+=== Hueco y salto de línea: `gap-*` y `flex-wrap`
+
+`gap-*` separa los elementos entre sí, pero no de los bordes del contenedor.
+Usa la escala del espaciado (`gap-3` = `gap: 1rem`) y es mejor que poner margen a cada elemento: no deja hueco sobrante al final.
+También existen `row-gap-*` y `column-gap-*` para separar en una sola dirección.
+
+Por defecto (`flex-nowrap`) todos los elementos se quedan en la misma línea aunque no quepan: se encogen o se salen del contenedor.
+Con `flex-wrap` (`flex-wrap: wrap`) los que no caben bajan a la línea siguiente.
+`.row` lleva `flex-wrap`: por eso las columnas que no caben bajan de línea.
+
+.`gap-3` y `flex-wrap`
+image::03_flex_gap_wrap.png[gap y flex-wrap]
+
+=== Clases para un elemento
+
+Las clases anteriores van en el contenedor; estas van en un elemento concreto.
+
+[cols="2m,2m,3",options="header"]
+|===
+|Bootstrap |CSS |Efecto
+|flex-grow-1 |flex-grow: 1 |El elemento se queda con el espacio sobrante
+|flex-shrink-0 |flex-shrink: 0 |El elemento no se encoge aunque falte sitio
+|ms-auto |margin-left: auto |Empuja el elemento y los siguientes hasta el final
+|align-self-* |align-self |Alinea solo ese elemento en el eje cruzado
+|order-* |order |Cambia su posición visual
+|===
+
+.`flex-grow-1`, `ms-auto` y `align-self-end`
+image::03_flex_elementos.png[Clases para un elemento]
+
+NOTE: `ms-auto` dentro de un contenedor flex es el truco típico de las barras de navegación: logo a la izquierda y enlaces a la derecha, sin `justify-content`.
+
+=== Flexbox responsive
+
+Casi todas las clases admiten breakpoint: `d-md-flex`, `flex-md-row`, `justify-content-lg-between`…
+Caso típico: en columna en móvil y en fila a partir de md.
+
+[source,html]
+----
+<div class="d-flex flex-column flex-md-row gap-2">…</div>
+----
+
+[source,css]
+----
+.fila-responsive {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .fila-responsive {
+    flex-direction: row;
+  }
+}
+----
+
+.xs: en columna
+image::03_flex_responsive_xs.png[Flexbox responsive en xs]
+
+.md: en fila
+image::03_flex_responsive_md.png[Flexbox responsive en md]
+
+=== Práctica: flexbox y utilidades
 
 . Crear una caja con un título y un párrafo, y darle relleno con `p-*` hasta que el texto respire.
 . Separar varias cajas seguidas con `mb-*` en lugar de `<br>`.
 . Centrar una caja de 300 px de ancho con `mx-auto`.
 . Hacer que el relleno sea pequeño en móvil y grande desde lg.
+. Maquetar una barra con un logo a la izquierda y tres enlaces a la derecha usando `d-flex` y `ms-auto`.
+. Rehacerla con `justify-content-between` y comparar.
+. Centrar un texto en una caja de 300 px de alto en las dos direcciones.
+. Hacer que la barra pase a columna en móvil con `flex-column flex-md-row`.
 . Escribir el CSS normal equivalente de cada clase usada.
 
 == Sistema de rejilla
@@ -947,3 +1083,4 @@ image::04_layout_panel_lg.png[Panel en escritorio]
 * https://getbootstrap.com/docs/5.3/layout/gutters/[Gutters]
 * https://getbootstrap.com/docs/5.3/utilities/spacing/[Spacing]
 * https://getbootstrap.com/docs/5.3/getting-started/rtl/[RTL]
+* https://getbootstrap.com/docs/5.3/utilities/flex/[Flex]

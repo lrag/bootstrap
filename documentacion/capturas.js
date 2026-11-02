@@ -10,7 +10,7 @@ const guia = nombre => pathToFileURL(path.join(__dirname, '..', 'guia_html', nom
 
 const GUIA_01 = guia('01_introducción.html')
 const GUIA_02 = guia('02_contenedores.html')
-const GUIA_03 = guia('03_espaciado.html')
+const GUIA_03 = guia('03_flexbox_utilidades.html')
 const GUIA_04 = guia('04_rejilla.html')
 
 // Capturas de las demos: [fichero, selector de la demo, anchos de ventana]
@@ -23,6 +23,12 @@ const CAPTURAS_03 = [
   ['03_espaciado_margin_auto', '#margin-auto .demo >> nth=0', ['lg']],
   ['03_espaciado_start_end',   '#start-end .demo >> nth=0',   ['lg']],
   ['03_espaciado_responsive',  '#responsive .demo >> nth=0',  ['xs', 'md']],
+  ['03_flex_contenedor',       '#flex .demo >> nth=0',        ['lg']],
+  ['03_flex_justify',          '#justify .demo >> nth=0',     ['lg']],
+  ['03_flex_align',            '#align .demo >> nth=0',       ['lg']],
+  ['03_flex_gap_wrap',         '#gap-wrap .demo >> nth=0',    ['lg']],
+  ['03_flex_elementos',        '#elementos .demo >> nth=0',   ['lg']],
+  ['03_flex_responsive',       '#flex-responsive .demo >> nth=0', ['xs', 'md']],
 ]
 const CAPTURAS_04 = [
   ['04_filas',           '#filas .demo >> nth=0',       ['lg']],

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Utilidades de espaciado</title>
+  <title>Flexbox y utilidades</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     pre { background: var(--bs-tertiary-bg); padding: 1rem; border-radius: var(--bs-border-radius); margin-bottom: 0; }
@@ -15,6 +15,8 @@
     .bs { background: var(--bs-success-bg-subtle); border: 1px solid var(--bs-success-border-subtle); }
     .css { background: var(--bs-primary-bg-subtle); border: 1px solid var(--bs-primary-border-subtle); }
     .indicador { position: fixed; right: 1rem; bottom: 1rem; z-index: 1030; }
+    .item { padding: .25rem .75rem; font-family: var(--bs-font-monospace); font-size: .8rem; }
+    .alto { height: 6rem; }
     .relleno-responsive { padding: .5rem; }
     @media (min-width: 768px) {
       .relleno-responsive { padding: 3rem; }
@@ -26,12 +28,12 @@
   <header class="bg-primary text-white py-5 mb-4">
     <div class="container">
       <p class="text-uppercase small mb-1">Curso de Bootstrap 5 · Sesión 1 · Punto 4</p>
-      <h1 class="display-5 fw-bold">Utilidades de espaciado</h1>
-      <p class="lead mb-0">Márgenes y rellenos con clases: una letra para qué, otra para dónde y un número para cuánto.</p>
+      <h1 class="display-5 fw-bold">Flexbox y utilidades</h1>
+      <p class="lead mb-0">Márgenes y rellenos con clases, y flexbox para colocar, repartir y alinear elementos sin escribir CSS.</p>
     </div>
   </header>
 
-  <!-- Indicador fijo de breakpoint para seguir la demo responsive al redimensionar -->
+  <!-- Indicador fijo de breakpoint para seguir las demos responsive al redimensionar -->
   <div class="indicador">
     <span class="badge text-bg-dark fs-6 shadow">
       <span id="ancho"></span> px ·
@@ -50,6 +52,12 @@
         <li class="list-group-item"><a href="#margin-auto">Margin auto</a></li>
         <li class="list-group-item"><a href="#start-end">Start y end</a></li>
         <li class="list-group-item"><a href="#responsive">Espaciado responsive</a></li>
+        <li class="list-group-item"><a href="#flex">Flexbox: contenedor, ejes y dirección</a></li>
+        <li class="list-group-item"><a href="#justify">justify-content</a></li>
+        <li class="list-group-item"><a href="#align">align-items</a></li>
+        <li class="list-group-item"><a href="#gap-wrap">gap y flex-wrap</a></li>
+        <li class="list-group-item"><a href="#elementos">Clases para un elemento</a></li>
+        <li class="list-group-item"><a href="#flex-responsive">Flexbox responsive</a></li>
         <li class="list-group-item"><a href="#practica">Práctica</a></li>
       </ol>
     </nav>
@@ -322,9 +330,158 @@
       </div>
     </section>
 
-    <!-- 8. Práctica -->
+    <!-- 8. Flexbox: contenedor, ejes y dirección -->
+    <section id="flex" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">8. Flexbox: contenedor, ejes y dirección</h2>
+      <p>
+        Flexbox es CSS puro: coloca elementos en fila o en columna, reparte el espacio entre ellos y los alinea.
+        Bootstrap solo le pone clases. La propia rejilla está hecha con flexbox: <code>.row</code> es un contenedor flex.
+      </p>
+      <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+          <h3 class="h6">Dos niveles</h3>
+          <ul class="list-group">
+            <li class="list-group-item"><strong>Contenedor flex</strong>: el elemento con <code>d-flex</code> (<code>display: flex</code>).</li>
+            <li class="list-group-item"><strong>Elementos flex</strong>: sus hijos directos, que pasan a colocarse en fila.</li>
+          </ul>
+        </div>
+        <div class="col-lg-6">
+          <h3 class="h6">Dos ejes</h3>
+          <ul class="list-group">
+            <li class="list-group-item"><strong>Principal</strong>: la dirección en la que se colocan (en fila, el horizontal). Lo controla <code>justify-content</code>.</li>
+            <li class="list-group-item"><strong>Cruzado</strong>: el perpendicular (en fila, el vertical). Lo controla <code>align-items</code>.</li>
+          </ul>
+        </div>
+      </div>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Bootstrap</th><th>CSS</th><th>Efecto</th></tr></thead>
+        <tbody>
+          <tr><td><code>d-flex</code></td><td><code>display: flex</code></td><td>Los hijos se colocan uno al lado del otro</td></tr>
+          <tr><td><code>d-inline-flex</code></td><td><code>display: inline-flex</code></td><td>Igual, pero el contenedor solo ocupa lo que su contenido</td></tr>
+          <tr><td><code>flex-row</code></td><td><code>flex-direction: row</code></td><td>En fila (por defecto)</td></tr>
+          <tr><td><code>flex-column</code></td><td><code>flex-direction: column</code></td><td>En columna: los ejes se intercambian</td></tr>
+          <tr><td><code>flex-row-reverse</code> / <code>flex-column-reverse</code></td><td><code>row-reverse</code> / <code>column-reverse</code></td><td>Orden visual invertido</td></tr>
+        </tbody>
+      </table>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-4"><p class="etiqueta">sin d-flex</p><div class="espacio p-2"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-4"><p class="etiqueta">d-flex</p><div class="espacio p-2 d-flex"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-4"><p class="etiqueta">d-flex flex-row-reverse</p><div class="espacio p-2 d-flex flex-row-reverse"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item">3</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. justify-content -->
+    <section id="justify" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">9. Reparto en el eje principal: <code>justify-content-*</code></h2>
+      <p>Decide qué se hace con el espacio que sobra en la fila.</p>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-6"><p class="etiqueta">justify-content-start → flex-start</p><div class="espacio p-2 d-flex gap-1 justify-content-start"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">justify-content-end → flex-end</p><div class="espacio p-2 d-flex gap-1 justify-content-end"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">justify-content-center → center</p><div class="espacio p-2 d-flex gap-1 justify-content-center"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">justify-content-between → space-between</p><div class="espacio p-2 d-flex justify-content-between"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">justify-content-around → space-around</p><div class="espacio p-2 d-flex justify-content-around"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">justify-content-evenly → space-evenly</p><div class="espacio p-2 d-flex justify-content-evenly"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item">3</div></div></div>
+        </div>
+      </div>
+      <div class="alert alert-info mb-0" role="alert">
+        <code>between</code>: primero y último pegados a los bordes. <code>around</code>: el mismo espacio alrededor de cada elemento
+        (en los bordes queda la mitad). <code>evenly</code>: todos los huecos iguales, también los de los bordes.
+      </div>
+    </section>
+
+    <!-- 10. align-items -->
+    <section id="align" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">10. Alineación en el eje cruzado: <code>align-items-*</code></h2>
+      <p>
+        En fila, el eje cruzado es el vertical: para que se note, el contenedor necesita más altura que sus elementos.
+        <code>justify-content-center align-items-center</code> centra en las dos direcciones, la forma más sencilla de centrar algo en CSS.
+      </p>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-4"><p class="etiqueta">align-items-stretch (defecto)</p><div class="espacio p-2 d-flex gap-1 alto align-items-stretch"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-4"><p class="etiqueta">align-items-start → flex-start</p><div class="espacio p-2 d-flex gap-1 alto align-items-start"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-4"><p class="etiqueta">align-items-center → center</p><div class="espacio p-2 d-flex gap-1 alto align-items-center"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-4"><p class="etiqueta">align-items-end → flex-end</p><div class="espacio p-2 d-flex gap-1 alto align-items-end"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-4"><p class="etiqueta">align-items-baseline → baseline</p><div class="espacio p-2 d-flex gap-1 alto align-items-baseline"><div class="bs item fs-6">1</div><div class="bs item fs-3">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-4"><p class="etiqueta">justify-content-center align-items-center</p><div class="espacio p-2 d-flex alto justify-content-center align-items-center"><div class="bs item">centrado</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. gap y flex-wrap -->
+    <section id="gap-wrap" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">11. Hueco y salto de línea: <code>gap-*</code> y <code>flex-wrap</code></h2>
+      <div class="row g-4 mb-3">
+        <div class="col-lg-6">
+          <p class="mb-0">
+            <code>gap-*</code> separa los elementos entre sí, pero no de los bordes del contenedor. Usa la escala del espaciado
+            (<code>gap-3</code> = 1rem) y es mejor que poner margen a cada elemento: no deja hueco sobrante al final.
+            También existen <code>row-gap-*</code> y <code>column-gap-*</code>.
+          </p>
+        </div>
+        <div class="col-lg-6">
+          <p class="mb-0">
+            Por defecto (<code>flex-nowrap</code>) todos los elementos se quedan en la misma línea aunque no quepan.
+            Con <code>flex-wrap</code> los que no caben bajan a la siguiente. <code>.row</code> lleva <code>flex-wrap</code>:
+            por eso las columnas que no caben bajan de línea.
+          </p>
+        </div>
+      </div>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-6"><p class="etiqueta">d-flex gap-3 → gap: 1rem</p><div class="espacio p-2 d-flex gap-3"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">d-flex flex-wrap gap-2</p><div class="espacio p-2 d-flex flex-wrap gap-2"><div class="bs item" style="width: 6rem">1</div><div class="bs item" style="width: 6rem">2</div><div class="bs item" style="width: 6rem">3</div><div class="bs item" style="width: 6rem">4</div><div class="bs item" style="width: 6rem">5</div><div class="bs item" style="width: 6rem">6</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12. Clases para un elemento -->
+    <section id="elementos" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">12. Clases para un elemento</h2>
+      <p>Las anteriores van en el contenedor; estas van en un elemento concreto.</p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Bootstrap</th><th>CSS</th><th>Efecto</th></tr></thead>
+        <tbody>
+          <tr><td><code>flex-grow-1</code></td><td><code>flex-grow: 1</code></td><td>El elemento se queda con el espacio sobrante</td></tr>
+          <tr><td><code>flex-shrink-0</code></td><td><code>flex-shrink: 0</code></td><td>El elemento no se encoge aunque falte sitio</td></tr>
+          <tr><td><code>ms-auto</code></td><td><code>margin-left: auto</code></td><td>Empuja el elemento y los siguientes hasta el final</td></tr>
+          <tr><td><code>align-self-*</code></td><td><code>align-self</code></td><td>Alinea solo ese elemento en el eje cruzado</td></tr>
+          <tr><td><code>order-*</code></td><td><code>order</code></td><td>Cambia su posición visual (como en la rejilla)</td></tr>
+        </tbody>
+      </table>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-4"><p class="etiqueta">flex-grow-1 en el 2</p><div class="espacio p-2 d-flex gap-1"><div class="bs item">1</div><div class="bs item flex-grow-1">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-4"><p class="etiqueta">ms-auto en el 3</p><div class="espacio p-2 d-flex gap-1"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item ms-auto">3</div><div class="bs item">4</div></div></div>
+          <div class="col-md-4"><p class="etiqueta">align-self-end en el 2</p><div class="espacio p-2 d-flex gap-1 alto align-items-start"><div class="bs item">1</div><div class="bs item align-self-end">2</div><div class="bs item">3</div></div></div>
+        </div>
+      </div>
+      <div class="alert alert-info mb-0" role="alert">
+        <code>ms-auto</code> dentro de un contenedor flex es el truco típico de las barras de navegación:
+        logo a la izquierda y enlaces a la derecha, sin <code>justify-content</code>.
+      </div>
+    </section>
+
+    <!-- 13. Flexbox responsive -->
+    <section id="flex-responsive" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">13. Flexbox responsive</h2>
+      <p>
+        Casi todas las clases admiten breakpoint: <code>d-md-flex</code>, <code>flex-md-row</code>,
+        <code>justify-content-lg-between</code>… Caso típico: <code>flex-column flex-md-row</code>,
+        en columna en móvil y en fila a partir de md.
+      </p>
+      <div class="demo">
+        <p class="etiqueta">d-flex flex-column flex-md-row gap-2</p>
+        <div class="espacio p-2 d-flex flex-column flex-md-row gap-2"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item">3</div></div>
+      </div>
+    </section>
+
+    <!-- 14. Práctica -->
     <section id="practica" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">8. Práctica</h2>
+      <h2 class="border-bottom pb-2 mb-4">14. Práctica</h2>
       <div class="card border-success">
         <div class="card-body">
           <h3 class="h5 card-title">Ejercicio</h3>
@@ -333,6 +490,10 @@
             <li>Separar varias cajas seguidas con <code>mb-*</code> en lugar de <code>&lt;br&gt;</code>.</li>
             <li>Centrar una caja de 300 px de ancho con <code>mx-auto</code>.</li>
             <li>Hacer que el relleno sea pequeño en móvil y grande desde lg.</li>
+            <li>Maquetar una barra con un logo a la izquierda y tres enlaces a la derecha usando <code>d-flex</code> y <code>ms-auto</code>.</li>
+            <li>Rehacerla con <code>justify-content-between</code> y comparar.</li>
+            <li>Centrar un texto en una caja de 300 px de alto en las dos direcciones.</li>
+            <li>Hacer que la barra pase a columna en móvil con <code>flex-column flex-md-row</code>.</li>
             <li>Escribir el CSS normal equivalente de cada clase usada.</li>
           </ol>
         </div>
@@ -342,9 +503,10 @@
   </main>
 
   <footer class="border-top py-4 text-center text-body-secondary small">
-    Curso de Bootstrap 5 · Utilidades de espaciado ·
+    Curso de Bootstrap 5 · Flexbox y utilidades ·
     Referencia: <a href="https://getbootstrap.com/docs/5.3/utilities/spacing/">Spacing</a> ·
-    <a href="https://getbootstrap.com/docs/5.3/getting-started/rtl/">RTL</a>
+    <a href="https://getbootstrap.com/docs/5.3/getting-started/rtl/">RTL</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/utilities/flex/">Flex</a>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

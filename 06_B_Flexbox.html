@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>06 B · Flexbox</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <!--
+    Equivalente en CSS normal de flex-column flex-md-row (último bloque).
+    Igual que con el espaciado, lo responsive necesita una media query.
+  -->
+  <style>
+    .fila-responsive {
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (min-width: 768px) {
+      .fila-responsive {
+        flex-direction: row;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!--
+    FLEXBOX
+    Flexbox es CSS puro: una forma de colocar elementos en fila o en columna,
+    repartir el espacio entre ellos y alinearlos. Bootstrap solo le pone clases.
+
+    Siempre hay dos niveles:
+      - el CONTENEDOR flex: el elemento al que le ponemos d-flex (display: flex);
+      - los ELEMENTOS flex: sus hijos directos, que pasan a colocarse en fila.
+
+    Y dos ejes:
+      - eje PRINCIPAL: la dirección en la que se colocan los elementos (en fila, el horizontal).
+        Lo controla justify-content.
+      - eje CRUZADO: el perpendicular (en fila, el vertical).
+        Lo controla align-items.
+    Si cambiamos la dirección a columna, los ejes se intercambian.
+
+    La rejilla de Bootstrap está hecha con flexbox: .row es un contenedor flex.
+
+    En cada bloque, el contenido va en verde si lo coloca una clase de Bootstrap
+    y en azul si lo coloca CSS normal. El gris es el contenedor flex.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Flexbox</h1>
+
+    <!--
+      D-FLEX
+      Sin d-flex, cada div ocupa una línea entera (son elementos de bloque).
+      Con d-flex en el contenedor, los hijos se colocan uno al lado del otro,
+      cada uno con el ancho de su contenido.
+    -->
+    <h2 class="h4 mt-5">El contenedor: <code>d-flex</code></h2>
+
+    <p class="mb-1">Sin <code>d-flex</code></p>
+    <div class="bg-secondary-subtle border p-2 mb-3">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+
+    <p class="mb-1"><code>class="d-flex"</code></p>
+    <div class="d-flex bg-secondary-subtle border p-2 mb-2">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+    <p class="mb-1"><code>style="display: flex"</code></p>
+    <div class="bg-secondary-subtle border p-2 mb-4" style="display: flex">
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">1</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">2</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">3</div>
+    </div>
+
+    <!--
+      LA DIRECCIÓN
+      flex-row es el valor por defecto (en fila). flex-column los pone uno debajo de otro.
+      Con flex-column el eje principal pasa a ser el vertical.
+      Las versiones -reverse invierten el orden visual (como order en la rejilla).
+    -->
+    <h2 class="h4 mt-5">La dirección: <code>flex-row</code> y <code>flex-column</code></h2>
+
+    <p class="mb-1"><code>class="d-flex flex-column"</code></p>
+    <div class="d-flex flex-column bg-secondary-subtle border p-2 mb-2">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+    <p class="mb-1"><code>style="display: flex; flex-direction: column"</code></p>
+    <div class="bg-secondary-subtle border p-2 mb-4" style="display: flex; flex-direction: column">
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">1</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">2</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">3</div>
+    </div>
+
+    <p class="mb-1"><code>class="d-flex flex-row-reverse"</code></p>
+    <div class="d-flex flex-row-reverse bg-secondary-subtle border p-2 mb-2">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+    <p class="mb-1"><code>style="display: flex; flex-direction: row-reverse"</code></p>
+    <div class="bg-secondary-subtle border p-2 mb-4" style="display: flex; flex-direction: row-reverse">
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">1</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">2</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">3</div>
+    </div>
+
+    <!--
+      JUSTIFY-CONTENT: REPARTO EN EL EJE PRINCIPAL
+      Decide qué se hace con el espacio que sobra en la fila:
+        justify-content-start    → justify-content: flex-start     (todo al principio, por defecto)
+        justify-content-end      → justify-content: flex-end       (todo al final)
+        justify-content-center   → justify-content: center         (todo en el centro)
+        justify-content-between  → justify-content: space-between  (primero y último pegados a los bordes,
+                                                                     el resto repartido entre ellos)
+        justify-content-around   → justify-content: space-around   (el mismo espacio alrededor de cada uno)
+        justify-content-evenly   → justify-content: space-evenly   (huecos todos iguales, también en los bordes)
+    -->
+    <h2 class="h4 mt-5">Reparto en el eje principal: <code>justify-content-*</code></h2>
+
+    <p class="mb-1"><code>justify-content-start</code> → <code>justify-content: flex-start</code></p>
+    <div class="d-flex justify-content-start bg-secondary-subtle border p-2 mb-3">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+
+    <p class="mb-1"><code>justify-content-end</code> → <code>justify-content: flex-end</code></p>
+    <div class="d-flex justify-content-end bg-secondary-subtle border p-2 mb-3">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+
+    <p class="mb-1"><code>justify-content-center</code> → <code>justify-content: center</code></p>
+    <div class="d-flex justify-content-center bg-secondary-subtle border p-2 mb-3">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+
+    <p class="mb-1"><code>justify-content-between</code> → <code>justify-content: space-between</code></p>
+    <div class="d-flex justify-content-between bg-secondary-subtle border p-2 mb-3">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+
+    <p class="mb-1"><code>justify-content-around</code> → <code>justify-content: space-around</code></p>
+    <div class="d-flex justify-content-around bg-secondary-subtle border p-2 mb-3">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+
+    <p class="mb-1"><code>justify-content-evenly</code> → <code>justify-content: space-evenly</code></p>
+    <div class="d-flex justify-content-evenly bg-secondary-subtle border p-2 mb-4">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+
+    <!--
+      ALIGN-ITEMS: ALINEACIÓN EN EL EJE CRUZADO
+      En fila, el eje cruzado es el vertical. Para que se note, el contenedor necesita
+      más altura que los elementos: le damos 7rem con un style (no hay clase de Bootstrap
+      para una altura concreta).
+        align-items-stretch   → align-items: stretch     (estirados a toda la altura, por defecto)
+        align-items-start     → align-items: flex-start  (arriba)
+        align-items-center    → align-items: center      (centrados en vertical)
+        align-items-end       → align-items: flex-end    (abajo)
+        align-items-baseline  → align-items: baseline    (alineados por la línea base del texto)
+
+      justify-content-center + align-items-center centra un elemento en las dos direcciones:
+      es la forma más sencilla de centrar algo en CSS.
+    -->
+    <h2 class="h4 mt-5">Alineación en el eje cruzado: <code>align-items-*</code></h2>
+
+    <p class="mb-1"><code>align-items-stretch</code> → <code>align-items: stretch</code> (por defecto)</p>
+    <div class="d-flex align-items-stretch gap-2 bg-secondary-subtle border p-2 mb-3" style="height: 7rem">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+
+    <p class="mb-1"><code>align-items-start</code> → <code>align-items: flex-start</code></p>
+    <div class="d-flex align-items-start gap-2 bg-secondary-subtle border p-2 mb-3" style="height: 7rem">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+
+    <p class="mb-1"><code>align-items-center</code> → <code>align-items: center</code></p>
+    <div class="d-flex align-items-center gap-2 bg-secondary-subtle border p-2 mb-3" style="height: 7rem">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+
+    <p class="mb-1"><code>align-items-end</code> → <code>align-items: flex-end</code></p>
+    <div class="d-flex align-items-end gap-2 bg-secondary-subtle border p-2 mb-3" style="height: 7rem">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+
+    <p class="mb-1"><code>justify-content-center align-items-center</code>: centrado en las dos direcciones</p>
+    <div class="d-flex justify-content-center align-items-center bg-secondary-subtle border p-2 mb-2" style="height: 7rem">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">centrado</div>
+    </div>
+    <p class="mb-1"><code>style="display: flex; justify-content: center; align-items: center"</code></p>
+    <div class="bg-secondary-subtle border p-2 mb-4" style="height: 7rem; display: flex; justify-content: center; align-items: center">
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">centrado</div>
+    </div>
+
+    <!--
+      GAP: EL HUECO ENTRE ELEMENTOS
+      Separa los elementos entre sí, pero no de los bordes del contenedor.
+      Usa la misma escala que el espaciado: gap-3 = 1rem.
+      Es mejor que poner margen a cada elemento: no deja hueco sobrante al final.
+      También hay row-gap-* y column-gap-* para separar solo en una dirección.
+    -->
+    <h2 class="h4 mt-5">El hueco entre elementos: <code>gap-*</code></h2>
+
+    <p class="mb-1"><code>class="d-flex gap-3"</code></p>
+    <div class="d-flex gap-3 bg-secondary-subtle border p-2 mb-2">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+    <p class="mb-1"><code>style="display: flex; gap: 1rem"</code></p>
+    <div class="bg-secondary-subtle border p-2 mb-4" style="display: flex; gap: 1rem">
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">1</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">2</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">3</div>
+    </div>
+
+    <!--
+      FLEX-WRAP: SALTO DE LÍNEA
+      Por defecto (flex-nowrap) todos los elementos se quedan en la misma línea
+      aunque no quepan: se encogen o se salen del contenedor.
+      Con flex-wrap, los que no caben bajan a la línea siguiente.
+      .row de la rejilla lleva flex-wrap: por eso las columnas que no caben bajan.
+      Aquí cada elemento mide 150 px para forzar que no quepan en móvil.
+      En el primer bloque añadimos flex-shrink-0 (flex-shrink: 0) para que no se encojan:
+      así vemos cómo se salen del contenedor y provocan scroll horizontal en la página.
+    -->
+    <h2 class="h4 mt-5">Salto de línea: <code>flex-wrap</code></h2>
+
+    <p class="mb-1"><code>class="d-flex gap-2"</code> (sin wrap: se salen en pantallas estrechas)</p>
+    <div class="d-flex gap-2 bg-secondary-subtle border p-2 mb-3">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2 flex-shrink-0" style="width: 150px">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2 flex-shrink-0" style="width: 150px">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2 flex-shrink-0" style="width: 150px">3</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2 flex-shrink-0" style="width: 150px">4</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2 flex-shrink-0" style="width: 150px">5</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2 flex-shrink-0" style="width: 150px">6</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2 flex-shrink-0" style="width: 150px">7</div>
+    </div>
+
+    <p class="mb-1"><code>class="d-flex flex-wrap gap-2"</code></p>
+    <div class="d-flex flex-wrap gap-2 bg-secondary-subtle border p-2 mb-2">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2" style="width: 150px">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2" style="width: 150px">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2" style="width: 150px">3</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2" style="width: 150px">4</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2" style="width: 150px">5</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2" style="width: 150px">6</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2" style="width: 150px">7</div>
+    </div>
+    <p class="mb-1"><code>style="display: flex; flex-wrap: wrap; gap: 0.5rem"</code></p>
+    <div class="bg-secondary-subtle border p-2 mb-4" style="display: flex; flex-wrap: wrap; gap: 0.5rem">
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2" style="width: 150px">1</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2" style="width: 150px">2</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2" style="width: 150px">3</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2" style="width: 150px">4</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2" style="width: 150px">5</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2" style="width: 150px">6</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2" style="width: 150px">7</div>
+    </div>
+
+    <!--
+      CLASES PARA LOS ELEMENTOS
+      Hasta aquí todas las clases iban en el contenedor. Estas van en un elemento concreto:
+        flex-grow-1     → flex-grow: 1      el elemento crece y se queda con el espacio sobrante.
+        ms-auto         → margin-left: auto en un elemento flex empuja ese elemento (y los
+                          que le siguen) hasta el final. Es lo que vimos en el espaciado,
+                          ahora dentro de una fila: el truco típico de las barras de navegación.
+        align-self-end  → align-self: flex-end  alinea solo ese elemento, sin tocar los demás.
+    -->
+    <h2 class="h4 mt-5">Clases para un elemento: <code>flex-grow-1</code>, <code>ms-auto</code>, <code>align-self-*</code></h2>
+
+    <p class="mb-1"><code>flex-grow-1</code> en el 2</p>
+    <div class="d-flex gap-2 bg-secondary-subtle border p-2 mb-2">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2 flex-grow-1">2 · flex-grow-1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+    <p class="mb-1"><code>style="flex-grow: 1"</code> en el 2</p>
+    <div class="bg-secondary-subtle border p-2 mb-4" style="display: flex; gap: 0.5rem">
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">1</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2" style="flex-grow: 1">2 · flex-grow: 1</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">3</div>
+    </div>
+
+    <p class="mb-1"><code>ms-auto</code> en el 3: el 3 y el 4 se van al final</p>
+    <div class="d-flex gap-2 bg-secondary-subtle border p-2 mb-2">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2 ms-auto">3 · ms-auto</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">4</div>
+    </div>
+    <p class="mb-1"><code>style="margin-left: auto"</code> en el 3</p>
+    <div class="bg-secondary-subtle border p-2 mb-4" style="display: flex; gap: 0.5rem">
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">1</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">2</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2" style="margin-left: auto">3 · margin-left: auto</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">4</div>
+    </div>
+
+    <p class="mb-1"><code>align-self-end</code> en el 2</p>
+    <div class="d-flex align-items-start gap-2 bg-secondary-subtle border p-2 mb-2" style="height: 7rem">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2 align-self-end">2 · align-self-end</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+    <p class="mb-1"><code>style="align-self: flex-end"</code> en el 2</p>
+    <div class="bg-secondary-subtle border p-2 mb-4" style="height: 7rem; display: flex; align-items: flex-start; gap: 0.5rem">
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">1</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2" style="align-self: flex-end">2 · align-self: flex-end</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">3</div>
+    </div>
+
+    <!--
+      FLEXBOX RESPONSIVE
+      Casi todas las clases admiten breakpoint: d-md-flex, flex-md-row, justify-content-lg-between...
+      Caso típico: en columna en móvil y en fila a partir de md.
+        flex-column flex-md-row → mobile-first: columna por defecto, fila desde 768 px.
+      En CSS normal hace falta una media query: está en el <style> del <head>.
+    -->
+    <h2 class="h4 mt-5">Flexbox responsive: <code>flex-column flex-md-row</code></h2>
+
+    <p class="mb-1"><code>class="d-flex flex-column flex-md-row gap-2"</code></p>
+    <div class="d-flex flex-column flex-md-row gap-2 bg-secondary-subtle border p-2 mb-2">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+    <p class="mb-1"><code>class="fila-responsive"</code> (CSS propio con <code>@media</code>)</p>
+    <div class="fila-responsive bg-secondary-subtle border p-2 mb-5" style="gap: 0.5rem">
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">1</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">2</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">3</div>
+    </div>
+  </div>
+
+</body>
+</html>
