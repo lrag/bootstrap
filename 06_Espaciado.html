@@ -176,19 +176,41 @@
 
     <!--
       START Y END EN LUGAR DE LEFT Y RIGHT
-      s y e no significan izquierda y derecha, sino "donde empieza" y "donde acaba" la línea.
-      En español empieza a la izquierda, pero en árabe o hebreo (dir="rtl") empieza a la derecha.
-      Con ps-5 el relleno se coloca solo en el lado correcto; con padding-left: 3rem no.
-      En CSS normal el equivalente exacto es padding-inline-start.
+      s y e no significan izquierda y derecha, sino "donde empieza" y "donde acaba" el texto.
+      En español empieza a la izquierda, pero en árabe o hebreo (dir="rtl", right to left)
+      empieza a la derecha.
+
+      Ejemplo: un botón con una lupa delante del texto. Queremos separación ENTRE la lupa
+      y el texto, así que le ponemos a la lupa un margen al final: me-3.
+        - En español la lupa va a la izquierda y el margen queda a su derecha.
+        - En árabe todo se invierte: la lupa va a la derecha y me-3 pone el margen a su izquierda.
+      La misma clase funciona en los dos sentidos.
+
+      Con margin-right (lo que era mr-3 en Bootstrap 4), en árabe el margen queda en el lado
+      de fuera: la lupa se pega al texto y el hueco se va al borde del botón.
+      En CSS normal el equivalente exacto de me-3 es margin-inline-end.
+
+      بحث significa "buscar" en árabe.
     -->
     <h2 class="h4 mt-5">Start y end: por qué no se llaman left y right</h2>
 
-    <p class="mb-1"><code>class="ps-5"</code> dentro de <code>dir="rtl"</code></p>
-    <div dir="rtl" class="bg-secondary-subtle border ps-5 mb-2"><div class="bg-success-subtle border border-success-subtle">نص تجريبي · texto de derecha a izquierda</div></div>
-    <p class="mb-1"><code>style="padding-inline-start: 3rem"</code> dentro de <code>dir="rtl"</code></p>
-    <div dir="rtl" class="bg-secondary-subtle border mb-2" style="padding-inline-start: 3rem"><div class="bg-primary-subtle border border-primary-subtle">نص تجريبي · texto de derecha a izquierda</div></div>
-    <p class="mb-1"><code>style="padding-left: 3rem"</code> dentro de <code>dir="rtl"</code> (lado equivocado)</p>
-    <div dir="rtl" class="bg-secondary-subtle border mb-4" style="padding-left: 3rem"><div class="bg-primary-subtle border border-primary-subtle">نص تجريبي · texto de derecha a izquierda</div></div>
+    <p class="mb-1"><code>class="me-3"</code> en la lupa</p>
+    <p class="mb-3">
+      <button type="button" class="btn bg-success-subtle border border-success-subtle"><span class="me-3">🔍</span>Buscar</button>
+      <button type="button" class="btn bg-success-subtle border border-success-subtle" dir="rtl"><span class="me-3">🔍</span>بحث</button>
+    </p>
+
+    <p class="mb-1"><code>style="margin-inline-end: 1rem"</code> en la lupa</p>
+    <p class="mb-3">
+      <button type="button" class="btn bg-primary-subtle border border-primary-subtle"><span style="margin-inline-end: 1rem">🔍</span>Buscar</button>
+      <button type="button" class="btn bg-primary-subtle border border-primary-subtle" dir="rtl"><span style="margin-inline-end: 1rem">🔍</span>بحث</button>
+    </p>
+
+    <p class="mb-1"><code>style="margin-right: 1rem"</code> en la lupa (en árabe queda en el lado equivocado)</p>
+    <p class="mb-4">
+      <button type="button" class="btn bg-primary-subtle border border-primary-subtle"><span style="margin-right: 1rem">🔍</span>Buscar</button>
+      <button type="button" class="btn bg-primary-subtle border border-primary-subtle" dir="rtl"><span style="margin-right: 1rem">🔍</span>بحث</button>
+    </p>
 
     <!--
       ESPACIADO RESPONSIVE
