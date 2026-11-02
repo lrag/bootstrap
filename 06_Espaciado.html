@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>06 · Utilidades de espaciado</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <!--
+    Equivalente en CSS normal de p-2 p-md-5 (último bloque).
+    Una clase utilitaria responsive no se puede escribir en un style="": necesita una media query.
+  -->
+  <style>
+    .relleno-responsive {
+      padding: 0.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .relleno-responsive {
+        padding: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!--
+    UTILIDADES DE ESPACIADO
+    Clases de Bootstrap que aplican UNA sola propiedad CSS: un margen o un relleno.
+    El nombre se forma con tres partes, siempre en este orden:
+
+      {qué}{dónde}-{cuánto}        p  y  - 2   →   py-2
+
+    QUÉ
+      p = padding (relleno, espacio por DENTRO del borde)
+      m = margin  (margen,  espacio por FUERA del borde)
+
+    DÓNDE
+      t = top (arriba)        b = bottom (abajo)
+      s = start (izquierda)   e = end (derecha)
+      x = izquierda y derecha y = arriba y abajo
+      (nada) = los cuatro lados
+
+    CUÁNTO
+      0 → 0            1 → 0.25rem (4 px)    2 → 0.5rem (8 px)
+      3 → 1rem (16 px) 4 → 1.5rem (24 px)    5 → 3rem (48 px)
+      auto → solo para margin
+
+    Todas van en rem: si cambia el tamaño de letra base, el espaciado crece en proporción.
+
+    En cada bloque ponemos la clase de Bootstrap y debajo lo mismo con CSS normal en un style="".
+    Los colores y bordes van con clases en los dos casos: lo único que comparamos es el espaciado.
+
+    Detalle: Bootstrap declara estas utilidades con !important, para que ganen siempre
+    a cualquier otra regla. En los equivalentes lo omitimos.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Utilidades de espaciado</h1>
+
+    <!--
+      LA ESCALA
+      Del 0 al 5. No es lineal: los saltos crecen (4, 8, 16, 24, 48 px).
+      En amarillo vemos el relleno; en blanco, el contenido.
+    -->
+    <h2 class="h4 mt-5">La escala: <code>p-0</code> a <code>p-5</code></h2>
+
+    <p class="mb-1"><code>p-0</code> → <code>padding: 0</code></p>
+    <div class="bg-warning-subtle border border-warning-subtle p-0 mb-3"><div class="bg-body border">contenido</div></div>
+
+    <p class="mb-1"><code>p-1</code> → <code>padding: 0.25rem</code> (4 px)</p>
+    <div class="bg-warning-subtle border border-warning-subtle p-1 mb-3"><div class="bg-body border">contenido</div></div>
+
+    <p class="mb-1"><code>p-2</code> → <code>padding: 0.5rem</code> (8 px)</p>
+    <div class="bg-warning-subtle border border-warning-subtle p-2 mb-3"><div class="bg-body border">contenido</div></div>
+
+    <p class="mb-1"><code>p-3</code> → <code>padding: 1rem</code> (16 px)</p>
+    <div class="bg-warning-subtle border border-warning-subtle p-3 mb-3"><div class="bg-body border">contenido</div></div>
+
+    <p class="mb-1"><code>p-4</code> → <code>padding: 1.5rem</code> (24 px)</p>
+    <div class="bg-warning-subtle border border-warning-subtle p-4 mb-3"><div class="bg-body border">contenido</div></div>
+
+    <p class="mb-1"><code>p-5</code> → <code>padding: 3rem</code> (48 px)</p>
+    <div class="bg-warning-subtle border border-warning-subtle p-5 mb-3"><div class="bg-body border">contenido</div></div>
+
+    <!--
+      LOS LADOS
+      La letra del medio dice dónde se aplica. x e y ahorran escribir dos propiedades.
+      py-2 es la que usamos en las cajas de la rejilla para darles algo de altura.
+    -->
+    <h2 class="h4 mt-5">Los lados: <code>t</code>, <code>b</code>, <code>s</code>, <code>e</code>, <code>x</code>, <code>y</code></h2>
+
+    <p class="mb-1"><code>class="py-2"</code></p>
+    <div class="bg-warning-subtle border border-warning-subtle py-2 mb-2"><div class="bg-body border">contenido</div></div>
+    <p class="mb-1"><code>style="padding-top: 0.5rem; padding-bottom: 0.5rem"</code></p>
+    <div class="bg-warning-subtle border border-warning-subtle mb-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem"><div class="bg-body border">contenido</div></div>
+
+    <p class="mb-1"><code>class="px-5"</code></p>
+    <div class="bg-warning-subtle border border-warning-subtle px-5 mb-2"><div class="bg-body border">contenido</div></div>
+    <p class="mb-1"><code>style="padding-left: 3rem; padding-right: 3rem"</code></p>
+    <div class="bg-warning-subtle border border-warning-subtle mb-4" style="padding-left: 3rem; padding-right: 3rem"><div class="bg-body border">contenido</div></div>
+
+    <p class="mb-1"><code>class="pt-4"</code></p>
+    <div class="bg-warning-subtle border border-warning-subtle pt-4 mb-2"><div class="bg-body border">contenido</div></div>
+    <p class="mb-1"><code>style="padding-top: 1.5rem"</code></p>
+    <div class="bg-warning-subtle border border-warning-subtle mb-4" style="padding-top: 1.5rem"><div class="bg-body border">contenido</div></div>
+
+    <p class="mb-1"><code>class="ps-5"</code></p>
+    <div class="bg-warning-subtle border border-warning-subtle ps-5 mb-2"><div class="bg-body border">contenido</div></div>
+    <p class="mb-1"><code>style="padding-left: 3rem"</code></p>
+    <div class="bg-warning-subtle border border-warning-subtle mb-4" style="padding-left: 3rem"><div class="bg-body border">contenido</div></div>
+
+    <!--
+      MARGIN
+      El margen es espacio por FUERA del borde. Para verlo, metemos la caja azul
+      dentro de una caja gris: el gris que asoma alrededor es el margen.
+    -->
+    <h2 class="h4 mt-5">Margin: <code>m-*</code></h2>
+
+    <p class="mb-1"><code>class="m-3"</code></p>
+    <div class="bg-secondary-subtle border mb-2"><div class="bg-info-subtle border border-info-subtle m-3">contenido</div></div>
+    <p class="mb-1"><code>style="margin: 1rem"</code></p>
+    <div class="bg-secondary-subtle border mb-4"><div class="bg-info-subtle border border-info-subtle" style="margin: 1rem">contenido</div></div>
+
+    <p class="mb-1"><code>class="mx-5"</code></p>
+    <div class="bg-secondary-subtle border mb-2"><div class="bg-info-subtle border border-info-subtle mx-5">contenido</div></div>
+    <p class="mb-1"><code>style="margin-left: 3rem; margin-right: 3rem"</code></p>
+    <div class="bg-secondary-subtle border mb-4"><div class="bg-info-subtle border border-info-subtle" style="margin-left: 3rem; margin-right: 3rem">contenido</div></div>
+
+    <!--
+      MARGIN AUTO
+      Con un ancho fijo, el margen automático reparte el espacio sobrante:
+        mx-auto → el mismo margen a los dos lados → la caja queda centrada.
+        ms-auto → todo el margen a la izquierda   → la caja se va a la derecha.
+      Es la forma clásica de centrar un bloque. Sin ancho no hace nada visible:
+      un div ya ocupa todo el ancho y no sobra espacio que repartir.
+    -->
+    <h2 class="h4 mt-5">Margin auto: <code>mx-auto</code> y <code>ms-auto</code></h2>
+
+    <p class="mb-1"><code>class="mx-auto"</code></p>
+    <div class="bg-secondary-subtle border mb-2"><div class="bg-info-subtle border border-info-subtle mx-auto" style="width: 200px">200 px centrado</div></div>
+    <p class="mb-1"><code>style="margin-left: auto; margin-right: auto"</code></p>
+    <div class="bg-secondary-subtle border mb-4"><div class="bg-info-subtle border border-info-subtle" style="width: 200px; margin-left: auto; margin-right: auto">200 px centrado</div></div>
+
+    <p class="mb-1"><code>class="ms-auto"</code></p>
+    <div class="bg-secondary-subtle border mb-2"><div class="bg-info-subtle border border-info-subtle ms-auto" style="width: 200px">200 px a la derecha</div></div>
+    <p class="mb-1"><code>style="margin-left: auto"</code></p>
+    <div class="bg-secondary-subtle border mb-4"><div class="bg-info-subtle border border-info-subtle" style="width: 200px; margin-left: auto">200 px a la derecha</div></div>
+
+    <!--
+      START Y END EN LUGAR DE LEFT Y RIGHT
+      s y e no significan izquierda y derecha, sino "donde empieza" y "donde acaba" la línea.
+      En español empieza a la izquierda, pero en árabe o hebreo (dir="rtl") empieza a la derecha.
+      Con ps-5 el relleno se coloca solo en el lado correcto; con padding-left: 3rem no.
+      En CSS normal el equivalente exacto es padding-inline-start.
+    -->
+    <h2 class="h4 mt-5">Start y end: por qué no se llaman left y right</h2>
+
+    <p class="mb-1"><code>class="ps-5"</code> dentro de <code>dir="rtl"</code></p>
+    <div dir="rtl" class="bg-warning-subtle border border-warning-subtle ps-5 mb-2"><div class="bg-body border">نص تجريبي · texto de derecha a izquierda</div></div>
+    <p class="mb-1"><code>style="padding-inline-start: 3rem"</code> dentro de <code>dir="rtl"</code></p>
+    <div dir="rtl" class="bg-warning-subtle border border-warning-subtle mb-2" style="padding-inline-start: 3rem"><div class="bg-body border">نص تجريبي · texto de derecha a izquierda</div></div>
+    <p class="mb-1"><code>style="padding-left: 3rem"</code> dentro de <code>dir="rtl"</code> (lado equivocado)</p>
+    <div dir="rtl" class="bg-warning-subtle border border-warning-subtle mb-4" style="padding-left: 3rem"><div class="bg-body border">نص تجريبي · texto de derecha a izquierda</div></div>
+
+    <!--
+      ESPACIADO RESPONSIVE
+      Igual que en los contenedores, se puede añadir un breakpoint en medio del nombre:
+        {qué}{dónde}-{breakpoint}-{cuánto}     p-md-5
+      Es mobile-first: p-2 en móvil y, a partir de md (768 px), p-5.
+      En CSS normal hace falta una media query: está en el <style> del <head>.
+    -->
+    <h2 class="h4 mt-5">Espaciado responsive: <code>p-2 p-md-5</code></h2>
+
+    <p class="mb-1"><code>class="p-2 p-md-5"</code></p>
+    <div class="bg-warning-subtle border border-warning-subtle p-2 p-md-5 mb-2"><div class="bg-body border">contenido</div></div>
+    <p class="mb-1"><code>class="relleno-responsive"</code> (CSS propio con <code>@media</code>)</p>
+    <div class="bg-warning-subtle border border-warning-subtle relleno-responsive mb-5"><div class="bg-body border">contenido</div></div>
+  </div>
+
+</body>
+</html>
