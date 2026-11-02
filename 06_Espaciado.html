@@ -60,6 +60,7 @@
 
     En cada bloque ponemos la clase de Bootstrap y debajo lo mismo con CSS normal en un style="".
     Los colores y bordes van con clases en los dos casos: lo único que comparamos es el espaciado.
+    La caja de contenido va en verde si el espaciado lo pone Bootstrap y en azul si lo pone CSS normal.
 
     Detalle: Bootstrap declara estas utilidades con !important, para que ganen siempre
     a cualquier otra regla. En los equivalentes lo omitimos.
@@ -70,27 +71,27 @@
     <!--
       LA ESCALA
       Del 0 al 5. No es lineal: los saltos crecen (4, 8, 16, 24, 48 px).
-      En verde vemos el relleno; en blanco, el contenido.
+      En gris vemos el relleno; en verde, el contenido.
     -->
     <h2 class="h4 mt-5">La escala: <code>p-0</code> a <code>p-5</code></h2>
 
     <p class="mb-1"><code>p-0</code> → <code>padding: 0</code></p>
-    <div class="bg-success-subtle border border-success-subtle p-0 mb-3"><div class="bg-body border">contenido</div></div>
+    <div class="bg-secondary-subtle border p-0 mb-3"><div class="bg-success-subtle border border-success-subtle">contenido</div></div>
 
     <p class="mb-1"><code>p-1</code> → <code>padding: 0.25rem</code> (4 px)</p>
-    <div class="bg-success-subtle border border-success-subtle p-1 mb-3"><div class="bg-body border">contenido</div></div>
+    <div class="bg-secondary-subtle border p-1 mb-3"><div class="bg-success-subtle border border-success-subtle">contenido</div></div>
 
     <p class="mb-1"><code>p-2</code> → <code>padding: 0.5rem</code> (8 px)</p>
-    <div class="bg-success-subtle border border-success-subtle p-2 mb-3"><div class="bg-body border">contenido</div></div>
+    <div class="bg-secondary-subtle border p-2 mb-3"><div class="bg-success-subtle border border-success-subtle">contenido</div></div>
 
     <p class="mb-1"><code>p-3</code> → <code>padding: 1rem</code> (16 px)</p>
-    <div class="bg-success-subtle border border-success-subtle p-3 mb-3"><div class="bg-body border">contenido</div></div>
+    <div class="bg-secondary-subtle border p-3 mb-3"><div class="bg-success-subtle border border-success-subtle">contenido</div></div>
 
     <p class="mb-1"><code>p-4</code> → <code>padding: 1.5rem</code> (24 px)</p>
-    <div class="bg-success-subtle border border-success-subtle p-4 mb-3"><div class="bg-body border">contenido</div></div>
+    <div class="bg-secondary-subtle border p-4 mb-3"><div class="bg-success-subtle border border-success-subtle">contenido</div></div>
 
     <p class="mb-1"><code>p-5</code> → <code>padding: 3rem</code> (48 px)</p>
-    <div class="bg-success-subtle border border-success-subtle p-5 mb-3"><div class="bg-body border">contenido</div></div>
+    <div class="bg-secondary-subtle border p-5 mb-3"><div class="bg-success-subtle border border-success-subtle">contenido</div></div>
 
     <!--
       LOS LADOS
@@ -117,41 +118,41 @@
     <h2 class="h4 mt-5">Los lados: <code>t</code> (top), <code>b</code> (bottom), <code>s</code> (start), <code>e</code> (end), <code>x</code> (eje X), <code>y</code> (eje Y)</h2>
 
     <p class="mb-1"><code>class="py-2"</code></p>
-    <div class="bg-success-subtle border border-success-subtle py-2 mb-2"><div class="bg-body border">contenido</div></div>
+    <div class="bg-secondary-subtle border py-2 mb-2"><div class="bg-success-subtle border border-success-subtle">contenido</div></div>
     <p class="mb-1"><code>style="padding-top: 0.5rem; padding-bottom: 0.5rem"</code></p>
-    <div class="bg-success-subtle border border-success-subtle mb-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem"><div class="bg-body border">contenido</div></div>
+    <div class="bg-secondary-subtle border mb-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem"><div class="bg-primary-subtle border border-primary-subtle">contenido</div></div>
 
     <p class="mb-1"><code>class="px-5"</code></p>
-    <div class="bg-success-subtle border border-success-subtle px-5 mb-2"><div class="bg-body border">contenido</div></div>
+    <div class="bg-secondary-subtle border px-5 mb-2"><div class="bg-success-subtle border border-success-subtle">contenido</div></div>
     <p class="mb-1"><code>style="padding-left: 3rem; padding-right: 3rem"</code></p>
-    <div class="bg-success-subtle border border-success-subtle mb-4" style="padding-left: 3rem; padding-right: 3rem"><div class="bg-body border">contenido</div></div>
+    <div class="bg-secondary-subtle border mb-4" style="padding-left: 3rem; padding-right: 3rem"><div class="bg-primary-subtle border border-primary-subtle">contenido</div></div>
 
     <p class="mb-1"><code>class="pt-4"</code></p>
-    <div class="bg-success-subtle border border-success-subtle pt-4 mb-2"><div class="bg-body border">contenido</div></div>
+    <div class="bg-secondary-subtle border pt-4 mb-2"><div class="bg-success-subtle border border-success-subtle">contenido</div></div>
     <p class="mb-1"><code>style="padding-top: 1.5rem"</code></p>
-    <div class="bg-success-subtle border border-success-subtle mb-4" style="padding-top: 1.5rem"><div class="bg-body border">contenido</div></div>
+    <div class="bg-secondary-subtle border mb-4" style="padding-top: 1.5rem"><div class="bg-primary-subtle border border-primary-subtle">contenido</div></div>
 
     <p class="mb-1"><code>class="ps-5"</code></p>
-    <div class="bg-success-subtle border border-success-subtle ps-5 mb-2"><div class="bg-body border">contenido</div></div>
+    <div class="bg-secondary-subtle border ps-5 mb-2"><div class="bg-success-subtle border border-success-subtle">contenido</div></div>
     <p class="mb-1"><code>style="padding-left: 3rem"</code></p>
-    <div class="bg-success-subtle border border-success-subtle mb-4" style="padding-left: 3rem"><div class="bg-body border">contenido</div></div>
+    <div class="bg-secondary-subtle border mb-4" style="padding-left: 3rem"><div class="bg-primary-subtle border border-primary-subtle">contenido</div></div>
 
     <!--
       MARGIN
-      El margen es espacio por FUERA del borde. Para verlo, metemos la caja azul
+      El margen es espacio por FUERA del borde. Para verlo, metemos la caja de contenido
       dentro de una caja gris: el gris que asoma alrededor es el margen.
     -->
     <h2 class="h4 mt-5">Margin: <code>m-*</code></h2>
 
     <p class="mb-1"><code>class="m-3"</code></p>
-    <div class="bg-secondary-subtle border mb-2"><div class="bg-info-subtle border border-info-subtle m-3">contenido</div></div>
+    <div class="bg-secondary-subtle border mb-2"><div class="bg-success-subtle border border-success-subtle m-3">contenido</div></div>
     <p class="mb-1"><code>style="margin: 1rem"</code></p>
-    <div class="bg-secondary-subtle border mb-4"><div class="bg-info-subtle border border-info-subtle" style="margin: 1rem">contenido</div></div>
+    <div class="bg-secondary-subtle border mb-4"><div class="bg-primary-subtle border border-primary-subtle" style="margin: 1rem">contenido</div></div>
 
     <p class="mb-1"><code>class="mx-5"</code></p>
-    <div class="bg-secondary-subtle border mb-2"><div class="bg-info-subtle border border-info-subtle mx-5">contenido</div></div>
+    <div class="bg-secondary-subtle border mb-2"><div class="bg-success-subtle border border-success-subtle mx-5">contenido</div></div>
     <p class="mb-1"><code>style="margin-left: 3rem; margin-right: 3rem"</code></p>
-    <div class="bg-secondary-subtle border mb-4"><div class="bg-info-subtle border border-info-subtle" style="margin-left: 3rem; margin-right: 3rem">contenido</div></div>
+    <div class="bg-secondary-subtle border mb-4"><div class="bg-primary-subtle border border-primary-subtle" style="margin-left: 3rem; margin-right: 3rem">contenido</div></div>
 
     <!--
       MARGIN AUTO
@@ -164,14 +165,14 @@
     <h2 class="h4 mt-5">Margin auto: <code>mx-auto</code> y <code>ms-auto</code></h2>
 
     <p class="mb-1"><code>class="mx-auto"</code></p>
-    <div class="bg-secondary-subtle border mb-2"><div class="bg-info-subtle border border-info-subtle mx-auto" style="width: 200px">200 px centrado</div></div>
+    <div class="bg-secondary-subtle border mb-2"><div class="bg-success-subtle border border-success-subtle mx-auto" style="width: 200px">200 px centrado</div></div>
     <p class="mb-1"><code>style="margin-left: auto; margin-right: auto"</code></p>
-    <div class="bg-secondary-subtle border mb-4"><div class="bg-info-subtle border border-info-subtle" style="width: 200px; margin-left: auto; margin-right: auto">200 px centrado</div></div>
+    <div class="bg-secondary-subtle border mb-4"><div class="bg-primary-subtle border border-primary-subtle" style="width: 200px; margin-left: auto; margin-right: auto">200 px centrado</div></div>
 
     <p class="mb-1"><code>class="ms-auto"</code></p>
-    <div class="bg-secondary-subtle border mb-2"><div class="bg-info-subtle border border-info-subtle ms-auto" style="width: 200px">200 px a la derecha</div></div>
+    <div class="bg-secondary-subtle border mb-2"><div class="bg-success-subtle border border-success-subtle ms-auto" style="width: 200px">200 px a la derecha</div></div>
     <p class="mb-1"><code>style="margin-left: auto"</code></p>
-    <div class="bg-secondary-subtle border mb-4"><div class="bg-info-subtle border border-info-subtle" style="width: 200px; margin-left: auto">200 px a la derecha</div></div>
+    <div class="bg-secondary-subtle border mb-4"><div class="bg-primary-subtle border border-primary-subtle" style="width: 200px; margin-left: auto">200 px a la derecha</div></div>
 
     <!--
       START Y END EN LUGAR DE LEFT Y RIGHT
@@ -183,11 +184,11 @@
     <h2 class="h4 mt-5">Start y end: por qué no se llaman left y right</h2>
 
     <p class="mb-1"><code>class="ps-5"</code> dentro de <code>dir="rtl"</code></p>
-    <div dir="rtl" class="bg-success-subtle border border-success-subtle ps-5 mb-2"><div class="bg-body border">نص تجريبي · texto de derecha a izquierda</div></div>
+    <div dir="rtl" class="bg-secondary-subtle border ps-5 mb-2"><div class="bg-success-subtle border border-success-subtle">نص تجريبي · texto de derecha a izquierda</div></div>
     <p class="mb-1"><code>style="padding-inline-start: 3rem"</code> dentro de <code>dir="rtl"</code></p>
-    <div dir="rtl" class="bg-success-subtle border border-success-subtle mb-2" style="padding-inline-start: 3rem"><div class="bg-body border">نص تجريبي · texto de derecha a izquierda</div></div>
+    <div dir="rtl" class="bg-secondary-subtle border mb-2" style="padding-inline-start: 3rem"><div class="bg-primary-subtle border border-primary-subtle">نص تجريبي · texto de derecha a izquierda</div></div>
     <p class="mb-1"><code>style="padding-left: 3rem"</code> dentro de <code>dir="rtl"</code> (lado equivocado)</p>
-    <div dir="rtl" class="bg-success-subtle border border-success-subtle mb-4" style="padding-left: 3rem"><div class="bg-body border">نص تجريبي · texto de derecha a izquierda</div></div>
+    <div dir="rtl" class="bg-secondary-subtle border mb-4" style="padding-left: 3rem"><div class="bg-primary-subtle border border-primary-subtle">نص تجريبي · texto de derecha a izquierda</div></div>
 
     <!--
       ESPACIADO RESPONSIVE
@@ -199,9 +200,9 @@
     <h2 class="h4 mt-5">Espaciado responsive: <code>p-2 p-md-5</code></h2>
 
     <p class="mb-1"><code>class="p-2 p-md-5"</code></p>
-    <div class="bg-success-subtle border border-success-subtle p-2 p-md-5 mb-2"><div class="bg-body border">contenido</div></div>
+    <div class="bg-secondary-subtle border p-2 p-md-5 mb-2"><div class="bg-success-subtle border border-success-subtle">contenido</div></div>
     <p class="mb-1"><code>class="relleno-responsive"</code> (CSS propio con <code>@media</code>)</p>
-    <div class="bg-success-subtle border border-success-subtle relleno-responsive mb-5"><div class="bg-body border">contenido</div></div>
+    <div class="bg-secondary-subtle border relleno-responsive mb-5"><div class="bg-primary-subtle border border-primary-subtle">contenido</div></div>
   </div>
 
 </body>
