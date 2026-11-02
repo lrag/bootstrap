@@ -60,38 +60,36 @@
 
     En cada bloque ponemos la clase de Bootstrap y debajo lo mismo con CSS normal en un style="".
     Los colores y bordes van con clases en los dos casos: lo único que comparamos es el espaciado.
-    En las etiquetas de código, en verde lo que es de Bootstrap y en azul lo que es CSS normal.
 
     Detalle: Bootstrap declara estas utilidades con !important, para que ganen siempre
     a cualquier otra regla. En los equivalentes lo omitimos.
   -->
   <div class="container">
     <h1 class="text-center mt-5 text-success">Utilidades de espaciado</h1>
-    <p class="text-center"><code class="text-success">Bootstrap</code> · <code class="text-primary">CSS normal</code></p>
 
     <!--
       LA ESCALA
       Del 0 al 5. No es lineal: los saltos crecen (4, 8, 16, 24, 48 px).
       En verde vemos el relleno; en blanco, el contenido.
     -->
-    <h2 class="h4 mt-5">La escala: <code class="text-success">p-0</code> a <code class="text-success">p-5</code></h2>
+    <h2 class="h4 mt-5">La escala: <code>p-0</code> a <code>p-5</code></h2>
 
-    <p class="mb-1"><code class="text-success">p-0</code> → <code class="text-primary">padding: 0</code></p>
+    <p class="mb-1"><code>p-0</code> → <code>padding: 0</code></p>
     <div class="bg-success-subtle border border-success-subtle p-0 mb-3"><div class="bg-body border">contenido</div></div>
 
-    <p class="mb-1"><code class="text-success">p-1</code> → <code class="text-primary">padding: 0.25rem</code> (4 px)</p>
+    <p class="mb-1"><code>p-1</code> → <code>padding: 0.25rem</code> (4 px)</p>
     <div class="bg-success-subtle border border-success-subtle p-1 mb-3"><div class="bg-body border">contenido</div></div>
 
-    <p class="mb-1"><code class="text-success">p-2</code> → <code class="text-primary">padding: 0.5rem</code> (8 px)</p>
+    <p class="mb-1"><code>p-2</code> → <code>padding: 0.5rem</code> (8 px)</p>
     <div class="bg-success-subtle border border-success-subtle p-2 mb-3"><div class="bg-body border">contenido</div></div>
 
-    <p class="mb-1"><code class="text-success">p-3</code> → <code class="text-primary">padding: 1rem</code> (16 px)</p>
+    <p class="mb-1"><code>p-3</code> → <code>padding: 1rem</code> (16 px)</p>
     <div class="bg-success-subtle border border-success-subtle p-3 mb-3"><div class="bg-body border">contenido</div></div>
 
-    <p class="mb-1"><code class="text-success">p-4</code> → <code class="text-primary">padding: 1.5rem</code> (24 px)</p>
+    <p class="mb-1"><code>p-4</code> → <code>padding: 1.5rem</code> (24 px)</p>
     <div class="bg-success-subtle border border-success-subtle p-4 mb-3"><div class="bg-body border">contenido</div></div>
 
-    <p class="mb-1"><code class="text-success">p-5</code> → <code class="text-primary">padding: 3rem</code> (48 px)</p>
+    <p class="mb-1"><code>p-5</code> → <code>padding: 3rem</code> (48 px)</p>
     <div class="bg-success-subtle border border-success-subtle p-5 mb-3"><div class="bg-body border">contenido</div></div>
 
     <!--
@@ -116,26 +114,26 @@
 
       py-2 es la que usamos en las cajas de la rejilla para darles algo de altura.
     -->
-    <h2 class="h4 mt-5">Los lados: <code class="text-success">t</code> (top), <code class="text-success">b</code> (bottom), <code class="text-success">s</code> (start), <code class="text-success">e</code> (end), <code class="text-success">x</code> (eje X), <code class="text-success">y</code> (eje Y)</h2>
+    <h2 class="h4 mt-5">Los lados: <code>t</code> (top), <code>b</code> (bottom), <code>s</code> (start), <code>e</code> (end), <code>x</code> (eje X), <code>y</code> (eje Y)</h2>
 
-    <p class="mb-1"><code class="text-success">class="py-2"</code></p>
+    <p class="mb-1"><code>class="py-2"</code></p>
     <div class="bg-success-subtle border border-success-subtle py-2 mb-2"><div class="bg-body border">contenido</div></div>
-    <p class="mb-1"><code class="text-primary">style="padding-top: 0.5rem; padding-bottom: 0.5rem"</code></p>
+    <p class="mb-1"><code>style="padding-top: 0.5rem; padding-bottom: 0.5rem"</code></p>
     <div class="bg-success-subtle border border-success-subtle mb-4" style="padding-top: 0.5rem; padding-bottom: 0.5rem"><div class="bg-body border">contenido</div></div>
 
-    <p class="mb-1"><code class="text-success">class="px-5"</code></p>
+    <p class="mb-1"><code>class="px-5"</code></p>
     <div class="bg-success-subtle border border-success-subtle px-5 mb-2"><div class="bg-body border">contenido</div></div>
-    <p class="mb-1"><code class="text-primary">style="padding-left: 3rem; padding-right: 3rem"</code></p>
+    <p class="mb-1"><code>style="padding-left: 3rem; padding-right: 3rem"</code></p>
     <div class="bg-success-subtle border border-success-subtle mb-4" style="padding-left: 3rem; padding-right: 3rem"><div class="bg-body border">contenido</div></div>
 
-    <p class="mb-1"><code class="text-success">class="pt-4"</code></p>
+    <p class="mb-1"><code>class="pt-4"</code></p>
     <div class="bg-success-subtle border border-success-subtle pt-4 mb-2"><div class="bg-body border">contenido</div></div>
-    <p class="mb-1"><code class="text-primary">style="padding-top: 1.5rem"</code></p>
+    <p class="mb-1"><code>style="padding-top: 1.5rem"</code></p>
     <div class="bg-success-subtle border border-success-subtle mb-4" style="padding-top: 1.5rem"><div class="bg-body border">contenido</div></div>
 
-    <p class="mb-1"><code class="text-success">class="ps-5"</code></p>
+    <p class="mb-1"><code>class="ps-5"</code></p>
     <div class="bg-success-subtle border border-success-subtle ps-5 mb-2"><div class="bg-body border">contenido</div></div>
-    <p class="mb-1"><code class="text-primary">style="padding-left: 3rem"</code></p>
+    <p class="mb-1"><code>style="padding-left: 3rem"</code></p>
     <div class="bg-success-subtle border border-success-subtle mb-4" style="padding-left: 3rem"><div class="bg-body border">contenido</div></div>
 
     <!--
@@ -143,16 +141,16 @@
       El margen es espacio por FUERA del borde. Para verlo, metemos la caja azul
       dentro de una caja gris: el gris que asoma alrededor es el margen.
     -->
-    <h2 class="h4 mt-5">Margin: <code class="text-success">m-*</code></h2>
+    <h2 class="h4 mt-5">Margin: <code>m-*</code></h2>
 
-    <p class="mb-1"><code class="text-success">class="m-3"</code></p>
+    <p class="mb-1"><code>class="m-3"</code></p>
     <div class="bg-secondary-subtle border mb-2"><div class="bg-info-subtle border border-info-subtle m-3">contenido</div></div>
-    <p class="mb-1"><code class="text-primary">style="margin: 1rem"</code></p>
+    <p class="mb-1"><code>style="margin: 1rem"</code></p>
     <div class="bg-secondary-subtle border mb-4"><div class="bg-info-subtle border border-info-subtle" style="margin: 1rem">contenido</div></div>
 
-    <p class="mb-1"><code class="text-success">class="mx-5"</code></p>
+    <p class="mb-1"><code>class="mx-5"</code></p>
     <div class="bg-secondary-subtle border mb-2"><div class="bg-info-subtle border border-info-subtle mx-5">contenido</div></div>
-    <p class="mb-1"><code class="text-primary">style="margin-left: 3rem; margin-right: 3rem"</code></p>
+    <p class="mb-1"><code>style="margin-left: 3rem; margin-right: 3rem"</code></p>
     <div class="bg-secondary-subtle border mb-4"><div class="bg-info-subtle border border-info-subtle" style="margin-left: 3rem; margin-right: 3rem">contenido</div></div>
 
     <!--
@@ -163,16 +161,16 @@
       Es la forma clásica de centrar un bloque. Sin ancho no hace nada visible:
       un div ya ocupa todo el ancho y no sobra espacio que repartir.
     -->
-    <h2 class="h4 mt-5">Margin auto: <code class="text-success">mx-auto</code> y <code class="text-success">ms-auto</code></h2>
+    <h2 class="h4 mt-5">Margin auto: <code>mx-auto</code> y <code>ms-auto</code></h2>
 
-    <p class="mb-1"><code class="text-success">class="mx-auto"</code></p>
+    <p class="mb-1"><code>class="mx-auto"</code></p>
     <div class="bg-secondary-subtle border mb-2"><div class="bg-info-subtle border border-info-subtle mx-auto" style="width: 200px">200 px centrado</div></div>
-    <p class="mb-1"><code class="text-primary">style="margin-left: auto; margin-right: auto"</code></p>
+    <p class="mb-1"><code>style="margin-left: auto; margin-right: auto"</code></p>
     <div class="bg-secondary-subtle border mb-4"><div class="bg-info-subtle border border-info-subtle" style="width: 200px; margin-left: auto; margin-right: auto">200 px centrado</div></div>
 
-    <p class="mb-1"><code class="text-success">class="ms-auto"</code></p>
+    <p class="mb-1"><code>class="ms-auto"</code></p>
     <div class="bg-secondary-subtle border mb-2"><div class="bg-info-subtle border border-info-subtle ms-auto" style="width: 200px">200 px a la derecha</div></div>
-    <p class="mb-1"><code class="text-primary">style="margin-left: auto"</code></p>
+    <p class="mb-1"><code>style="margin-left: auto"</code></p>
     <div class="bg-secondary-subtle border mb-4"><div class="bg-info-subtle border border-info-subtle" style="width: 200px; margin-left: auto">200 px a la derecha</div></div>
 
     <!--
@@ -184,11 +182,11 @@
     -->
     <h2 class="h4 mt-5">Start y end: por qué no se llaman left y right</h2>
 
-    <p class="mb-1"><code class="text-success">class="ps-5"</code> dentro de <code>dir="rtl"</code></p>
+    <p class="mb-1"><code>class="ps-5"</code> dentro de <code>dir="rtl"</code></p>
     <div dir="rtl" class="bg-success-subtle border border-success-subtle ps-5 mb-2"><div class="bg-body border">نص تجريبي · texto de derecha a izquierda</div></div>
-    <p class="mb-1"><code class="text-primary">style="padding-inline-start: 3rem"</code> dentro de <code>dir="rtl"</code></p>
+    <p class="mb-1"><code>style="padding-inline-start: 3rem"</code> dentro de <code>dir="rtl"</code></p>
     <div dir="rtl" class="bg-success-subtle border border-success-subtle mb-2" style="padding-inline-start: 3rem"><div class="bg-body border">نص تجريبي · texto de derecha a izquierda</div></div>
-    <p class="mb-1"><code class="text-primary">style="padding-left: 3rem"</code> dentro de <code>dir="rtl"</code> (lado equivocado)</p>
+    <p class="mb-1"><code>style="padding-left: 3rem"</code> dentro de <code>dir="rtl"</code> (lado equivocado)</p>
     <div dir="rtl" class="bg-success-subtle border border-success-subtle mb-4" style="padding-left: 3rem"><div class="bg-body border">نص تجريبي · texto de derecha a izquierda</div></div>
 
     <!--
@@ -198,11 +196,11 @@
       Es mobile-first: p-2 en móvil y, a partir de md (768 px), p-5.
       En CSS normal hace falta una media query: está en el <style> del <head>.
     -->
-    <h2 class="h4 mt-5">Espaciado responsive: <code class="text-success">p-2 p-md-5</code></h2>
+    <h2 class="h4 mt-5">Espaciado responsive: <code>p-2 p-md-5</code></h2>
 
-    <p class="mb-1"><code class="text-success">class="p-2 p-md-5"</code></p>
+    <p class="mb-1"><code>class="p-2 p-md-5"</code></p>
     <div class="bg-success-subtle border border-success-subtle p-2 p-md-5 mb-2"><div class="bg-body border">contenido</div></div>
-    <p class="mb-1"><code class="text-primary">class="relleno-responsive"</code> (CSS propio con <code class="text-primary">@media</code>)</p>
+    <p class="mb-1"><code>class="relleno-responsive"</code> (CSS propio con <code>@media</code>)</p>
     <div class="bg-success-subtle border border-success-subtle relleno-responsive mb-5"><div class="bg-body border">contenido</div></div>
   </div>
 
