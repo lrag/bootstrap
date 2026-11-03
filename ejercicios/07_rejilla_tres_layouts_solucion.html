@@ -2,7 +2,6 @@
 <!--
   EJERCICIO: TRES LAYOUTS CON LA REJILLA · SOLUCIÓN
   Las mismas cajas de 07_rejilla_tres_layouts_enunciado.html, ya dentro de la rejilla.
-  Al final de cada layout, la ampliación resuelta.
 -->
 <html lang="es">
 <head>
@@ -57,29 +56,6 @@
     </div>
 
     <!--
-      AMPLIACIÓN 1: LATERAL A LA IZQUIERDA DESDE LG
-      El HTML es el mismo; solo añadimos order-lg-first al lateral.
-      Por debajo de lg no hace nada, y el artículo sigue primero en móvil.
-      Como order-first lo pondría también delante de la cabecera, la cabecera lleva
-      order-lg-first también: entre dos con el mismo orden, manda el orden del HTML.
-    -->
-    <p class="mt-4 mb-1">Ampliación: <code>order-lg-first</code> en la cabecera y en el lateral</p>
-    <div class="row g-3">
-      <div class="col-12 order-lg-first">
-        <div class="bg-secondary-subtle border p-2 text-center">Cabecera · col-12 order-lg-first</div>
-      </div>
-      <div class="col-lg-8">
-        <div class="bg-success-subtle border border-success-subtle p-2 text-center" style="min-height: 8rem">Artículo · col-lg-8</div>
-      </div>
-      <div class="col-lg-4 order-lg-first">
-        <div class="bg-warning-subtle border border-warning-subtle p-2 text-center" style="min-height: 8rem">Lateral · col-lg-4 order-lg-first</div>
-      </div>
-      <div class="col-12">
-        <div class="bg-secondary-subtle border p-2 text-center">Pie · col-12</div>
-      </div>
-    </div>
-
-    <!--
       LAYOUT 2 · CATÁLOGO
       row-cols-* en la fila dice cuántas columnas caben por línea; las columnas son .col sin número.
         row-cols-1 → 1 en xs   row-cols-sm-2 → 2 desde sm
@@ -97,20 +73,6 @@
       <div class="col"><div class="bg-success-subtle border border-success-subtle p-2 text-center" style="min-height: 5rem">Producto 6</div></div>
       <div class="col"><div class="bg-success-subtle border border-success-subtle p-2 text-center" style="min-height: 5rem">Producto 7</div></div>
       <div class="col"><div class="bg-success-subtle border border-success-subtle p-2 text-center" style="min-height: 5rem">Producto 8</div></div>
-    </div>
-
-    <!--
-      AMPLIACIÓN 2: SIN g-*
-      La rejilla trae por defecto solo hueco horizontal (el padding de las columnas: gx).
-      El vertical (gy) es 0: al apilarse en móvil, los productos quedan pegados unos a otros.
-      Con g-3 (o gy-3) aparece la separación vertical.
-    -->
-    <p class="mt-4 mb-1">Ampliación: la misma fila sin <code>g-3</code> (en xs quedan pegados)</p>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4">
-      <div class="col"><div class="bg-success-subtle border border-success-subtle p-2 text-center" style="min-height: 5rem">Producto 1</div></div>
-      <div class="col"><div class="bg-success-subtle border border-success-subtle p-2 text-center" style="min-height: 5rem">Producto 2</div></div>
-      <div class="col"><div class="bg-success-subtle border border-success-subtle p-2 text-center" style="min-height: 5rem">Producto 3</div></div>
-      <div class="col"><div class="bg-success-subtle border border-success-subtle p-2 text-center" style="min-height: 5rem">Producto 4</div></div>
     </div>
 
     <!--
@@ -144,27 +106,8 @@
       </div>
     </div>
 
-    <!--
-      AMPLIACIÓN 3: UN BLOQUE DE DATOS CENTRADO
-      En la fila anidada, una sola columna col-6 offset-3: 3 vacías + 6 + 3 que sobran.
-    -->
-    <p class="mt-4 mb-1">Ampliación: un bloque de datos con <code>col-6 offset-3</code></p>
-    <div class="row g-3 mb-5">
-      <div class="col-lg-2 order-2 order-lg-1">
-        <div class="bg-warning-subtle border border-warning-subtle p-2 text-center" style="min-height: 6rem">Menú · col-lg-2</div>
-      </div>
-      <div class="col-lg-7 order-1 order-lg-2">
-        <div class="bg-success-subtle border border-success-subtle p-2">
-          <p class="text-center">Contenido · col-lg-7</p>
-          <div class="row g-2">
-            <div class="col-6 offset-3"><div class="bg-secondary-subtle border p-2 text-center">Datos · col-6 offset-3</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 order-3">
-        <div class="bg-warning-subtle border border-warning-subtle p-2 text-center" style="min-height: 6rem">Avisos · col-lg-3</div>
-      </div>
-    </div>
+    <div class="mb-5"></div>
+
   </div>
 
 </body>
