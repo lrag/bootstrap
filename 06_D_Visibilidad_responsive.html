@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>06 D · Visibilidad responsive</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <!--
+    Equivalente en CSS normal de d-none d-md-block: oculto por defecto,
+    visible a partir de 768 px. Necesita una media query.
+  -->
+  <style>
+    .solo-desde-md {
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .solo-desde-md {
+        display: block;
+      }
+    }
+  </style>
+
+  <script>
+    window.onload = () => {
+      const ancho = document.getElementById('ancho')
+      ancho.textContent = window.innerWidth
+      window.onresize = () => ancho.textContent = window.innerWidth
+    }
+  </script>
+</head>
+<body>
+
+  <!--
+    VISIBILIDAD RESPONSIVE
+    Mostrar u ocultar elementos según el ancho de la pantalla.
+    Se hace con las utilidades de display, que cambian la propiedad CSS display:
+
+      d-{valor}               → en todos los anchos
+      d-{breakpoint}-{valor}  → a partir de ese breakpoint (mobile-first, como siempre)
+
+    Valores: none, block, inline, inline-block, flex, inline-flex, grid...
+      d-none  → display: none   el elemento desaparece por completo
+      d-block → display: block  el elemento se muestra como bloque
+
+    La idea clave: no hay clases "ocultar en móvil" ni "mostrar en escritorio".
+    Se combinan dos clases: una para el punto de partida y otra para el cambio.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Visibilidad responsive</h1>
+
+    <!--
+      EL INDICADOR DE BREAKPOINT
+      Seis etiquetas, una por breakpoint. Cada una está oculta con d-none y se muestra solo
+      en su tramo. Por ejemplo, la de md: d-none d-md-inline d-lg-none
+        - d-none      → oculta por defecto
+        - d-md-inline → visible a partir de md
+        - d-lg-none   → otra vez oculta a partir de lg
+      En cada ancho de pantalla solo queda visible una. Al redimensionar la ventana
+      vemos cómo cambia sin una sola línea de JavaScript (el JS solo escribe el ancho).
+    -->
+    <p class="text-center fs-4">
+      <span id="ancho"></span> px ·
+      <span class="badge text-bg-success d-inline d-sm-none">xs</span>
+      <span class="badge text-bg-success d-none d-sm-inline d-md-none">sm</span>
+      <span class="badge text-bg-success d-none d-md-inline d-lg-none">md</span>
+      <span class="badge text-bg-success d-none d-lg-inline d-xl-none">lg</span>
+      <span class="badge text-bg-success d-none d-xl-inline d-xxl-none">xl</span>
+      <span class="badge text-bg-success d-none d-xxl-inline">xxl</span>
+    </p>
+
+    <!--
+      LAS COMBINACIONES HABITUALES
+        Oculto en todos los anchos           → d-none
+        Visible solo desde md (escritorio)   → d-none d-md-block
+        Visible solo hasta md (móvil)        → d-md-none
+        Visible solo en md                   → d-none d-md-block d-lg-none
+      Se leen de izquierda a derecha, como en mobile-first:
+      "oculto; a partir de md, visible".
+    -->
+    <h2 class="h4 mt-5">Las combinaciones habituales</h2>
+
+    <p class="mb-1"><code>class="d-none d-md-block"</code>: solo a partir de md</p>
+    <div class="d-none d-md-block bg-success-subtle border border-success-subtle p-2 mb-3">Visible: la ventana mide 768 px o más</div>
+
+    <p class="mb-1"><code>class="d-md-none"</code>: solo por debajo de md</p>
+    <div class="d-md-none bg-success-subtle border border-success-subtle p-2 mb-3">Visible: la ventana mide menos de 768 px</div>
+
+    <p class="mb-1"><code>class="d-none d-md-block d-lg-none"</code>: solo en md</p>
+    <div class="d-none d-md-block d-lg-none bg-success-subtle border border-success-subtle p-2 mb-3">Visible: la ventana está entre 768 y 991 px</div>
+
+    <p class="mb-1"><code>class="solo-desde-md"</code> (CSS propio con <code>@media</code>, igual que <code>d-none d-md-block</code>)</p>
+    <div class="solo-desde-md bg-primary-subtle border border-primary-subtle p-2 mb-4">Visible: la ventana mide 768 px o más</div>
+
+    <!--
+      UN CASO REAL: MENÚ DISTINTO EN MÓVIL Y EN ESCRITORIO
+      Dos versiones del mismo contenido, y cada una se muestra en su tramo.
+      En escritorio, los enlaces en fila; en móvil, un botón (que en un caso real abriría el menú).
+      Los dos llevan d-flex o d-block según el tramo: d-md-flex muestra como flex desde md.
+    -->
+    <h2 class="h4 mt-5">Un caso real: menú de escritorio y de móvil</h2>
+
+    <div class="d-flex align-items-center gap-3 border rounded p-2 mb-4">
+      <strong>Mi web</strong>
+      <div class="d-none d-md-flex gap-3 ms-auto">
+        <a href="#">Inicio</a>
+        <a href="#">Productos</a>
+        <a href="#">Contacto</a>
+      </div>
+      <button type="button" class="btn btn-outline-secondary btn-sm d-md-none ms-auto">☰ Menú</button>
+    </div>
+
+    <!--
+      D-NONE FRENTE A INVISIBLE
+        d-none    → display: none        el elemento desaparece y su hueco también:
+                                          los demás se mueven para ocuparlo.
+        invisible → visibility: hidden   el elemento no se ve, pero sigue ocupando su sitio:
+                                          queda un hueco vacío.
+      invisible no tiene versiones responsive (no existe invisible-md).
+    -->
+    <h2 class="h4 mt-5"><code>d-none</code> frente a <code>invisible</code></h2>
+
+    <p class="mb-1">El 2 con <code>d-none</code>: desaparece y el 3 ocupa su sitio</p>
+    <div class="d-flex gap-2 bg-secondary-subtle border p-2 mb-3">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2 d-none">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+
+    <p class="mb-1">El 2 con <code>invisible</code>: no se ve, pero deja su hueco</p>
+    <div class="d-flex gap-2 bg-secondary-subtle border p-2 mb-3">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2 invisible">2</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+    </div>
+
+    <p class="mb-1">El 2 con <code>style="visibility: hidden"</code></p>
+    <div class="d-flex gap-2 bg-secondary-subtle border p-2 mb-4">
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">1</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2" style="visibility: hidden">2</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">3</div>
+    </div>
+
+    <!--
+      VISUALLY-HIDDEN: OCULTO A LA VISTA, NO AL LECTOR DE PANTALLA
+      d-none oculta el elemento para todo el mundo, también para los lectores de pantalla
+      que usan las personas ciegas. visually-hidden lo oculta solo a la vista:
+      el lector de pantalla lo sigue leyendo.
+      Caso típico: un botón que solo muestra un icono. Visualmente basta con la lupa,
+      pero el lector de pantalla necesita un texto que diga qué hace el botón.
+      Lo veremos más a fondo en accesibilidad.
+    -->
+    <h2 class="h4 mt-5">Solo para lectores de pantalla: <code>visually-hidden</code></h2>
+
+    <p class="mb-1">Un botón con icono y el texto «Buscar» en <code>visually-hidden</code></p>
+    <p class="mb-4">
+      <button type="button" class="btn btn-outline-secondary">🔍<span class="visually-hidden">Buscar</span></button>
+    </p>
+
+    <!--
+      AL IMPRIMIR: d-print-*
+      Las mismas clases con "print" en lugar de un breakpoint se aplican solo al imprimir:
+        d-print-none  → no sale en papel (menús, botones, publicidad...)
+        d-none d-print-block → solo sale en papel
+      Se comprueba con Ctrl+P y la vista previa de impresión.
+    -->
+    <h2 class="h4 mt-5">Al imprimir: <code>d-print-none</code></h2>
+
+    <div class="d-print-none bg-success-subtle border border-success-subtle p-2 mb-3">Este bloque no sale al imprimir (d-print-none)</div>
+    <div class="d-none d-print-block bg-success-subtle border border-success-subtle p-2 mb-5">Este bloque solo sale al imprimir (d-none d-print-block)</div>
+  </div>
+
+</body>
+</html>

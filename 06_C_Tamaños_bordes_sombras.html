@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>06 C · Tamaños, bordes y sombras</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    TAMAÑOS, BORDES Y SOMBRAS
+    Más utilidades: cada clase aplica una sola propiedad CSS, igual que las de espaciado.
+    Ninguna depende de la rejilla: se pueden poner en cualquier elemento.
+
+    Como en los ficheros anteriores, el contenido va en verde si lo resuelve una clase
+    de Bootstrap y en azul si lo resuelve CSS normal.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Tamaños, bordes y sombras</h1>
+
+    <!--
+      ANCHO: w-*
+      Porcentaje del ancho del PADRE (no de la pantalla):
+        w-25  → width: 25%      w-50  → width: 50%      w-75  → width: 75%
+        w-100 → width: 100%     w-auto → width: auto
+      Solo hay estos valores. Para un ancho concreto (300 px, 20rem...) hace falta CSS propio.
+    -->
+    <h2 class="h4 mt-5">Ancho: <code>w-*</code></h2>
+
+    <div class="bg-secondary-subtle border p-2 mb-4">
+      <div class="bg-success-subtle border border-success-subtle px-2 py-1 mb-2 w-25">w-25 → width: 25%</div>
+      <div class="bg-success-subtle border border-success-subtle px-2 py-1 mb-2 w-50">w-50 → width: 50%</div>
+      <div class="bg-success-subtle border border-success-subtle px-2 py-1 mb-2 w-75">w-75 → width: 75%</div>
+      <div class="bg-success-subtle border border-success-subtle px-2 py-1 mb-2 w-100">w-100 → width: 100%</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-2 py-1" style="width: 50%">style="width: 50%"</div>
+    </div>
+
+    <!--
+      ALTO: h-*
+      Igual que el ancho, pero un porcentaje del alto del padre.
+      Si el padre no tiene una altura definida, h-50 no hace nada: el 50 % de "lo que mida
+      el contenido" no se puede calcular. Por eso aquí el padre lleva height: 8rem.
+    -->
+    <h2 class="h4 mt-5">Alto: <code>h-*</code></h2>
+
+    <div class="d-flex gap-2 align-items-start bg-secondary-subtle border p-2 mb-4" style="height: 8rem">
+      <div class="bg-success-subtle border border-success-subtle px-2 h-25">h-25</div>
+      <div class="bg-success-subtle border border-success-subtle px-2 h-50">h-50</div>
+      <div class="bg-success-subtle border border-success-subtle px-2 h-75">h-75</div>
+      <div class="bg-success-subtle border border-success-subtle px-2 h-100">h-100</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-2" style="height: 50%">style="height: 50%"</div>
+    </div>
+
+    <!--
+      MW-100: QUE NUNCA SE SALGA DEL PADRE
+        mw-100 → max-width: 100%
+      Puede medir menos que el padre, pero nunca más. El caso típico son las imágenes:
+      una imagen de 800 px en un móvil de 400 px se saldría de la pantalla.
+      Aquí lo simulamos con una caja de 600 px: en pantallas estrechas, la verde se ajusta
+      y la que no lleva mw-100 se sale del contenedor.
+      También existe mh-100 (max-height: 100%).
+    -->
+    <h2 class="h4 mt-5">Que no se salga: <code>mw-100</code></h2>
+
+    <p class="mb-1"><code>class="mw-100"</code></p>
+    <div class="bg-secondary-subtle border p-2 mb-2">
+      <div class="bg-success-subtle border border-success-subtle px-2 py-1 mw-100" style="width: 600px">600 px con mw-100</div>
+    </div>
+    <p class="mb-1"><code>style="max-width: 100%"</code></p>
+    <div class="bg-secondary-subtle border p-2 mb-2">
+      <div class="bg-primary-subtle border border-primary-subtle px-2 py-1" style="width: 600px; max-width: 100%">600 px con max-width: 100%</div>
+    </div>
+    <p class="mb-1">Sin <code>mw-100</code> (en pantallas estrechas se sale)</p>
+    <div class="bg-secondary-subtle border p-2 mb-4">
+      <div class="bg-primary-subtle border border-primary-subtle px-2 py-1" style="width: 600px">600 px sin límite</div>
+    </div>
+
+    <!--
+      RESPECTO A LA PANTALLA: vh-100, min-vh-100, vw-100
+      vh y vw son unidades de CSS: 1vh = 1 % del alto del viewport, 1vw = 1 % del ancho.
+        vh-100      → height: 100vh       exactamente la altura de la pantalla
+        min-vh-100  → min-height: 100vh   como mínimo la pantalla; si el contenido es más largo, crece
+        vw-100      → width: 100vw
+      min-vh-100 es lo habitual para una portada que ocupa toda la pantalla al entrar.
+      La caja de abajo mide 100vh: hay que hacer scroll para ver dónde acaba.
+      Con d-flex y align-items-center centramos el texto dentro de ella.
+    -->
+    <h2 class="h4 mt-5">Respecto a la pantalla: <code>min-vh-100</code></h2>
+
+    <p class="mb-1"><code>class="min-vh-100"</code> → <code>min-height: 100vh</code></p>
+    <div class="min-vh-100 d-flex justify-content-center align-items-center bg-success-subtle border border-success-subtle mb-4">
+      <p class="fs-4 mb-0">Una portada de pantalla completa</p>
+    </div>
+
+    <!--
+      BORDES: DÓNDE
+        border          → border: 1px solid (color gris de Bootstrap) en los cuatro lados
+        border-top / border-end / border-bottom / border-start → solo en ese lado
+        border-0        → border: 0  (quita todos)
+        border-top-0... → quita solo ese lado
+      Los lados se llaman igual que en el espaciado: start y end en lugar de left y right.
+    -->
+    <h2 class="h4 mt-5">Bordes: <code>border</code>, <code>border-top</code>…</h2>
+
+    <div class="d-flex flex-wrap gap-3 mb-4">
+      <div class="bg-success-subtle p-3 border">border</div>
+      <div class="bg-success-subtle p-3 border-top">border-top</div>
+      <div class="bg-success-subtle p-3 border-end">border-end</div>
+      <div class="bg-success-subtle p-3 border-bottom">border-bottom</div>
+      <div class="bg-success-subtle p-3 border-start">border-start</div>
+      <div class="bg-success-subtle p-3 border border-top-0">border border-top-0</div>
+      <div class="bg-primary-subtle p-3" style="border: 1px solid #dee2e6">border: 1px solid #dee2e6</div>
+    </div>
+
+    <!--
+      BORDES: COLOR Y GROSOR
+      Color: los colores del tema → border-primary, border-success, border-danger...
+        También las versiones suaves que venimos usando: border-success-subtle.
+      Grosor: border-1 a border-5 → border-width de 1 a 5 px.
+      Se combinan: border border-danger border-3.
+    -->
+    <h2 class="h4 mt-5">Color y grosor: <code>border-primary</code>, <code>border-3</code></h2>
+
+    <div class="d-flex flex-wrap gap-3 mb-4">
+      <div class="p-3 border border-primary">border-primary</div>
+      <div class="p-3 border border-success">border-success</div>
+      <div class="p-3 border border-danger">border-danger</div>
+      <div class="p-3 border border-warning">border-warning</div>
+      <div class="p-3 border border-success border-1">border-1</div>
+      <div class="p-3 border border-success border-3">border-3</div>
+      <div class="p-3 border border-success border-5">border-5</div>
+      <div class="p-3" style="border: 3px solid #0d6efd">border: 3px solid #0d6efd</div>
+    </div>
+
+    <!--
+      ESQUINAS REDONDEADAS: rounded-*
+        rounded        → border-radius: 0.375rem (6 px)
+        rounded-0      → 0                rounded-1 → 0.25rem    rounded-2 → 0.375rem
+        rounded-3      → 0.5rem           rounded-4 → 1rem       rounded-5 → 2rem
+        rounded-circle → border-radius: 50%     un círculo si la caja es cuadrada
+        rounded-pill   → border-radius: 50rem   extremos totalmente redondos (forma de píldora)
+      Funciona aunque no haya borde: redondea también el fondo.
+      También hay rounded-top, rounded-end... para redondear solo un lado.
+    -->
+    <h2 class="h4 mt-5">Esquinas: <code>rounded-*</code></h2>
+
+    <div class="d-flex flex-wrap gap-3 align-items-center mb-4">
+      <div class="bg-success-subtle border border-success-subtle p-3 rounded-0">rounded-0</div>
+      <div class="bg-success-subtle border border-success-subtle p-3 rounded">rounded</div>
+      <div class="bg-success-subtle border border-success-subtle p-3 rounded-3">rounded-3</div>
+      <div class="bg-success-subtle border border-success-subtle p-3 rounded-5">rounded-5</div>
+      <div class="bg-success-subtle border border-success-subtle rounded-circle d-flex justify-content-center align-items-center" style="width: 6rem; height: 6rem">circle</div>
+      <div class="bg-success-subtle border border-success-subtle px-4 py-2 rounded-pill">rounded-pill</div>
+      <div class="bg-primary-subtle border border-primary-subtle p-3" style="border-radius: 1rem">border-radius: 1rem</div>
+    </div>
+
+    <!--
+      SOMBRAS: shadow-*
+        shadow-none → box-shadow: none
+        shadow-sm   → box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)   sombra pequeña
+        shadow      → box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15)         sombra normal
+        shadow-lg   → box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175)          sombra grande
+      Los cuatro números de box-shadow: desplazamiento horizontal, desplazamiento vertical,
+      difuminado y el color (negro con poca opacidad).
+      La sombra da sensación de altura: cuanto mayor, más "flota" el elemento.
+      En modo oscuro apenas se ven: en fondo oscuro una sombra negra no destaca.
+    -->
+    <h2 class="h4 mt-5">Sombras: <code>shadow-*</code></h2>
+
+    <div class="d-flex flex-wrap gap-4 bg-body-tertiary p-4 mb-2">
+      <div class="bg-body p-4 rounded shadow-none">shadow-none</div>
+      <div class="bg-body p-4 rounded shadow-sm">shadow-sm</div>
+      <div class="bg-body p-4 rounded shadow">shadow</div>
+      <div class="bg-body p-4 rounded shadow-lg">shadow-lg</div>
+    </div>
+    <p class="mb-1"><code>style="box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15)"</code> (igual que <code>shadow</code>)</p>
+    <div class="d-flex flex-wrap gap-4 bg-body-tertiary p-4 mb-4">
+      <div class="bg-primary-subtle p-4 rounded" style="box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15)">box-shadow</div>
+    </div>
+
+    <!--
+      TODO JUNTO
+      Una tarjeta hecha solo con utilidades: borde, esquinas, sombra, relleno y ancho máximo.
+      Es casi lo que hace el componente card de Bootstrap, que veremos más adelante.
+    -->
+    <h2 class="h4 mt-5">Todo junto</h2>
+
+    <p class="mb-1"><code>class="border rounded-3 shadow p-4 mx-auto"</code> + <code>style="max-width: 22rem"</code></p>
+    <div class="border rounded-3 shadow p-4 mx-auto mb-5" style="max-width: 22rem">
+      <h3 class="h5">Una tarjeta</h3>
+      <p class="mb-0">Hecha solo con utilidades: sin una línea de CSS propio salvo el ancho máximo.</p>
+    </div>
+  </div>
+
+</body>
+</html>
