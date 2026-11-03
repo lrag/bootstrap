@@ -36,9 +36,9 @@
           <tr><td>Sin jQuery</td><td><strong>jQuery obligatorio</strong> para el JavaScript</td></tr>
           <tr><td><code>data-bs-theme</code> (modo claro y oscuro)</td><td>No existe: solo tema claro</td></tr>
           <tr><td>Variables CSS <code>--bs-*</code></td><td>No existen: valores fijos en el CSS compilado</td></tr>
-          <tr><td>Sass</td><td><strong>Less</strong> (había un port a Sass, pero no era el oficial)</td></tr>
+          <tr><td>Sass</td><td><strong>Less</strong> (hay un port oficial a Sass, en un repositorio aparte)</td></tr>
           <tr><td>Medidas en <code>rem</code></td><td>Casi todo en <code>px</code></td></tr>
-          <tr><td><code>bootstrap.rtl.min.css</code></td><td>Sin soporte de derecha a izquierda</td></tr>
+          <tr><td><code>bootstrap.rtl.min.css</code></td><td>Sin soporte oficial de derecha a izquierda</td></tr>
           <tr><td><code>data-bs-toggle</code>, <code>data-bs-target</code></td><td><code>data-toggle</code>, <code>data-target</code></td></tr>
         </tbody>
       </table>
@@ -108,8 +108,8 @@
           <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>d-none d-md-block</code></td><td><code>.hidden-xs .hidden-sm</code>, o <code>.visible-md-block</code></td></tr>
-          <tr><td><code>d-md-none</code></td><td><code>.visible-xs .visible-sm</code> (con variantes <code>-block</code>, <code>-inline</code>…)</td></tr>
+          <tr><td><code>d-none d-md-block</code></td><td><code>.hidden-xs .hidden-sm</code></td></tr>
+          <tr><td><code>d-md-none</code></td><td><code>.visible-xs-block .visible-sm-block</code> (o <code>-inline</code>, <code>-inline-block</code>); <code>.visible-xs</code> a secas está obsoleta desde 3.2</td></tr>
           <tr><td><code>visually-hidden</code></td><td><code>.sr-only</code></td></tr>
           <tr><td><code>d-print-none</code> / <code>d-print-block</code></td><td><code>.hidden-print</code> / <code>.visible-print-block</code></td></tr>
           <tr><td><code>invisible</code></td><td><span class="badge text-bg-success">Sí existe</span></td></tr>
@@ -132,7 +132,7 @@
           <tr><td>Columnas de la misma altura</td><td>No: cada una mide lo que su contenido</td></tr>
           <tr><td><code>offset-md-2</code></td><td><code>.col-md-offset-2</code></td></tr>
           <tr><td><code>order-1</code>, <code>order-md-first</code></td><td><code>.col-md-push-*</code> / <code>.col-md-pull-*</code></td></tr>
-          <tr><td>Gutters <code>g-*</code>, <code>gx-*</code>, <code>gy-*</code></td><td>Fijo a 30 px, sin clases para cambiarlo</td></tr>
+          <tr><td>Gutters <code>g-*</code>, <code>gx-*</code>, <code>gy-*</code></td><td>Fijo a 30 px (15 px por lado); solo se puede quitar con <code>.row-no-gutters</code> (desde 3.4)</td></tr>
           <tr><td><code>row-cols-*</code></td><td>No existe</td></tr>
           <tr><td>Anidado</td><td><span class="badge text-bg-success">Sí funciona</span></td></tr>
         </tbody>
@@ -151,7 +151,7 @@
           <tr><td><code>text-start</code> / <code>text-end</code>, <code>text-md-start</code></td><td><code>.text-left</code> / <code>.text-right</code>, sin versiones responsive</td></tr>
           <tr><td><code>fs-4</code>, <code>fw-bold</code></td><td>No existen</td></tr>
           <tr><td><code>bg-success-subtle</code>, <code>text-bg-success</code>, <code>bg-body-tertiary</code></td><td>No existen (sí <code>bg-success</code>, <code>bg-primary</code>)</td></tr>
-          <tr><td><code>badge text-bg-success</code></td><td><code>.label .label-success</code> (<code>.badge</code> era un contador gris)</td></tr>
+          <tr><td><code>badge text-bg-success</code></td><td><code>.label .label-success</code> (<code>.badge</code> era un contador de elementos nuevos o sin leer, como «Bandeja 42»)</td></tr>
           <tr><td><code>btn-outline-primary</code></td><td>No existe (sí <code>btn-primary</code>, <code>btn-default</code>…)</td></tr>
           <tr><td><code>card</code></td><td>No existe: <code>.panel</code>, <code>.well</code>, <code>.thumbnail</code></td></tr>
           <tr><td><code>form-select</code></td><td>No existe: <code>.form-control</code> también en el <code>&lt;select&gt;</code></td></tr>
