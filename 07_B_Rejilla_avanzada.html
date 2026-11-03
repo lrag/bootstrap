@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>07 B · Rejilla: columnas automáticas, responsive, offset, order, gutters…</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    REJILLA (2ª PARTE)
+    Partimos de lo visto en 07 A: .container → .row → .col, 12 columnas y el gutter.
+    Aquí vemos cómo decidir cuánto mide cada columna, cómo cambiarlo según el ancho
+    de pantalla, cómo desplazarlas, reordenarlas, separarlas y meter unas dentro de otras.
+
+    El fondo gris es la fila (o el espacio disponible); el verde, el contenido de cada columna.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Rejilla: más allá de las 12 columnas</h1>
+
+    <!--
+      INDICADOR DE BREAKPOINT
+      Solo se ve una etiqueta en cada ancho (lo vimos en 06 D).
+      Nos sirve para saber qué clases están actuando al redimensionar la ventana.
+    -->
+    <p class="text-center fs-5">
+      Breakpoint actual:
+      <span class="badge text-bg-success d-inline d-sm-none">xs</span>
+      <span class="badge text-bg-success d-none d-sm-inline d-md-none">sm</span>
+      <span class="badge text-bg-success d-none d-md-inline d-lg-none">md</span>
+      <span class="badge text-bg-success d-none d-lg-inline d-xl-none">lg</span>
+      <span class="badge text-bg-success d-none d-xl-inline d-xxl-none">xl</span>
+      <span class="badge text-bg-success d-none d-xxl-inline">xxl</span>
+    </p>
+
+    <!--
+      COLUMNAS AUTOMÁTICAS: .col
+      .col sin número reparte a partes iguales el espacio que queda libre.
+      Da igual cuántas haya: 2 columnas → mitad y mitad; 5 columnas → un quinto cada una
+      (algo imposible con números, porque 12 no se divide entre 5).
+    -->
+    <h2 class="h4 mt-5">Columnas automáticas: <code>.col</code></h2>
+
+    <p class="mb-1">Cinco <code>.col</code>: un quinto cada una</p>
+    <div class="row mb-3">
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
+    </div>
+
+    <!--
+      Se pueden mezclar: primero se reserva lo de las columnas con número
+      y las .col se reparten lo que sobra.
+        col-6 + col + col → la primera, la mitad; las otras dos, un cuarto cada una.
+    -->
+    <p class="mb-1"><code>col-6</code> + <code>col</code> + <code>col</code></p>
+    <div class="row mb-3">
+      <div class="col-6"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-6</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
+    </div>
+
+    <!--
+      COLUMNAS DEL ANCHO DE SU CONTENIDO: .col-auto
+      .col-auto mide lo que mide lo que tiene dentro, ni más ni menos.
+      Caso típico: un botón o una etiqueta a un lado y el resto del espacio para otra cosa.
+    -->
+    <p class="mb-1"><code>col</code> + <code>col-auto</code> + <code>col</code></p>
+    <div class="row mb-4">
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
+      <div class="col-auto"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-auto: mido lo que mi texto</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
+    </div>
+
+    <!--
+      SI LOS NÚMEROS SUMAN MÁS DE 12
+      La fila tiene flex-wrap: wrap. Lo que no cabe en las 12 columnas baja a la línea siguiente.
+        col-8 + col-6 → 8 + 6 = 14: la de 6 no cabe y salta abajo.
+    -->
+    <p class="mb-1"><code>col-8</code> + <code>col-6</code> (suman 14: la segunda baja)</p>
+    <div class="row mb-4">
+      <div class="col-8"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-8</div></div>
+      <div class="col-6"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-6</div></div>
+    </div>
+
+    <!--
+      CLASES RESPONSIVE: col-{breakpoint}-{n}
+      Mobile-first, como siempre: col-md-6 actúa a partir de md (768 px) hacia arriba.
+      Por debajo de md, una columna sin clase para ese tramo ocupa el 100 %: se apilan.
+
+        col-12 col-md-6 col-lg-4
+          - xs y sm → 12 de 12: una por fila
+          - md      → 6 de 12: dos por fila
+          - lg y +  → 4 de 12: tres por fila
+
+      Al redimensionar la ventana vemos cómo pasan de 1 a 2 y a 3 por fila.
+      col-12 se puede omitir: es lo que pasa por defecto por debajo del primer breakpoint.
+    -->
+    <h2 class="h4 mt-5">Clases responsive: <code>col-12 col-md-6 col-lg-4</code></h2>
+    <div class="row mb-4">
+      <div class="col-12 col-md-6 col-lg-4"><div class="bg-success-subtle border border-success-subtle text-center py-2 mb-2">1</div></div>
+      <div class="col-12 col-md-6 col-lg-4"><div class="bg-success-subtle border border-success-subtle text-center py-2 mb-2">2</div></div>
+      <div class="col-12 col-md-6 col-lg-4"><div class="bg-success-subtle border border-success-subtle text-center py-2 mb-2">3</div></div>
+      <div class="col-12 col-md-6 col-lg-4"><div class="bg-success-subtle border border-success-subtle text-center py-2 mb-2">4</div></div>
+      <div class="col-12 col-md-6 col-lg-4"><div class="bg-success-subtle border border-success-subtle text-center py-2 mb-2">5</div></div>
+      <div class="col-12 col-md-6 col-lg-4"><div class="bg-success-subtle border border-success-subtle text-center py-2 mb-2">6</div></div>
+    </div>
+
+    <!--
+      El layout clásico de contenido + barra lateral:
+        col-md-8 + col-md-4 → apiladas en móvil, en paralelo desde md.
+      También vale col-md: automática, pero solo a partir de md.
+    -->
+    <p class="mb-1"><code>col-md-8</code> + <code>col-md-4</code></p>
+    <div class="row mb-4">
+      <div class="col-md-8"><div class="bg-success-subtle border border-success-subtle text-center py-4 mb-2">Contenido (col-md-8)</div></div>
+      <div class="col-md-4"><div class="bg-success-subtle border border-success-subtle text-center py-4 mb-2">Barra lateral (col-md-4)</div></div>
+    </div>
+
+    <!--
+      OFFSET: DEJAR COLUMNAS VACÍAS A LA IZQUIERDA
+        offset-{n}        → margin-left equivalente a n columnas
+        offset-{bp}-{n}   → solo a partir de ese breakpoint
+      Caso típico: centrar una columna. col-6 offset-3 → 3 vacías + 6 + 3 que sobran.
+      Para "empujar a la derecha lo que quede" vale ms-auto (lo vimos en espaciado y flexbox).
+    -->
+    <h2 class="h4 mt-5">Desplazar columnas: <code>offset-*</code></h2>
+
+    <p class="mb-1"><code>col-4</code> + <code>col-4 offset-4</code></p>
+    <div class="bg-secondary-subtle py-2 mb-3">
+      <div class="row">
+        <div class="col-4"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-4</div></div>
+        <div class="col-4 offset-4"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-4 offset-4</div></div>
+      </div>
+    </div>
+
+    <p class="mb-1"><code>col-6 offset-3</code>: una columna centrada</p>
+    <div class="bg-secondary-subtle py-2 mb-3">
+      <div class="row">
+        <div class="col-6 offset-3"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-6 offset-3</div></div>
+      </div>
+    </div>
+
+    <p class="mb-1"><code>col-md-6 offset-md-3</code>: ancho completo en móvil, centrada desde md</p>
+    <div class="bg-secondary-subtle py-2 mb-3">
+      <div class="row">
+        <div class="col-md-6 offset-md-3"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-md-6 offset-md-3</div></div>
+      </div>
+    </div>
+
+    <p class="mb-1"><code>col-3</code> + <code>col-3 ms-auto</code>: la segunda, pegada a la derecha</p>
+    <div class="bg-secondary-subtle py-2 mb-4">
+      <div class="row">
+        <div class="col-3"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-3</div></div>
+        <div class="col-3 ms-auto"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-3 ms-auto</div></div>
+      </div>
+    </div>
+
+    <!--
+      ORDER: CAMBIAR EL ORDEN VISUAL
+        order-first / order-last → la primera / la última
+        order-0 a order-5        → orden concreto (las que no lo tienen van como 0)
+        order-{bp}-*             → solo a partir de ese breakpoint
+      El HTML no cambia: solo el orden en pantalla. Los lectores de pantalla y la tecla Tab
+      siguen el orden del HTML, así que conviene no abusar.
+    -->
+    <h2 class="h4 mt-5">Cambiar el orden: <code>order-*</code></h2>
+
+    <p class="mb-1">En el HTML van A, B, C; C lleva <code>order-first</code> y A <code>order-last</code></p>
+    <div class="row mb-3">
+      <div class="col order-last"><div class="bg-success-subtle border border-success-subtle text-center py-2">A (order-last)</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">B</div></div>
+      <div class="col order-first"><div class="bg-success-subtle border border-success-subtle text-center py-2">C (order-first)</div></div>
+    </div>
+
+    <!--
+      Caso real: en el HTML el contenido va antes que el menú lateral (es lo importante
+      y así lo apilamos primero en móvil). A partir de md, el menú pasa a la izquierda
+      con order-md-first.
+    -->
+    <p class="mb-1">Contenido primero en móvil; desde md, el menú a la izquierda (<code>order-md-first</code>)</p>
+    <div class="row mb-4">
+      <div class="col-md-8"><div class="bg-success-subtle border border-success-subtle text-center py-4 mb-2">Contenido (primero en el HTML)</div></div>
+      <div class="col-md-4 order-md-first"><div class="bg-success-subtle border border-success-subtle text-center py-4 mb-2">Menú (col-md-4 order-md-first)</div></div>
+    </div>
+
+    <!--
+      GUTTERS CON CLASES: g-*, gx-*, gy-*
+      Van en la .row y cambian el hueco entre sus columnas:
+        g-{0-5}  → horizontal y vertical
+        gx-{0-5} → solo horizontal (entre columnas de la misma línea)
+        gy-{0-5} → solo vertical (entre líneas, cuando las columnas saltan)
+      Por dentro cambian dos variables CSS de la fila: --bs-gutter-x y --bs-gutter-y.
+      El relleno de las columnas y el margen negativo de la fila se calculan con ellas.
+      Con g-0 las columnas quedan pegadas.
+    -->
+    <h2 class="h4 mt-5">Gutters: <code>g-*</code>, <code>gx-*</code>, <code>gy-*</code></h2>
+
+    <p class="mb-1"><code>row g-0</code>: sin hueco</p>
+    <div class="row g-0 mb-3">
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
+    </div>
+
+    <p class="mb-1"><code>row g-5</code>: hueco grande</p>
+    <div class="row g-5 mb-3">
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
+    </div>
+
+    <!--
+      gy solo se nota cuando hay más de una línea. Aquí, cuatro col-6 forman dos líneas.
+      Sin gy, las líneas quedan pegadas (por eso antes poníamos mb-2 en cada caja).
+    -->
+    <p class="mb-1"><code>row gx-1 gy-4</code>: poco hueco horizontal, mucho vertical</p>
+    <div class="row gx-1 gy-4 mb-4">
+      <div class="col-6"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-6</div></div>
+      <div class="col-6"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-6</div></div>
+      <div class="col-6"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-6</div></div>
+      <div class="col-6"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-6</div></div>
+    </div>
+
+    <!--
+      ROW-COLS: CUÁNTAS COLUMNAS POR FILA, DESDE LA FILA
+      En lugar de poner col-12 col-sm-6 col-lg-3 en cada columna, se dice en la .row
+      cuántas caben por línea, y las columnas son simplemente .col:
+        row-cols-1 row-cols-sm-2 row-cols-lg-4
+          - xs     → 1 por línea
+          - sm, md → 2 por línea
+          - lg y + → 4 por línea
+      Muy cómodo para catálogos (una card por columna). Se combina con g-* para el hueco.
+    -->
+    <h2 class="h4 mt-5">Columnas por fila: <code>row-cols-*</code></h2>
+
+    <p class="mb-1"><code>row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3</code></p>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 mb-4">
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-3">1</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-3">2</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-3">3</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-3">4</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-3">5</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-3">6</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-3">7</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-3">8</div></div>
+    </div>
+
+    <!--
+      ANIDADO: UNA REJILLA DENTRO DE UNA COLUMNA
+      Dentro de una columna se puede abrir otra .row, sin otro .container.
+      La fila interna vuelve a tener 12 columnas, pero 12 del ancho de su columna padre,
+      no de la página: el col-6 interno es la mitad del col-8, no la mitad de la pantalla.
+      El margen negativo de la fila interna compensa el relleno de la columna padre,
+      igual que la fila externa compensa el del contenedor.
+    -->
+    <h2 class="h4 mt-5">Rejillas anidadas</h2>
+
+    <div class="row mb-5">
+      <div class="col-8">
+        <div class="bg-secondary-subtle border p-3">
+          <p class="mb-2">col-8 con una .row dentro</p>
+          <div class="row">
+            <div class="col-6"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-6 (de la col-8)</div></div>
+            <div class="col-6"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-6 (de la col-8)</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="bg-success-subtle border border-success-subtle text-center py-2 h-100">col-4</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
