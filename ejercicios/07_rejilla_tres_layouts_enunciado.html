@@ -1,0 +1,111 @@
+<!doctype html>
+<!--
+  EJERCICIO: TRES LAYOUTS CON LA REJILLA
+  Esqueleto de partida. Las cajas de color ya están hechas y en orden;
+  falta envolverlas en filas y columnas (.row, .col-*) para conseguir cada layout.
+  Se resuelve solo con clases de Bootstrap, sin CSS propio.
+  La solución está en 07_rejilla_tres_layouts_solucion.html.
+-->
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ejercicio · Tres layouts con la rejilla</title>
+  <link href="../recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="../recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Ejercicio: tres layouts con la rejilla</h1>
+
+    <!-- Indicador de breakpoint: solo se ve la etiqueta del tramo actual -->
+    <p class="text-center fs-5">
+      Breakpoint actual:
+      <span class="badge text-bg-success d-inline d-sm-none">xs</span>
+      <span class="badge text-bg-success d-none d-sm-inline d-md-none">sm</span>
+      <span class="badge text-bg-success d-none d-md-inline d-lg-none">md</span>
+      <span class="badge text-bg-success d-none d-lg-inline d-xl-none">lg</span>
+      <span class="badge text-bg-success d-none d-xl-inline d-xxl-none">xl</span>
+      <span class="badge text-bg-success d-none d-xxl-inline">xxl</span>
+    </p>
+
+    <div class="card border-success my-4">
+      <div class="card-body">
+        <h2 class="h5 card-title">Enunciado</h2>
+        <p>
+          Se parte de las cajas de color de cada layout, que ya están en el HTML en el orden correcto.
+          Hay que añadir las filas y columnas de la rejilla, sin escribir CSS propio,
+          para que cada layout se comporte como se describe en su apartado.
+        </p>
+        <p class="mb-2">Requisitos comunes:</p>
+        <ul>
+          <li>Hueco de separación entre las cajas, horizontal y vertical, con las clases <code>g-*</code>.</li>
+          <li>Comprobación en xs, md y xl con el modo dispositivo de las herramientas de desarrollo (F12).</li>
+        </ul>
+        <p class="mb-2">Ampliación:</p>
+        <ul class="mb-0">
+          <li>Layout 1: el lateral pasa a la izquierda desde lg, sin mover nada en el HTML.</li>
+          <li>Layout 2: qué ocurre en móvil al quitar las clases <code>g-*</code>, y por qué.</li>
+          <li>Layout 3: en lugar de los tres datos, un único bloque de datos de 6 columnas centrado con <code>offset</code>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!--
+      LAYOUT 1 · BLOG
+    -->
+    <h2 class="h4 mt-5">Layout 1 · Blog: contenido y barra lateral</h2>
+    <ul>
+      <li>Cabecera y pie ocupan siempre todo el ancho.</li>
+      <li>Desde lg: artículo de 8 columnas y lateral de 4, uno al lado del otro.</li>
+      <li>Por debajo de lg: todo apilado, con el artículo antes que el lateral.</li>
+    </ul>
+
+    <div class="bg-secondary-subtle border p-2 text-center">Cabecera</div>
+    <div class="bg-success-subtle border border-success-subtle p-2 text-center" style="min-height: 8rem">Artículo</div>
+    <div class="bg-warning-subtle border border-warning-subtle p-2 text-center" style="min-height: 8rem">Lateral</div>
+    <div class="bg-secondary-subtle border p-2 text-center">Pie</div>
+
+    <!--
+      LAYOUT 2 · CATÁLOGO
+    -->
+    <h2 class="h4 mt-5">Layout 2 · Catálogo de productos</h2>
+    <ul>
+      <li>Productos por fila: 1 en xs, 2 desde sm, 3 desde md y 4 desde xl.</li>
+      <li>El número de productos por fila se indica en la fila, no en cada columna (<code>row-cols-*</code>).</li>
+    </ul>
+
+    <div class="bg-success-subtle border border-success-subtle p-2 text-center" style="min-height: 5rem">Producto 1</div>
+    <div class="bg-success-subtle border border-success-subtle p-2 text-center" style="min-height: 5rem">Producto 2</div>
+    <div class="bg-success-subtle border border-success-subtle p-2 text-center" style="min-height: 5rem">Producto 3</div>
+    <div class="bg-success-subtle border border-success-subtle p-2 text-center" style="min-height: 5rem">Producto 4</div>
+    <div class="bg-success-subtle border border-success-subtle p-2 text-center" style="min-height: 5rem">Producto 5</div>
+    <div class="bg-success-subtle border border-success-subtle p-2 text-center" style="min-height: 5rem">Producto 6</div>
+    <div class="bg-success-subtle border border-success-subtle p-2 text-center" style="min-height: 5rem">Producto 7</div>
+    <div class="bg-success-subtle border border-success-subtle p-2 text-center" style="min-height: 5rem">Producto 8</div>
+
+    <!--
+      LAYOUT 3 · PANEL
+    -->
+    <h2 class="h4 mt-5">Layout 3 · Panel con menú, contenido y avisos</h2>
+    <ul>
+      <li>Desde lg: tres columnas, menú (2) + contenido (7) + avisos (3), en ese orden.</li>
+      <li>Por debajo de lg: apilados, con el contenido primero, luego el menú y luego los avisos (<code>order-*</code>).</li>
+      <li>Dentro del contenido, los tres datos van en una rejilla anidada: uno por fila en xs y los tres en una fila desde sm.</li>
+    </ul>
+
+    <div class="bg-warning-subtle border border-warning-subtle p-2 text-center" style="min-height: 6rem">Menú</div>
+    <div class="bg-success-subtle border border-success-subtle p-2">
+      <p class="text-center">Contenido</p>
+      <div class="bg-secondary-subtle border p-2 text-center">Dato 1</div>
+      <div class="bg-secondary-subtle border p-2 text-center">Dato 2</div>
+      <div class="bg-secondary-subtle border p-2 text-center">Dato 3</div>
+    </div>
+    <div class="bg-warning-subtle border border-warning-subtle p-2 text-center mb-5" style="min-height: 6rem">Avisos</div>
+  </div>
+
+</body>
+</html>
