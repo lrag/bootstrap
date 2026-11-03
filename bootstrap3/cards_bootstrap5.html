@@ -1,0 +1,145 @@
+<!doctype html>
+<!--
+  CARDS (BOOTSTRAP 5)
+  La misma página que paneles_bootstrap3.html, pero con cards.
+  Una sola card sustituye a los tres componentes de Bootstrap 3:
+    .panel     → .card con .card-header, .card-body y .card-footer
+    .well      → .card con .card-body (o utilidades: bg-body-tertiary p-3 rounded)
+    .thumbnail → .card con .card-img-top
+-->
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cards · Bootstrap 5</title>
+  <link href="../recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="../recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Cards · Bootstrap 5</h1>
+    <p class="lead text-center">Los márgenes entre bloques los ponemos con utilidades (mt-5, mb-4, g-4…).</p>
+
+    <!--
+      CARD BÁSICA (antes: panel)
+        .panel          → .card
+        .panel-heading  → .card-header
+        .panel-title    → .card-title (en Bootstrap 5 suele ir dentro de .card-body)
+        .panel-body     → .card-body
+        .panel-footer   → .card-footer
+    -->
+    <h2 class="mt-5">Card básica <small class="text-body-secondary">(antes: panel)</small></h2>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="h6 mb-0">Título de la card</h3>
+      </div>
+      <div class="card-body">
+        Contenido de la card. El relleno lo pone .card-body.
+      </div>
+      <div class="card-footer">Pie de la card</div>
+    </div>
+
+    <!--
+      CARDS DE COLOR (antes: panel-primary, panel-success...)
+      No hay card-primary. El color se pone con utilidades:
+        border-primary            → borde de la card
+        text-bg-primary           → fondo de color y texto que contrasta (en la cabecera)
+      Con g-4 en la fila separamos las columnas; con h-100 las tres cards miden lo mismo.
+    -->
+    <h2 class="mt-5">Cards de color <small class="text-body-secondary">(antes: panel-primary…)</small></h2>
+    <div class="row g-4">
+      <div class="col-sm-4">
+        <div class="card border-primary h-100">
+          <div class="card-header text-bg-primary">border-primary + text-bg-primary</div>
+          <div class="card-body">Cabecera azul y borde azul.</div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card border-success h-100">
+          <div class="card-header text-bg-success">border-success + text-bg-success</div>
+          <div class="card-body">Cabecera verde y borde verde.</div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card border-danger h-100">
+          <div class="card-header text-bg-danger">border-danger + text-bg-danger</div>
+          <div class="card-body">Cabecera roja y borde rojo.</div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      CARD CON LISTA
+      Igual que en Bootstrap 3, pero con .list-group-flush para quitar los bordes laterales
+      de la lista y que encaje con los de la card.
+    -->
+    <h2 class="mt-5">Card con lista</h2>
+    <div class="card">
+      <div class="card-header">Productos</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Teclado</li>
+        <li class="list-group-item">Ratón</li>
+        <li class="list-group-item">Monitor</li>
+      </ul>
+    </div>
+
+    <!--
+      BLOQUE DESTACADO (antes: well)
+      No hay .well. O una card con fondo, o directamente utilidades.
+    -->
+    <h2 class="mt-5">Bloque destacado <small class="text-body-secondary">(antes: well)</small></h2>
+    <div class="card bg-body-tertiary mb-3">
+      <div class="card-body">Un bloque destacado con .card .bg-body-tertiary.</div>
+    </div>
+    <div class="bg-body-tertiary border rounded p-2">Solo utilidades: bg-body-tertiary border rounded p-2.</div>
+
+    <!--
+      CARDS CON IMAGEN EN REJILLA (antes: thumbnail)
+        .thumbnail > img → .card > .card-img-top
+        .caption         → .card-body
+      row-cols-1 row-cols-sm-3: una columna en móvil, tres desde sm, sin poner col-* en cada una.
+      h-100: las tres cards miden lo mismo aunque una tenga más texto (la rejilla es flexbox).
+      mt-auto en el botón lo empuja abajo del todo, alineado en las tres.
+    -->
+    <h2 class="mt-5">Cards con imagen en rejilla <small class="text-body-secondary">(antes: thumbnail)</small></h2>
+    <div class="row row-cols-1 row-cols-sm-3 g-4 mb-5">
+      <div class="col">
+        <div class="card h-100">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='150'%3E%3Crect width='100%25' height='100%25' fill='%23ced4da'/%3E%3C/svg%3E" class="card-img-top" alt="Imagen de ejemplo">
+          <div class="card-body d-flex flex-column">
+            <h3 class="h5 card-title">Producto 1</h3>
+            <p class="card-text">Descripción corta.</p>
+            <a href="#" class="btn btn-primary mt-auto align-self-start">Comprar</a>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='150'%3E%3Crect width='100%25' height='100%25' fill='%23ced4da'/%3E%3C/svg%3E" class="card-img-top" alt="Imagen de ejemplo">
+          <div class="card-body d-flex flex-column">
+            <h3 class="h5 card-title">Producto 2</h3>
+            <p class="card-text">Una descripción bastante más larga que las otras, para ver que las cards sí se igualan en altura.</p>
+            <a href="#" class="btn btn-primary mt-auto align-self-start">Comprar</a>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='150'%3E%3Crect width='100%25' height='100%25' fill='%23ced4da'/%3E%3C/svg%3E" class="card-img-top" alt="Imagen de ejemplo">
+          <div class="card-body d-flex flex-column">
+            <h3 class="h5 card-title">Producto 3</h3>
+            <p class="card-text">Descripción corta.</p>
+            <a href="#" class="btn btn-primary mt-auto align-self-start">Comprar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!doctype html>
+<!--
+  PANELES, WELLS Y THUMBNAILS (BOOTSTRAP 3)
+  Los tres componentes que Bootstrap 4 sustituyó por las cards.
+  La misma página hecha con cards está en cards_bootstrap5.html.
+
+  Cargamos Bootstrap 3.4.1 desde el CDN. Solo el CSS: el JavaScript de Bootstrap 3
+  necesita jQuery, y aquí no usamos ningún componente interactivo.
+-->
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paneles · Bootstrap 3</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="container">
+    <h1 class="text-center text-success">Paneles · Bootstrap 3</h1>
+    <p class="lead text-center">Sin utilidades de espaciado: los márgenes salen de los propios componentes.</p>
+
+    <!--
+      PANEL BÁSICO
+        .panel .panel-default → la caja con borde
+        .panel-heading        → cabecera gris (con .panel-title en el título)
+        .panel-body           → el contenido, con relleno
+        .panel-footer         → pie gris
+    -->
+    <h2>Panel básico</h2>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Título del panel</h3>
+      </div>
+      <div class="panel-body">
+        Contenido del panel. El relleno lo pone .panel-body.
+      </div>
+      <div class="panel-footer">Pie del panel</div>
+    </div>
+
+    <!--
+      PANELES DE COLOR
+      El color va en el propio panel: panel-primary, panel-success, panel-info,
+      panel-warning, panel-danger. Colorea la cabecera y el borde.
+    -->
+    <h2>Paneles de color</h2>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="panel panel-primary">
+          <div class="panel-heading">panel-primary</div>
+          <div class="panel-body">Cabecera azul y borde azul.</div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="panel panel-success">
+          <div class="panel-heading">panel-success</div>
+          <div class="panel-body">Cabecera verde y borde verde.</div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="panel panel-danger">
+          <div class="panel-heading">panel-danger</div>
+          <div class="panel-body">Cabecera roja y borde rojo.</div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      PANEL CON LISTA
+      Un .list-group directamente dentro del panel, sin .panel-body: ocupa todo el ancho.
+    -->
+    <h2>Panel con lista</h2>
+    <div class="panel panel-default">
+      <div class="panel-heading">Productos</div>
+      <ul class="list-group">
+        <li class="list-group-item">Teclado</li>
+        <li class="list-group-item">Ratón</li>
+        <li class="list-group-item">Monitor</li>
+      </ul>
+    </div>
+
+    <!--
+      WELL
+      Una caja gris "hundida" (con sombra interior) para destacar un bloque.
+      Tamaños: well-sm y well-lg.
+    -->
+    <h2>Well</h2>
+    <div class="well">Un bloque destacado dentro de un .well.</div>
+    <div class="well well-sm">.well .well-sm, con menos relleno.</div>
+
+    <!--
+      THUMBNAIL
+      Una imagen con marco y, opcionalmente, un .caption con texto debajo.
+      Se suele combinar con la rejilla para hacer catálogos.
+      Las columnas no miden lo mismo de alto: en Bootstrap 3 la rejilla usa float,
+      y cada thumbnail mide lo que su contenido.
+    -->
+    <h2>Thumbnails en rejilla</h2>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='150'%3E%3Crect width='100%25' height='100%25' fill='%23ced4da'/%3E%3C/svg%3E" alt="Imagen de ejemplo">
+          <div class="caption">
+            <h3>Producto 1</h3>
+            <p>Descripción corta.</p>
+            <p><a href="#" class="btn btn-primary">Comprar</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='150'%3E%3Crect width='100%25' height='100%25' fill='%23ced4da'/%3E%3C/svg%3E" alt="Imagen de ejemplo">
+          <div class="caption">
+            <h3>Producto 2</h3>
+            <p>Una descripción bastante más larga que las otras, para ver que las cajas no se igualan en altura.</p>
+            <p><a href="#" class="btn btn-primary">Comprar</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='150'%3E%3Crect width='100%25' height='100%25' fill='%23ced4da'/%3E%3C/svg%3E" alt="Imagen de ejemplo">
+          <div class="caption">
+            <h3>Producto 3</h3>
+            <p>Descripción corta.</p>
+            <p><a href="#" class="btn btn-primary">Comprar</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
