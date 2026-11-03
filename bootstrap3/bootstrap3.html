@@ -1,0 +1,173 @@
+<!doctype html>
+<!--
+  BOOTSTRAP 5.3 FRENTE A BOOTSTRAP 3
+  Lo que hemos visto en el curso que no funciona (o se llama distinto) en Bootstrap 3.
+  La mayoría de utilidades llegaron en Bootstrap 4; los modos de color y las variables CSS, en la 5.3.
+-->
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 5.3 frente a Bootstrap 3</title>
+  <link href="../recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="../recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Bootstrap 5.3 frente a Bootstrap 3</h1>
+    <p class="lead text-center mb-5">
+      Casi nada de lo que llevamos funciona en Bootstrap 3: las utilidades llegaron en la versión 4,
+      y los modos de color y las variables CSS, en la 5.3.
+    </p>
+
+    <!-- BASE Y ENTORNO -->
+    <h2 class="h4 mt-5">Base y entorno</h2>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Sin jQuery</td><td><strong>jQuery obligatorio</strong> para el JavaScript</td></tr>
+          <tr><td><code>data-bs-theme</code> (modo claro y oscuro)</td><td>No existe: solo tema claro</td></tr>
+          <tr><td>Variables CSS <code>--bs-*</code></td><td>No existen: valores fijos en el CSS compilado</td></tr>
+          <tr><td>Sass</td><td><strong>Less</strong> (había un port a Sass, pero no era el oficial)</td></tr>
+          <tr><td>Medidas en <code>rem</code></td><td>Casi todo en <code>px</code></td></tr>
+          <tr><td><code>bootstrap.rtl.min.css</code></td><td>Sin soporte de derecha a izquierda</td></tr>
+          <tr><td><code>data-bs-toggle</code>, <code>data-bs-target</code></td><td><code>data-toggle</code>, <code>data-target</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- CONTENEDORES Y BREAKPOINTS -->
+    <h2 class="h4 mt-5">Contenedores y breakpoints</h2>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>6 breakpoints: xs, sm, md, lg, xl, xxl</td><td>4: xs (&lt;768), sm (≥768), md (≥992), lg (≥1200)</td></tr>
+          <tr><td><code>.container-sm</code>, <code>.container-md</code>…</td><td>No existen: solo <code>.container</code> y <code>.container-fluid</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ESPACIADO -->
+    <h2 class="h4 mt-5">Espaciado: no existe nada</h2>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>m-*</code>, <code>p-*</code>, <code>mt-3</code>, <code>px-2</code>, <code>py-2</code>…</td><td><strong>No hay utilidades de espaciado</strong>: CSS propio</td></tr>
+          <tr><td><code>mx-auto</code></td><td><code>.center-block</code> (para bloques)</td></tr>
+          <tr><td><code>ms-auto</code> / <code>me-auto</code></td><td><code>.pull-right</code> / <code>.pull-left</code> (con <code>float</code>)</td></tr>
+          <tr><td><code>start</code> / <code>end</code></td><td>Solo <code>left</code> / <code>right</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FLEXBOX -->
+    <h2 class="h4 mt-5">Flexbox: no existe nada</h2>
+    <p>
+      Bootstrap 3 maqueta con <code>float</code>. No hay <code>d-flex</code>, <code>flex-column</code>,
+      <code>justify-content-*</code>, <code>align-items-*</code>, <code>align-self-*</code>, <code>gap-*</code>,
+      <code>flex-wrap</code>, <code>flex-grow-1</code> ni <code>flex-shrink-0</code>.
+      Centrar en vertical requiere CSS propio.
+    </p>
+
+    <!-- TAMAÑOS, BORDES Y SOMBRAS -->
+    <h2 class="h4 mt-5">Tamaños, bordes y sombras</h2>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>w-25</code>… <code>w-100</code>, <code>h-*</code>, <code>mw-100</code></td><td>No existen</td></tr>
+          <tr><td><code>min-vh-100</code>, <code>vh-100</code></td><td>No existen</td></tr>
+          <tr><td><code>border</code>, <code>border-top</code>, <code>border-primary</code>, <code>border-3</code></td><td>No existen</td></tr>
+          <tr><td><code>rounded</code>, <code>rounded-circle</code>, <code>rounded-pill</code></td><td>Solo para imágenes: <code>.img-rounded</code>, <code>.img-circle</code></td></tr>
+          <tr><td><code>shadow-sm</code>, <code>shadow</code>, <code>shadow-lg</code></td><td>No existen</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- VISIBILIDAD -->
+    <h2 class="h4 mt-5">Visibilidad responsive</h2>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>d-none d-md-block</code></td><td><code>.hidden-xs .hidden-sm</code>, o <code>.visible-md-block</code></td></tr>
+          <tr><td><code>d-md-none</code></td><td><code>.visible-xs .visible-sm</code> (con variantes <code>-block</code>, <code>-inline</code>…)</td></tr>
+          <tr><td><code>visually-hidden</code></td><td><code>.sr-only</code></td></tr>
+          <tr><td><code>d-print-none</code> / <code>d-print-block</code></td><td><code>.hidden-print</code> / <code>.visible-print-block</code></td></tr>
+          <tr><td><code>invisible</code></td><td><span class="badge text-bg-success">Sí existe</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- REJILLA -->
+    <h2 class="h4 mt-5">Rejilla</h2>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Rejilla con flexbox</td><td>Rejilla con <code>float</code></td></tr>
+          <tr><td><code>.col</code> (columnas automáticas iguales)</td><td>No existe: siempre hay que poner el número</td></tr>
+          <tr><td><code>.col-auto</code></td><td>No existe</td></tr>
+          <tr><td><code>.col-6</code> (xs sin infijo)</td><td><code>.col-xs-6</code></td></tr>
+          <tr><td>Columnas de la misma altura</td><td>No: cada una mide lo que su contenido</td></tr>
+          <tr><td><code>offset-md-2</code></td><td><code>.col-md-offset-2</code></td></tr>
+          <tr><td><code>order-1</code>, <code>order-md-first</code></td><td><code>.col-md-push-*</code> / <code>.col-md-pull-*</code></td></tr>
+          <tr><td>Gutters <code>g-*</code>, <code>gx-*</code>, <code>gy-*</code></td><td>Fijo a 30 px, sin clases para cambiarlo</td></tr>
+          <tr><td><code>row-cols-*</code></td><td>No existe</td></tr>
+          <tr><td>Anidado</td><td><span class="badge text-bg-success">Sí funciona</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TEXTO, COLOR Y COMPONENTES -->
+    <h2 class="h4 mt-5">Texto, color y componentes que han salido de pasada</h2>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>text-center</code>, <code>text-success</code>, <code>text-uppercase</code></td><td><span class="badge text-bg-success">Sí existen</span></td></tr>
+          <tr><td><code>text-start</code> / <code>text-end</code>, <code>text-md-start</code></td><td><code>.text-left</code> / <code>.text-right</code>, sin versiones responsive</td></tr>
+          <tr><td><code>fs-4</code>, <code>fw-bold</code></td><td>No existen</td></tr>
+          <tr><td><code>bg-success-subtle</code>, <code>text-bg-success</code>, <code>bg-body-tertiary</code></td><td>No existen (sí <code>bg-success</code>, <code>bg-primary</code>)</td></tr>
+          <tr><td><code>badge text-bg-success</code></td><td><code>.label .label-success</code> (<code>.badge</code> era un contador gris)</td></tr>
+          <tr><td><code>btn-outline-primary</code></td><td>No existe (sí <code>btn-primary</code>, <code>btn-default</code>…)</td></tr>
+          <tr><td><code>card</code></td><td>No existe: <code>.panel</code>, <code>.well</code>, <code>.thumbnail</code></td></tr>
+          <tr><td><code>form-select</code></td><td>No existe: <code>.form-control</code> también en el <code>&lt;select&gt;</code></td></tr>
+          <tr><td><code>img-fluid</code></td><td><code>.img-responsive</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- LO QUE SÍ FUNCIONA -->
+    <h2 class="h4 mt-5">Lo que sí funciona igual</h2>
+    <div class="alert alert-success mb-5">
+      <code>.container</code>, <code>.container-fluid</code>, <code>.row</code>, <code>.btn</code>, <code>.btn-group</code>,
+      <code>.alert</code>, <code>.table</code>, <code>.table-striped</code>, <code>.form-control</code>,
+      <code>text-center</code>, los colores de texto, <code>text-uppercase</code>, <code>invisible</code> y <code>clearfix</code>.
+    </div>
+  </div>
+
+</body>
+</html>
