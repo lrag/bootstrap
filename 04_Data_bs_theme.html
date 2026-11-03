@@ -10,6 +10,7 @@
   Si lo quitamos, la página es clara: light es el valor por defecto.
 -->
 <html lang="es" data-bs-theme="light">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,26 +20,61 @@
   <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
   <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
 
-  <script>
-    window.onload = () => {
-      // document.documentElement es el elemento <html>: le cambiamos el atributo data-bs-theme
-      const temaActual = document.getElementById('tema-actual')
-
-      document.getElementById('btn-claro').onclick = () => {
-        document.documentElement.setAttribute('data-bs-theme', 'light')
-        temaActual.textContent = 'light'
-      }
-
-      document.getElementById('btn-oscuro').onclick = () => {
-        document.documentElement.setAttribute('data-bs-theme', 'dark')
-        temaActual.textContent = 'dark'
-      }
+  <style>
+    :root {
+      --color-modo1: lightGreen;
+      --color-modo2: darkGreen;
+      --estilo-texto-modo1: uppercase;
+      --estilo-texto-modo2: capitalize;
     }
-  </script>
+
+    [modo=modo1] {
+      color: var(--color-modo1);
+      text-transform: var(--estilo-texto-modo1);
+    } 
+    [modo=modo2] {
+      color: var(--color-modo2); 
+      text-transform: var(--estilo-texto-modo2);
+    } 
+  </style>
+
 </head>
+
+<script>
+  window.onload = () => {
+    // document.documentElement es el elemento <html>: le cambiamos el atributo data-bs-theme
+    const temaActual = document.getElementById('tema-actual')
+
+    document.getElementById('btn-claro').onclick = () => {
+      //Document es la raíz del árbol DOM, pero no es una etiqueta HTML
+      //document.documentElement es la etiqueta <html>
+      document.documentElement.setAttribute('data-bs-theme', 'light')
+      document.documentElement.setAttribute('modo', 'modo1')
+      temaActual.textContent = 'light'
+    }
+
+    document.getElementById('btn-oscuro').onclick = () => {
+      document.documentElement.setAttribute('data-bs-theme', 'dark')
+      document.documentElement.setAttribute('modo', 'modo2')
+      temaActual.textContent = 'dark'
+    }
+  }
+</script>
+
+
 <body>
+
   <div class="container">
     <h1 class="text-center mt-5 text-success">data-bs-theme</h1>
+
+    <div id="aManubrio" align="center">
+      <span modo="modo1"><b>modo 1</b></span>
+      <span modo="modo2"><b>modo 2</b></span>
+      <span modo="modo1">
+        <span><b>modo 1</b></span>
+      </span>
+      <span><b>modo</b></span>
+    </div>
 
     <!--
       Botones para cambiar el atributo de <html> sin editar el fichero.
