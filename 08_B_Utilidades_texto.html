@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>08 B · Utilidades de texto, listas y citas</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <!--
+    Equivalente en CSS normal de text-truncate: las tres propiedades que hacen falta
+    para cortar con "..." lo que no cabe en una línea.
+  -->
+  <style>
+    .recortar {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+  <!--
+    UTILIDADES DE TEXTO, LISTAS Y CITAS
+    Igual que las de espaciado, cada utilidad de texto aplica una sola propiedad CSS.
+    El nombre lleva la abreviatura de la propiedad:
+      fs  → font-size        fw → font-weight    fst → font-style
+      lh  → line-height      text-decoration-*, text-uppercase... → el nombre casi entero
+
+    El contenido va en verde si lo resuelve una clase de Bootstrap y en azul si lo resuelve CSS normal.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Utilidades de texto, listas y citas</h1>
+
+    <!--
+      TAMAÑO: fs-1 A fs-6
+      Los mismos tamaños que h1 a h6, pero solo el tamaño: sin negrita, sin margen,
+      sin interlineado de título. Para agrandar un texto que no es un título.
+        fs-1 → 2.5rem ... fs-6 → 1rem   (fs = font-size)
+    -->
+    <h2 class="h4 mt-5">Tamaño: <code>fs-*</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-3">
+      <p class="fs-1 mb-0">fs-1</p>
+      <p class="fs-3 mb-0">fs-3</p>
+      <p class="fs-5 mb-0">fs-5</p>
+      <p class="fs-6 mb-0">fs-6</p>
+    </div>
+    <div class="bg-primary-subtle border border-primary-subtle p-3 mb-4">
+      <p class="mb-0" style="font-size: 2.5rem">style="font-size: 2.5rem" (igual que fs-1 en pantalla grande)</p>
+    </div>
+
+    <!--
+      GROSOR Y CURSIVA: fw-* Y fst-*
+        fw-light → 300   fw-normal → 400   fw-semibold → 600   fw-bold → 700
+        fst-italic → font-style: italic    fst-normal → font-style: normal
+      fst-normal sirve para quitar la cursiva a algo que la trae de serie, como <em>.
+    -->
+    <h2 class="h4 mt-5">Grosor y cursiva: <code>fw-*</code> y <code>fst-*</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-3">
+      <p class="fw-light mb-0">fw-light</p>
+      <p class="fw-normal mb-0">fw-normal</p>
+      <p class="fw-semibold mb-0">fw-semibold</p>
+      <p class="fw-bold mb-0">fw-bold</p>
+      <p class="fst-italic mb-0">fst-italic</p>
+      <p class="mb-0"><em class="fst-normal">un &lt;em&gt; con fst-normal</em></p>
+    </div>
+    <div class="bg-primary-subtle border border-primary-subtle p-3 mb-4">
+      <p class="mb-0" style="font-weight: 600">style="font-weight: 600" (igual que fw-semibold)</p>
+    </div>
+
+    <!--
+      DECORACIÓN Y TRANSFORMACIÓN
+        text-decoration-underline     → text-decoration: underline
+        text-decoration-line-through  → text-decoration: line-through
+        text-decoration-none          → text-decoration: none   (quitar el subrayado de un enlace)
+        text-uppercase / text-lowercase / text-capitalize → text-transform
+      text-transform solo cambia cómo se ve: en el HTML el texto sigue como se escribió.
+    -->
+    <h2 class="h4 mt-5">Decoración y transformación</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-3">
+      <p class="text-decoration-underline mb-0">text-decoration-underline</p>
+      <p class="text-decoration-line-through mb-0">text-decoration-line-through</p>
+      <p class="mb-0"><a href="#">un enlace normal</a> y <a href="#" class="text-decoration-none">uno con text-decoration-none</a></p>
+      <p class="text-uppercase mb-0">text-uppercase</p>
+      <p class="text-lowercase mb-0">TEXT-LOWERCASE</p>
+      <p class="text-capitalize mb-0">text-capitalize: cada palabra con mayúscula</p>
+    </div>
+    <div class="bg-primary-subtle border border-primary-subtle p-3 mb-4">
+      <p class="mb-0" style="text-transform: uppercase">style="text-transform: uppercase"</p>
+    </div>
+
+    <!--
+      ALINEACIÓN: text-start, text-center, text-end
+      Con breakpoint, como todo lo responsive: text-center text-md-start
+      → centrado en móvil, a la izquierda desde md.
+    -->
+    <h2 class="h4 mt-5">Alineación: <code>text-start</code>, <code>text-center</code>, <code>text-end</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-4">
+      <p class="text-start mb-0">text-start</p>
+      <p class="text-center mb-0">text-center</p>
+      <p class="text-end mb-0">text-end</p>
+      <p class="text-center text-md-start mb-0">text-center text-md-start: centrado en móvil, a la izquierda desde md</p>
+    </div>
+
+    <!--
+      INTERLINEADO: lh-*
+        lh-1 → line-height: 1     lh-sm → 1.25    lh-base → 1.5 (el de Reboot)    lh-lg → 2
+      Se nota en párrafos de varias líneas.
+    -->
+    <h2 class="h4 mt-5">Interlineado: <code>lh-*</code></h2>
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-4">
+        <p class="mb-1"><code>lh-1</code></p>
+        <p class="lh-1 bg-success-subtle border border-success-subtle p-2 mb-0">Un párrafo de varias líneas para ver la distancia entre una línea y la siguiente con cada valor.</p>
+      </div>
+      <div class="col-md-4">
+        <p class="mb-1"><code>lh-base</code></p>
+        <p class="lh-base bg-success-subtle border border-success-subtle p-2 mb-0">Un párrafo de varias líneas para ver la distancia entre una línea y la siguiente con cada valor.</p>
+      </div>
+      <div class="col-md-4">
+        <p class="mb-1"><code>lh-lg</code></p>
+        <p class="lh-lg bg-success-subtle border border-success-subtle p-2 mb-0">Un párrafo de varias líneas para ver la distancia entre una línea y la siguiente con cada valor.</p>
+      </div>
+    </div>
+
+    <!--
+      UNA SOLA LÍNEA: text-nowrap Y text-truncate
+        text-nowrap   → white-space: nowrap   el texto no salta de línea (y puede salirse)
+        text-truncate → corta con "..." lo que no cabe. Son tres propiedades a la vez
+                        (overflow, text-overflow y white-space) y necesita un ancho limitado.
+    -->
+    <h2 class="h4 mt-5">Una sola línea: <code>text-nowrap</code> y <code>text-truncate</code></h2>
+
+    <p class="mb-1"><code>class="text-truncate"</code> en una caja de 15rem</p>
+    <div class="bg-success-subtle border border-success-subtle p-2 mb-3 text-truncate" style="max-width: 15rem">Un título de producto demasiado largo para su caja</div>
+
+    <p class="mb-1"><code>class="recortar"</code> (CSS propio, igual que <code>text-truncate</code>)</p>
+    <div class="bg-primary-subtle border border-primary-subtle p-2 mb-3 recortar" style="max-width: 15rem">Un título de producto demasiado largo para su caja</div>
+
+    <p class="mb-1">Sin clase: salta de línea</p>
+    <div class="bg-secondary-subtle border p-2 mb-4" style="max-width: 15rem">Un título de producto demasiado largo para su caja</div>
+
+    <!--
+      SMALL Y MARK
+      Existen como etiqueta y como clase:
+        <small> / .small → font-size: .875em  (relativo al texto del padre)
+        <mark>  / .mark  → fondo amarillo, texto resaltado
+    -->
+    <h2 class="h4 mt-5">Texto pequeño y resaltado: <code>small</code> y <code>mark</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-4">
+      <p class="mb-0">Un texto con una parte <mark>resaltada</mark> y una nota <small>(más pequeña)</small>.</p>
+      <p class="small mb-0">Un párrafo entero con la clase small.</p>
+    </div>
+
+    <!--
+      LISTAS
+        list-unstyled → quita viñetas y sangría (solo al primer nivel, no a las listas anidadas)
+        list-inline + list-inline-item → los elementos en línea, uno al lado del otro
+      Los menús y los enlaces de los pies de página suelen ser listas así.
+    -->
+    <h2 class="h4 mt-5">Listas: <code>list-unstyled</code> y <code>list-inline</code></h2>
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-4">
+        <p class="mb-1">Sin clase</p>
+        <ul class="bg-secondary-subtle border py-2 mb-0">
+          <li>Inicio</li>
+          <li>Productos</li>
+          <li>Contacto</li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <p class="mb-1"><code>list-unstyled</code></p>
+        <ul class="list-unstyled bg-success-subtle border border-success-subtle p-2 mb-0">
+          <li>Inicio</li>
+          <li>Productos
+            <ul>
+              <li>Teclados (la anidada conserva la viñeta)</li>
+            </ul>
+          </li>
+          <li>Contacto</li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <p class="mb-1"><code>list-inline</code></p>
+        <ul class="list-inline bg-success-subtle border border-success-subtle p-2 mb-0">
+          <li class="list-inline-item">Inicio</li>
+          <li class="list-inline-item">Productos</li>
+          <li class="list-inline-item">Contacto</li>
+        </ul>
+      </div>
+    </div>
+
+    <!--
+      CITAS
+        <figure>                              → une la cita con su autoría
+          <blockquote class="blockquote">     → la cita, más grande (1.25rem)
+          <figcaption class="blockquote-footer"> → la autoría, con un guion delante
+            <cite>                            → el título de la obra
+      Para alinearla, text-center o text-end en el <figure>.
+    -->
+    <h2 class="h4 mt-5">Citas: <code>blockquote</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <figure class="mb-4">
+        <blockquote class="blockquote">
+          <p>La simplicidad es un requisito previo de la fiabilidad.</p>
+        </blockquote>
+        <figcaption class="blockquote-footer mb-0">
+          Edsger W. Dijkstra en <cite title="How do we tell truths that might hurt?">How do we tell truths that might hurt?</cite>
+        </figcaption>
+      </figure>
+      <figure class="text-end mb-0">
+        <blockquote class="blockquote">
+          <p>La misma estructura, con text-end en el figure.</p>
+        </blockquote>
+        <figcaption class="blockquote-footer mb-0">Ejemplo</figcaption>
+      </figure>
+    </div>
+  </div>
+
+</body>
+</html>

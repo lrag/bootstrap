@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>08 C · Colores</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <script>
+    window.onload = () => {
+      document.getElementById('btn-claro').onclick = () => {
+        document.documentElement.setAttribute('data-bs-theme', 'light')
+      }
+
+      document.getElementById('btn-oscuro').onclick = () => {
+        document.documentElement.setAttribute('data-bs-theme', 'dark')
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!--
+    COLORES
+    Bootstrap tiene ocho colores con nombre de función, no de color:
+      primary   → acción principal, color de la marca
+      secondary → acciones secundarias, elementos neutros
+      success   → éxito, confirmación
+      danger    → error, acción peligrosa (borrar)
+      warning   → aviso
+      info      → información
+      light / dark → fondos claros u oscuros
+    primary no significa "azul", sino "el color principal". Si la marca es verde,
+    cambiamos primary (lo veremos en personalización) y toda la página se adapta.
+
+    Con los botones de arriba pasamos la página a modo oscuro, para ver qué colores
+    cambian y cuáles no.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Colores</h1>
+
+    <div class="text-center my-4">
+      <div class="btn-group" role="group" aria-label="Modo de color">
+        <button type="button" class="btn btn-outline-primary" id="btn-claro">Claro</button>
+        <button type="button" class="btn btn-outline-primary" id="btn-oscuro">Oscuro</button>
+      </div>
+    </div>
+
+    <!--
+      COLOR DE TEXTO: text-{color}
+        text-primary → color: rgba(var(--bs-primary-rgb), 1)
+      Por dentro usan variables CSS, como todo lo que vimos en data-bs-theme.
+      text-light casi no se ve sobre fondo claro: le ponemos fondo oscuro.
+    -->
+    <h2 class="h4 mt-5">Color de texto: <code>text-*</code></h2>
+
+    <div class="d-flex flex-wrap gap-4 bg-secondary-subtle border p-3 mb-3 fw-semibold">
+      <span class="text-primary">text-primary</span>
+      <span class="text-secondary">text-secondary</span>
+      <span class="text-success">text-success</span>
+      <span class="text-danger">text-danger</span>
+      <span class="text-warning">text-warning</span>
+      <span class="text-info">text-info</span>
+      <span class="text-light bg-dark px-1">text-light</span>
+      <span class="text-dark">text-dark</span>
+    </div>
+    <div class="bg-primary-subtle border border-primary-subtle p-3 mb-4 fw-semibold">
+      <span style="color: #198754">style="color: #198754" (el verde de text-success, pero fijo: no lo cambia el tema)</span>
+    </div>
+
+    <!--
+      COLOR DE FONDO: bg-{color}
+      Solo cambia el fondo: el color del texto lo tenemos que elegir aparte
+      (text-white sobre los oscuros, text-dark sobre los claros).
+    -->
+    <h2 class="h4 mt-5">Color de fondo: <code>bg-*</code></h2>
+
+    <div class="row g-2 mb-4">
+      <div class="col-6 col-md-3"><div class="bg-primary text-white p-2">bg-primary</div></div>
+      <div class="col-6 col-md-3"><div class="bg-secondary text-white p-2">bg-secondary</div></div>
+      <div class="col-6 col-md-3"><div class="bg-success text-white p-2">bg-success</div></div>
+      <div class="col-6 col-md-3"><div class="bg-danger text-white p-2">bg-danger</div></div>
+      <div class="col-6 col-md-3"><div class="bg-warning text-dark p-2">bg-warning</div></div>
+      <div class="col-6 col-md-3"><div class="bg-info text-dark p-2">bg-info</div></div>
+      <div class="col-6 col-md-3"><div class="bg-light text-dark border p-2">bg-light</div></div>
+      <div class="col-6 col-md-3"><div class="bg-dark text-white p-2">bg-dark</div></div>
+    </div>
+
+    <!--
+      FONDO Y TEXTO A LA VEZ: text-bg-{color}
+      Pone el fondo y un color de texto que contrasta con él: no hay que pensar
+      si va text-white o text-dark. En warning, info y light sale oscuro; en el resto, blanco.
+      Es la que usamos en las etiquetas: badge text-bg-success.
+    -->
+    <h2 class="h4 mt-5">Fondo y texto a la vez: <code>text-bg-*</code></h2>
+
+    <div class="d-flex flex-wrap gap-2 mb-4">
+      <span class="text-bg-primary rounded p-2">text-bg-primary</span>
+      <span class="text-bg-success rounded p-2">text-bg-success</span>
+      <span class="text-bg-danger rounded p-2">text-bg-danger</span>
+      <span class="text-bg-warning rounded p-2">text-bg-warning</span>
+      <span class="text-bg-info rounded p-2">text-bg-info</span>
+      <span class="text-bg-dark rounded p-2">text-bg-dark</span>
+      <span class="badge text-bg-success align-self-center">badge text-bg-success</span>
+    </div>
+
+    <!--
+      OPACIDAD: bg-opacity-* Y text-opacity-*
+      Junto a una clase de color: bg-success bg-opacity-25 → el verde al 25 %.
+      Valores: 10, 25, 50, 75 y 100.
+    -->
+    <h2 class="h4 mt-5">Opacidad: <code>bg-opacity-*</code></h2>
+
+    <div class="d-flex flex-wrap gap-2 mb-4">
+      <div class="bg-success p-2">bg-success</div>
+      <div class="bg-success bg-opacity-75 p-2">bg-opacity-75</div>
+      <div class="bg-success bg-opacity-50 p-2">bg-opacity-50</div>
+      <div class="bg-success bg-opacity-25 p-2">bg-opacity-25</div>
+      <div class="bg-success bg-opacity-10 p-2">bg-opacity-10</div>
+    </div>
+
+    <!--
+      LOS COLORES DEL CUERPO DE LA PÁGINA
+        text-body, bg-body                       → el texto y el fondo de la página
+        text-body-emphasis                       → más contraste (negro en claro, blanco en oscuro)
+        text-body-secondary / text-body-tertiary → texto atenuado: fechas, notas, ayudas
+        bg-body-secondary / bg-body-tertiary     → fondos un poco distintos al de la página
+      Son los que cambian con el modo oscuro.
+      text-muted funciona, pero está obsoleta desde la 5.3: usamos text-body-secondary.
+    -->
+    <h2 class="h4 mt-5">Los colores del cuerpo: <code>body</code></h2>
+
+    <div class="border p-3 mb-3">
+      <p class="text-body-emphasis fw-semibold mb-1">text-body-emphasis</p>
+      <p class="text-body mb-1">text-body</p>
+      <p class="text-body-secondary mb-1">text-body-secondary</p>
+      <p class="text-body-tertiary mb-0">text-body-tertiary</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2 mb-4">
+      <div class="bg-body border p-3">bg-body</div>
+      <div class="bg-body-secondary border p-3">bg-body-secondary</div>
+      <div class="bg-body-tertiary border p-3">bg-body-tertiary</div>
+    </div>
+
+    <!--
+      LAS VARIANTES -subtle Y -emphasis (BOOTSTRAP 5.3)
+        bg-{color}-subtle      → fondo suave
+        border-{color}-subtle  → borde suave a juego
+        text-{color}-emphasis  → texto intenso, legible sobre ese fondo
+      Se usan juntas. A diferencia de bg-primary, cambian con el modo oscuro:
+      el fondo suave pasa a ser oscuro y el texto, claro.
+      Son las que venimos usando en las cajas verdes y azules de estos ficheros.
+    -->
+    <h2 class="h4 mt-5">Variantes <code>-subtle</code> y <code>-emphasis</code></h2>
+
+    <div class="row g-2 mb-3">
+      <div class="col-md-6"><div class="bg-primary-subtle border border-primary-subtle text-primary-emphasis p-2">bg-primary-subtle + border-primary-subtle + text-primary-emphasis</div></div>
+      <div class="col-md-6"><div class="bg-success-subtle border border-success-subtle text-success-emphasis p-2">bg-success-subtle + border-success-subtle + text-success-emphasis</div></div>
+      <div class="col-md-6"><div class="bg-danger-subtle border border-danger-subtle text-danger-emphasis p-2">bg-danger-subtle + border-danger-subtle + text-danger-emphasis</div></div>
+      <div class="col-md-6"><div class="bg-warning-subtle border border-warning-subtle text-warning-emphasis p-2">bg-warning-subtle + border-warning-subtle + text-warning-emphasis</div></div>
+    </div>
+
+    <!--
+      QUÉ CAMBIA CON EL MODO OSCURO
+      Al pulsar "Oscuro" vemos que:
+        - bg-primary, bg-success, text-bg-*... se quedan igual
+        - bg-*-subtle, text-*-emphasis y los colores body se adaptan
+      Por eso, en una página con los dos modos, conviene usar estas últimas.
+    -->
+    <h2 class="h4 mt-5">Qué cambia con el modo oscuro</h2>
+
+    <div class="row g-2 mb-5">
+      <div class="col-md-6"><div class="bg-success text-white p-3">bg-success: igual en los dos modos</div></div>
+      <div class="col-md-6"><div class="bg-success-subtle border border-success-subtle text-success-emphasis p-3">bg-success-subtle: se adapta al modo</div></div>
+    </div>
+  </div>
+
+</body>
+</html>

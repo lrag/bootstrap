@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>08 A · Reboot y encabezados</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <!--
+    Equivalente en CSS normal de .h4 y de .lead, para comparar con las clases de Bootstrap.
+  -->
+  <style>
+    .titulo-mediano {
+      font-size: 1.5rem;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    .entradilla {
+      font-size: 1.25rem;
+      font-weight: 300;
+    }
+  </style>
+</head>
+<body>
+
+  <!--
+    TIPOGRAFÍA: REBOOT Y ENCABEZADOS
+    Cada navegador trae sus propios estilos por defecto (márgenes, tamaños de los títulos,
+    fuente...) y no son iguales entre sí. Reboot es la primera parte de bootstrap.css:
+    iguala esas diferencias y fija una base común para las etiquetas HTML, sin poner ninguna clase.
+
+    Como en los ficheros anteriores, el contenido va en verde si lo resuelve una clase
+    de Bootstrap y en azul si lo resuelve CSS normal.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Reboot y encabezados</h1>
+
+    <!--
+      REBOOT: HTML SIN NINGUNA CLASE
+      Lo que vemos en este bloque lo pone Reboot, sin clases:
+        *         → box-sizing: border-box (el ancho incluye relleno y borde)
+        body      → margin: 0; fuente del sistema; font-size: 1rem; line-height: 1.5
+        h1...h6   → margin-top: 0; margin-bottom: .5rem; font-weight: 500; line-height: 1.2
+        p         → margin-top: 0; margin-bottom: 1rem
+        ul, ol    → padding-left: 2rem; margin-bottom: 1rem
+        a         → color de --bs-link-color, subrayado
+
+      La idea: los márgenes van solo hacia abajo. Los bloques se apilan siempre igual
+      y no se juntan márgenes de arriba y de abajo.
+
+      La fuente es la del sistema operativo (system-ui): Segoe UI en Windows,
+      San Francisco en macOS, Roboto en Android. No se descarga nada.
+
+      Para ver lo que hace Reboot, comentamos el <link> de Bootstrap y recargamos:
+      vuelven la fuente con remates (serif), el margen del body y los márgenes de arriba.
+    -->
+    <h2 class="h4 mt-5">Reboot: HTML sin ninguna clase</h2>
+
+    <div class="bg-secondary-subtle border p-3 mb-4">
+      <h3>Un encabezado h3</h3>
+      <p>Un párrafo con un <a href="#">enlace</a>, texto en <strong>negrita</strong> y en <em>cursiva</em>.</p>
+      <ul>
+        <li>Un elemento de lista</li>
+        <li>Otro elemento</li>
+      </ul>
+      <p>El último párrafo también tiene margen inferior: por eso queda hueco abajo.</p>
+    </div>
+
+    <!--
+      LOS SEIS ENCABEZADOS
+        h1 → 2.5rem (40 px)    h2 → 2rem (32 px)      h3 → 1.75rem (28 px)
+        h4 → 1.5rem (24 px)    h5 → 1.25rem (20 px)   h6 → 1rem (16 px)
+      h1 a h4 son responsive: en pantallas estrechas se reducen solos.
+      Bootstrap lo llama RFS (responsive font sizes). Los 40 px del h1 son a partir de 1200 px.
+    -->
+    <h2 class="h4 mt-5">Los seis encabezados</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-4">
+      <h1>h1. Encabezado</h1>
+      <h2>h2. Encabezado</h2>
+      <h3>h3. Encabezado</h3>
+      <h4>h4. Encabezado</h4>
+      <h5>h5. Encabezado</h5>
+      <h6 class="mb-0">h6. Encabezado</h6>
+    </div>
+
+    <!--
+      LAS CLASES .h1 A .h6: EL ASPECTO SIN EL SIGNIFICADO
+      La etiqueta dice qué nivel de título es (h2 = título de sección).
+      La clase dice cómo se ve. Separamos las dos cosas:
+        <h2 class="h4">  → es un título de segundo nivel, pero se ve como un h4
+        <p class="h1">   → no es un título, pero se ve como un h1
+      Los niveles no se saltan (de h2 a h4) por cuestión de tamaño: los lectores de pantalla
+      usan los encabezados como índice de la página. Para el tamaño están las clases.
+      De hecho, todos los títulos de sección de estos ficheros son <h2 class="h4">.
+    -->
+    <h2 class="h4 mt-5">Las clases <code>.h1</code> a <code>.h6</code></h2>
+
+    <p class="mb-1"><code>&lt;h2 class="h4"&gt;</code></p>
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-3">
+      <h2 class="h4 mb-0">Un h2 que se ve como un h4</h2>
+    </div>
+
+    <p class="mb-1"><code>&lt;p class="h1"&gt;</code></p>
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-3">
+      <p class="h1 mb-0">Un párrafo que se ve como un h1</p>
+    </div>
+
+    <p class="mb-1"><code>&lt;h2 class="titulo-mediano"&gt;</code> (CSS propio, igual que <code>.h4</code>)</p>
+    <div class="bg-primary-subtle border border-primary-subtle p-3 mb-4">
+      <h2 class="titulo-mediano mb-0">Un h2 que se ve como un h4</h2>
+    </div>
+
+    <!--
+      UN TEXTO SECUNDARIO DENTRO DEL TÍTULO
+      <small> reduce el tamaño (font-size: .875em, relativo al del título)
+      y text-body-secondary lo atenúa.
+    -->
+    <h2 class="h4 mt-5">Texto secundario en un título: <code>&lt;small&gt;</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-4">
+      <h3 class="mb-0">Catálogo <small class="text-body-secondary">otoño 2026</small></h3>
+    </div>
+
+    <!--
+      TITULARES GRANDES: display-1 A display-6
+      Para portadas y cabeceras: más grandes que un h1 y con letra más fina (font-weight: 300).
+        display-1 → 5rem    display-2 → 4.5rem   display-3 → 4rem
+        display-4 → 3.5rem  display-5 → 3rem     display-6 → 2.5rem
+      También se reducen en pantallas estrechas.
+    -->
+    <h2 class="h4 mt-5">Titulares grandes: <code>display-*</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-4">
+      <p class="display-1">Display 1</p>
+      <p class="display-3">Display 3</p>
+      <p class="display-6 mb-0">Display 6</p>
+    </div>
+
+    <!--
+      LA ENTRADILLA: lead
+      Un párrafo destacado al principio de un artículo o una sección.
+        lead → font-size: 1.25rem; font-weight: 300
+    -->
+    <h2 class="h4 mt-5">La entradilla: <code>lead</code></h2>
+
+    <p class="mb-1"><code>class="lead"</code></p>
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-3">
+      <p class="lead mb-0">Un párrafo con lead: la entradilla de un artículo.</p>
+    </div>
+
+    <p class="mb-1"><code>class="entradilla"</code> (CSS propio, igual que <code>lead</code>)</p>
+    <div class="bg-primary-subtle border border-primary-subtle p-3 mb-3">
+      <p class="entradilla mb-0">Un párrafo con lead: la entradilla de un artículo.</p>
+    </div>
+
+    <p class="mb-1">Sin clase, para comparar</p>
+    <div class="bg-secondary-subtle border p-3 mb-5">
+      <p class="mb-0">Un párrafo normal.</p>
+    </div>
+  </div>
+
+</body>
+</html>
