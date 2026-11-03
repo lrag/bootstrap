@@ -1072,6 +1072,280 @@ image::04_layout_panel_lg.png[Panel en escritorio]
 . En el layout 2, quitar `g-3` y observar qué ocurre al apilarse en móvil.
 . En el layout 3, centrar el bloque de datos en una columna de 6 con `offset` en lugar de tres datos.
 
+== Tipografía y color
+
+Los estilos de base que Bootstrap aplica sin clases, las utilidades de texto, la paleta de colores del tema, las imágenes responsive y los iconos.
+
+=== Reboot: el punto de partida
+
+Cada navegador trae sus propios estilos por defecto, y no son iguales entre sí.
+*Reboot* es la primera parte de `bootstrap.css`: corrige esas diferencias y fija una base común para las etiquetas HTML, *sin necesidad de poner ninguna clase*.
+
+[cols="1m,3",options="header"]
+|===
+|Elemento |Lo que hace Reboot
+|* |`box-sizing: border-box`: el ancho incluye relleno y borde
+|body |`margin: 0`; fuente del sistema; `font-size: 1rem`; `line-height: 1.5`; color y fondo desde `--bs-body-color` y `--bs-body-bg`
+|h1 … h6 |`margin-top: 0`, `margin-bottom: .5rem`, `font-weight: 500`, `line-height: 1.2`
+|p |`margin-top: 0`, `margin-bottom: 1rem`
+|ul, ol |`padding-left: 2rem`, `margin-bottom: 1rem`
+|a |Color desde `--bs-link-color`, subrayado
+|===
+
+La idea: *los márgenes van solo hacia abajo*.
+Así los bloques se apilan de forma predecible y no se suman márgenes de arriba y de abajo.
+
+.Un encabezado, un párrafo y una lista sin ninguna clase
+image::05_reboot.png[HTML sin clases con los estilos de Reboot]
+
+NOTE: La fuente es la del sistema operativo (`system-ui`: Segoe UI en Windows, San Francisco en macOS…).
+Carga rápido porque no se descarga nada, y cada usuario ve la letra a la que está acostumbrado.
+
+=== Encabezados
+
+`h1` a `h6` tienen tamaños fijados por Bootstrap.
+Las clases `.h1` a `.h6` dan el *mismo aspecto* a cualquier elemento: separan el *significado* (qué nivel de título es) del *tamaño* (cómo se ve).
+
+[cols="1m,1",options="header"]
+|===
+|Etiqueta / clase |Tamaño
+|h1 / .h1 |2.5rem · 40 px
+|h2 / .h2 |2rem · 32 px
+|h3 / .h3 |1.75rem · 28 px
+|h4 / .h4 |1.5rem · 24 px
+|h5 / .h5 |1.25rem · 20 px
+|h6 / .h6 |1rem · 16 px
+|===
+
+.Las clases `.h1` a `.h6`
+image::05_encabezados.png[Tamaños de encabezado]
+
+[source,html]
+----
+<h2 class="h4">Un título de segundo nivel que se ve pequeño</h2>
+<p class="h1">Un párrafo con aspecto de h1</p>
+<h3>Catálogo <small class="text-body-secondary">otoño 2026</small></h3>
+----
+
+NOTE: `h1` a `h4` son *responsive*: en pantallas pequeñas se reducen solos (Bootstrap lo llama RFS, _responsive font sizes_).
+Los 40 px del `h1` son a partir de 1200 px.
+
+WARNING: No hay que elegir el nivel del encabezado por su tamaño.
+Los niveles no se saltan (de `h2` a `h4`), porque los lectores de pantalla los usan como índice.
+El tamaño se ajusta con `.h*` o `fs-*`.
+
+=== Titulares grandes: `display-*`
+
+Para portadas y cabeceras destacadas: más grandes que un `h1` y con letra más fina (`font-weight: 300`).
+También se reducen en pantallas pequeñas.
+
+[cols="1,1,1,1,1,1,1",options="header"]
+|===
+|Clase |`display-1` |`display-2` |`display-3` |`display-4` |`display-5` |`display-6`
+|Tamaño |5rem |4.5rem |4rem |3.5rem |3rem |2.5rem
+|===
+
+.De `display-1` a `display-6`
+image::05_display.png[Clases display]
+
+=== Párrafos y utilidades de texto
+
+`lead` destaca un párrafo de entrada (1.25rem, letra fina).
+
+.Un párrafo con `lead` y uno normal
+image::05_lead.png[Párrafo lead]
+
+Las utilidades de texto, como las de espaciado, aplican *una sola propiedad CSS* cada una:
+
+[cols="2,2,3",options="header"]
+|===
+|Bootstrap |CSS |Efecto
+|`fs-1` … `fs-6` |`font-size` |Los tamaños de `h1` a `h6`, sin el resto del estilo de encabezado
+|`fw-light`, `fw-normal`, `fw-semibold`, `fw-bold` |`font-weight` |Grosor: 300, 400, 600, 700
+|`fst-italic`, `fst-normal` |`font-style` |Cursiva o normal
+|`text-decoration-underline`, `-line-through`, `-none` |`text-decoration` |Subrayado, tachado o nada (quitar el subrayado de un enlace)
+|`text-uppercase`, `text-lowercase`, `text-capitalize` |`text-transform` |Mayúsculas, minúsculas, primera letra en mayúscula
+|`text-start`, `text-center`, `text-end` |`text-align` |Alineación; con breakpoint: `text-md-start`
+|`lh-1`, `lh-sm`, `lh-base`, `lh-lg` |`line-height` |Interlineado: 1, 1.25, 1.5, 2
+|`text-nowrap` |`white-space: nowrap` |Sin saltos de línea
+|`text-truncate` |`overflow` + `text-overflow: ellipsis` + `nowrap` |Corta con «…» lo que no cabe en una línea (necesita un ancho)
+|`small` / `<small>` |`font-size: .875em` |Texto más pequeño, relativo al del padre
+|`mark` / `<mark>` |fondo amarillo |Texto resaltado
+|===
+
+.Tamaño, grosor, decoración y otras utilidades
+image::05_utilidades.png[Utilidades de texto]
+
+=== Listas
+
+Dos clases para las listas: `list-unstyled` quita viñetas y sangría (solo del primer nivel), y `list-inline` + `list-inline-item` pone los elementos en línea.
+Los menús y los pies de página suelen ser listas así.
+
+[source,html]
+----
+<ul class="list-inline">
+  <li class="list-inline-item">Inicio</li>
+  <li class="list-inline-item">Productos</li>
+</ul>
+----
+
+.Sin clase, `list-unstyled` y `list-inline`
+image::05_listas.png[Listas]
+
+=== Citas
+
+`.blockquote` agranda la cita (1.25rem).
+La autoría va en un `<figcaption class="blockquote-footer">`, que añade el guion delante.
+Todo dentro de un `<figure>`, que es lo que une la cita con su fuente.
+
+[source,html]
+----
+<figure>
+  <blockquote class="blockquote">
+    <p>El texto de la cita.</p>
+  </blockquote>
+  <figcaption class="blockquote-footer">
+    Autora en <cite title="Título de la obra">Título de la obra</cite>
+  </figcaption>
+</figure>
+----
+
+.Una cita y la misma alineada a la derecha con `text-end`
+image::05_citas.png[Citas]
+
+=== Los colores del tema
+
+Bootstrap tiene ocho colores con *nombre de función*, no de color: `primary` no significa «azul», sino «el color principal de la marca».
+Si la marca es verde, se cambia `primary` y todo se adapta.
+
+[cols="1m,3",options="header"]
+|===
+|Nombre |Uso habitual
+|primary |Acción principal, color de marca
+|secondary |Acciones secundarias, elementos neutros
+|success |Éxito, confirmación
+|danger |Error, acción peligrosa (borrar)
+|warning |Aviso
+|info |Información
+|light / dark |Fondos claros u oscuros
+|===
+
+Cada color se aplica al texto con `text-{color}` y al fondo con `bg-{color}`.
+
+.`text-*` y `bg-*`
+image::05_colores.png[Colores del tema]
+
+Además están los colores *del cuerpo de la página*, que son los que cambian con el modo oscuro:
+
+[cols="2,3",options="header"]
+|===
+|Clase |Para qué
+|`text-body`, `bg-body` |El color de texto y de fondo de la página
+|`text-body-emphasis` |Más contraste que el texto normal (negro en claro, blanco en oscuro)
+|`text-body-secondary`, `text-body-tertiary` |Texto atenuado: fechas, notas, ayudas
+|`bg-body-secondary`, `bg-body-tertiary` |Fondos ligeramente distintos al de la página
+|===
+
+WARNING: `text-muted` sigue funcionando, pero está obsoleta desde la 5.3: se usa `text-body-secondary`.
+
+TIP: Opacidad: `bg-opacity-10`, `-25`, `-50` y `-75`, y `text-opacity-*`, junto a una clase de color, por ejemplo `bg-success bg-opacity-25`.
+
+=== Variantes `*-subtle` y `*-emphasis`
+
+Bootstrap 5.3 añade dos variantes de cada color, pensadas para usarse juntas y para *adaptarse al modo oscuro*:
+
+[cols="1m,2",options="header"]
+|===
+|Clase |Qué es
+|bg-{color}-subtle |Fondo suave (claro en modo claro, oscuro en modo oscuro)
+|border-{color}-subtle |Borde suave a juego
+|text-{color}-emphasis |Texto intenso, legible sobre el fondo suave
+|===
+
+[source,html]
+----
+<div class="bg-success-subtle border border-success-subtle text-success-emphasis p-2">…</div>
+----
+
+.La misma combinación en modo claro y con `data-bs-theme="dark"`
+image::05_subtle.png[Variantes subtle y emphasis en claro y oscuro]
+
+IMPORTANT: Los colores normales (`bg-primary`, `bg-success`…) *no cambian* en modo oscuro.
+Si una página va a tener los dos modos, conviene usar las variantes `-subtle` y `-emphasis` y los colores `body`.
+
+=== Fondo y texto a la vez: `text-bg-*`
+
+Con `bg-warning` el texto sigue siendo el de la página, y hay que elegir a mano `text-dark` o `text-white`.
+`text-bg-{color}` pone el fondo *y* un color de texto que contrasta con él.
+
+.`text-bg-*`
+image::05_text_bg.png[Clases text-bg]
+
+En `warning`, `info` y `light` el texto sale oscuro; en el resto, blanco.
+Es la clase habitual en las etiquetas: `<span class="badge text-bg-success">`.
+
+=== Imágenes responsive
+
+Una imagen se muestra a su tamaño real aunque no quepa.
+`img-fluid` aplica `max-width: 100%` y `height: auto`: nunca es más ancha que su contenedor y no se deforma.
+
+[source,html]
+----
+<img src="foto.jpg" class="img-fluid" alt="Descripción de la foto">
+----
+
+.Una imagen de 800 px sin clase (recortada) y con `img-fluid`
+image::05_img_fluid.png[Imagen sin clase y con img-fluid]
+
+[cols="2,3",options="header"]
+|===
+|Clase |Efecto
+|`img-thumbnail` |Marco con borde redondeado y relleno (también es responsive)
+|`rounded`, `rounded-circle` |Esquinas redondeadas o círculo (las mismas de los bordes)
+|`figure`, `figure-img`, `figure-caption` |Imagen con pie de foto
+|===
+
+.`img-thumbnail`, `rounded-circle` y `figure`
+image::05_img_otras.png[Otras clases de imagen]
+
+WARNING: El atributo `alt` es obligatorio: describe la imagen para quien no la ve.
+Si es puramente decorativa, `alt=""` (vacío, pero presente).
+
+=== Bootstrap Icons
+
+Una biblioteca de iconos del mismo equipo, *aparte de Bootstrap*: hay que cargarla por separado.
+Tiene unos 2000 iconos.
+La forma más cómoda es como fuente: una hoja de estilos y una etiqueta `<i>` por icono.
+
+[source,html]
+----
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+<i class="bi bi-heart-fill"></i>
+----
+
+`bi` activa la fuente de iconos y `bi-{nombre}` elige el icono (los nombres están en https://icons.getbootstrap.com/[icons.getbootstrap.com]).
+Como es texto, el *tamaño* se cambia con `fs-*` y el *color* con `text-*`.
+
+[source,html]
+----
+<i class="bi bi-star-fill fs-2 text-warning"></i>
+
+<button type="button" class="btn btn-primary">
+  <i class="bi bi-cart3" aria-hidden="true"></i> Añadir al carrito
+</button>
+
+<button type="button" class="btn btn-outline-secondary">
+  <i class="bi bi-search" aria-hidden="true"></i><span class="visually-hidden">Buscar</span>
+</button>
+----
+
+.Iconos sueltos, con tamaño y color, y dentro de botones
+image::05_iconos.png[Bootstrap Icons]
+
+IMPORTANT: Un icono decorativo junto a un texto lleva `aria-hidden="true"`, para que el lector de pantalla no lo lea.
+Un botón que solo tiene un icono necesita un texto alternativo: `visually-hidden` o `aria-label`.
+
 == Referencias
 
 * https://getbootstrap.com/docs/5.3/getting-started/introduction/[Documentación oficial de Bootstrap 5.3]
@@ -1084,3 +1358,11 @@ image::04_layout_panel_lg.png[Panel en escritorio]
 * https://getbootstrap.com/docs/5.3/utilities/spacing/[Spacing]
 * https://getbootstrap.com/docs/5.3/getting-started/rtl/[RTL]
 * https://getbootstrap.com/docs/5.3/utilities/flex/[Flex]
+* https://getbootstrap.com/docs/5.3/content/reboot/[Reboot]
+* https://getbootstrap.com/docs/5.3/content/typography/[Typography]
+* https://getbootstrap.com/docs/5.3/utilities/text/[Text]
+* https://getbootstrap.com/docs/5.3/customize/color/[Color]
+* https://getbootstrap.com/docs/5.3/utilities/colors/[Colors]
+* https://getbootstrap.com/docs/5.3/helpers/color-background/[Color and background]
+* https://getbootstrap.com/docs/5.3/content/images/[Images]
+* https://icons.getbootstrap.com/[Bootstrap Icons]

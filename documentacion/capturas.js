@@ -12,6 +12,7 @@ const GUIA_01 = guia('01_introducción.html')
 const GUIA_02 = guia('02_contenedores.html')
 const GUIA_03 = guia('03_flexbox_utilidades.html')
 const GUIA_04 = guia('04_rejilla.html')
+const GUIA_05 = guia('05_tipografia_color.html')
 
 // Capturas de las demos: [fichero, selector de la demo, anchos de ventana]
 // Si hay varios anchos, el fichero lleva el sufijo del breakpoint (04_responsive_xs.png...)
@@ -49,6 +50,21 @@ const CAPTURAS_04 = [
   ['04_layout_blog',     '#practica .demo >> nth=0',    ['xs', 'lg']],
   ['04_layout_catalogo', '#practica .demo >> nth=1',    ['sm', 'xl']],
   ['04_layout_panel',    '#practica .demo >> nth=2',    ['xs', 'lg']],
+]
+const CAPTURAS_05 = [
+  ['05_reboot',        '#reboot .demo >> nth=0',      ['lg']],
+  ['05_encabezados',   '#encabezados .demo >> nth=0', ['lg']],
+  ['05_display',       '#display .demo >> nth=0',     ['lg']],
+  ['05_lead',          '#texto .demo >> nth=0',       ['lg']],
+  ['05_utilidades',    '#texto .demo >> nth=1',       ['lg']],
+  ['05_listas',        '#listas .demo >> nth=0',      ['lg']],
+  ['05_citas',         '#citas .demo >> nth=0',       ['lg']],
+  ['05_colores',       '#colores .demo >> nth=0',     ['lg']],
+  ['05_subtle',        '#subtle .demo >> nth=0',      ['lg']],
+  ['05_text_bg',       '#text-bg .demo >> nth=0',     ['lg']],
+  ['05_img_fluid',     '#imagenes .demo >> nth=0',    ['lg']],
+  ['05_img_otras',     '#imagenes .demo >> nth=1',    ['lg']],
+  ['05_iconos',        '#iconos .demo >> nth=0',      ['lg']],
 ]
 
 async function capturarElemento(page, selector, fichero) {
@@ -103,8 +119,8 @@ async function capturarElemento(page, selector, fichero) {
     await page.close()
   }
 
-  // 03 y 04 · Demos del espaciado y de la rejilla, una página por ancho de ventana
-  for (const [url, capturas] of [[GUIA_03, CAPTURAS_03], [GUIA_04, CAPTURAS_04]]) {
+  // 03, 04 y 05 · Demos del espaciado, la rejilla y la tipografía, una página por ancho de ventana
+  for (const [url, capturas] of [[GUIA_03, CAPTURAS_03], [GUIA_04, CAPTURAS_04], [GUIA_05, CAPTURAS_05]]) {
     for (const [bp, ancho] of Object.entries(ANCHOS)) {
       const pendientes = capturas.filter(([, , bps]) => bps.includes(bp))
       if (!pendientes.length) continue

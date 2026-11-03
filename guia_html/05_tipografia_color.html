@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tipografía y color</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    pre { background: var(--bs-tertiary-bg); padding: 1rem; border-radius: var(--bs-border-radius); margin-bottom: 0; }
+    .demo { background: var(--bs-tertiary-bg); border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius); padding: 1rem; margin-bottom: 1rem; }
+    .espacio { background: var(--bs-secondary-bg-subtle); border: 1px solid var(--bs-border-color); }
+    .etiqueta { font-family: var(--bs-font-monospace); font-size: .8rem; margin-bottom: .25rem; }
+    .muestra { padding: .5rem .75rem; font-family: var(--bs-font-monospace); font-size: .8rem; }
+  </style>
+</head>
+<body>
+
+  <header class="bg-primary text-white py-5 mb-4">
+    <div class="container">
+      <p class="text-uppercase small mb-1">Curso de Bootstrap 5 · Sesión 2 · Punto 1</p>
+      <h1 class="display-5 fw-bold">Tipografía y color</h1>
+      <p class="lead mb-0">Los estilos de base de Bootstrap, las clases de texto, la paleta de colores del tema, las imágenes responsive y los iconos.</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <nav class="mb-5" aria-label="Índice">
+      <ol class="list-group list-group-numbered">
+        <li class="list-group-item"><a href="#reboot">Reboot: el punto de partida</a></li>
+        <li class="list-group-item"><a href="#encabezados">Encabezados</a></li>
+        <li class="list-group-item"><a href="#display">Titulares grandes: <code>display-*</code></a></li>
+        <li class="list-group-item"><a href="#texto">Párrafos y utilidades de texto</a></li>
+        <li class="list-group-item"><a href="#listas">Listas</a></li>
+        <li class="list-group-item"><a href="#citas">Citas</a></li>
+        <li class="list-group-item"><a href="#colores">Los colores del tema</a></li>
+        <li class="list-group-item"><a href="#subtle">Variantes <code>*-subtle</code> y <code>*-emphasis</code></a></li>
+        <li class="list-group-item"><a href="#text-bg">Fondo y texto a la vez: <code>text-bg-*</code></a></li>
+        <li class="list-group-item"><a href="#imagenes">Imágenes responsive</a></li>
+        <li class="list-group-item"><a href="#iconos">Bootstrap Icons</a></li>
+      </ol>
+    </nav>
+
+    <!-- 1. Reboot -->
+    <section id="reboot" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">1. Reboot: el punto de partida</h2>
+      <p>
+        Cada navegador trae sus propios estilos por defecto, y no son iguales entre sí.
+        <strong>Reboot</strong> es la primera parte de <code>bootstrap.css</code>: corrige esas diferencias y fija una base común
+        para las etiquetas HTML <strong>sin necesidad de poner ninguna clase</strong>.
+      </p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Elemento</th><th>Lo que hace Reboot</th></tr></thead>
+        <tbody>
+          <tr><td><code>*</code></td><td><code>box-sizing: border-box</code>: el ancho incluye relleno y borde</td></tr>
+          <tr><td><code>body</code></td><td><code>margin: 0</code>; fuente del sistema; <code>font-size: 1rem</code>; <code>line-height: 1.5</code>; color y fondo desde <code>--bs-body-color</code> y <code>--bs-body-bg</code></td></tr>
+          <tr><td><code>h1</code>…<code>h6</code></td><td><code>margin-top: 0</code>, <code>margin-bottom: .5rem</code>, <code>font-weight: 500</code>, <code>line-height: 1.2</code></td></tr>
+          <tr><td><code>p</code></td><td><code>margin-top: 0</code>, <code>margin-bottom: 1rem</code></td></tr>
+          <tr><td><code>ul</code>, <code>ol</code></td><td><code>padding-left: 2rem</code>, <code>margin-bottom: 1rem</code></td></tr>
+          <tr><td><code>a</code></td><td>Color desde <code>--bs-link-color</code>, subrayado</td></tr>
+        </tbody>
+      </table>
+      <p>
+        La idea: <strong>los márgenes van solo hacia abajo</strong>. Así los bloques se apilan de forma predecible
+        y no se suman márgenes de arriba y de abajo.
+      </p>
+      <p class="etiqueta">HTML sin ninguna clase</p>
+      <div class="demo">
+        <h3>Un encabezado h3</h3>
+        <p>Un párrafo con un <a href="#reboot">enlace</a>, texto en <strong>negrita</strong> y en <em>cursiva</em>.</p>
+        <ul class="mb-0">
+          <li>Un elemento de lista</li>
+          <li>Otro elemento</li>
+        </ul>
+      </div>
+      <div class="alert alert-info mb-0" role="alert">
+        La fuente es la del sistema operativo (<code>system-ui</code>: Segoe UI en Windows, San Francisco en macOS…).
+        Carga rápido porque no se descarga nada, y cada usuario ve la letra a la que está acostumbrado.
+      </div>
+    </section>
+
+    <!-- 2. Encabezados -->
+    <section id="encabezados" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">2. Encabezados</h2>
+      <p>
+        <code>h1</code> a <code>h6</code> tienen tamaños fijados por Bootstrap. Las clases <code>.h1</code> a <code>.h6</code>
+        dan el <strong>mismo aspecto</strong> a cualquier elemento: separan el <strong>significado</strong> (qué nivel de título es)
+        del <strong>tamaño</strong> (cómo se ve).
+      </p>
+      <div class="row g-4 mb-3">
+        <div class="col-lg-5">
+          <table class="table table-sm mb-0">
+            <thead><tr><th>Etiqueta / clase</th><th>Tamaño</th></tr></thead>
+            <tbody>
+              <tr><td><code>h1</code> / <code>.h1</code></td><td>2.5rem · 40 px</td></tr>
+              <tr><td><code>h2</code> / <code>.h2</code></td><td>2rem · 32 px</td></tr>
+              <tr><td><code>h3</code> / <code>.h3</code></td><td>1.75rem · 28 px</td></tr>
+              <tr><td><code>h4</code> / <code>.h4</code></td><td>1.5rem · 24 px</td></tr>
+              <tr><td><code>h5</code> / <code>.h5</code></td><td>1.25rem · 20 px</td></tr>
+              <tr><td><code>h6</code> / <code>.h6</code></td><td>1rem · 16 px</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-lg-7">
+          <div class="demo mb-0">
+            <p class="h1">h1. Encabezado</p>
+            <p class="h2">h2. Encabezado</p>
+            <p class="h3">h3. Encabezado</p>
+            <p class="h4">h4. Encabezado</p>
+            <p class="h5">h5. Encabezado</p>
+            <p class="h6 mb-0">h6. Encabezado</p>
+          </div>
+        </div>
+      </div>
+<pre class="mb-3"><code>&lt;h2 class="h4"&gt;Un título de segundo nivel que se ve pequeño&lt;/h2&gt;
+&lt;p class="h1"&gt;Un párrafo con aspecto de h1&lt;/p&gt;</code></pre>
+      <p>
+        Para un texto secundario dentro de un título, <code>&lt;small class="text-body-secondary"&gt;</code>:
+      </p>
+      <div class="demo">
+        <h3 class="mb-0">Catálogo <small class="text-body-secondary">otoño 2026</small></h3>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="alert alert-info mb-0" role="alert">
+            <code>h1</code> a <code>h4</code> son <strong>responsive</strong>: en pantallas pequeñas se reducen solos
+            (Bootstrap lo llama RFS, <em>responsive font sizes</em>). Los 40 px del <code>h1</code> son a partir de 1200 px.
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="alert alert-warning mb-0" role="alert">
+            No hay que elegir el nivel del encabezado por su tamaño. Los niveles no se saltan (de <code>h2</code> a <code>h4</code>):
+            los lectores de pantalla los usan como índice. El tamaño se ajusta con <code>.h*</code> o <code>fs-*</code>.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. display -->
+    <section id="display" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">3. Titulares grandes: <code>display-*</code></h2>
+      <p>
+        Para portadas y cabeceras destacadas, más grandes que un <code>h1</code> y con letra más fina
+        (<code>font-weight: 300</code>). También se reducen en pantallas pequeñas.
+      </p>
+      <div class="demo">
+        <p class="display-1">Display 1</p>
+        <p class="display-2">Display 2</p>
+        <p class="display-3">Display 3</p>
+        <p class="display-4">Display 4</p>
+        <p class="display-5">Display 5</p>
+        <p class="display-6 mb-0">Display 6</p>
+      </div>
+      <table class="table table-sm mb-0">
+        <thead><tr><th>Clase</th><th><code>display-1</code></th><th><code>display-2</code></th><th><code>display-3</code></th><th><code>display-4</code></th><th><code>display-5</code></th><th><code>display-6</code></th></tr></thead>
+        <tbody>
+          <tr><td>Tamaño</td><td>5rem</td><td>4.5rem</td><td>4rem</td><td>3.5rem</td><td>3rem</td><td>2.5rem</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 4. Párrafos y utilidades de texto -->
+    <section id="texto" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">4. Párrafos y utilidades de texto</h2>
+      <p>
+        <code>lead</code> destaca un párrafo de entrada (1.25rem, letra fina). Las utilidades de texto, como las de espaciado,
+        aplican <strong>una sola propiedad CSS</strong> cada una.
+      </p>
+      <div class="demo">
+        <p class="lead">Un párrafo con <code>lead</code>: la entradilla de un artículo.</p>
+        <p class="mb-0">Un párrafo normal, para comparar.</p>
+      </div>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Bootstrap</th><th>CSS</th><th>Efecto</th></tr></thead>
+        <tbody>
+          <tr><td><code>fs-1</code> … <code>fs-6</code></td><td><code>font-size</code></td><td>Los tamaños de <code>h1</code> a <code>h6</code>, sin el resto del estilo de encabezado</td></tr>
+          <tr><td><code>fw-light</code>, <code>fw-normal</code>, <code>fw-semibold</code>, <code>fw-bold</code></td><td><code>font-weight</code></td><td>Grosor: 300, 400, 600, 700</td></tr>
+          <tr><td><code>fst-italic</code>, <code>fst-normal</code></td><td><code>font-style</code></td><td>Cursiva o normal</td></tr>
+          <tr><td><code>text-decoration-underline</code>, <code>-line-through</code>, <code>-none</code></td><td><code>text-decoration</code></td><td>Subrayado, tachado o nada (quitar el subrayado de un enlace)</td></tr>
+          <tr><td><code>text-uppercase</code>, <code>text-lowercase</code>, <code>text-capitalize</code></td><td><code>text-transform</code></td><td>Mayúsculas, minúsculas, primera letra en mayúscula</td></tr>
+          <tr><td><code>text-start</code>, <code>text-center</code>, <code>text-end</code></td><td><code>text-align</code></td><td>Alineación; con breakpoint: <code>text-md-start</code></td></tr>
+          <tr><td><code>lh-1</code>, <code>lh-sm</code>, <code>lh-base</code>, <code>lh-lg</code></td><td><code>line-height</code></td><td>Interlineado: 1, 1.25, 1.5, 2</td></tr>
+          <tr><td><code>text-nowrap</code></td><td><code>white-space: nowrap</code></td><td>Sin saltos de línea</td></tr>
+          <tr><td><code>text-truncate</code></td><td><code>overflow</code> + <code>text-overflow: ellipsis</code> + <code>nowrap</code></td><td>Corta con «…» lo que no cabe en una línea (necesita un ancho)</td></tr>
+          <tr><td><code>small</code> / <code>&lt;small&gt;</code></td><td><code>font-size: .875em</code></td><td>Texto más pequeño, relativo al del padre</td></tr>
+          <tr><td><code>mark</code> / <code>&lt;mark&gt;</code></td><td>fondo amarillo</td><td>Texto resaltado</td></tr>
+        </tbody>
+      </table>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <p class="etiqueta">fs-*</p>
+            <p class="fs-1 mb-0">fs-1</p>
+            <p class="fs-4 mb-0">fs-4</p>
+            <p class="fs-6 mb-0">fs-6</p>
+          </div>
+          <div class="col-md-4">
+            <p class="etiqueta">fw-* y fst-*</p>
+            <p class="fw-light mb-0">fw-light</p>
+            <p class="fw-normal mb-0">fw-normal</p>
+            <p class="fw-semibold mb-0">fw-semibold</p>
+            <p class="fw-bold mb-0">fw-bold</p>
+            <p class="fst-italic mb-0">fst-italic</p>
+          </div>
+          <div class="col-md-4">
+            <p class="etiqueta">decoración, transformación y otros</p>
+            <p class="text-decoration-line-through mb-0">text-decoration-line-through</p>
+            <p class="mb-0"><a href="#texto" class="text-decoration-none">enlace con text-decoration-none</a></p>
+            <p class="text-uppercase mb-0">text-uppercase</p>
+            <p class="mb-0">un texto con <mark>mark</mark> y <small>small</small></p>
+            <p class="text-truncate mb-0" style="max-width: 12rem">text-truncate: una línea demasiado larga que no cabe</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Listas -->
+    <section id="listas" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">5. Listas</h2>
+      <p>
+        Dos clases para las listas: <code>list-unstyled</code> quita viñetas y sangría (solo del primer nivel),
+        y <code>list-inline</code> + <code>list-inline-item</code> pone los elementos en línea.
+        Los menús y los pies de página suelen ser listas así.
+      </p>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <p class="etiqueta">sin clase</p>
+            <ul class="mb-0"><li>Inicio</li><li>Productos</li><li>Contacto</li></ul>
+          </div>
+          <div class="col-md-4">
+            <p class="etiqueta">list-unstyled</p>
+            <ul class="list-unstyled mb-0"><li>Inicio</li><li>Productos</li><li>Contacto</li></ul>
+          </div>
+          <div class="col-md-4">
+            <p class="etiqueta">list-inline + list-inline-item</p>
+            <ul class="list-inline mb-0">
+              <li class="list-inline-item">Inicio</li>
+              <li class="list-inline-item">Productos</li>
+              <li class="list-inline-item">Contacto</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+<pre><code>&lt;ul class="list-inline"&gt;
+  &lt;li class="list-inline-item"&gt;Inicio&lt;/li&gt;
+  &lt;li class="list-inline-item"&gt;Productos&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+    </section>
+
+    <!-- 6. Citas -->
+    <section id="citas" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">6. Citas</h2>
+      <p>
+        <code>.blockquote</code> agranda la cita (1.25rem). La autoría va en un <code>&lt;figcaption class="blockquote-footer"&gt;</code>,
+        que añade el guion delante. Todo dentro de un <code>&lt;figure&gt;</code>, que es lo que une la cita con su fuente.
+      </p>
+<pre class="mb-3"><code>&lt;figure&gt;
+  &lt;blockquote class="blockquote"&gt;
+    &lt;p&gt;El texto de la cita.&lt;/p&gt;
+  &lt;/blockquote&gt;
+  &lt;figcaption class="blockquote-footer"&gt;
+    Autora en &lt;cite title="Título de la obra"&gt;Título de la obra&lt;/cite&gt;
+  &lt;/figcaption&gt;
+&lt;/figure&gt;</code></pre>
+      <div class="demo">
+        <figure class="mb-3">
+          <blockquote class="blockquote">
+            <p>La simplicidad es un requisito previo de la fiabilidad.</p>
+          </blockquote>
+          <figcaption class="blockquote-footer">
+            Edsger W. Dijkstra en <cite title="How do we tell truths that might hurt?">How do we tell truths that might hurt?</cite>
+          </figcaption>
+        </figure>
+        <figure class="text-end mb-0">
+          <blockquote class="blockquote">
+            <p>La misma cita alineada a la derecha con <code>text-end</code> en el <code>figure</code>.</p>
+          </blockquote>
+          <figcaption class="blockquote-footer mb-0">Ejemplo</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 7. Colores del tema -->
+    <section id="colores" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">7. Los colores del tema</h2>
+      <p>
+        Bootstrap tiene ocho colores con <strong>nombre de función</strong>, no de color: <code>primary</code> no significa «azul»,
+        sino «el color principal de la marca». Si la marca es verde, se cambia <code>primary</code> y todo se adapta.
+      </p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Nombre</th><th>Uso habitual</th></tr></thead>
+        <tbody>
+          <tr><td><code>primary</code></td><td>Acción principal, color de marca</td></tr>
+          <tr><td><code>secondary</code></td><td>Acciones secundarias, elementos neutros</td></tr>
+          <tr><td><code>success</code></td><td>Éxito, confirmación</td></tr>
+          <tr><td><code>danger</code></td><td>Error, acción peligrosa (borrar)</td></tr>
+          <tr><td><code>warning</code></td><td>Aviso</td></tr>
+          <tr><td><code>info</code></td><td>Información</td></tr>
+          <tr><td><code>light</code> / <code>dark</code></td><td>Fondos claros u oscuros</td></tr>
+        </tbody>
+      </table>
+      <p>Cada color se aplica al texto con <code>text-{color}</code> y al fondo con <code>bg-{color}</code>:</p>
+      <div class="demo">
+        <div class="row g-2 mb-3">
+          <div class="col-6 col-md-3"><span class="text-primary fw-semibold">text-primary</span></div>
+          <div class="col-6 col-md-3"><span class="text-secondary fw-semibold">text-secondary</span></div>
+          <div class="col-6 col-md-3"><span class="text-success fw-semibold">text-success</span></div>
+          <div class="col-6 col-md-3"><span class="text-danger fw-semibold">text-danger</span></div>
+          <div class="col-6 col-md-3"><span class="text-warning fw-semibold">text-warning</span></div>
+          <div class="col-6 col-md-3"><span class="text-info fw-semibold">text-info</span></div>
+          <div class="col-6 col-md-3"><span class="text-light bg-dark px-1 fw-semibold">text-light</span></div>
+          <div class="col-6 col-md-3"><span class="text-dark fw-semibold">text-dark</span></div>
+        </div>
+        <div class="row g-2">
+          <div class="col-6 col-md-3"><div class="bg-primary text-white muestra">bg-primary</div></div>
+          <div class="col-6 col-md-3"><div class="bg-secondary text-white muestra">bg-secondary</div></div>
+          <div class="col-6 col-md-3"><div class="bg-success text-white muestra">bg-success</div></div>
+          <div class="col-6 col-md-3"><div class="bg-danger text-white muestra">bg-danger</div></div>
+          <div class="col-6 col-md-3"><div class="bg-warning text-dark muestra">bg-warning</div></div>
+          <div class="col-6 col-md-3"><div class="bg-info text-dark muestra">bg-info</div></div>
+          <div class="col-6 col-md-3"><div class="bg-light text-dark border muestra">bg-light</div></div>
+          <div class="col-6 col-md-3"><div class="bg-dark text-white muestra">bg-dark</div></div>
+        </div>
+      </div>
+      <p>
+        Además están los colores <strong>del cuerpo de la página</strong>, que son los que cambian con el modo oscuro:
+      </p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Clase</th><th>Para qué</th></tr></thead>
+        <tbody>
+          <tr><td><code>text-body</code>, <code>bg-body</code></td><td>El color de texto y de fondo de la página</td></tr>
+          <tr><td><code>text-body-emphasis</code></td><td>Más contraste que el texto normal (negro en claro, blanco en oscuro)</td></tr>
+          <tr><td><code>text-body-secondary</code>, <code>text-body-tertiary</code></td><td>Texto atenuado: fechas, notas, ayudas</td></tr>
+          <tr><td><code>bg-body-secondary</code>, <code>bg-body-tertiary</code></td><td>Fondos ligeramente distintos al de la página</td></tr>
+        </tbody>
+      </table>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="alert alert-warning mb-0" role="alert">
+            <code>text-muted</code> sigue funcionando, pero está obsoleta desde la 5.3: se usa <code>text-body-secondary</code>.
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="alert alert-info mb-0" role="alert">
+            Opacidad: <code>bg-opacity-{10|25|50|75}</code> y <code>text-opacity-*</code> junto a una clase de color,
+            por ejemplo <code>bg-success bg-opacity-25</code>.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. subtle y emphasis -->
+    <section id="subtle" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">8. Variantes <code>*-subtle</code> y <code>*-emphasis</code></h2>
+      <p>
+        Bootstrap 5.3 añade dos variantes de cada color, pensadas para usarse juntas y para <strong>adaptarse al modo oscuro</strong>:
+      </p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Clase</th><th>Qué es</th></tr></thead>
+        <tbody>
+          <tr><td><code>bg-{color}-subtle</code></td><td>Fondo suave (claro en modo claro, oscuro en modo oscuro)</td></tr>
+          <tr><td><code>border-{color}-subtle</code></td><td>Borde suave a juego</td></tr>
+          <tr><td><code>text-{color}-emphasis</code></td><td>Texto intenso, legible sobre el fondo suave</td></tr>
+        </tbody>
+      </table>
+<pre class="mb-3"><code>&lt;div class="bg-success-subtle border border-success-subtle text-success-emphasis p-2"&gt;…&lt;/div&gt;</code></pre>
+      <p>La misma combinación en modo claro y con <code>data-bs-theme="dark"</code>:</p>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <p class="etiqueta">claro</p>
+            <div class="d-grid gap-2">
+              <div class="bg-primary-subtle border border-primary-subtle text-primary-emphasis muestra">primary</div>
+              <div class="bg-success-subtle border border-success-subtle text-success-emphasis muestra">success</div>
+              <div class="bg-danger-subtle border border-danger-subtle text-danger-emphasis muestra">danger</div>
+              <div class="bg-warning-subtle border border-warning-subtle text-warning-emphasis muestra">warning</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <p class="etiqueta">oscuro</p>
+            <div class="d-grid gap-2 bg-body p-2 rounded" data-bs-theme="dark">
+              <div class="bg-primary-subtle border border-primary-subtle text-primary-emphasis muestra">primary</div>
+              <div class="bg-success-subtle border border-success-subtle text-success-emphasis muestra">success</div>
+              <div class="bg-danger-subtle border border-danger-subtle text-danger-emphasis muestra">danger</div>
+              <div class="bg-warning-subtle border border-warning-subtle text-warning-emphasis muestra">warning</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-info mb-0" role="alert">
+        Los colores normales (<code>bg-primary</code>, <code>bg-success</code>…) <strong>no cambian</strong> en modo oscuro.
+        Si una página va a tener los dos modos, conviene usar las variantes <code>-subtle</code> y <code>-emphasis</code>
+        y los colores <code>body</code>.
+      </div>
+    </section>
+
+    <!-- 9. text-bg -->
+    <section id="text-bg" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">9. Fondo y texto a la vez: <code>text-bg-*</code></h2>
+      <p>
+        Con <code>bg-warning</code> el texto sigue siendo el de la página, y hay que elegir a mano <code>text-dark</code>
+        o <code>text-white</code>. <code>text-bg-{color}</code> pone el fondo <strong>y</strong> un color de texto que contrasta con él.
+      </p>
+      <div class="demo">
+        <div class="d-flex flex-wrap gap-2">
+          <span class="text-bg-primary muestra rounded">text-bg-primary</span>
+          <span class="text-bg-success muestra rounded">text-bg-success</span>
+          <span class="text-bg-danger muestra rounded">text-bg-danger</span>
+          <span class="text-bg-warning muestra rounded">text-bg-warning</span>
+          <span class="text-bg-info muestra rounded">text-bg-info</span>
+          <span class="text-bg-light muestra rounded border">text-bg-light</span>
+          <span class="text-bg-dark muestra rounded">text-bg-dark</span>
+        </div>
+      </div>
+      <p class="mb-0">
+        Es lo que usamos en las etiquetas: <span class="badge text-bg-success">badge text-bg-success</span>.
+        En <code>warning</code>, <code>info</code> y <code>light</code> el texto sale oscuro; en el resto, blanco.
+      </p>
+    </section>
+
+    <!-- 10. Imágenes -->
+    <section id="imagenes" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">10. Imágenes responsive</h2>
+      <p>
+        Una imagen se muestra a su tamaño real aunque no quepa. <code>img-fluid</code> aplica
+        <code>max-width: 100%</code> y <code>height: auto</code>: nunca es más ancha que su contenedor y no se deforma.
+      </p>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <p class="etiqueta">sin clase (la imagen mide 800 px; se recorta)</p>
+            <div class="espacio p-2 overflow-hidden">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='200'%3E%3Crect width='100%25' height='100%25' fill='%2398c1fe'/%3E%3Ctext x='50%25' y='50%25' font-family='sans-serif' font-size='28' text-anchor='middle' dominant-baseline='middle'%3E800 × 200%3C/text%3E%3C/svg%3E" alt="Imagen de 800 por 200 píxeles">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <p class="etiqueta">img-fluid</p>
+            <div class="espacio p-2">
+              <img class="img-fluid" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='200'%3E%3Crect width='100%25' height='100%25' fill='%2398c1fe'/%3E%3Ctext x='50%25' y='50%25' font-family='sans-serif' font-size='28' text-anchor='middle' dominant-baseline='middle'%3E800 × 200%3C/text%3E%3C/svg%3E" alt="Imagen de 800 por 200 píxeles">
+            </div>
+          </div>
+        </div>
+      </div>
+      <p>Otras clases para imágenes:</p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Clase</th><th>Efecto</th></tr></thead>
+        <tbody>
+          <tr><td><code>img-thumbnail</code></td><td>Marco con borde redondeado y relleno (también es responsive)</td></tr>
+          <tr><td><code>rounded</code>, <code>rounded-circle</code></td><td>Esquinas redondeadas o círculo (las de bordes que ya vimos)</td></tr>
+          <tr><td><code>figure</code>, <code>figure-img</code>, <code>figure-caption</code></td><td>Imagen con pie de foto</td></tr>
+        </tbody>
+      </table>
+      <div class="demo">
+        <div class="d-flex flex-wrap gap-4 align-items-start">
+          <div>
+            <p class="etiqueta">img-thumbnail</p>
+            <img class="img-thumbnail" width="120" height="120" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect width='100%25' height='100%25' fill='%23a3cfbb'/%3E%3C/svg%3E" alt="Miniatura de ejemplo">
+          </div>
+          <div>
+            <p class="etiqueta">rounded-circle</p>
+            <img class="rounded-circle" width="120" height="120" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect width='100%25' height='100%25' fill='%23a3cfbb'/%3E%3C/svg%3E" alt="Avatar de ejemplo">
+          </div>
+          <div>
+            <p class="etiqueta">figure</p>
+            <figure class="figure mb-0">
+              <img class="figure-img img-fluid rounded" width="200" height="120" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='120'%3E%3Crect width='100%25' height='100%25' fill='%23a3cfbb'/%3E%3C/svg%3E" alt="Imagen con pie de foto">
+              <figcaption class="figure-caption">Un pie de foto.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-warning mb-0" role="alert">
+        El atributo <code>alt</code> es obligatorio: describe la imagen para quien no la ve.
+        Si es puramente decorativa, <code>alt=""</code> (vacío, pero presente).
+      </div>
+    </section>
+
+    <!-- 11. Iconos -->
+    <section id="iconos" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">11. Bootstrap Icons</h2>
+      <p>
+        Una biblioteca de iconos del mismo equipo, <strong>aparte de Bootstrap</strong>: hay que cargarla por separado.
+        Tiene unos 2000 iconos. La forma más cómoda es como fuente: una hoja de estilos y una etiqueta <code>&lt;i&gt;</code> por icono.
+      </p>
+<pre class="mb-3"><code>&lt;link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"&gt;
+
+&lt;i class="bi bi-heart-fill"&gt;&lt;/i&gt;</code></pre>
+      <p>
+        <code>bi</code> activa la fuente de iconos y <code>bi-{nombre}</code> elige el icono (los nombres están en
+        <a href="https://icons.getbootstrap.com/">icons.getbootstrap.com</a>). Como es texto,
+        el <strong>tamaño</strong> se cambia con <code>fs-*</code> y el <strong>color</strong> con <code>text-*</code>.
+      </p>
+      <div class="demo">
+        <div class="d-flex flex-wrap gap-4 align-items-center mb-3">
+          <span><i class="bi bi-house"></i> bi-house</span>
+          <span><i class="bi bi-search"></i> bi-search</span>
+          <span><i class="bi bi-envelope"></i> bi-envelope</span>
+          <span><i class="bi bi-cart3"></i> bi-cart3</span>
+          <span><i class="bi bi-person-circle"></i> bi-person-circle</span>
+          <span><i class="bi bi-heart-fill"></i> bi-heart-fill</span>
+        </div>
+        <div class="d-flex flex-wrap gap-4 align-items-center mb-3">
+          <i class="bi bi-star-fill fs-6 text-warning"></i>
+          <i class="bi bi-star-fill fs-4 text-warning"></i>
+          <i class="bi bi-star-fill fs-2 text-warning"></i>
+          <i class="bi bi-star-fill display-4 text-warning"></i>
+          <i class="bi bi-check-circle-fill fs-2 text-success"></i>
+          <i class="bi bi-x-circle-fill fs-2 text-danger"></i>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <button type="button" class="btn btn-primary"><i class="bi bi-cart3" aria-hidden="true"></i> Añadir al carrito</button>
+          <button type="button" class="btn btn-outline-secondary"><i class="bi bi-search" aria-hidden="true"></i><span class="visually-hidden">Buscar</span></button>
+        </div>
+      </div>
+      <div class="alert alert-info mb-0" role="alert">
+        Accesibilidad: un icono decorativo junto a un texto lleva <code>aria-hidden="true"</code>, para que el lector de pantalla no lo lea.
+        Un botón que solo tiene un icono necesita un texto alternativo: <code>visually-hidden</code> o <code>aria-label</code>.
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-top py-4 text-center text-body-secondary small">
+    Curso de Bootstrap 5 · Tipografía y color ·
+    Referencia: <a href="https://getbootstrap.com/docs/5.3/content/reboot/">Reboot</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/content/typography/">Typography</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/customize/color/">Color</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/content/images/">Images</a> ·
+    <a href="https://icons.getbootstrap.com/">Bootstrap Icons</a>
+  </footer>
+
+</body>
+</html>
