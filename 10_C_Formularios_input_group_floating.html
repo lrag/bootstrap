@@ -26,7 +26,8 @@
       Un div input-group con el campo y, delante o detrás, un span input-group-text.
       input-group es un contenedor flex: el campo crece y los textos se quedan a su tamaño.
       Bootstrap quita las esquinas redondeadas entre las piezas para que parezcan una sola.
-      Sirve para unidades (€, kg), prefijos (@, https://) y sufijos (.com).
+      Sirve para unidades (€, kg), prefijos (@, +34, https://) y sufijos (.com).
+      El texto del input-group-text no se escribe ni se envía: solo indica el formato.
     -->
     <h2 class="h4 mt-5">Grupos de entrada: <code>input-group</code></h2>
 
@@ -35,6 +36,12 @@
       <div class="input-group mb-3">
         <span class="input-group-text">@</span>
         <input type="text" class="form-control" id="usuario" placeholder="nombre_de_usuario">
+      </div>
+
+      <label for="movil" class="form-label">Teléfono</label>
+      <div class="input-group mb-3">
+        <span class="input-group-text">+34</span>
+        <input type="tel" class="form-control" id="movil" placeholder="600 123 456">
       </div>
 
       <label for="precio" class="form-label">Precio</label>
