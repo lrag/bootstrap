@@ -384,6 +384,26 @@
       <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">4</div>
     </div>
 
+    <!--
+      me-auto hace lo contrario: el margen va a la derecha del elemento,
+      así que empuja a los que le SIGUEN hasta el final. El resultado es el mismo
+      que con ms-auto en el 3: el 1 y el 2 a un lado, el 3 y el 4 al otro.
+    -->
+    <p class="mb-1"><code>me-auto</code> en el 2: el 3 y el 4 se van al final</p>
+    <div class="d-flex gap-2 bg-secondary-subtle border p-2 mb-2">
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2 me-auto">2 · me-auto</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+      <div class="bg-success-subtle border border-success-subtle px-3 py-2">4</div>
+    </div>
+    <p class="mb-1"><code>style="margin-right: auto"</code> en el 2</p>
+    <div class="bg-secondary-subtle border p-2 mb-4" style="display: flex; gap: 0.5rem">
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">1</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2" style="margin-right: auto">2 · margin-right: auto</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">3</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">4</div>
+    </div>
+
     <p class="mb-1"><code>align-self-end</code> en el 2</p>
     <div class="d-flex align-items-start gap-2 bg-secondary-subtle border p-2 mb-2" style="height: 7rem">
       <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
