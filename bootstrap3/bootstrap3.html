@@ -224,6 +224,43 @@
       </table>
     </div>
 
+    <!-- FORMULARIOS -->
+    <h2 class="h4 mt-5">Formularios</h2>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>.form-control</code>: borde, esquinas y halo azul al tener el foco</td><td><code>.form-control</code> (<span class="badge text-bg-success">sí existe</span>): altura fija de 34 px, sombra interior y halo azul (<code>#66afe9</code>) al tener el foco</td></tr>
+          <tr><td><code>form-label</code> en el <code>label</code> (solo <code>margin-bottom: .5rem</code>)</td><td>No existe: todos los <code>label</code> salen en negrita (<code>font-weight: 700</code>) y con <code>margin-bottom: 5px</code></td></tr>
+          <tr><td><code>mb-3</code> en el <code>div</code> de cada etiqueta + campo</td><td><code>.form-group</code> (<code>margin-bottom: 15px</code>) envolviendo la etiqueta y el campo</td></tr>
+          <tr><td><code>form-text</code> (ayuda debajo del campo)</td><td><code>.help-block</code></td></tr>
+          <tr><td><code>form-control-lg</code>, <code>form-control-sm</code>, <code>form-select-lg</code>, <code>form-select-sm</code></td><td><code>.input-lg</code>, <code>.input-sm</code> en el campo, o <code>.form-group-lg</code>, <code>.form-group-sm</code> en el contenedor</td></tr>
+          <tr><td><code>readonly</code>: mismo aspecto que un campo normal</td><td><code>readonly</code>: fondo gris (<code>#eee</code>), como <code>disabled</code></td></tr>
+          <tr><td><code>form-control-plaintext</code></td><td><code>.form-control-static</code> (normalmente en un <code>&lt;p&gt;</code>, no en un input)</td></tr>
+          <tr><td><code>form-control-color</code></td><td>No existe</td></tr>
+          <tr><td><code>form-select</code>, con flecha propia</td><td>No existe: <code>.form-control</code> también en el <code>&lt;select&gt;</code>, con la flecha del navegador</td></tr>
+          <tr><td><code>div.form-check</code> con <code>form-check-input</code> y <code>form-check-label</code> como hermanos; la casilla la dibuja Bootstrap</td><td><code>div.checkbox</code> o <code>div.radio</code> con el input <em>dentro</em> del label: <code>&lt;div class="checkbox"&gt;&lt;label&gt;&lt;input type="checkbox"&gt; Texto&lt;/label&gt;&lt;/div&gt;</code>; la casilla es la del navegador</td></tr>
+          <tr><td><code>form-check-inline</code></td><td><code>label.checkbox-inline</code> o <code>label.radio-inline</code>, con el input dentro</td></tr>
+          <tr><td><code>form-check-reverse</code>, <code>form-switch</code></td><td>No existen: no hay interruptores</td></tr>
+          <tr><td><code>btn-check</code>: el input oculto y, detrás, el <code>label.btn</code>; solo CSS</td><td><code>div.btn-group</code> con <code>data-toggle="buttons"</code> y el input <em>dentro</em> del <code>label.btn</code>; necesita el JavaScript de Bootstrap</td></tr>
+          <tr><td><code>form-range</code></td><td>No existe: el <code>input type="range"</code> solo recibe <code>display: block</code> y <code>width: 100%</code>; el aspecto es el del navegador</td></tr>
+          <tr><td><code>input-group</code>: contenedor flex</td><td><code>.input-group</code> (<span class="badge text-bg-success">sí existe</span>, también <code>-lg</code> y <code>-sm</code>), pero con <code>display: table</code>: cada pieza es una celda</td></tr>
+          <tr><td><code>input-group-text</code></td><td><code>.input-group-addon</code> (un check dentro ya pierde el margen superior: sin <code>mt-0</code>)</td></tr>
+          <tr><td>Botón directamente dentro del <code>input-group</code></td><td>Botón dentro de un <code>span.input-group-btn</code></td></tr>
+          <tr><td><code>form-floating</code></td><td>No existe</td></tr>
+          <tr><td>Horizontal: cada campo en un <code>row</code>, etiqueta <code>col-sm-3 col-form-label</code></td><td><code>form.form-horizontal</code>: cada <code>.form-group</code> hace de fila y la etiqueta lleva <code>.control-label col-sm-3</code> (desde 768 px, alineada a la derecha)</td></tr>
+          <tr><td>En línea: <code>row g-2 align-items-center</code> con columnas <code>col-auto</code></td><td><code>form.form-inline</code>: campos en línea desde 768 px; etiquetas ocultas con <code>.sr-only</code></td></tr>
+          <tr><td><code>novalidate</code> + <code>was-validated</code>: pinta según <code>:valid</code> e <code>:invalid</code> del navegador</td><td>No existe: Bootstrap 3 no mira la validación del navegador; el estado se pone a mano con clases</td></tr>
+          <tr><td><code>is-invalid</code>, <code>is-valid</code> en el campo</td><td><code>.has-error</code>, <code>.has-success</code>, <code>.has-warning</code> en el contenedor (<code>.form-group</code>): colorean la <code>.control-label</code>, el campo y la <code>.help-block</code></td></tr>
+          <tr><td><code>invalid-feedback</code>, <code>valid-feedback</code> (solo se ven en su estado)</td><td>No existen: <code>.help-block</code> dentro del contenedor con <code>.has-error</code>, siempre visible</td></tr>
+          <tr><td>Check o exclamación dentro del campo, automáticos</td><td><code>.has-feedback</code> en el contenedor y un <code>span.glyphicon.form-control-feedback</code> detrás del campo, a mano</td></tr>
+          <tr><td><code>invalid-tooltip</code>, <code>valid-tooltip</code>, <code>has-validation</code></td><td>No existen</td></tr>
+        </tbody>
+      </table>
+    </div>
+
     <!-- COMPONENTES -->
     <h2 class="h4 mt-5">Componentes que han salido de pasada</h2>
     <div class="table-responsive">
@@ -235,7 +272,6 @@
           <tr><td><code>badge text-bg-success</code></td><td><code>.label .label-success</code> (<code>.badge</code> era un contador de elementos nuevos o sin leer, como «Bandeja 42»)</td></tr>
           <tr><td><code>btn-outline-primary</code></td><td>No existe (sí <code>btn-primary</code>, <code>btn-default</code>…)</td></tr>
           <tr><td><code>card</code></td><td>No existe: <code>.panel</code>, <code>.well</code>, <code>.thumbnail</code></td></tr>
-          <tr><td><code>form-select</code></td><td>No existe: <code>.form-control</code> también en el <code>&lt;select&gt;</code></td></tr>
         </tbody>
       </table>
     </div>
@@ -244,7 +280,7 @@
     <h2 class="h4 mt-5">Lo que sí funciona igual</h2>
     <div class="alert alert-success mb-5">
       <code>.container</code>, <code>.container-fluid</code>, <code>.row</code>, <code>.btn</code>, <code>.btn-group</code>,
-      <code>.alert</code>, <code>.table</code>, <code>.table-striped</code>, <code>.table-hover</code>, <code>.table-bordered</code>, <code>.table-responsive</code>, <code>.form-control</code>,
+      <code>.alert</code>, <code>.table</code>, <code>.table-striped</code>, <code>.table-hover</code>, <code>.table-bordered</code>, <code>.table-responsive</code>, <code>.form-control</code>, <code>.input-group</code>, <code>.input-group-lg</code>, <code>.input-group-sm</code>, <code>&lt;fieldset disabled&gt;</code>,
       <code>.h1</code>… <code>.h6</code>, <code>.lead</code>, <code>.small</code>, <code>.mark</code>,
       <code>.list-unstyled</code>, <code>.list-inline</code> (sin <code>-item</code>),
       <code>text-center</code>, <code>text-uppercase</code>, <code>text-lowercase</code>, <code>text-capitalize</code>, <code>text-nowrap</code>,

@@ -14,6 +14,7 @@ const GUIA_03 = guia('03_flexbox_utilidades.html')
 const GUIA_04 = guia('04_rejilla.html')
 const GUIA_05 = guia('05_tipografia_color.html')
 const GUIA_06 = guia('06_tablas.html')
+const GUIA_07 = guia('07_formularios.html')
 
 // Capturas de las demos: [fichero, selector de la demo, anchos de ventana]
 // Si hay varios anchos, el fichero lleva el sufijo del breakpoint (04_responsive_xs.png...)
@@ -103,6 +104,27 @@ const CAPTURAS_06 = [
   ['06_caption_top',   '#alineacion .demo >> nth=4',  ['lg']],
   ['06_practica',      '#practica .demo >> nth=0',    ['xs', 'lg']],
 ]
+const CAPTURAS_07 = [
+  // '#control .row' no: con g-4 su margen negativo recoge el párrafo de encima
+  ['07_control_sin',        '#control .demo >> nth=0',     ['lg']],
+  ['07_control_con',        '#control .demo >> nth=1',     ['lg']],
+  ['07_control_ayuda',      '#control .demo >> nth=2',     ['lg']],
+  ['07_tipos',              '#tipos .demo >> nth=0',       ['lg']],
+  ['07_tamanos',            '#estados .demo >> nth=0',     ['lg']],
+  ['07_estados',            '#estados .demo >> nth=1',     ['lg']],
+  ['07_select',             '#select .demo >> nth=0',      ['lg']],
+  ['07_checks',             '#checks .demo >> nth=0',      ['lg']],
+  ['07_switch_btn_check',   '#switch .demo >> nth=0',      ['lg']],
+  ['07_rango',              '#rango .demo >> nth=0',       ['lg']],
+  ['07_input_group',        '#input-group .demo >> nth=0', ['lg']],
+  ['07_floating',           '#floating .demo >> nth=0',    ['lg']],
+  ['07_rejilla_columnas',   '#rejilla .demo >> nth=0',     ['xs', 'lg']],
+  ['07_rejilla_horizontal', '#rejilla .demo >> nth=1',     ['xs', 'lg']],
+  ['07_rejilla_en_linea',   '#rejilla .demo >> nth=2',     ['xs', 'lg']],
+  ['07_validacion_inicial', '#validacion .demo >> nth=0',  ['lg']],
+  ['07_validacion_manual',  '#validacion .demo >> nth=1',  ['lg']],
+  ['07_practica',           '#practica .demo >> nth=0',    ['xs', 'lg']],
+]
 
 async function capturarElemento(page, selector, fichero) {
   await page.locator(selector).first().screenshot({ path: path.join(DESTINO, fichero) })
@@ -163,8 +185,8 @@ async function capturarElemento(page, selector, fichero) {
     await page.close()
   }
 
-  // 02 a 06 · Demos de las guías, una página por ancho de ventana
-  for (const [url, capturas] of [[GUIA_02, CAPTURAS_02], [GUIA_03, CAPTURAS_03], [GUIA_04, CAPTURAS_04], [GUIA_05, CAPTURAS_05], [GUIA_06, CAPTURAS_06]]) {
+  // 02 a 07 · Demos de las guías, una página por ancho de ventana
+  for (const [url, capturas] of [[GUIA_02, CAPTURAS_02], [GUIA_03, CAPTURAS_03], [GUIA_04, CAPTURAS_04], [GUIA_05, CAPTURAS_05], [GUIA_06, CAPTURAS_06], [GUIA_07, CAPTURAS_07]]) {
     for (const [bp, ancho] of Object.entries(ANCHOS)) {
       const pendientes = capturas.filter(([, , bps]) => bps.includes(bp))
       if (!pendientes.length) continue
@@ -197,6 +219,32 @@ async function capturarElemento(page, selector, fichero) {
     await page.goto(GUIA_06, { waitUntil: 'networkidle' })
     await page.evaluate(() => document.documentElement.setAttribute('data-bs-theme', 'dark'))
     await capturarElemento(page, '#striped .row >> nth=0', '06_modo_oscuro.png')
+    await page.close()
+  }
+
+  // 07 · Validación: el formulario tras enviarlo con errores y con todo correcto, y los mensajes en globo
+  {
+    const page = await browser.newPage({ viewport: { width: 1000, height: 900 } })
+    await page.goto(GUIA_07, { waitUntil: 'networkidle' })
+    const alta = page.locator('#validacion form >> nth=0')
+    await page.fill('#v-nombre', 'Luis')
+    await page.fill('#v-email', 'luis.ejemplo.com')
+    await page.fill('#v-usuario', 'luis_r')
+    await page.fill('#v-cp', '2800')
+    await alta.locator('button[type=submit]').click()
+    await page.evaluate(() => document.activeElement.blur())
+    await capturarElemento(page, '#validacion .demo >> nth=0', '07_validacion_enviado.png')
+    await page.fill('#v-email', 'luis@ejemplo.com')
+    await page.selectOption('#v-provincia', 'Madrid')
+    await page.fill('#v-cp', '28001')
+    await page.check('#v-condiciones')
+    await alta.locator('button[type=submit]').click()
+    await page.evaluate(() => document.activeElement.blur())
+    await capturarElemento(page, '#validacion .demo >> nth=0', '07_validacion_correcto.png')
+    await page.fill('#tt-ciudad', 'Madrid')
+    await page.locator('#validacion form >> nth=1').locator('button[type=submit]').click()
+    await page.evaluate(() => document.activeElement.blur())
+    await capturarElemento(page, '#validacion .demo >> nth=2', '07_validacion_tooltip.png')
     await page.close()
   }
 

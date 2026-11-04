@@ -2244,6 +2244,631 @@ image::06_practica_lg.png[Práctica de tabla de inventario en pantalla ancha]
 
 image::06_practica_xs.png[Práctica de tabla de inventario en el móvil]
 
+== Formularios
+
+Campos de texto, listas, checks, switches y rangos; grupos de entrada y etiquetas flotantes; la rejilla en los formularios y la validación nativa con el aspecto de Bootstrap.
+Ejemplos de clase: `10_A_Formularios_controles.html`, `10_B_Formularios_checks_rangos.html`, `10_C_Formularios_input_group_floating.html`, `10_D_Formularios_rejilla.html` y `10_E_Formularios_validacion.html`.
+
+=== Campos de texto: `form-control`
+
+Bootstrap no cambia cómo funciona un formulario: sigue siendo HTML (`<form>`, `<input>`, `<select>`, `<textarea>`, `<label>`…).
+Solo les da estilo con clases.
+Sin clase, cada navegador dibuja el campo a su manera y es un elemento en línea: la etiqueta y la caja quedan en la misma línea, con el ancho que decide el navegador.
+
+[cols="1,1,3",options="header"]
+|===
+|Clase |Va en |Qué hace
+|`form-control` |`input`, `textarea` |`display: block` y `width: 100%`; relleno, borde y esquinas iguales en todos los navegadores; borde azul y halo (`box-shadow`) al tener el foco
+|`form-label` |`label` |Solo un `margin-bottom: .5rem`
+|`form-text` |un `div` debajo del campo |Texto de ayuda pequeño y atenuado
+|`form-select` |`select` |Lista desplegable con flecha propia (ver <<_listas_form_select>>)
+|===
+
+.Un campo sin clases: la etiqueta y la caja en la misma línea
+image::07_control_sin.png[Campo sin clases]
+
+.El mismo campo con `form-label` y `form-control`
+image::07_control_con.png[Campo con form-label y form-control]
+
+==== La etiqueta, el campo y la ayuda
+
+[source,html]
+----
+<div class="mb-3">
+  <label for="email" class="form-label">Correo electrónico</label>
+  <input type="email" class="form-control" id="email"
+         placeholder="nombre@ejemplo.com" aria-describedby="email-ayuda">
+  <div id="email-ayuda" class="form-text">No compartiremos el correo con nadie.</div>
+</div>
+----
+
+.Etiqueta, campo y texto de ayuda
+image::07_control_ayuda.png[Campo con etiqueta y texto de ayuda]
+
+El `for` del `label` coincide con el `id` del campo.
+Así, al hacer clic en la etiqueta el cursor entra en el campo, y el lector de pantalla lee la etiqueta al llegar al campo.
+Con `aria-describedby` en el input, apuntando al `id` de la ayuda, el lector de pantalla también la lee.
+
+IMPORTANT: El `placeholder` *no sustituye a la etiqueta*: desaparece al escribir y tiene poco contraste.
+Lo usamos solo como ejemplo del formato esperado.
+
+=== Tipos de input y `textarea`
+
+`form-control` sirve para todos los `input` de texto.
+El `type` lo pone HTML, no Bootstrap, y cambia el teclado del móvil y lo que valida el navegador.
+
+[cols="1m,3",options="header"]
+|===
+|type |Qué aporta
+|email |Teclado con @; el navegador comprueba que parezca un correo
+|tel |Teclado numérico de teléfono
+|number |Flechas para subir y bajar (`min`, `max`)
+|date |El calendario del navegador
+|search |Una X para borrar
+|file |El selector de ficheros, con el aspecto de los demás campos
+|color |El selector de color; con `form-control-color`, para que no se estire a todo el ancho
+|===
+
+El `textarea` también lleva `form-control`; `rows` fija la altura inicial.
+
+[source,html]
+----
+<input type="color" class="form-control form-control-color" id="color" value="#198754">
+<textarea class="form-control" id="mensaje" rows="3"></textarea>
+----
+
+.Los tipos de input con `form-control` y un `textarea`
+image::07_tipos.png[Tipos de input y textarea]
+
+=== Tamaños y estados
+
+`form-control-lg` y `form-control-sm` cambian la altura, el relleno y el tamaño de letra.
+En las listas, lo mismo con `form-select-lg` y `form-select-sm`.
+
+.`form-control-lg`, `form-control` y `form-control-sm`
+image::07_tamanos.png[Tamaños de los campos]
+
+Deshabilitar o bloquear un campo son atributos de HTML; Bootstrap solo les da aspecto.
+
+[cols="2,3,1",options="header"]
+|===
+|Atributo o clase |Aspecto |¿Se envía?
+|`disabled` |Gris, no se puede tocar |No
+|`readonly` |No se puede cambiar, pero sí seleccionar |Sí
+|`readonly` + `form-control-plaintext` |Sin caja: el valor parece texto normal, pero sigue alineado con los demás campos |Sí
+|`<fieldset disabled>` |Deshabilita de golpe todos los campos y botones de dentro |No
+|===
+
+[source,html]
+----
+<input type="text" class="form-control-plaintext" id="correo" value="cliente@ejemplo.com" readonly>
+
+<fieldset disabled>
+  <legend class="fs-6 fw-semibold">fieldset disabled</legend>
+  <input type="text" class="form-control" …>
+  <button type="submit" class="btn btn-primary">También el botón</button>
+</fieldset>
+----
+
+.`disabled`, `readonly`, `form-control-plaintext` y `fieldset disabled`
+image::07_estados.png[Campos deshabilitados y de solo lectura]
+
+=== Listas: `form-select`
+
+En un `<select>` va `form-select` en lugar de `form-control`: quita la flecha del navegador y dibuja la suya.
+Con `multiple` o `size` se convierte en una lista con varias filas visibles (Ctrl + clic para elegir varias).
+Una primera opción con `selected disabled` hace de «Elige una opción».
+
+[source,html]
+----
+<label for="categoria" class="form-label">Categoría</label>
+<select class="form-select" id="categoria">
+  <option selected disabled>Elige una categoría</option>
+  <option value="perifericos">Periféricos</option>
+  <option value="pantallas">Pantallas</option>
+  <option value="audio">Audio</option>
+</select>
+----
+
+.Un `select` sin clase, con `form-select` y con `multiple`
+image::07_select.png[Listas desplegables]
+
+=== Checkbox y radio
+
+Las casillas las dibuja Bootstrap enteras: el aspecto del navegador se sustituye por el suyo, igual en todos los navegadores y con el color `primary`.
+Siempre son tres piezas:
+
+[source,html]
+----
+<div class="form-check">                                    <!-- deja sitio a la izquierda -->
+  <input class="form-check-input" type="checkbox" id="acepto">
+  <label class="form-check-label" for="acepto">Acepto las condiciones</label>
+</div>
+----
+
+Al hacer clic en el texto se marca la casilla: es más fácil acertar, sobre todo en el móvil.
+
+[cols="1,3",options="header"]
+|===
+|Tipo o clase |Comportamiento
+|`type="checkbox"` |Cada casilla es independiente: se marcan varias
+|`type="radio"` |Solo una del grupo; el grupo lo forma el mismo `name`
+|`checked` / `disabled` |Marcada por defecto / deshabilitada
+|`form-check-inline` |Las opciones una al lado de otra
+|`form-check-reverse` |La casilla a la derecha del texto
+|===
+
+`fieldset` + `legend` agrupan las opciones y dan título al grupo: el lector de pantalla lee el `legend` antes de cada opción.
+
+[source,html]
+----
+<fieldset>
+  <legend class="fs-6 fw-semibold">Envío</legend>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="envio" id="envio-normal" checked>
+    <label class="form-check-label" for="envio-normal">Normal (3-5 días)</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="envio" id="envio-urgente">
+    <label class="form-check-label" for="envio-urgente">Urgente (24 h)</label>
+  </div>
+</fieldset>
+----
+
+.Checkbox, radio, `form-check-inline` y `form-check-reverse`
+image::07_checks.png[Checkbox y radio]
+
+=== Interruptores y checks con aspecto de botón
+
+==== `form-switch`
+
+Un checkbox normal con `form-switch` en el contenedor se dibuja como un interruptor.
+Sigue siendo un checkbox (marcado o no); `role="switch"` le dice al lector de pantalla que lo anuncie como interruptor (activado / desactivado).
+Se usa para opciones que se aplican al momento: notificaciones, modo oscuro…
+
+[source,html]
+----
+<div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" role="switch" id="notificaciones" checked>
+  <label class="form-check-label" for="notificaciones">Notificaciones por correo</label>
+</div>
+----
+
+==== `btn-check`
+
+El input se oculta (`btn-check`) y el `label` lleva las clases de botón: al marcarlo, el botón aparece pulsado.
+Funciona con checkbox y con radio.
+Aquí el `label` va *después* del input y sin `div.form-check`.
+
+[source,html]
+----
+<input type="checkbox" class="btn-check" id="filtro-oferta" autocomplete="off">
+<label class="btn btn-outline-primary" for="filtro-oferta">En oferta</label>
+
+<div class="btn-group" role="group" aria-label="Vista del catálogo">
+  <input type="radio" class="btn-check" name="vista" id="vista-tarjetas" autocomplete="off" checked>
+  <label class="btn btn-outline-secondary" for="vista-tarjetas">Tarjetas</label>
+  <input type="radio" class="btn-check" name="vista" id="vista-lista" autocomplete="off">
+  <label class="btn btn-outline-secondary" for="vista-lista">Lista</label>
+</div>
+----
+
+.Interruptores y checks con aspecto de botón (checkbox sueltos y radios en un `btn-group`)
+image::07_switch_btn_check.png[form-switch y btn-check]
+
+TIP: `autocomplete="off"` evita que Firefox recuerde el estado marcado al recargar la página y el botón aparezca pulsado sin que lo hayamos elegido.
+
+=== Deslizadores: `form-range`
+
+Un `<input type="range">` con `form-range` ocupa todo el ancho y se dibuja igual en todos los navegadores.
+
+[cols="1m,3",options="header"]
+|===
+|Atributo |Para qué
+|min, max |Los extremos (por defecto 0 y 100)
+|step |De cuánto en cuánto avanza (por defecto 1)
+|value |La posición inicial
+|===
+
+El deslizador no muestra su valor: lo escribimos al lado con JavaScript, en el evento `input`, que salta en cada movimiento.
+
+[source,html]
+----
+<label for="volumen" class="form-label">Volumen: <span id="valor-volumen">50</span></label>
+<input type="range" class="form-range" id="volumen" min="0" max="100" step="5" value="50">
+----
+
+[source,javascript]
+----
+window.onload = () => {
+  document.getElementById('volumen').oninput = () => {
+    document.getElementById('valor-volumen').textContent = document.getElementById('volumen').value
+  }
+}
+----
+
+.`form-range` con el valor escrito en la etiqueta
+image::07_rango.png[Deslizador form-range]
+
+NOTE: El evento `change` solo salta al soltar el deslizador; `input` salta mientras se arrastra, y por eso el número se actualiza a la vez.
+
+=== Grupos de entrada: `input-group`
+
+Un `div.input-group` pega al campo textos, iconos o botones, como una sola pieza.
+Es un contenedor flex: el campo crece y lo demás se queda a su tamaño, y Bootstrap quita las esquinas redondeadas entre las piezas para que parezcan una.
+
+[source,html]
+----
+<label for="movil" class="form-label">Teléfono</label>
+<div class="input-group">
+  <span class="input-group-text">+34</span>
+  <input type="tel" class="form-control" id="movil" placeholder="600 123 456">
+</div>
+
+<label for="precio" class="form-label">Precio</label>
+<div class="input-group">
+  <input type="number" class="form-control" id="precio" step="0.01">
+  <span class="input-group-text">€</span>
+</div>
+----
+
+[cols="1,3",options="header"]
+|===
+|Pieza |Cómo
+|Texto delante o detrás |`span.input-group-text`: unidades (€, kg), prefijos (@, +34, https://) y sufijos (.com); caben varios seguidos
+|Icono |Un icono de Bootstrap Icons dentro del `input-group-text`, con `aria-hidden="true"` (la etiqueta ya dice qué es el campo)
+|Botón |Directamente en el grupo, sin `input-group-text`: `<button class="btn btn-primary">`
+|Lista |Un `form-select` también forma parte del grupo; con `flex-grow-0 w-auto` no se estira
+|Check |Un checkbox o radio dentro de un `div.input-group-text`, con `mt-0` para quitarle el margen superior de `form-check-input`
+|Tamaño |`input-group-lg` o `input-group-sm` en el `div` del grupo: cambia todas las piezas a la vez
+|===
+
+[source,html]
+----
+<div class="input-group">
+  <input type="search" class="form-control" id="buscar" placeholder="Nombre del producto">
+  <button class="btn btn-primary" type="button">
+    <i class="bi bi-search" aria-hidden="true"></i> Buscar
+  </button>
+</div>
+
+<div class="input-group">
+  <div class="input-group-text">
+    <input class="form-check-input mt-0" type="checkbox" aria-label="Incluir mensaje de regalo">
+  </div>
+  <input type="text" class="form-control" id="regalo" placeholder="¡Feliz cumpleaños!">
+</div>
+----
+
+.Prefijos, unidades, iconos, botones, una lista y un check dentro del grupo
+image::07_input_group.png[Grupos de entrada]
+
+NOTE: El texto del `input-group-text` no se escribe ni se envía con el formulario: solo indica el formato.
+Si el servidor necesita el «+34», tiene que añadirlo él (o ir en un `select` dentro del grupo, que sí se envía).
+
+=== Etiquetas flotantes: `form-floating`
+
+La etiqueta empieza dentro del campo, como si fuera un placeholder, y al entrar o escribir sube y se hace pequeña.
+Ahorra espacio y la etiqueta no se pierde.
+
+[source,html]
+----
+<div class="form-floating">
+  <input type="email" class="form-control" id="email" placeholder="nombre@ejemplo.com">
+  <label for="email">Correo electrónico</label>
+</div>
+----
+
+IMPORTANT: Tres reglas:
+el `input` va *antes* del `label` (al revés que en un formulario normal);
+el `input` necesita un `placeholder`, aunque no se vea, porque Bootstrap usa `:placeholder-shown` para saber si el campo está vacío;
+y el `label` no lleva `form-label`, porque lo coloca `form-floating`.
+
+[cols="1,3",options="header"]
+|===
+|Caso |Comportamiento
+|Campo con `value` |La etiqueta ya está arriba
+|`textarea` |`rows` no funciona: la altura se fija con `style="height: 7rem"`
+|`select` |La etiqueta siempre está arriba: un `select` nunca está vacío
+|Sin `placeholder` |`:placeholder-shown` nunca se cumple: Bootstrap cree que el campo tiene contenido y la etiqueta se queda siempre arriba, pequeña
+|Dentro de un `input-group` |El `div.form-floating` ocupa el sitio del campo dentro del grupo
+|===
+
+[source,html]
+----
+<div class="input-group">
+  <span class="input-group-text"><i class="bi bi-person" aria-hidden="true"></i></span>
+  <div class="form-floating">
+    <input type="text" class="form-control" id="usuario" placeholder="Usuario">
+    <label for="usuario">Usuario</label>
+  </div>
+</div>
+----
+
+.Etiquetas flotantes: vacío, con `value`, `textarea`, `select`, sin `placeholder` y dentro de un `input-group`
+image::07_floating.png[Etiquetas flotantes]
+
+=== La rejilla en los formularios
+
+Bootstrap no tiene un sistema propio para colocar campos: usamos la rejilla de siempre (`row`, `col`, `g-*`) y las utilidades de espaciado.
+
+[cols="1,3",options="header"]
+|===
+|Disposición |Cómo
+|Un campo debajo de otro |Cada etiqueta + campo en un `div.mb-3` (`form-control` ya ocupa todo el ancho)
+|Varios por fila |`form.row.g-3` y columnas `col-md-6`, `col-12`…: en el móvil se apilan
+|Horizontal (etiqueta a la izquierda) |Cada campo en un `row mb-3`; etiqueta `col-sm-3 col-form-label` y campo en `col-sm-9`
+|En línea |`row g-2 align-items-center` con columnas `col-auto`; etiquetas con `visually-hidden`
+|Campo que crece y botón a su tamaño |`col` + `col-auto`
+|===
+
+==== Varios campos por fila: `row g-3` y `col-md-*`
+
+[source,html]
+----
+<form class="row g-3">
+  <div class="col-md-6">
+    <label for="nombre" class="form-label">Nombre</label>
+    <input type="text" class="form-control" id="nombre">
+  </div>
+  <div class="col-md-6">…Apellidos…</div>
+  <div class="col-12">…Dirección…</div>
+  <div class="col-md-6">…Ciudad…</div>
+  <div class="col-md-4">…Provincia…</div>
+  <div class="col-md-2">…C. P.…</div>
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Guardar dirección</button>
+  </div>
+</form>
+----
+
+`col-md-6`: dos por fila desde `md`; en el móvil, uno debajo de otro.
+`col-12`: la fila entera en todos los tamaños.
+`g-3` separa los campos en horizontal y en vertical: sin él, al apilarse en el móvil quedarían pegados.
+
+.Formulario en rejilla en el móvil y en pantalla ancha
+image::07_rejilla_columnas_xs.png[Formulario en rejilla en el móvil]
+
+image::07_rejilla_columnas_lg.png[Formulario en rejilla en pantalla ancha]
+
+==== Formulario horizontal: `col-form-label`
+
+Cada campo es una fila (`row mb-3`): la etiqueta en una columna (`col-sm-3`, un cuarto) y el campo en otra (`col-sm-9`, tres cuartos).
+La etiqueta lleva `col-form-label` en lugar de `form-label`: le da el mismo relleno vertical que al campo, para que el texto quede a la altura del texto del campo.
+Por debajo de `sm` la etiqueta vuelve a quedar encima.
+Lo que no tiene etiqueta (un check, el botón) se alinea con los campos con `offset-sm-3`.
+
+[source,html]
+----
+<div class="row mb-3">
+  <label for="email" class="col-sm-3 col-form-label">Correo electrónico</label>
+  <div class="col-sm-9">
+    <input type="email" class="form-control" id="email">
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-9 offset-sm-3">
+    <button type="submit" class="btn btn-primary">Entrar</button>
+  </div>
+</div>
+----
+
+.Formulario horizontal: en la primera fila `form-label` (la etiqueta queda pegada arriba) y en las demás `col-form-label` (a la altura del texto del campo)
+image::07_rejilla_horizontal_lg.png[Formulario horizontal en pantalla ancha]
+
+.El mismo formulario en el móvil: las etiquetas encima
+image::07_rejilla_horizontal_xs.png[Formulario horizontal en el móvil]
+
+==== Formulario en línea: `col-auto`
+
+Todo en una sola línea: un buscador, una suscripción al boletín…
+`row g-2 align-items-center` hace una fila con hueco pequeño y todo centrado en vertical, y `col-auto` hace que cada columna mida lo que su contenido.
+La etiqueta no se ve (`visually-hidden`), pero el lector de pantalla la lee.
+
+Con `col` y `col-auto` juntas, `col` reparte el espacio sobrante y `col-auto` se ajusta al contenido: el campo de búsqueda crece y el botón se queda a su tamaño.
+
+[source,html]
+----
+<form class="row g-2 align-items-center">
+  <div class="col-auto">
+    <label for="suscripcion" class="visually-hidden">Correo electrónico</label>
+    <input type="email" class="form-control" id="suscripcion" placeholder="nombre@ejemplo.com">
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary">Suscribirme</button>
+  </div>
+</form>
+
+<form class="row g-2">
+  <div class="col">
+    <label for="buscar" class="visually-hidden">Buscar</label>
+    <input type="search" class="form-control" id="buscar" placeholder="Buscar productos">
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary">Buscar</button>
+  </div>
+</form>
+----
+
+.Formularios en línea en el móvil y en pantalla ancha (si no caben, las columnas `col-auto` bajan a la línea siguiente)
+image::07_rejilla_en_linea_xs.png[Formularios en línea en el móvil]
+
+image::07_rejilla_en_linea_lg.png[Formularios en línea en pantalla ancha]
+
+=== Validación
+
+Quien valida es el *navegador*, con los atributos de HTML5:
+
+[cols="1m,3",options="header"]
+|===
+|Atributo |Regla
+|required |Obligatorio
+|type="email" |Tiene que parecer un correo
+|minlength, maxlength |Longitud mínima y máxima del texto
+|min, max |En números y fechas
+|pattern |Una expresión regular: `pattern="[0-9]{5}"`, cinco cifras
+|===
+
+Bootstrap no valida nada: solo pinta en verde o rojo lo que el navegador ya ha decidido, y muestra nuestros mensajes en lugar de los del navegador.
+
+==== Sin Bootstrap: la validación del navegador
+
+Al pulsar «Enviar» con un campo mal, el navegador no envía el formulario y muestra un globo con su propio mensaje en el primer campo que falla.
+El aspecto y el texto del globo los decide cada navegador (con `title` se añade una pista al mensaje de `pattern`).
+
+[source,html]
+----
+<form>
+  <input type="email" id="email" required>
+  <input type="text" id="cp" pattern="[0-9]{5}" title="Cinco cifras">
+  <button type="submit">Enviar</button>
+</form>
+----
+
+==== Con Bootstrap: `novalidate` y `was-validated`
+
+[cols="2,3",options="header"]
+|===
+|Pieza |Para qué
+|`novalidate` en el `form` |El navegador sigue validando, pero no muestra sus globos ni bloquea el envío: lo controlamos nosotros
+|`was-validated` en el `form` (con JavaScript, al enviar) |Bootstrap pinta cada campo según la pseudoclase del navegador: `:valid` borde verde y un check, `:invalid` borde rojo y una exclamación
+|`invalid-feedback` / `valid-feedback` |Mensajes que solo se ven si el campo es inválido / válido
+|`has-validation` en el `input-group` |Las esquinas redondeadas quedan bien aunque el mensaje vaya dentro del grupo
+|===
+
+[source,html]
+----
+<form id="form-alta" class="row g-3" novalidate>
+  <div class="col-md-6">
+    <label for="nombre" class="form-label">Nombre</label>
+    <input type="text" class="form-control" id="nombre" required minlength="2">
+    <div class="valid-feedback">Correcto.</div>
+    <div class="invalid-feedback">El nombre es obligatorio (mínimo 2 letras).</div>
+  </div>
+  <div class="col-md-6">
+    <label for="usuario" class="form-label">Usuario</label>
+    <div class="input-group has-validation">
+      <span class="input-group-text">@</span>
+      <input type="text" class="form-control" id="usuario" required pattern="[a-z0-9_]{3,15}">
+      <div class="invalid-feedback">Entre 3 y 15 caracteres: minúsculas, números y _.</div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <label for="provincia" class="form-label">Provincia</label>
+    <select class="form-select" id="provincia" required>
+      <option selected disabled value="">Elige...</option>
+      <option>Madrid</option>
+    </select>
+    <div class="invalid-feedback">Elige una provincia.</div>
+  </div>
+  <div class="col-12">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="condiciones" required>
+      <label class="form-check-label" for="condiciones">Acepto las condiciones</label>
+      <div class="invalid-feedback">Hay que aceptar las condiciones.</div>
+    </div>
+  </div>
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary">Crear cuenta</button>
+  </div>
+  <div class="col-12">
+    <div id="aviso-enviado" class="alert alert-success d-none mb-0" role="alert">Todo correcto: el formulario se enviaría.</div>
+  </div>
+</form>
+----
+
+[source,javascript]
+----
+window.onload = () => {
+  const formAlta = document.getElementById('form-alta')
+
+  formAlta.onsubmit = (evento) => {
+    evento.preventDefault()
+    formAlta.classList.add('was-validated')
+    if (formAlta.checkValidity()) {
+      document.getElementById('aviso-enviado').classList.remove('d-none')
+    }
+  }
+}
+----
+
+`preventDefault()` evita que la página se recargue (en el ejemplo no hay servidor) y `checkValidity()` devuelve `true` si todos los campos son válidos.
+
+IMPORTANT: Los mensajes tienen que ir *después del campo y como hermanos* (mismo padre): Bootstrap los muestra con el selector `:invalid ~ .invalid-feedback`.
+Por eso, en un `input-group` el mensaje va dentro del grupo, y en un check, dentro del `div.form-check`, detrás del `label`.
+
+NOTE: En un `select` obligatorio, la primera opción lleva `value=""`: una opción con valor vacío no cumple `required`.
+
+.Antes de enviar: aunque los campos obligatorios vacíos ya son `:invalid`, no se pinta nada
+image::07_validacion_inicial.png[Formulario antes de enviar]
+
+.Al enviar con datos incompletos: en verde lo válido y en rojo lo inválido, con su mensaje
+image::07_validacion_enviado.png[Formulario validado con errores]
+
+.Con todo correcto: todos los campos en verde y el aviso de envío
+image::07_validacion_correcto.png[Formulario validado sin errores]
+
+===== ¿Por qué esperar a `was-validated`?
+
+Porque `:invalid` se cumple desde que carga la página: un campo `required` vacío ya es inválido.
+Si Bootstrap pintara los campos sin esperar, el formulario aparecería todo en rojo antes de que el usuario escriba nada.
+
+==== Marcar un campo a mano: `is-invalid` e `is-valid`
+
+Hay errores que el navegador no puede saber: «ese correo ya está registrado».
+Los decide el servidor, y al devolver la página marcamos el campo con `is-invalid` (o `is-valid`).
+No dependen de `was-validated` ni de `novalidate`: se ven siempre, y el `invalid-feedback` aparece porque el campo tiene `is-invalid`.
+
+[source,html]
+----
+<input type="email" class="form-control is-invalid" id="email" value="cliente@ejemplo.com">
+<div class="invalid-feedback">Ya hay una cuenta con este correo.</div>
+
+<input type="text" class="form-control is-valid" id="usuario" value="luis_r">
+<div class="valid-feedback">Nombre de usuario disponible.</div>
+----
+
+.`is-invalid` e `is-valid` puestos a mano
+image::07_validacion_manual.png[Campos marcados a mano]
+
+==== Mensajes como globo: `invalid-tooltip` y `valid-tooltip`
+
+En lugar de un texto debajo, un globo de color que flota sobre lo que haya debajo.
+Se posiciona con `position: absolute`, así que el contenedor del campo necesita `position-relative`.
+Como tapa lo que tiene debajo, conviene dejarle sitio (en el ejemplo, `pt-4` en la fila del botón).
+
+[source,html]
+----
+<div class="col-md-6 position-relative">
+  <label for="nombre" class="form-label">Nombre</label>
+  <input type="text" class="form-control" id="nombre" required>
+  <div class="invalid-tooltip">El nombre es obligatorio.</div>
+</div>
+----
+
+.Mensajes en globo tras enviar: el nombre vacío y la ciudad rellena
+image::07_validacion_tooltip.png[Mensajes de validación en globo]
+
+WARNING: La validación del navegador es una ayuda para el usuario, no una seguridad: desde las herramientas de desarrollo se puede quitar un `required` y enviar cualquier cosa.
+El servidor tiene que volver a validarlo todo.
+
+=== Práctica
+
+Página de contacto para la tienda de la práctica de la sesión:
+
+* Nombre y apellidos en la misma fila desde `md`; correo y teléfono (con prefijo en un `input-group`) en otra.
+* Asunto con `form-select` y mensaje con `textarea`.
+* Preferencia de respuesta con radios en línea (correo / teléfono) y un switch para el boletín.
+* Casilla obligatoria de aceptación de la política de privacidad.
+* Validación con `novalidate`, `was-validated` y un mensaje `invalid-feedback` en cada campo obligatorio.
+* Al ser válido, mostrar un `alert-success` en lugar de enviar.
+* Variante: los campos de texto con `form-floating`.
+
+.Un resultado posible, en pantalla ancha y en el móvil
+image::07_practica_lg.png[Práctica de formulario de contacto en pantalla ancha]
+
+image::07_practica_xs.png[Práctica de formulario de contacto en el móvil]
+
 == Referencias
 
 * https://getbootstrap.com/docs/5.3/getting-started/introduction/[Documentación oficial de Bootstrap 5.3]
@@ -2274,5 +2899,14 @@ image::06_practica_xs.png[Práctica de tabla de inventario en el móvil]
 * https://getbootstrap.com/docs/5.3/content/figures/[Figures]
 * https://getbootstrap.com/docs/5.3/content/tables/[Tables]
 * https://getbootstrap.com/docs/5.3/utilities/vertical-align/[Vertical alignment]
+* https://getbootstrap.com/docs/5.3/forms/overview/[Forms]
+* https://getbootstrap.com/docs/5.3/forms/form-control/[Form controls]
+* https://getbootstrap.com/docs/5.3/forms/select/[Select]
+* https://getbootstrap.com/docs/5.3/forms/checks-radios/[Checks and radios]
+* https://getbootstrap.com/docs/5.3/forms/range/[Range]
+* https://getbootstrap.com/docs/5.3/forms/input-group/[Input group]
+* https://getbootstrap.com/docs/5.3/forms/floating-labels/[Floating labels]
+* https://getbootstrap.com/docs/5.3/forms/layout/[Layout]
+* https://getbootstrap.com/docs/5.3/forms/validation/[Validation]
 * https://developer.mozilla.org/es/docs/Web/HTML/Element/table[El elemento <table> (MDN)]
 * https://icons.getbootstrap.com/[Bootstrap Icons]
