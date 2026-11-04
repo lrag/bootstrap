@@ -36,7 +36,7 @@
       <div class="bg-success-subtle border border-success-subtle px-2 py-1 mb-2 w-50">w-50 → width: 50%</div>
       <div class="bg-success-subtle border border-success-subtle px-2 py-1 mb-2 w-75">w-75 → width: 75%</div>
       <div class="bg-success-subtle border border-success-subtle px-2 py-1 mb-2 w-100">w-100 → width: 100%</div>
-      <div class="bg-primary-subtle border border-primary-subtle px-2 py-1" style="width: 50%">style="width: 50%"</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-2 py-1" style="width: 33%">style="width: 33%"</div>
     </div>
 
     <!--
@@ -52,7 +52,7 @@
       <div class="bg-success-subtle border border-success-subtle px-2 h-50">h-50</div>
       <div class="bg-success-subtle border border-success-subtle px-2 h-75">h-75</div>
       <div class="bg-success-subtle border border-success-subtle px-2 h-100">h-100</div>
-      <div class="bg-primary-subtle border border-primary-subtle px-2" style="height: 50%">style="height: 50%"</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-2" style="height: 33%">style="height: 33%"</div>
     </div>
 
     <!--
@@ -72,12 +72,14 @@
         1500 px con mw-100
       </div>
     </div>
+
     <p class="mb-1"><code>style="max-width: 100%"</code></p>
     <div class="bg-secondary-subtle border p-2 mb-2">
       <div class="bg-primary-subtle border border-primary-subtle px-2 py-1" style="width: 1500px; max-width: 100%">
         1500 px con max-width: 100%
       </div>
     </div>
+
     <p class="mb-1">Sin <code>mw-100</code> (se sale del contenedor)</p>
     <div class="bg-secondary-subtle border p-2 mb-4">
       <div class="bg-primary-subtle border border-primary-subtle px-2 py-1" style="width: 1500px">
@@ -113,13 +115,13 @@
     <h2 class="h4 mt-5">Bordes: <code>border</code>, <code>border-top</code>…</h2>
 
     <div class="d-flex flex-wrap gap-3 mb-4">
-      <div class="bg-success-subtle p-3 border">border</div>
-      <div class="bg-success-subtle p-3 border-top">border-top</div>
-      <div class="bg-success-subtle p-3 border-end">border-end</div>
-      <div class="bg-success-subtle p-3 border-bottom">border-bottom</div>
-      <div class="bg-success-subtle p-3 border-start">border-start</div>
-      <div class="bg-success-subtle p-3 border border-top-0">border border-top-0</div>
-      <div class="bg-primary-subtle p-3" style="border: 1px solid #dee2e6">border: 1px solid #dee2e6</div>
+      <div class="bg-success-subtle p-3 border border-primary">border</div>
+      <div class="bg-success-subtle p-3 border-top border-primary">border-top</div>
+      <div class="bg-success-subtle p-3 border-end border-primary">border-end</div>
+      <div class="bg-success-subtle p-3 border-bottom border-primary">border-bottom</div>
+      <div class="bg-success-subtle p-3 border-start border-primary">border-start</div>
+      <div class="bg-success-subtle p-3 border border-top-0 border-primary">border border-top-0</div>
+      <div class="bg-primary-subtle p-3" style="border: 1px solid #0480fc">border: 1px solid #dee2e6</div>
     </div>
 
     <!--

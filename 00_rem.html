@@ -12,7 +12,7 @@
   <script>
     function cambiarBase(px) {
       const base = document.getElementById('base')
-      document.documentElement.style.fontSize = px + 'px'
+      document.documentElement.style.fontSize = px + 'px'    px24
       base.textContent = px
     }
 
@@ -33,7 +33,11 @@
       1rem = el font-size de <html>
 
     Los navegadores usan 16 px por defecto, así que normalmente:
-      0.25rem = 4 px    0.5rem = 8 px    1rem = 16 px    1.5rem = 24 px    3rem = 48 px
+      0.25rem = 4 px    
+      0.5rem = 8 px    
+      1rem = 16 px    
+      1.5rem = 24 px    
+      3rem = 48 px
 
     Si cambia el font-size de <html>, cambia todo lo que esté medido en rem.
     Eso ocurre, por ejemplo, cuando alguien aumenta el tamaño de letra en la configuración
