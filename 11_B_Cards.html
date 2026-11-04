@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>11 B · Cards</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    CARDS (TARJETAS)
+    Una caja con borde y esquinas redondeadas que agrupa contenido relacionado:
+    un producto, un artículo, un perfil...
+    Por dentro tiene piezas opcionales, y usamos solo las que hacen falta:
+      card-img-top  → imagen arriba
+      card-header   → cabecera con fondo gris
+      card-body     → el contenido, con relleno
+        card-title, card-subtitle, card-text, card-link
+      card-footer   → pie con fondo gris
+    La .card es un contenedor flex en columna: sus piezas van una debajo de otra.
+
+    Las imágenes de los ejemplos son rectángulos de color (SVG dentro del src)
+    para no depender de ficheros.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Cards</h1>
+
+    <!--
+      LA CARD MÁS SENCILLA: card + card-body
+      card pone el borde y las esquinas; card-body, el relleno.
+      Sin ancho, la card ocupa todo el de su contenedor: aquí la limitamos con style
+      (en una página real, la columna de la rejilla decide el ancho).
+    -->
+    <h2 class="h4 mt-5">La card más sencilla: <code>card</code> + <code>card-body</code></h2>
+
+    <div class="card" style="max-width: 20rem">
+      <div class="card-body">
+        Una card con solo texto.
+      </div>
+    </div>
+
+    <!--
+      LAS PIEZAS DEL CUERPO
+        card-title    → el título (un h5, por ejemplo): margen inferior
+        card-subtitle → subtítulo, normalmente con text-body-secondary
+        card-text     → párrafo; el último no deja margen inferior
+        card-link     → enlaces en línea, separados entre sí
+      Con una imagen arriba: card-img-top (redondea solo las esquinas de arriba
+      para que encajen con las de la card).
+    -->
+    <h2 class="h4 mt-5">Las piezas: título, texto, enlaces e imagen</h2>
+
+    <div class="d-flex flex-wrap gap-4 align-items-start">
+      <div class="card" style="width: 18rem">
+        <div class="card-body">
+          <h5 class="card-title">Teclado mecánico</h5>
+          <h6 class="card-subtitle mb-2 text-body-secondary">Periféricos</h6>
+          <p class="card-text">Interruptores marrones, retroiluminación blanca y reposamuñecas desmontable.</p>
+          <a href="#" class="card-link">Ver detalle</a>
+          <a href="#" class="card-link">Comparar</a>
+        </div>
+      </div>
+
+      <div class="card" style="width: 18rem">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect width='100%25' height='100%25' fill='%23a3cfbb'/%3E%3C/svg%3E" class="card-img-top" alt="Foto del teclado">
+        <div class="card-body">
+          <h5 class="card-title">Teclado mecánico</h5>
+          <p class="card-text">Interruptores marrones y retroiluminación blanca.</p>
+          <a href="#" class="btn btn-primary">39,90 € · Comprar</a>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      CABECERA Y PIE: card-header Y card-footer
+      Fondo gris suave y una línea que los separa del cuerpo.
+      En la cabecera puede ir un título, una etiqueta, unas pestañas...
+    -->
+    <h2 class="h4 mt-5">Cabecera y pie: <code>card-header</code> y <code>card-footer</code></h2>
+
+    <div class="card" style="max-width: 24rem">
+      <div class="card-header">Oferta de la semana</div>
+      <div class="card-body">
+        <h5 class="card-title">Monitor 27"</h5>
+        <p class="card-text">Panel IPS, 2560 × 1440, 75 Hz.</p>
+        <a href="#" class="btn btn-primary">Ver oferta</a>
+      </div>
+      <div class="card-footer text-body-secondary">Termina en 2 días</div>
+    </div>
+
+    <!--
+      UNA LISTA DENTRO: list-group-flush
+      Un list-group (lo vemos en el 11_C) con list-group-flush quita sus bordes exteriores
+      y encaja dentro de la card, debajo del cuerpo.
+    -->
+    <h2 class="h4 mt-5">Una lista dentro: <code>list-group-flush</code></h2>
+
+    <div class="card" style="max-width: 20rem">
+      <div class="card-body">
+        <h5 class="card-title">Auriculares</h5>
+        <p class="card-text">Inalámbricos, con cancelación de ruido.</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Batería: 30 horas</li>
+        <li class="list-group-item">Bluetooth 5.3</li>
+        <li class="list-group-item">Peso: 250 g</li>
+      </ul>
+      <div class="card-body">
+        <a href="#" class="card-link">Ficha técnica</a>
+      </div>
+    </div>
+
+    <!--
+      COLORES
+        text-bg-{color} → fondo de color y texto que contrasta (lo vimos en colores)
+        border-{color}  → solo el borde de color; text-{color} en el cuerpo para el texto
+      Las card-header y card-footer heredan el color y añaden un tono más.
+    -->
+    <h2 class="h4 mt-5">Colores: <code>text-bg-*</code> y <code>border-*</code></h2>
+
+    <div class="row row-cols-1 row-cols-md-3 g-3">
+      <div class="col">
+        <div class="card text-bg-success">
+          <div class="card-header">text-bg-success</div>
+          <div class="card-body">
+            <h5 class="card-title">Pedido enviado</h5>
+            <p class="card-text">Llegará mañana.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card text-bg-dark">
+          <div class="card-header">text-bg-dark</div>
+          <div class="card-body">
+            <h5 class="card-title">Modo noche</h5>
+            <p class="card-text">Fondo oscuro y texto claro.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card border-danger">
+          <div class="card-header border-danger">border-danger</div>
+          <div class="card-body text-danger">
+            <h5 class="card-title">Sin stock</h5>
+            <p class="card-text">Te avisamos cuando vuelva.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      CARD HORIZONTAL: LA REJILLA DENTRO DE LA CARD
+      Imagen a la izquierda y texto a la derecha: una row g-0 dentro de la card.
+        g-0           → sin gutter, la imagen toca el borde
+        col-md-4      → la imagen; col-md-8 → el cuerpo
+        rounded-start → redondea solo las esquinas izquierdas de la imagen
+      En el móvil, la imagen vuelve a quedar arriba.
+    -->
+    <h2 class="h4 mt-5">Card horizontal: <code>row g-0</code> dentro de la card</h2>
+
+    <div class="card" style="max-width: 36rem">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='100%25' height='100%25' fill='%239ec5fe'/%3E%3C/svg%3E" class="img-fluid rounded-start" alt="Foto del monitor">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">Monitor 27"</h5>
+            <p class="card-text">Panel IPS, 2560 × 1440, 75 Hz. Altura regulable y entrada USB-C.</p>
+            <p class="card-text"><small class="text-body-secondary">249,00 €</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      UNA REJILLA DE CARDS: row-cols-* + h-100
+      Lo habitual en un catálogo: cada card en una columna.
+        row-cols-1 row-cols-sm-2 row-cols-lg-4 → 1, 2 o 4 por fila según el ancho
+        g-4  → hueco entre cards
+        h-100 en cada card → todas igual de altas que la más alta de su fila
+      Sin h-100, cada card mide lo que su contenido y la fila queda dentada.
+
+      card-body tiene flex: 1 1 auto: crece para llenar la card.
+      Por eso, con h-100, los card-footer quedan todos alineados abajo.
+    -->
+    <h2 class="h4 mt-5">Una rejilla de cards: <code>row-cols-*</code> y <code>h-100</code></h2>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+      <div class="col">
+        <div class="card h-100">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect width='100%25' height='100%25' fill='%23a3cfbb'/%3E%3C/svg%3E" class="card-img-top" alt="Foto del teclado">
+          <div class="card-body">
+            <h5 class="card-title">Teclado mecánico</h5>
+            <p class="card-text">Interruptores marrones, retroiluminación blanca y reposamuñecas desmontable.</p>
+          </div>
+          <div class="card-footer">39,90 €</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect width='100%25' height='100%25' fill='%239ec5fe'/%3E%3C/svg%3E" class="card-img-top" alt="Foto del monitor">
+          <div class="card-body">
+            <h5 class="card-title">Monitor 27"</h5>
+            <p class="card-text">Panel IPS.</p>
+          </div>
+          <div class="card-footer">249,00 €</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect width='100%25' height='100%25' fill='%23ffe69c'/%3E%3C/svg%3E" class="card-img-top" alt="Foto del ratón">
+          <div class="card-body">
+            <h5 class="card-title">Ratón inalámbrico</h5>
+            <p class="card-text">Seis botones y sensor de 4000 ppp.</p>
+          </div>
+          <div class="card-footer">19,50 €</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect width='100%25' height='100%25' fill='%23f1aeb5'/%3E%3C/svg%3E" class="card-img-top" alt="Foto de los auriculares">
+          <div class="card-body">
+            <h5 class="card-title">Auriculares</h5>
+            <p class="card-text">Inalámbricos, con cancelación de ruido y 30 horas de batería.</p>
+          </div>
+          <div class="card-footer">59,00 €</div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      LA MISMA REJILLA SIN h-100
+      Cada card mide lo que su contenido: los pies no quedan alineados.
+    -->
+    <p class="mt-4 mb-1">La misma rejilla sin <code>h-100</code>:</p>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Teclado mecánico</h5>
+            <p class="card-text">Interruptores marrones, retroiluminación blanca y reposamuñecas desmontable.</p>
+          </div>
+          <div class="card-footer">39,90 €</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Monitor 27"</h5>
+            <p class="card-text">Panel IPS.</p>
+          </div>
+          <div class="card-footer">249,00 €</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Ratón inalámbrico</h5>
+            <p class="card-text">Seis botones y sensor de 4000 ppp.</p>
+          </div>
+          <div class="card-footer">19,50 €</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Auriculares</h5>
+            <p class="card-text">Inalámbricos, con cancelación de ruido y 30 horas de batería.</p>
+          </div>
+          <div class="card-footer">59,00 €</div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      CARDS PEGADAS: card-group
+      Las cards quedan unidas, sin hueco, y todas con la misma altura (es un contenedor flex).
+      Por debajo de sm se apilan.
+      Frente a la rejilla: card-group no tiene hueco ni elige cuántas por fila;
+      todas van en una sola fila.
+    -->
+    <h2 class="h4 mt-5">Cards pegadas: <code>card-group</code></h2>
+
+    <div class="card-group mb-5">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Básico</h5>
+          <p class="card-text">Envío normal y devolución en 14 días.</p>
+        </div>
+        <div class="card-footer">Gratis</div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Plus</h5>
+          <p class="card-text">Envío en 24 horas, devolución en 30 días y soporte prioritario por teléfono.</p>
+        </div>
+        <div class="card-footer">4,99 € al mes</div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Empresa</h5>
+          <p class="card-text">Todo lo de Plus y factura mensual.</p>
+        </div>
+        <div class="card-footer">Consultar</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

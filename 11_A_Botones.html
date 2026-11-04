@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>11 A · Botones y grupos de botones</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    BOTONES
+    La clase btn da la forma (relleno, borde, esquinas, cursor) y btn-{color} el color.
+    Siempre van juntas: btn sola es un botón sin color.
+    Los colores son los ocho del tema, más btn-link (aspecto de enlace).
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Botones y grupos de botones</h1>
+
+    <!--
+      SIN CLASE Y CON btn
+      Sin clase, el navegador dibuja su botón gris. Con btn btn-primary, el de Bootstrap.
+    -->
+    <h2 class="h4 mt-5">Sin clase y con <code>btn</code></h2>
+
+    <div class="d-flex flex-wrap gap-2">
+      <button type="button">Sin clase</button>
+      <button type="button" class="btn">btn</button>
+      <button type="button" class="btn btn-primary">btn btn-primary</button>
+    </div>
+
+    <!--
+      LOS COLORES: btn-{color}
+      El color da significado, como en las tablas: primary para la acción principal
+      (solo una por pantalla), danger para borrar, secondary para cancelar...
+      btn-link parece un enlace, pero sigue siendo un botón.
+    -->
+    <h2 class="h4 mt-5">Los colores: <code>btn-{color}</code></h2>
+
+    <div class="d-flex flex-wrap gap-2">
+      <button type="button" class="btn btn-primary">primary</button>
+      <button type="button" class="btn btn-secondary">secondary</button>
+      <button type="button" class="btn btn-success">success</button>
+      <button type="button" class="btn btn-danger">danger</button>
+      <button type="button" class="btn btn-warning">warning</button>
+      <button type="button" class="btn btn-info">info</button>
+      <button type="button" class="btn btn-light">light</button>
+      <button type="button" class="btn btn-dark">dark</button>
+      <button type="button" class="btn btn-link">link</button>
+    </div>
+
+    <!--
+      SOLO EL BORDE: btn-outline-{color}
+      Borde y texto de color, sin fondo; al pasar el ratón se rellena.
+      Para acciones secundarias junto a una principal: menos peso visual.
+    -->
+    <h2 class="h4 mt-5">Solo el borde: <code>btn-outline-{color}</code></h2>
+
+    <div class="d-flex flex-wrap gap-2">
+      <button type="button" class="btn btn-outline-primary">outline-primary</button>
+      <button type="button" class="btn btn-outline-secondary">outline-secondary</button>
+      <button type="button" class="btn btn-outline-success">outline-success</button>
+      <button type="button" class="btn btn-outline-danger">outline-danger</button>
+      <button type="button" class="btn btn-outline-warning">outline-warning</button>
+      <button type="button" class="btn btn-outline-info">outline-info</button>
+      <button type="button" class="btn btn-outline-dark">outline-dark</button>
+    </div>
+
+    <p class="mt-3 mb-1">Una acción principal y una secundaria:</p>
+    <div class="d-flex gap-2">
+      <button type="button" class="btn btn-primary">Guardar</button>
+      <button type="button" class="btn btn-outline-secondary">Cancelar</button>
+    </div>
+
+    <!--
+      LA ETIQUETA: button, a o input
+      btn funciona en tres etiquetas, y se ven iguales:
+        <button> → una acción en la página (guardar, abrir, borrar)
+        <a>      → ir a otra página: lleva href y role="button" si parece botón
+        <input type="submit"> → enviar un formulario (no admite iconos dentro)
+      Elegimos la etiqueta por lo que HACE, no por cómo se ve.
+
+      type="button" en los botones: dentro de un <form>, un <button> sin type
+      es type="submit" y envía el formulario al pulsarlo.
+    -->
+    <h2 class="h4 mt-5">La etiqueta: <code>button</code>, <code>a</code> o <code>input</code></h2>
+
+    <div class="d-flex flex-wrap gap-2">
+      <button type="button" class="btn btn-primary">button</button>
+      <a class="btn btn-primary" href="11_B_Cards.html" role="button">a con href</a>
+      <input class="btn btn-primary" type="submit" value="input submit">
+    </div>
+
+    <!--
+      TAMAÑOS: btn-lg Y btn-sm
+    -->
+    <h2 class="h4 mt-5">Tamaños: <code>btn-lg</code> y <code>btn-sm</code></h2>
+
+    <div class="d-flex flex-wrap align-items-center gap-2">
+      <button type="button" class="btn btn-primary btn-lg">btn-lg</button>
+      <button type="button" class="btn btn-primary">normal</button>
+      <button type="button" class="btn btn-primary btn-sm">btn-sm</button>
+    </div>
+
+    <!--
+      DESHABILITADOS
+      En un <button>, el atributo disabled: se ve apagado y no responde.
+      Un <a> no tiene disabled: le ponemos la clase disabled (Bootstrap le quita
+      los clics con pointer-events: none), aria-disabled="true" para el lector de pantalla
+      y quitamos el href, para que tampoco se pueda llegar con el teclado.
+    -->
+    <h2 class="h4 mt-5">Deshabilitados</h2>
+
+    <div class="d-flex flex-wrap gap-2">
+      <button type="button" class="btn btn-primary" disabled>button disabled</button>
+      <button type="button" class="btn btn-outline-primary" disabled>outline disabled</button>
+      <a class="btn btn-primary disabled" role="button" aria-disabled="true">a con clase disabled</a>
+    </div>
+
+    <!--
+      CON ICONOS
+      Un icono de Bootstrap Icons dentro del botón, con aria-hidden (es decorativo).
+      Si el botón solo tiene el icono, necesita aria-label: si no, el lector de pantalla
+      no sabe qué hace.
+    -->
+    <h2 class="h4 mt-5">Con iconos</h2>
+
+    <div class="d-flex flex-wrap gap-2">
+      <button type="button" class="btn btn-success">
+        <i class="bi bi-cart-plus" aria-hidden="true"></i> Añadir al carrito
+      </button>
+      <button type="button" class="btn btn-outline-danger">
+        <i class="bi bi-trash" aria-hidden="true"></i> Borrar
+      </button>
+      <button type="button" class="btn btn-outline-secondary" aria-label="Editar">
+        <i class="bi bi-pencil" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <!--
+      BOTONES A TODO EL ANCHO: d-grid
+      En Bootstrap 4 había btn-block; en la 5 ya no existe.
+      Usamos la rejilla CSS: un contenedor d-grid hace que cada botón ocupe todo el ancho,
+      y gap-2 los separa.
+      Con d-md-block, desde md vuelven a su tamaño normal (en el móvil, a todo el ancho).
+    -->
+    <h2 class="h4 mt-5">A todo el ancho: <code>d-grid</code></h2>
+
+    <div class="row g-4">
+      <div class="col-md-6">
+        <p class="mb-1"><code>d-grid gap-2</code>:</p>
+        <div class="d-grid gap-2 bg-success-subtle border border-success-subtle p-3">
+          <button type="button" class="btn btn-primary">Comprar ahora</button>
+          <button type="button" class="btn btn-outline-secondary">Seguir comprando</button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <p class="mb-1"><code>d-grid gap-2 d-md-block</code> (estrechamos la ventana):</p>
+        <div class="d-grid gap-2 d-md-block bg-success-subtle border border-success-subtle p-3">
+          <button type="button" class="btn btn-primary">Comprar ahora</button>
+          <button type="button" class="btn btn-outline-secondary">Seguir comprando</button>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      GRUPOS DE BOTONES: btn-group
+      Un div btn-group pega los botones en una sola pieza, como el input-group con los campos.
+      role="group" y aria-label le dicen al lector de pantalla que es un grupo y de qué.
+      btn-group-vertical los pone uno encima de otro.
+      btn-group-lg / btn-group-sm cambian el tamaño de todos a la vez.
+    -->
+    <h2 class="h4 mt-5">Grupos de botones: <code>btn-group</code></h2>
+
+    <div class="d-flex flex-wrap align-items-start gap-4">
+      <div class="btn-group" role="group" aria-label="Alineación del texto">
+        <button type="button" class="btn btn-outline-primary">Izquierda</button>
+        <button type="button" class="btn btn-outline-primary">Centro</button>
+        <button type="button" class="btn btn-outline-primary">Derecha</button>
+      </div>
+
+      <div class="btn-group btn-group-sm" role="group" aria-label="Tamaño pequeño">
+        <button type="button" class="btn btn-secondary">btn-group-sm</button>
+        <button type="button" class="btn btn-secondary">2</button>
+        <button type="button" class="btn btn-secondary">3</button>
+      </div>
+
+      <div class="btn-group-vertical" role="group" aria-label="Grupo vertical">
+        <button type="button" class="btn btn-outline-dark">btn-group-vertical</button>
+        <button type="button" class="btn btn-outline-dark">Segundo</button>
+        <button type="button" class="btn btn-outline-dark">Tercero</button>
+      </div>
+    </div>
+
+    <!--
+      BARRA DE HERRAMIENTAS: btn-toolbar
+      Varios btn-group en una fila, con margen entre ellos (me-2).
+      Como en un editor de texto: un grupo para el formato, otro para la alineación...
+    -->
+    <h2 class="h4 mt-5">Barra de herramientas: <code>btn-toolbar</code></h2>
+
+    <div class="btn-toolbar" role="toolbar" aria-label="Barra del editor">
+      <div class="btn-group me-2" role="group" aria-label="Formato">
+        <button type="button" class="btn btn-outline-secondary" aria-label="Negrita"><i class="bi bi-type-bold" aria-hidden="true"></i></button>
+        <button type="button" class="btn btn-outline-secondary" aria-label="Cursiva"><i class="bi bi-type-italic" aria-hidden="true"></i></button>
+        <button type="button" class="btn btn-outline-secondary" aria-label="Subrayado"><i class="bi bi-type-underline" aria-hidden="true"></i></button>
+      </div>
+      <div class="btn-group me-2" role="group" aria-label="Alineación">
+        <button type="button" class="btn btn-outline-secondary" aria-label="Alinear a la izquierda"><i class="bi bi-text-left" aria-hidden="true"></i></button>
+        <button type="button" class="btn btn-outline-secondary" aria-label="Centrar"><i class="bi bi-text-center" aria-hidden="true"></i></button>
+        <button type="button" class="btn btn-outline-secondary" aria-label="Alinear a la derecha"><i class="bi bi-text-right" aria-hidden="true"></i></button>
+      </div>
+      <div class="btn-group" role="group" aria-label="Deshacer">
+        <button type="button" class="btn btn-outline-secondary" aria-label="Deshacer"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i></button>
+      </div>
+    </div>
+
+    <!--
+      EL BOTÓN DE CERRAR: btn-close
+      Una X sin texto: por eso necesita aria-label.
+      Es el que llevan las alertas, los modales y los toasts para cerrarse.
+      btn-close-white era la versión blanca para fondos oscuros; en 5.3 está obsoleta:
+      se usa data-bs-theme="dark" en el botón o en su contenedor.
+    -->
+    <h2 class="h4 mt-5">El botón de cerrar: <code>btn-close</code></h2>
+
+    <div class="d-flex gap-4 align-items-center mb-5">
+      <button type="button" class="btn-close" aria-label="Cerrar"></button>
+      <button type="button" class="btn-close" disabled aria-label="Cerrar"></button>
+      <div class="bg-dark p-2" data-bs-theme="dark">
+        <button type="button" class="btn-close" aria-label="Cerrar"></button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

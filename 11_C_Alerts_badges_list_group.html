@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>11 C · Alerts, badges y list groups</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    ALERTS, BADGES Y LIST GROUPS
+    Tres componentes para mostrar información:
+      alert      → un mensaje destacado: éxito, error, aviso...
+      badge      → una etiqueta pequeña: "Nuevo", un contador...
+      list-group → una lista de elementos con borde: menús, listados, ajustes...
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Alerts, badges y list groups</h1>
+
+    <!--
+      ALERTS: alert alert-{color}
+      Una caja con fondo suave, borde y texto del mismo color (las variantes subtle y emphasis
+      que vimos en colores, por eso se adaptan al modo oscuro).
+      role="alert" hace que el lector de pantalla lea el mensaje en cuanto aparece.
+      Lo ponemos en mensajes que aparecen como respuesta a algo (un error al guardar);
+      en un aviso que está fijo en la página desde el principio no hace falta.
+    -->
+    <h2 class="h4 mt-5">Alerts: <code>alert alert-{color}</code></h2>
+
+    <div class="alert alert-primary" role="alert">alert-primary: tienes un mensaje nuevo.</div>
+    <div class="alert alert-secondary" role="alert">alert-secondary: información sin importancia.</div>
+    <div class="alert alert-success" role="alert">alert-success: el pedido se ha guardado.</div>
+    <div class="alert alert-danger" role="alert">alert-danger: no se ha podido guardar el pedido.</div>
+    <div class="alert alert-warning" role="alert">alert-warning: quedan 2 unidades.</div>
+    <div class="alert alert-info" role="alert">alert-info: el envío es gratis a partir de 50 €.</div>
+    <div class="alert alert-light" role="alert">alert-light</div>
+    <div class="alert alert-dark" role="alert">alert-dark</div>
+
+    <!--
+      CON TÍTULO, ENLACE E ICONO
+        alert-heading → el título, con el color de la alerta
+        alert-link    → un enlace en negrita con el color de la alerta
+                        (un enlace normal saldría azul en una alerta roja)
+      Con un icono: d-flex align-items-center, el icono con me-2.
+    -->
+    <h2 class="h4 mt-5">Con título, enlace e icono</h2>
+
+    <div class="alert alert-success" role="alert">
+      <h4 class="alert-heading">¡Pedido confirmado!</h4>
+      <p>Hemos recibido el pago y preparamos el envío.</p>
+      <hr>
+      <p class="mb-0">Podemos seguir el pedido desde <a href="#" class="alert-link">Mis pedidos</a>.</p>
+    </div>
+
+    <div class="alert alert-warning d-flex align-items-center" role="alert">
+      <i class="bi bi-exclamation-triangle-fill fs-4 me-2" aria-hidden="true"></i>
+      <div>Quedan solo 2 unidades del monitor.</div>
+    </div>
+
+    <!--
+      ALERTS QUE SE CIERRAN: alert-dismissible
+        alert-dismissible → deja sitio a la derecha para la X
+        btn-close con data-bs-dismiss="alert" → al pulsarla, el JavaScript de Bootstrap
+                                                quita la alerta de la página
+        fade show → la alerta se desvanece al cerrarse en lugar de desaparecer de golpe
+      No escribimos JavaScript: basta con el atributo data-bs-dismiss
+      (el JavaScript de Bootstrap lo vemos en la sesión 3). Al recargar, vuelve a salir.
+    -->
+    <h2 class="h4 mt-5">Alerts que se cierran: <code>alert-dismissible</code></h2>
+
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+      Usamos cookies para recordar el carrito.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+
+    <!--
+      BADGES: badge text-bg-{color}
+      Una etiqueta pequeña, en negrita y con esquinas redondeadas.
+      Su tamaño es relativo al del padre (font-size: .75em): dentro de un h2 es más grande
+      que dentro de un párrafo.
+      rounded-pill la hace totalmente redondeada, en forma de píldora.
+    -->
+    <h2 class="h4 mt-5">Badges: <code>badge text-bg-{color}</code></h2>
+
+    <h3>Monitor 27" <span class="badge text-bg-success">Nuevo</span></h3>
+    <p>
+      Teclado mecánico <span class="badge text-bg-danger">-20 %</span>
+      <span class="badge text-bg-warning">Últimas unidades</span>
+      <span class="badge rounded-pill text-bg-primary">rounded-pill</span>
+      <span class="badge rounded-pill text-bg-secondary">Periféricos</span>
+    </p>
+
+    <!--
+      BADGES COMO CONTADOR
+      Dentro de un botón: el número de elementos.
+      Para que el lector de pantalla no lea solo "Carrito 3", añadimos un texto
+      que no se ve con visually-hidden: "Carrito 3 productos".
+
+      En la esquina del botón (como las notificaciones del móvil):
+        el botón con position-relative
+        el badge con position-absolute top-0 start-100 translate-middle
+          → arriba a la derecha, centrado sobre la esquina
+    -->
+    <h2 class="h4 mt-5">Badges como contador</h2>
+
+    <div class="d-flex flex-wrap gap-4 align-items-center">
+      <button type="button" class="btn btn-primary">
+        Carrito <span class="badge text-bg-light">3</span><span class="visually-hidden"> productos</span>
+      </button>
+
+      <button type="button" class="btn btn-outline-secondary position-relative">
+        <i class="bi bi-bell" aria-hidden="true"></i> Avisos
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-danger">
+          12<span class="visually-hidden"> avisos sin leer</span>
+        </span>
+      </button>
+    </div>
+
+    <!--
+      LIST GROUPS: list-group + list-group-item
+      Una lista con borde, en la que cada elemento es una fila separada por una línea.
+      Va en un <ul> o un <ol> (cuando es una lista de datos) o en un <div>
+      (cuando los elementos son enlaces o botones).
+        active   → el elemento seleccionado (con aria-current="true")
+        disabled → apagado (con aria-disabled="true")
+    -->
+    <h2 class="h4 mt-5">List groups: <code>list-group</code></h2>
+
+    <div class="row g-4">
+      <div class="col-md-6">
+        <p class="mb-1">Sin clase:</p>
+        <div class="bg-primary-subtle border border-primary-subtle p-3 h-100">
+          <ul class="mb-0">
+            <li>Mis pedidos</li>
+            <li>Mis direcciones</li>
+            <li>Métodos de pago</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <p class="mb-1"><code>list-group</code> con <code>active</code> y <code>disabled</code>:</p>
+        <ul class="list-group">
+          <li class="list-group-item active" aria-current="true">Mis pedidos (active)</li>
+          <li class="list-group-item">Mis direcciones</li>
+          <li class="list-group-item">Métodos de pago</li>
+          <li class="list-group-item disabled" aria-disabled="true">Facturas (disabled)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!--
+      ELEMENTOS QUE SE PULSAN: list-group-item-action
+      Con enlaces <a> o botones <button> dentro de un div list-group.
+      list-group-item-action añade el gris al pasar el ratón y el cursor de mano:
+      el usuario ve que se pueden pulsar.
+      Es un menú lateral típico.
+    -->
+    <h2 class="h4 mt-5">Elementos que se pulsan: <code>list-group-item-action</code></h2>
+
+    <div class="list-group" style="max-width: 20rem">
+      <a href="#" class="list-group-item list-group-item-action active" aria-current="true">Mis pedidos</a>
+      <a href="#" class="list-group-item list-group-item-action">Mis direcciones</a>
+      <a href="#" class="list-group-item list-group-item-action">Métodos de pago</a>
+      <button type="button" class="list-group-item list-group-item-action">Cerrar sesión (button)</button>
+    </div>
+
+    <!--
+      VARIANTES
+        list-group-flush        → sin bordes exteriores ni esquinas: para meterla en una card
+        list-group-numbered     → numerada (en un <ol>)
+        list-group-horizontal   → en fila; con breakpoint: list-group-horizontal-md
+        list-group-item-{color} → un elemento de color, como en las tablas
+    -->
+    <h2 class="h4 mt-5">Variantes: <code>flush</code>, <code>numbered</code>, <code>horizontal</code> y colores</h2>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <p class="mb-1"><code>list-group-flush</code>:</p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Batería: 30 horas</li>
+          <li class="list-group-item">Bluetooth 5.3</li>
+          <li class="list-group-item">Peso: 250 g</li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <p class="mb-1"><code>list-group-numbered</code> en un <code>ol</code>:</p>
+        <ol class="list-group list-group-numbered">
+          <li class="list-group-item">Elegir el producto</li>
+          <li class="list-group-item">Pagar</li>
+          <li class="list-group-item">Recibir el pedido</li>
+        </ol>
+      </div>
+      <div class="col-md-4">
+        <p class="mb-1"><code>list-group-item-{color}</code>:</p>
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-success">Pagado</li>
+          <li class="list-group-item list-group-item-warning">Pendiente de envío</li>
+          <li class="list-group-item list-group-item-danger">Devuelto</li>
+        </ul>
+      </div>
+      <div class="col-12">
+        <p class="mb-1"><code>list-group-horizontal-md</code> (en fila desde md):</p>
+        <ul class="list-group list-group-horizontal-md">
+          <li class="list-group-item">Envío gratis</li>
+          <li class="list-group-item">Devolución en 30 días</li>
+          <li class="list-group-item">Pago seguro</li>
+        </ul>
+      </div>
+    </div>
+
+    <!--
+      CON BADGES Y CONTENIDO PROPIO
+      Cada list-group-item es un bloque normal: dentro va lo que haga falta.
+      Con d-flex justify-content-between align-items-center: el texto a la izquierda
+      y el badge a la derecha.
+    -->
+    <h2 class="h4 mt-5">Con badges y contenido propio</h2>
+
+    <div class="row g-4 mb-5">
+      <div class="col-md-6">
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Periféricos
+            <span class="badge text-bg-primary rounded-pill">14</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Pantallas
+            <span class="badge text-bg-primary rounded-pill">6</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Audio
+            <span class="badge text-bg-primary rounded-pill">9</span>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-6">
+        <div class="list-group">
+          <a href="#" class="list-group-item list-group-item-action">
+            <div class="d-flex justify-content-between">
+              <h5 class="mb-1">Pedido 1024</h5>
+              <small class="text-body-secondary">hace 2 días</small>
+            </div>
+            <p class="mb-1">Teclado mecánico y ratón inalámbrico.</p>
+            <small class="text-body-secondary">59,40 € · Enviado</small>
+          </a>
+          <a href="#" class="list-group-item list-group-item-action">
+            <div class="d-flex justify-content-between">
+              <h5 class="mb-1">Pedido 1019</h5>
+              <small class="text-body-secondary">hace 3 semanas</small>
+            </div>
+            <p class="mb-1">Monitor 27".</p>
+            <small class="text-body-secondary">249,00 € · Entregado</small>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

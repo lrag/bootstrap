@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Componentes de contenido</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    pre { background: var(--bs-tertiary-bg); padding: 1rem; border-radius: var(--bs-border-radius); margin-bottom: 0; }
+    .demo { background: var(--bs-tertiary-bg); border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius); padding: 1rem; margin-bottom: 1rem; }
+    .etiqueta { font-family: var(--bs-font-monospace); font-size: .8rem; margin-bottom: .25rem; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <header class="bg-primary text-white py-5 mb-4">
+    <div class="container">
+      <p class="text-uppercase small mb-1">Curso de Bootstrap 5 · Sesión 2 · Punto 4</p>
+      <h1 class="display-5 fw-bold">Componentes de contenido</h1>
+      <p class="lead mb-0">Botones y grupos, cards, alerts, badges, list groups, breadcrumbs, paginación, barras de progreso y spinners: todo lo que se pinta solo con HTML y clases.</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <nav class="mb-5" aria-label="Índice">
+      <ol class="list-group list-group-numbered">
+        <li class="list-group-item"><a href="#botones">Botones</a></li>
+        <li class="list-group-item"><a href="#grupos">Grupos de botones y <code>btn-close</code></a></li>
+        <li class="list-group-item"><a href="#cards">Cards</a></li>
+        <li class="list-group-item"><a href="#rejilla-cards">Rejillas de cards y <code>card-group</code></a></li>
+        <li class="list-group-item"><a href="#alerts">Alerts</a></li>
+        <li class="list-group-item"><a href="#badges">Badges</a></li>
+        <li class="list-group-item"><a href="#list-group">List groups</a></li>
+        <li class="list-group-item"><a href="#breadcrumb">Breadcrumbs</a></li>
+        <li class="list-group-item"><a href="#paginacion">Paginación</a></li>
+        <li class="list-group-item"><a href="#progress">Barras de progreso</a></li>
+        <li class="list-group-item"><a href="#spinners">Spinners</a></li>
+        <li class="list-group-item"><a href="#practica">Práctica</a></li>
+      </ol>
+    </nav>
+
+    <!-- 1. Botones -->
+    <section id="botones" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">1. Botones</h2>
+      <p>
+        <code>btn</code> da la forma (relleno, borde, esquinas, cursor) y <code>btn-{color}</code> el color: siempre van juntas.
+        <code>btn-outline-{color}</code> deja solo el borde, para acciones secundarias. <code>btn-lg</code> y <code>btn-sm</code> cambian el tamaño.
+      </p>
+      <div class="demo">
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <button type="button">Sin clase</button>
+          <button type="button" class="btn btn-primary">primary</button>
+          <button type="button" class="btn btn-secondary">secondary</button>
+          <button type="button" class="btn btn-success">success</button>
+          <button type="button" class="btn btn-danger">danger</button>
+          <button type="button" class="btn btn-warning">warning</button>
+          <button type="button" class="btn btn-info">info</button>
+          <button type="button" class="btn btn-light">light</button>
+          <button type="button" class="btn btn-dark">dark</button>
+          <button type="button" class="btn btn-link">link</button>
+        </div>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <button type="button" class="btn btn-outline-primary">outline-primary</button>
+          <button type="button" class="btn btn-outline-secondary">outline-secondary</button>
+          <button type="button" class="btn btn-outline-success">outline-success</button>
+          <button type="button" class="btn btn-outline-danger">outline-danger</button>
+          <button type="button" class="btn btn-outline-dark">outline-dark</button>
+        </div>
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          <button type="button" class="btn btn-primary btn-lg">btn-lg</button>
+          <button type="button" class="btn btn-primary">normal</button>
+          <button type="button" class="btn btn-primary btn-sm">btn-sm</button>
+          <button type="button" class="btn btn-primary" disabled>disabled</button>
+          <button type="button" class="btn btn-success"><i class="bi bi-cart-plus" aria-hidden="true"></i> Con icono</button>
+          <button type="button" class="btn btn-outline-secondary" aria-label="Editar"><i class="bi bi-pencil" aria-hidden="true"></i></button>
+        </div>
+      </div>
+      <table class="table table-sm mb-3">
+        <thead><tr><th>Etiqueta</th><th>Cuándo</th></tr></thead>
+        <tbody>
+          <tr><td><code>&lt;button type="button"&gt;</code></td><td>Una acción en la página (guardar, abrir, borrar)</td></tr>
+          <tr><td><code>&lt;a href="…" role="button"&gt;</code></td><td>Ir a otra página, con aspecto de botón</td></tr>
+          <tr><td><code>&lt;input type="submit"&gt;</code></td><td>Enviar un formulario (no admite iconos dentro)</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-warning" role="alert">
+        Dentro de un <code>&lt;form&gt;</code>, un <code>&lt;button&gt;</code> sin <code>type</code> es <code>type="submit"</code>: envía el formulario.
+        Por eso los botones que no envían llevan siempre <code>type="button"</code>.
+      </div>
+      <p>
+        Un <code>&lt;a&gt;</code> no tiene atributo <code>disabled</code>: se le pone la clase <code>disabled</code> (quita los clics con
+        <code>pointer-events: none</code>), <code>aria-disabled="true"</code> y se le quita el <code>href</code>.
+      </p>
+      <h3 class="h5 mt-4">A todo el ancho: <code>d-grid</code></h3>
+      <p>
+        <code>btn-block</code> de Bootstrap 4 ya no existe. Un contenedor <code>d-grid gap-2</code> estira cada botón a todo el ancho;
+        con <code>d-md-block</code>, desde <code>md</code> vuelven a su tamaño.
+      </p>
+      <div class="row g-4">
+        <div class="col-md-6"><p class="etiqueta">d-grid gap-2</p><div class="demo mb-0 d-grid gap-2"><button type="button" class="btn btn-primary">Comprar ahora</button><button type="button" class="btn btn-outline-secondary">Seguir comprando</button></div></div>
+        <div class="col-md-6"><p class="etiqueta">d-grid gap-2 d-md-block</p><div class="demo mb-0 d-grid gap-2 d-md-block"><button type="button" class="btn btn-primary">Comprar ahora</button> <button type="button" class="btn btn-outline-secondary">Seguir comprando</button></div></div>
+      </div>
+    </section>
+
+    <!-- 2. Grupos -->
+    <section id="grupos" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">2. Grupos de botones y <code>btn-close</code></h2>
+      <p>
+        <code>btn-group</code> pega los botones en una sola pieza (como <code>input-group</code> con los campos), con <code>role="group"</code> y un
+        <code>aria-label</code>. <code>btn-group-vertical</code> los apila, <code>btn-group-sm</code>/<code>-lg</code> cambian el tamaño de todos
+        y <code>btn-toolbar</code> pone varios grupos en fila.
+      </p>
+      <div class="demo">
+        <div class="d-flex flex-wrap align-items-start gap-4">
+          <div class="btn-group" role="group" aria-label="Alineación">
+            <button type="button" class="btn btn-outline-primary">Izquierda</button>
+            <button type="button" class="btn btn-outline-primary">Centro</button>
+            <button type="button" class="btn btn-outline-primary">Derecha</button>
+          </div>
+          <div class="btn-group-vertical" role="group" aria-label="Grupo vertical">
+            <button type="button" class="btn btn-outline-dark">btn-group-vertical</button>
+            <button type="button" class="btn btn-outline-dark">Segundo</button>
+          </div>
+          <div class="btn-toolbar" role="toolbar" aria-label="Barra del editor">
+            <div class="btn-group me-2" role="group" aria-label="Formato">
+              <button type="button" class="btn btn-outline-secondary" aria-label="Negrita"><i class="bi bi-type-bold" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn-outline-secondary" aria-label="Cursiva"><i class="bi bi-type-italic" aria-hidden="true"></i></button>
+            </div>
+            <div class="btn-group" role="group" aria-label="Alineación del texto">
+              <button type="button" class="btn btn-outline-secondary" aria-label="Izquierda"><i class="bi bi-text-left" aria-hidden="true"></i></button>
+              <button type="button" class="btn btn-outline-secondary" aria-label="Centrar"><i class="bi bi-text-center" aria-hidden="true"></i></button>
+            </div>
+          </div>
+          <div class="d-flex gap-3 align-items-center">
+            <button type="button" class="btn-close" aria-label="Cerrar"></button>
+            <div class="bg-dark p-2" data-bs-theme="dark"><button type="button" class="btn-close" aria-label="Cerrar"></button></div>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-info mb-0" role="alert">
+        <code>btn-close</code> es la X de alertas, modales y toasts: sin texto, así que necesita <code>aria-label</code>.
+        Para fondos oscuros, <code>btn-close-white</code> está obsoleta desde la 5.3: se usa <code>data-bs-theme="dark"</code>.
+      </div>
+    </section>
+
+    <!-- 3. Cards -->
+    <section id="cards" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">3. Cards</h2>
+      <p>
+        Una caja con borde y esquinas que agrupa contenido relacionado. Es un contenedor flex en columna con piezas opcionales:
+      </p>
+      <table class="table table-sm mb-3">
+        <thead><tr><th>Clase</th><th>Pieza</th></tr></thead>
+        <tbody>
+          <tr><td><code>card</code></td><td>La caja (sin ancho propio: ocupa el de su contenedor)</td></tr>
+          <tr><td><code>card-img-top</code></td><td>Imagen arriba, con las esquinas superiores redondeadas</td></tr>
+          <tr><td><code>card-header</code> / <code>card-footer</code></td><td>Cabecera y pie con fondo gris y una línea</td></tr>
+          <tr><td><code>card-body</code></td><td>El contenido, con relleno (<code>flex: 1 1 auto</code>: crece)</td></tr>
+          <tr><td><code>card-title</code>, <code>card-subtitle</code>, <code>card-text</code>, <code>card-link</code></td><td>Título, subtítulo, párrafo y enlaces del cuerpo</td></tr>
+        </tbody>
+      </table>
+      <div class="demo">
+        <div class="d-flex flex-wrap gap-4 align-items-start">
+          <div class="card" style="width: 16rem">
+            <div class="card-body">
+              <h5 class="card-title">Teclado mecánico</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary">Periféricos</h6>
+              <p class="card-text">Interruptores marrones y retroiluminación.</p>
+              <a href="#" class="card-link">Ver detalle</a><a href="#" class="card-link">Comparar</a>
+            </div>
+          </div>
+          <div class="card" style="width: 16rem">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect width='100%25' height='100%25' fill='%23a3cfbb'/%3E%3C/svg%3E" class="card-img-top" alt="Foto del teclado">
+            <div class="card-body">
+              <h5 class="card-title">Teclado mecánico</h5>
+              <p class="card-text">Interruptores marrones.</p>
+              <a href="#" class="btn btn-primary">39,90 € · Comprar</a>
+            </div>
+          </div>
+          <div class="card" style="width: 16rem">
+            <div class="card-header">Oferta de la semana</div>
+            <div class="card-body">
+              <h5 class="card-title">Monitor 27"</h5>
+              <p class="card-text">Panel IPS, 2560 × 1440.</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">75 Hz</li>
+              <li class="list-group-item">USB-C</li>
+            </ul>
+            <div class="card-footer text-body-secondary">Termina en 2 días</div>
+          </div>
+        </div>
+      </div>
+<pre class="mb-3"><code>&lt;div class="card"&gt;
+  &lt;img src="…" class="card-img-top" alt="…"&gt;
+  &lt;div class="card-body"&gt;
+    &lt;h5 class="card-title"&gt;Teclado mecánico&lt;/h5&gt;
+    &lt;p class="card-text"&gt;Interruptores marrones.&lt;/p&gt;
+    &lt;a href="#" class="btn btn-primary"&gt;Comprar&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <h3 class="h5 mt-4">Colores y card horizontal</h3>
+      <p>
+        <code>text-bg-{color}</code> colorea fondo y texto; <code>border-{color}</code> solo el borde. Para una card horizontal,
+        una <code>row g-0</code> dentro: imagen en <code>col-md-4</code> con <code>rounded-start</code> y cuerpo en <code>col-md-8</code>.
+      </p>
+      <div class="demo mb-0">
+        <div class="row g-3">
+          <div class="col-md-3"><div class="card text-bg-success h-100"><div class="card-header">text-bg-success</div><div class="card-body"><h5 class="card-title">Pedido enviado</h5><p class="card-text">Llegará mañana.</p></div></div></div>
+          <div class="col-md-3"><div class="card border-danger h-100"><div class="card-header border-danger">border-danger</div><div class="card-body text-danger"><h5 class="card-title">Sin stock</h5><p class="card-text">Te avisamos cuando vuelva.</p></div></div></div>
+          <div class="col-md-6">
+            <div class="card h-100">
+              <div class="row g-0 h-100">
+                <div class="col-md-4"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='100%25' height='100%25' fill='%239ec5fe'/%3E%3C/svg%3E" class="img-fluid rounded-start" alt="Foto del monitor"></div>
+                <div class="col-md-8"><div class="card-body"><h5 class="card-title">Monitor 27"</h5><p class="card-text">Panel IPS y USB-C.</p><p class="card-text"><small class="text-body-secondary">249,00 €</small></p></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Rejilla de cards -->
+    <section id="rejilla-cards" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">4. Rejillas de cards y <code>card-group</code></h2>
+      <p>
+        En un catálogo, cada card va en una columna: <code>row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4</code>.
+        Con <code>h-100</code> en cada card, todas miden lo que la más alta de su fila; y como <code>card-body</code> crece,
+        los <code>card-footer</code> quedan alineados abajo.
+      </p>
+      <p class="etiqueta">row-cols-* g-4 · cards con h-100</p>
+      <div class="demo">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+          <div class="col"><div class="card h-100"><div class="card-body"><h5 class="card-title">Teclado mecánico</h5><p class="card-text">Interruptores marrones, retroiluminación blanca y reposamuñecas desmontable.</p></div><div class="card-footer">39,90 €</div></div></div>
+          <div class="col"><div class="card h-100"><div class="card-body"><h5 class="card-title">Monitor 27"</h5><p class="card-text">Panel IPS.</p></div><div class="card-footer">249,00 €</div></div></div>
+          <div class="col"><div class="card h-100"><div class="card-body"><h5 class="card-title">Ratón</h5><p class="card-text">Seis botones y 4000 ppp.</p></div><div class="card-footer">19,50 €</div></div></div>
+          <div class="col"><div class="card h-100"><div class="card-body"><h5 class="card-title">Auriculares</h5><p class="card-text">Inalámbricos, con cancelación de ruido y 30 horas de batería.</p></div><div class="card-footer">59,00 €</div></div></div>
+        </div>
+      </div>
+      <p class="etiqueta">Lo mismo sin h-100: los pies no se alinean</p>
+      <div class="demo">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+          <div class="col"><div class="card"><div class="card-body"><h5 class="card-title">Teclado mecánico</h5><p class="card-text">Interruptores marrones, retroiluminación blanca y reposamuñecas desmontable.</p></div><div class="card-footer">39,90 €</div></div></div>
+          <div class="col"><div class="card"><div class="card-body"><h5 class="card-title">Monitor 27"</h5><p class="card-text">Panel IPS.</p></div><div class="card-footer">249,00 €</div></div></div>
+          <div class="col"><div class="card"><div class="card-body"><h5 class="card-title">Ratón</h5><p class="card-text">Seis botones y 4000 ppp.</p></div><div class="card-footer">19,50 €</div></div></div>
+          <div class="col"><div class="card"><div class="card-body"><h5 class="card-title">Auriculares</h5><p class="card-text">Inalámbricos, con cancelación de ruido y 30 horas de batería.</p></div><div class="card-footer">59,00 €</div></div></div>
+        </div>
+      </div>
+      <p>
+        <code>card-group</code> pega las cards sin hueco, en una sola fila y con la misma altura (por debajo de <code>sm</code> se apilan).
+      </p>
+      <p class="etiqueta">card-group</p>
+      <div class="demo mb-0">
+        <div class="card-group">
+          <div class="card"><div class="card-body"><h5 class="card-title">Básico</h5><p class="card-text">Envío normal y devolución en 14 días.</p></div><div class="card-footer">Gratis</div></div>
+          <div class="card"><div class="card-body"><h5 class="card-title">Plus</h5><p class="card-text">Envío en 24 horas, devolución en 30 días y soporte prioritario por teléfono.</p></div><div class="card-footer">4,99 € al mes</div></div>
+          <div class="card"><div class="card-body"><h5 class="card-title">Empresa</h5><p class="card-text">Todo lo de Plus y factura mensual.</p></div><div class="card-footer">Consultar</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Alerts -->
+    <section id="alerts" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">5. Alerts</h2>
+      <p>
+        <code>alert alert-{color}</code>: fondo suave, borde y texto del mismo color (se adaptan al modo oscuro).
+        <code>role="alert"</code> hace que el lector de pantalla lo lea en cuanto aparece; en un aviso fijo desde el principio no hace falta.
+        <code>alert-heading</code> da título y <code>alert-link</code> un enlace con el color de la alerta.
+      </p>
+      <div class="demo">
+        <div class="alert alert-success" role="alert">alert-success: el pedido se ha guardado.</div>
+        <div class="alert alert-danger" role="alert">alert-danger: no se ha podido guardar el pedido.</div>
+        <div class="alert alert-warning d-flex align-items-center" role="alert"><i class="bi bi-exclamation-triangle-fill fs-4 me-2" aria-hidden="true"></i><div>Con icono: quedan solo 2 unidades.</div></div>
+        <div class="alert alert-success" role="alert">
+          <h4 class="alert-heading">¡Pedido confirmado!</h4>
+          <p>Hemos recibido el pago y preparamos el envío.</p>
+          <hr>
+          <p class="mb-0">Seguimiento en <a href="#" class="alert-link">Mis pedidos</a>.</p>
+        </div>
+        <div class="alert alert-info alert-dismissible fade show mb-0" role="alert">
+          alert-dismissible: se cierra con la X.
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+      </div>
+<pre><code>&lt;div class="alert alert-info alert-dismissible fade show" role="alert"&gt;
+  Usamos cookies para recordar el carrito.
+  &lt;button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"&gt;&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <p class="mt-3 mb-0">
+        <code>data-bs-dismiss="alert"</code> hace que el JavaScript de Bootstrap quite la alerta al pulsar la X, sin escribir código
+        (se ve en la sesión 3). <code>fade show</code> la desvanece en lugar de quitarla de golpe.
+      </p>
+    </section>
+
+    <!-- 6. Badges -->
+    <section id="badges" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">6. Badges</h2>
+      <p>
+        <code>badge text-bg-{color}</code>: etiqueta pequeña en negrita. Su tamaño es relativo al del padre (<code>.75em</code>).
+        <code>rounded-pill</code> la redondea del todo. Como contador en una esquina: el botón con <code>position-relative</code>
+        y el badge con <code>position-absolute top-0 start-100 translate-middle</code>.
+      </p>
+      <div class="demo">
+        <h3>Monitor 27" <span class="badge text-bg-success">Nuevo</span></h3>
+        <p>
+          Teclado <span class="badge text-bg-danger">-20 %</span>
+          <span class="badge text-bg-warning">Últimas unidades</span>
+          <span class="badge rounded-pill text-bg-secondary">rounded-pill</span>
+        </p>
+        <div class="d-flex flex-wrap gap-4 align-items-center">
+          <button type="button" class="btn btn-primary">Carrito <span class="badge text-bg-light">3</span><span class="visually-hidden"> productos</span></button>
+          <button type="button" class="btn btn-outline-secondary position-relative"><i class="bi bi-bell" aria-hidden="true"></i> Avisos<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-danger">12<span class="visually-hidden"> avisos sin leer</span></span></button>
+        </div>
+      </div>
+      <div class="alert alert-info mb-0" role="alert">
+        Un contador suelto («3») no dice nada al lector de pantalla: se completa con un texto <code>visually-hidden</code> («3 productos»).
+      </div>
+    </section>
+
+    <!-- 7. List groups -->
+    <section id="list-group" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">7. List groups</h2>
+      <table class="table table-sm mb-3">
+        <thead><tr><th>Clase</th><th>Efecto</th></tr></thead>
+        <tbody>
+          <tr><td><code>list-group</code> + <code>list-group-item</code></td><td>Lista con borde y una línea entre elementos (en <code>ul</code>/<code>ol</code>, o en un <code>div</code> con enlaces o botones)</td></tr>
+          <tr><td><code>active</code> / <code>disabled</code></td><td>Seleccionado (<code>aria-current="true"</code>) / apagado (<code>aria-disabled="true"</code>)</td></tr>
+          <tr><td><code>list-group-item-action</code></td><td>En <code>a</code> o <code>button</code>: gris al pasar el ratón y cursor de mano</td></tr>
+          <tr><td><code>list-group-flush</code></td><td>Sin bordes exteriores: para meterla en una card</td></tr>
+          <tr><td><code>list-group-numbered</code></td><td>Numerada (en un <code>ol</code>)</td></tr>
+          <tr><td><code>list-group-horizontal-{bp}</code></td><td>En fila desde ese breakpoint</td></tr>
+          <tr><td><code>list-group-item-{color}</code></td><td>Un elemento de color</td></tr>
+        </tbody>
+      </table>
+      <div class="demo mb-0">
+        <div class="row g-4">
+          <div class="col-md-4">
+            <p class="etiqueta">active · disabled</p>
+            <ul class="list-group"><li class="list-group-item active" aria-current="true">Mis pedidos</li><li class="list-group-item">Mis direcciones</li><li class="list-group-item disabled" aria-disabled="true">Facturas</li></ul>
+          </div>
+          <div class="col-md-4">
+            <p class="etiqueta">list-group-item-action</p>
+            <div class="list-group"><a href="#" class="list-group-item list-group-item-action active" aria-current="true">Mis pedidos</a><a href="#" class="list-group-item list-group-item-action">Mis direcciones</a><button type="button" class="list-group-item list-group-item-action">Cerrar sesión</button></div>
+          </div>
+          <div class="col-md-4">
+            <p class="etiqueta">numbered · colores</p>
+            <ol class="list-group list-group-numbered mb-2"><li class="list-group-item">Elegir</li><li class="list-group-item">Pagar</li></ol>
+            <ul class="list-group"><li class="list-group-item list-group-item-success">Pagado</li><li class="list-group-item list-group-item-danger">Devuelto</li></ul>
+          </div>
+          <div class="col-md-6">
+            <p class="etiqueta">con badges (d-flex justify-content-between)</p>
+            <ul class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center">Periféricos <span class="badge text-bg-primary rounded-pill">14</span></li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">Pantallas <span class="badge text-bg-primary rounded-pill">6</span></li>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <p class="etiqueta">list-group-horizontal-md</p>
+            <ul class="list-group list-group-horizontal-md"><li class="list-group-item">Envío gratis</li><li class="list-group-item">Devolución en 30 días</li><li class="list-group-item">Pago seguro</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Breadcrumbs -->
+    <section id="breadcrumb" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">8. Breadcrumbs</h2>
+      <p>
+        El camino desde la portada hasta la página actual: un <code>ol.breadcrumb</code> dentro de un <code>nav</code> con <code>aria-label</code>.
+        La página actual lleva <code>active</code> y <code>aria-current="page"</code>, sin enlace. El separador lo pone el CSS
+        y se cambia con la variable <code>--bs-breadcrumb-divider</code>.
+      </p>
+      <div class="demo">
+        <nav aria-label="Migas de pan"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="#">Inicio</a></li><li class="breadcrumb-item"><a href="#">Periféricos</a></li><li class="breadcrumb-item active" aria-current="page">Teclados</li></ol></nav>
+        <nav style="--bs-breadcrumb-divider: '›'" aria-label="Migas de pan con otro separador"><ol class="breadcrumb mb-0"><li class="breadcrumb-item"><a href="#">Inicio</a></li><li class="breadcrumb-item"><a href="#">Periféricos</a></li><li class="breadcrumb-item active" aria-current="page">Teclados</li></ol></nav>
+      </div>
+<pre><code>&lt;nav style="--bs-breadcrumb-divider: '›'" aria-label="Migas de pan"&gt;
+  &lt;ol class="breadcrumb"&gt;
+    &lt;li class="breadcrumb-item"&gt;&lt;a href="#"&gt;Inicio&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="breadcrumb-item active" aria-current="page"&gt;Teclados&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/nav&gt;</code></pre>
+    </section>
+
+    <!-- 9. Paginación -->
+    <section id="paginacion" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">9. Paginación</h2>
+      <p>
+        <code>ul.pagination</code> en un <code>nav</code>; cada <code>li.page-item</code> con un <code>a.page-link</code>.
+        <code>active</code> marca la página actual y <code>disabled</code> lo que no se puede pulsar. Es flex: se alinea con
+        <code>justify-content-*</code>, y <code>pagination-lg</code>/<code>-sm</code> cambian el tamaño.
+        Bootstrap solo da el aspecto: qué página se ve lo decide el servidor o el JavaScript.
+      </p>
+      <div class="demo mb-0">
+        <nav aria-label="Páginas del catálogo"><ul class="pagination"><li class="page-item disabled"><a class="page-link">Anterior</a></li><li class="page-item active"><a class="page-link" href="#" aria-current="page">1</a></li><li class="page-item"><a class="page-link" href="#">2</a></li><li class="page-item"><a class="page-link" href="#">3</a></li><li class="page-item"><a class="page-link" href="#">Siguiente</a></li></ul></nav>
+        <nav aria-label="Páginas con flechas"><ul class="pagination pagination-lg justify-content-center"><li class="page-item"><a class="page-link" href="#" aria-label="Anterior"><span aria-hidden="true">&laquo;</span></a></li><li class="page-item"><a class="page-link" href="#">1</a></li><li class="page-item active"><a class="page-link" href="#" aria-current="page">2</a></li><li class="page-item"><a class="page-link" href="#" aria-label="Siguiente"><span aria-hidden="true">&raquo;</span></a></li></ul></nav>
+        <nav aria-label="Páginas pequeñas"><ul class="pagination pagination-sm justify-content-end mb-0"><li class="page-item"><a class="page-link" href="#">1</a></li><li class="page-item active"><a class="page-link" href="#" aria-current="page">2</a></li><li class="page-item"><a class="page-link" href="#">3</a></li></ul></nav>
+      </div>
+    </section>
+
+    <!-- 10. Progress -->
+    <section id="progress" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">10. Barras de progreso</h2>
+      <p>
+        Dos divs: <code>progress</code> es el carril (con <code>role="progressbar"</code> y los <code>aria-value*</code>) y
+        <code>progress-bar</code> la parte llena, con su ancho en <code>style="width: …"</code> (normalmente lo cambia JavaScript).
+        Color con <code>bg-*</code> o <code>text-bg-*</code>; rayas con <code>progress-bar-striped</code> y movimiento con
+        <code>progress-bar-animated</code>. Varias partes seguidas: <code>progress-stacked</code>, con el ancho en cada <code>progress</code>.
+      </p>
+      <div class="demo">
+        <div class="progress mb-3" role="progressbar" aria-label="Pedido completado" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: 60%">60 %</div></div>
+        <div class="progress mb-3" role="progressbar" aria-label="Stock restante" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar text-bg-warning" style="width: 15%">15 %</div></div>
+        <div class="progress mb-3" role="progressbar" aria-label="Barra fina" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="height: 6px"><div class="progress-bar bg-danger" style="width: 70%"></div></div>
+        <div class="progress mb-3" role="progressbar" aria-label="Animada" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar progress-bar-striped progress-bar-animated bg-success" style="width: 75%">striped animated</div></div>
+        <div class="progress-stacked">
+          <div class="progress" role="progressbar" aria-label="Fotos" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%"><div class="progress-bar">Fotos</div></div>
+          <div class="progress" role="progressbar" aria-label="Vídeos" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%"><div class="progress-bar bg-success">Vídeos</div></div>
+          <div class="progress" role="progressbar" aria-label="Documentos" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" style="width: 15%"><div class="progress-bar bg-info">Docs</div></div>
+        </div>
+      </div>
+<pre><code>&lt;div class="progress" role="progressbar" aria-label="Pedido" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"&gt;
+  &lt;div class="progress-bar" style="width: 60%"&gt;60 %&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <!-- 11. Spinners -->
+    <section id="spinners" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">11. Spinners</h2>
+      <p>
+        Indican que algo se está cargando cuando no se sabe cuánto falta (si se sabe, mejor una barra).
+        <code>spinner-border</code> es un aro que gira y <code>spinner-grow</code> un punto que crece. El color sale de <code>text-*</code>;
+        <code>spinner-border-sm</code> lo reduce para meterlo en un botón. Con <code>role="status"</code> y un texto <code>visually-hidden</code>.
+      </p>
+      <div class="demo">
+        <div class="d-flex flex-wrap align-items-center gap-3">
+          <div class="spinner-border" role="status"><span class="visually-hidden">Cargando...</span></div>
+          <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div>
+          <div class="spinner-grow text-danger" role="status"><span class="visually-hidden">Cargando...</span></div>
+          <div class="spinner-border" style="width: 3rem; height: 3rem" role="status"><span class="visually-hidden">Cargando...</span></div>
+          <button class="btn btn-primary" type="button" disabled><span class="spinner-border spinner-border-sm" aria-hidden="true"></span> Guardando...</button>
+          <button class="btn btn-success" type="button" disabled><span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span> Enviando pedido...</button>
+        </div>
+      </div>
+<pre><code>&lt;button class="btn btn-primary" type="button" disabled&gt;
+  &lt;span class="spinner-border spinner-border-sm" aria-hidden="true"&gt;&lt;/span&gt;
+  Guardando...
+&lt;/button&gt;</code></pre>
+    </section>
+
+    <!-- 12. Práctica -->
+    <section id="practica" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">12. Práctica</h2>
+      <p>Catálogo de productos de la tienda (la segunda mitad de la práctica guiada de la sesión):</p>
+      <ul>
+        <li>Breadcrumb arriba: Inicio / Catálogo / Periféricos.</li>
+        <li>Una alerta descartable con el aviso de envío gratis.</li>
+        <li>Rejilla de al menos seis cards (1 por fila en el móvil, 2 en <code>sm</code>, 3 en <code>lg</code>) con imagen, título, descripción, badge de estado y pie con el precio y un botón «Añadir»; todas igual de altas.</li>
+        <li>Un producto agotado: badge <code>text-bg-secondary</code> y botón deshabilitado.</li>
+        <li>Un menú lateral de categorías con <code>list-group-item-action</code> y badges con el número de productos (en el móvil, encima del catálogo).</li>
+        <li>Paginación centrada debajo.</li>
+        <li>Botón del carrito con contador.</li>
+      </ul>
+      <p class="etiqueta">Un resultado posible</p>
+      <div class="demo mb-0">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <nav aria-label="Migas de pan"><ol class="breadcrumb mb-0"><li class="breadcrumb-item"><a href="#">Inicio</a></li><li class="breadcrumb-item"><a href="#">Catálogo</a></li><li class="breadcrumb-item active" aria-current="page">Periféricos</li></ol></nav>
+          <button type="button" class="btn btn-outline-primary position-relative"><i class="bi bi-cart3" aria-hidden="true"></i> Carrito<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-danger">2<span class="visually-hidden"> productos</span></span></button>
+        </div>
+        <div class="alert alert-info alert-dismissible fade show" role="alert">Envío gratis a partir de 50 €.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button></div>
+        <div class="row g-4">
+          <div class="col-md-3">
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center active" aria-current="true">Periféricos <span class="badge text-bg-light rounded-pill">4</span></a>
+              <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">Pantallas <span class="badge text-bg-primary rounded-pill">2</span></a>
+              <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">Audio <span class="badge text-bg-primary rounded-pill">3</span></a>
+            </div>
+          </div>
+          <div class="col-md-9">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+              <div class="col"><div class="card h-100"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect width='100%25' height='100%25' fill='%23a3cfbb'/%3E%3C/svg%3E" class="card-img-top" alt="Teclado"><div class="card-body"><h5 class="card-title">Teclado mecánico <span class="badge text-bg-success">Nuevo</span></h5><p class="card-text">Interruptores marrones y retroiluminación.</p></div><div class="card-footer d-flex justify-content-between align-items-center"><span class="fw-semibold">39,90 €</span><button type="button" class="btn btn-sm btn-primary">Añadir</button></div></div></div>
+              <div class="col"><div class="card h-100"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect width='100%25' height='100%25' fill='%23ffe69c'/%3E%3C/svg%3E" class="card-img-top" alt="Ratón"><div class="card-body"><h5 class="card-title">Ratón inalámbrico <span class="badge text-bg-secondary">Agotado</span></h5><p class="card-text">Seis botones y 4000 ppp.</p></div><div class="card-footer d-flex justify-content-between align-items-center"><span class="fw-semibold">19,50 €</span><button type="button" class="btn btn-sm btn-primary" disabled>Añadir</button></div></div></div>
+              <div class="col"><div class="card h-100"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200'%3E%3Crect width='100%25' height='100%25' fill='%239ec5fe'/%3E%3C/svg%3E" class="card-img-top" alt="Webcam"><div class="card-body"><h5 class="card-title">Webcam HD <span class="badge text-bg-danger">-20 %</span></h5><p class="card-text">1080p, micrófono doble y tapa de privacidad.</p></div><div class="card-footer d-flex justify-content-between align-items-center"><span class="fw-semibold">36,00 €</span><button type="button" class="btn btn-sm btn-primary">Añadir</button></div></div></div>
+            </div>
+            <nav class="mt-4" aria-label="Páginas del catálogo"><ul class="pagination justify-content-center mb-0"><li class="page-item disabled"><a class="page-link">Anterior</a></li><li class="page-item active"><a class="page-link" href="#" aria-current="page">1</a></li><li class="page-item"><a class="page-link" href="#">2</a></li><li class="page-item"><a class="page-link" href="#">Siguiente</a></li></ul></nav>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-top py-4 text-center text-body-secondary small">
+    Curso de Bootstrap 5 · Componentes de contenido ·
+    Referencia: <a href="https://getbootstrap.com/docs/5.3/components/buttons/">Buttons</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/components/button-group/">Button group</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/components/close-button/">Close button</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/components/card/">Cards</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/components/alerts/">Alerts</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/components/badge/">Badges</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/components/list-group/">List group</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/components/breadcrumb/">Breadcrumb</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/components/pagination/">Pagination</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/components/progress/">Progress</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/components/spinners/">Spinners</a>
+  </footer>
+
+</body>
+</html>

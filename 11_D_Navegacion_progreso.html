@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>11 D · Breadcrumbs, paginación, progress y spinners</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    BREADCRUMBS, PAGINACIÓN, PROGRESS Y SPINNERS
+    Dos componentes para orientarse (dónde estamos, qué página de resultados vemos)
+    y dos para indicar que algo está en marcha (cuánto falta, que está cargando).
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Breadcrumbs, paginación, progress y spinners</h1>
+
+    <!--
+      BREADCRUMBS (MIGAS DE PAN): DÓNDE ESTAMOS
+      El camino desde la portada hasta la página actual: Inicio / Periféricos / Teclados.
+      Es una lista ordenada (ol.breadcrumb) dentro de un <nav>:
+        breadcrumb-item → cada paso; los anteriores son enlaces
+        active + aria-current="page" → la página actual, sin enlace
+      El separador "/" lo pone Bootstrap con CSS (::before); no se escribe en el HTML.
+      aria-label en el nav: el lector de pantalla lo anuncia como "Migas de pan, navegación".
+    -->
+    <h2 class="h4 mt-5">Breadcrumbs: <code>breadcrumb</code></h2>
+
+    <nav aria-label="Migas de pan">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="#">Periféricos</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Teclados</li>
+      </ol>
+    </nav>
+
+    <!--
+      OTRO SEPARADOR: --bs-breadcrumb-divider
+      El separador sale de una variable CSS. La cambiamos en el nav con style,
+      con el texto entre comillas simples.
+    -->
+    <p class="mb-1">Con <code>style="--bs-breadcrumb-divider: '›'"</code>:</p>
+    <nav style="--bs-breadcrumb-divider: '›'" aria-label="Migas de pan">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="#">Periféricos</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Teclados</li>
+      </ol>
+    </nav>
+
+    <!--
+      PAGINACIÓN: pagination
+      Para repartir un listado largo en páginas.
+      Una lista ul.pagination dentro de un <nav>:
+        page-item → cada <li>
+        page-link → el enlace de dentro (es el que tiene el borde y el relleno)
+        active    → en el page-item de la página actual (aria-current="page" en el enlace)
+        disabled  → en el page-item que no se puede pulsar ("Anterior" en la primera página)
+      Bootstrap solo da el aspecto: qué página se ve lo decide el servidor o nuestro JavaScript.
+    -->
+    <h2 class="h4 mt-5">Paginación: <code>pagination</code></h2>
+
+    <nav aria-label="Páginas del catálogo">
+      <ul class="pagination">
+        <li class="page-item disabled"><a class="page-link">Anterior</a></li>
+        <li class="page-item active"><a class="page-link" href="#" aria-current="page">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+      </ul>
+    </nav>
+
+    <!--
+      CON FLECHAS, TAMAÑOS Y ALINEACIÓN
+      Las flechas « y » no dicen nada al lector de pantalla: aria-label en el enlace
+      y aria-hidden en la flecha.
+        pagination-lg / pagination-sm → tamaño
+        justify-content-center / -end → como ul.pagination es flex, se alinea con flexbox
+    -->
+    <h2 class="h4 mt-5">Con flechas, tamaños y alineación</h2>
+
+    <nav aria-label="Páginas con flechas">
+      <ul class="pagination pagination-lg justify-content-center">
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Anterior"><span aria-hidden="true">&laquo;</span></a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item active"><a class="page-link" href="#" aria-current="page">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Siguiente"><span aria-hidden="true">&raquo;</span></a>
+        </li>
+      </ul>
+    </nav>
+
+    <nav aria-label="Páginas pequeñas">
+      <ul class="pagination pagination-sm justify-content-end">
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item active"><a class="page-link" href="#" aria-current="page">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+      </ul>
+    </nav>
+
+    <!--
+      BARRAS DE PROGRESO: progress + progress-bar
+      Dos divs:
+        progress     → el carril gris (con role="progressbar" y los aria-value*,
+                       para que el lector de pantalla diga "25 %")
+        progress-bar → la parte llena; su ancho lo damos con style="width: 25%"
+      El ancho no tiene clase de Bootstrap porque puede ser cualquier valor
+      (normalmente lo cambia JavaScript a medida que avanza la tarea).
+      Un texto dentro de progress-bar se ve sobre la barra.
+    -->
+    <h2 class="h4 mt-5">Barras de progreso: <code>progress</code></h2>
+
+    <div class="progress mb-3" role="progressbar" aria-label="Subida del archivo" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-bar" style="width: 25%"></div>
+    </div>
+    <div class="progress mb-3" role="progressbar" aria-label="Pedido completado" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-bar" style="width: 60%">60 %</div>
+    </div>
+
+    <!--
+      COLORES, ALTURA, RAYAS Y ANIMACIÓN
+        bg-{color} o text-bg-{color} en progress-bar → el color de la barra
+        style="height: 6px" en progress              → más fina (no hay clases de altura)
+        progress-bar-striped                         → con rayas diagonales
+        progress-bar-animated                        → las rayas se mueven: algo está en marcha
+    -->
+    <h2 class="h4 mt-5">Colores, altura, rayas y animación</h2>
+
+    <div class="progress mb-3" role="progressbar" aria-label="Espacio usado" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-bar bg-success" style="width: 40%">bg-success</div>
+    </div>
+    <div class="progress mb-3" role="progressbar" aria-label="Stock restante" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-bar text-bg-warning" style="width: 15%">15 %</div>
+    </div>
+    <div class="progress mb-3" role="progressbar" aria-label="Barra fina" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="height: 6px">
+      <div class="progress-bar bg-danger" style="width: 70%"></div>
+    </div>
+    <div class="progress mb-3" role="progressbar" aria-label="Con rayas" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-bar progress-bar-striped" style="width: 50%">progress-bar-striped</div>
+    </div>
+    <div class="progress mb-3" role="progressbar" aria-label="Animada" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%">progress-bar-animated</div>
+    </div>
+
+    <!--
+      VARIAS BARRAS SEGUIDAS: progress-stacked
+      Para repartir un total en partes (el espacio del disco: fotos, vídeos, documentos).
+      En 5.3 cada parte es un progress completo dentro de progress-stacked,
+      y el ancho va en el progress, no en la barra.
+    -->
+    <h2 class="h4 mt-5">Varias barras seguidas: <code>progress-stacked</code></h2>
+
+    <div class="progress-stacked">
+      <div class="progress" role="progressbar" aria-label="Fotos" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%">
+        <div class="progress-bar">Fotos</div>
+      </div>
+      <div class="progress" role="progressbar" aria-label="Vídeos" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+        <div class="progress-bar bg-success">Vídeos</div>
+      </div>
+      <div class="progress" role="progressbar" aria-label="Documentos" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" style="width: 15%">
+        <div class="progress-bar bg-info">Docs</div>
+      </div>
+    </div>
+
+    <!--
+      SPINNERS: ALGO SE ESTÁ CARGANDO
+      Un círculo que gira mientras esperamos una respuesta (no sabemos cuánto falta;
+      si lo sabemos, mejor una barra de progreso).
+        spinner-border → un aro que gira
+        spinner-grow   → un punto que crece y se desvanece
+      role="status" y un texto con visually-hidden: el lector de pantalla dice "Cargando...".
+      El color sale del texto: text-{color}.
+    -->
+    <h2 class="h4 mt-5">Spinners: <code>spinner-border</code> y <code>spinner-grow</code></h2>
+
+    <div class="d-flex flex-wrap align-items-center gap-3">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <div class="spinner-grow" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <div class="spinner-grow text-danger" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+
+    <!--
+      TAMAÑOS Y DENTRO DE BOTONES
+        spinner-border-sm / spinner-grow-sm → pequeño, para meterlo en un botón o en un texto
+        style="width: 3rem; height: 3rem"   → cualquier otro tamaño
+      En un botón: disabled mientras se espera (para no pulsarlo dos veces) y el spinner
+      con aria-hidden, porque el texto del botón ya dice lo que pasa.
+    -->
+    <h2 class="h4 mt-5">Tamaños y dentro de botones</h2>
+
+    <div class="d-flex flex-wrap align-items-center gap-3 mb-5">
+      <div class="spinner-border spinner-border-sm" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <div class="spinner-border" style="width: 3rem; height: 3rem" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <button class="btn btn-primary" type="button" disabled>
+        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+        Guardando...
+      </button>
+      <button class="btn btn-success" type="button" disabled>
+        <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+        Enviando pedido...
+      </button>
+    </div>
+  </div>
+
+</body>
+</html>
