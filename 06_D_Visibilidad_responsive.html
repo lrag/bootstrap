@@ -55,6 +55,9 @@
 
     <!--
       EL INDICADOR DE BREAKPOINT
+
+      d- d de display
+
       Seis etiquetas, una por breakpoint. Cada una está oculta con d-none y se muestra solo
       en su tramo. Por ejemplo, la de md: d-none d-md-inline d-lg-none
         - d-none      → oculta por defecto
@@ -84,15 +87,49 @@
     -->
     <h2 class="h4 mt-5">Las combinaciones habituales</h2>
 
+    <!--
+    xs        sm        md        lg        xl       xxl
+    0 px     576 px    768 px    992 px   1200 px  1400 px
+    |---------|---------|---------|---------|---------|--------|
+    d-none ─────────────►
+                        d-md-block ────────────────────────────►
+    oculta   oculta    VISIBLE   VISIBLE   VISIBLE   VISIBLE    
+    -->
     <p class="mb-1"><code>class="d-none d-md-block"</code>: solo a partir de md</p>
     <div class="d-none d-md-block bg-success-subtle border border-success-subtle p-2 mb-3">Visible: la ventana mide 768 px o más</div>
 
+    <!--
+    xs        sm        md        lg        xl       xxl
+    0 px     576 px    768 px    992 px   1200 px  1400 px
+    |---------|---------|---------|---------|---------|--------|
+    block (el div ya es de bloque)
+    ────────────────────►
+                        d-md-none ─────────────────────────────►
+    VISIBLE   VISIBLE   oculta    oculta    oculta    oculta
+    -->
     <p class="mb-1"><code>class="d-md-none"</code>: solo por debajo de md</p>
     <div class="d-md-none bg-success-subtle border border-success-subtle p-2 mb-3">Visible: la ventana mide menos de 768 px</div>
 
+    <!--
+    xs        sm        md        lg        xl       xxl
+    0 px     576 px    768 px    992 px   1200 px  1400 px
+    |---------|---------|---------|---------|---------|--------|
+    d-none ─────────────►
+                        d-md-block ►
+                                  d-lg-none ───────────────────►
+    oculta    oculta    VISIBLE   oculta    oculta    oculta
+    -->
     <p class="mb-1"><code>class="d-none d-md-block d-lg-none"</code>: solo en md</p>
     <div class="d-none d-md-block d-lg-none bg-success-subtle border border-success-subtle p-2 mb-3">Visible: la ventana está entre 768 y 991 px</div>
 
+    <!--
+    xs        sm        md        lg        xl       xxl
+    0 px     576 px    768 px    992 px   1200 px  1400 px
+    |---------|---------|---------|---------|---------|--------|
+    display: none ──────►
+                        @media (min-width: 768px) display: block ►
+    oculta    oculta    VISIBLE   VISIBLE   VISIBLE   VISIBLE
+    -->
     <p class="mb-1"><code>class="solo-desde-md"</code> (CSS propio con <code>@media</code>, igual que <code>d-none d-md-block</code>)</p>
     <div class="solo-desde-md bg-primary-subtle border border-primary-subtle p-2 mb-4">Visible: la ventana mide 768 px o más</div>
 
