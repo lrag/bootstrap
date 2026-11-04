@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formularios</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    pre { background: var(--bs-tertiary-bg); padding: 1rem; border-radius: var(--bs-border-radius); margin-bottom: 0; }
+    .demo { background: var(--bs-tertiary-bg); border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius); padding: 1rem; margin-bottom: 1rem; }
+    .etiqueta { font-family: var(--bs-font-monospace); font-size: .8rem; margin-bottom: .25rem; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('form[novalidate]').forEach(form => {
+        form.addEventListener('submit', e => {
+          e.preventDefault();
+          form.classList.add('was-validated');
+          const aviso = form.querySelector('.aviso-enviado');
+          if (aviso) aviso.classList.toggle('d-none', !form.checkValidity());
+        });
+      });
+      const rango = document.getElementById('rango-volumen');
+      rango.addEventListener('input', () => document.getElementById('valor-volumen').textContent = rango.value);
+    });
+  </script>
+</head>
+<body>
+
+  <header class="bg-primary text-white py-5 mb-4">
+    <div class="container">
+      <p class="text-uppercase small mb-1">Curso de Bootstrap 5 · Sesión 2 · Punto 3</p>
+      <h1 class="display-5 fw-bold">Formularios</h1>
+      <p class="lead mb-0">Campos de texto, listas, checks, switches y rangos; grupos de entrada y etiquetas flotantes; la rejilla en los formularios y la validación nativa con el aspecto de Bootstrap.</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <nav class="mb-5" aria-label="Índice">
+      <ol class="list-group list-group-numbered">
+        <li class="list-group-item"><a href="#control">Campos de texto: <code>form-control</code></a></li>
+        <li class="list-group-item"><a href="#tipos">Tipos de input y <code>textarea</code></a></li>
+        <li class="list-group-item"><a href="#estados">Tamaños y estados</a></li>
+        <li class="list-group-item"><a href="#select">Listas: <code>form-select</code></a></li>
+        <li class="list-group-item"><a href="#checks">Checkbox y radio</a></li>
+        <li class="list-group-item"><a href="#switch">Switches y checks con aspecto de botón</a></li>
+        <li class="list-group-item"><a href="#rango">Deslizadores: <code>form-range</code></a></li>
+        <li class="list-group-item"><a href="#input-group">Grupos de entrada: <code>input-group</code></a></li>
+        <li class="list-group-item"><a href="#floating">Etiquetas flotantes: <code>form-floating</code></a></li>
+        <li class="list-group-item"><a href="#rejilla">La rejilla en los formularios</a></li>
+        <li class="list-group-item"><a href="#validacion">Validación</a></li>
+        <li class="list-group-item"><a href="#practica">Práctica</a></li>
+      </ol>
+    </nav>
+
+    <!-- 1. form-control -->
+    <section id="control" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">1. Campos de texto: <code>form-control</code></h2>
+      <p>
+        Bootstrap no cambia cómo funciona un formulario: sigue siendo HTML. Solo da estilo con clases.
+        Sin clase, cada navegador dibuja el campo a su manera y es un elemento en línea.
+      </p>
+      <div class="row g-4 mb-3">
+        <div class="col-md-6">
+          <p class="etiqueta">Sin clases</p>
+          <div class="demo mb-0">
+            <label for="nombre-sin">Nombre</label>
+            <input type="text" id="nombre-sin">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <p class="etiqueta">form-label + form-control</p>
+          <div class="demo mb-0">
+            <label for="nombre-con" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre-con">
+          </div>
+        </div>
+      </div>
+      <table class="table table-sm mb-3">
+        <thead><tr><th>Clase</th><th>Va en</th><th>Qué hace</th></tr></thead>
+        <tbody>
+          <tr><td><code>form-control</code></td><td><code>input</code>, <code>textarea</code></td><td><code>display: block</code>, <code>width: 100%</code>, relleno, borde y esquinas; borde azul y halo al tener el foco</td></tr>
+          <tr><td><code>form-label</code></td><td><code>label</code></td><td>Solo un <code>margin-bottom: .5rem</code></td></tr>
+          <tr><td><code>form-text</code></td><td>un <code>div</code> debajo</td><td>Texto de ayuda pequeño y atenuado</td></tr>
+        </tbody>
+      </table>
+      <div class="demo">
+        <label for="email" class="form-label">Correo electrónico</label>
+        <input type="email" class="form-control" id="email" placeholder="nombre@ejemplo.com" aria-describedby="email-ayuda">
+        <div id="email-ayuda" class="form-text">No compartiremos el correo con nadie.</div>
+      </div>
+<pre class="mb-3"><code>&lt;label for="email" class="form-label"&gt;Correo electrónico&lt;/label&gt;
+&lt;input type="email" class="form-control" id="email" aria-describedby="email-ayuda"&gt;
+&lt;div id="email-ayuda" class="form-text"&gt;No compartiremos el correo con nadie.&lt;/div&gt;</code></pre>
+      <div class="alert alert-info mb-0" role="alert">
+        El <code>for</code> del <code>label</code> coincide con el <code>id</code> del campo: al hacer clic en la etiqueta el cursor entra en el campo,
+        y el lector de pantalla lee la etiqueta. <code>aria-describedby</code> hace que también lea la ayuda.
+        El <code>placeholder</code> <strong>no sustituye a la etiqueta</strong>: desaparece al escribir y tiene poco contraste.
+      </div>
+    </section>
+
+    <!-- 2. Tipos -->
+    <section id="tipos" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">2. Tipos de input y <code>textarea</code></h2>
+      <p>
+        <code>form-control</code> sirve para todos los <code>input</code> de texto. El <code>type</code> lo pone HTML y cambia
+        el teclado del móvil y lo que valida el navegador. El <code>textarea</code> también lleva <code>form-control</code>; <code>rows</code> fija la altura.
+        En <code>type="color"</code> se añade <code>form-control-color</code>, para que no se estire a todo el ancho.
+      </p>
+      <div class="demo mb-0">
+        <div class="row g-3">
+          <div class="col-md-4"><label for="t-tel" class="form-label">type="tel"</label><input type="tel" class="form-control" id="t-tel" placeholder="600 123 456"></div>
+          <div class="col-md-4"><label for="t-number" class="form-label">type="number"</label><input type="number" class="form-control" id="t-number" value="1" min="1" max="10"></div>
+          <div class="col-md-4"><label for="t-date" class="form-label">type="date"</label><input type="date" class="form-control" id="t-date"></div>
+          <div class="col-md-4"><label for="t-search" class="form-label">type="search"</label><input type="search" class="form-control" id="t-search" placeholder="Buscar productos"></div>
+          <div class="col-md-4"><label for="t-file" class="form-label">type="file"</label><input type="file" class="form-control" id="t-file"></div>
+          <div class="col-md-4"><label for="t-color" class="form-label">type="color" + form-control-color</label><input type="color" class="form-control form-control-color" id="t-color" value="#198754"></div>
+          <div class="col-12"><label for="t-mensaje" class="form-label">textarea rows="3"</label><textarea class="form-control" id="t-mensaje" rows="3"></textarea></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Tamaños y estados -->
+    <section id="estados" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">3. Tamaños y estados</h2>
+      <p><code>form-control-lg</code> y <code>form-control-sm</code> cambian altura, relleno y letra (en las listas, <code>form-select-lg</code> y <code>-sm</code>).</p>
+      <div class="demo">
+        <input type="text" class="form-control form-control-lg mb-2" placeholder="form-control-lg" aria-label="Ejemplo grande">
+        <input type="text" class="form-control mb-2" placeholder="form-control" aria-label="Ejemplo normal">
+        <input type="text" class="form-control form-control-sm" placeholder="form-control-sm" aria-label="Ejemplo pequeño">
+      </div>
+      <table class="table table-sm mb-3">
+        <thead><tr><th>Atributo o clase</th><th>Aspecto</th><th>¿Se envía?</th></tr></thead>
+        <tbody>
+          <tr><td><code>disabled</code></td><td>Gris, no se puede tocar</td><td>No</td></tr>
+          <tr><td><code>readonly</code></td><td>No se puede cambiar, pero sí seleccionar</td><td>Sí</td></tr>
+          <tr><td><code>readonly</code> + <code>form-control-plaintext</code></td><td>Sin caja: parece texto, alineado con los campos</td><td>Sí</td></tr>
+          <tr><td><code>&lt;fieldset disabled&gt;</code></td><td>Deshabilita todos los campos y botones de dentro</td><td>No</td></tr>
+        </tbody>
+      </table>
+      <div class="demo mb-0">
+        <div class="mb-3"><label for="e-disabled" class="form-label">disabled</label><input type="text" class="form-control" id="e-disabled" value="No se puede tocar" disabled></div>
+        <div class="mb-3"><label for="e-readonly" class="form-label">readonly</label><input type="text" class="form-control" id="e-readonly" value="Se puede seleccionar, no cambiar" readonly></div>
+        <div class="mb-3"><label for="e-plain" class="form-label">readonly + form-control-plaintext</label><input type="text" class="form-control-plaintext" id="e-plain" value="cliente@ejemplo.com" readonly></div>
+        <fieldset disabled>
+          <legend class="fs-6 fw-semibold">fieldset disabled</legend>
+          <div class="mb-3"><label for="e-fieldset" class="form-label">Un campo dentro del fieldset</label><input type="text" class="form-control" id="e-fieldset" value="Deshabilitado por el fieldset"></div>
+          <button type="button" class="btn btn-primary">También el botón</button>
+        </fieldset>
+      </div>
+    </section>
+
+    <!-- 4. Select -->
+    <section id="select" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">4. Listas: <code>form-select</code></h2>
+      <p>
+        En un <code>&lt;select&gt;</code> va <code>form-select</code> en lugar de <code>form-control</code>: dibuja su propia flecha.
+        Con <code>multiple</code> o <code>size</code> se convierte en una lista con varias filas visibles.
+        Una primera opción con <code>selected disabled</code> hace de «Elige una opción».
+      </p>
+      <div class="demo mb-0">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <p class="etiqueta">Sin clase</p>
+            <select aria-label="Categoría sin clase"><option selected disabled>Elige una categoría</option><option>Periféricos</option><option>Pantallas</option></select>
+          </div>
+          <div class="col-md-4">
+            <p class="etiqueta">form-select</p>
+            <select class="form-select" aria-label="Categoría"><option selected disabled>Elige una categoría</option><option>Periféricos</option><option>Pantallas</option></select>
+          </div>
+          <div class="col-md-4">
+            <p class="etiqueta">form-select multiple</p>
+            <select class="form-select" multiple aria-label="Categorías"><option>Periféricos</option><option>Pantallas</option><option>Audio</option><option>Cables</option></select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Checks -->
+    <section id="checks" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">5. Checkbox y radio</h2>
+      <p>Bootstrap dibuja la casilla entera (igual en todos los navegadores, con el color <code>primary</code>). Siempre tres piezas:</p>
+<pre class="mb-3"><code>&lt;div class="form-check"&gt;                                   &lt;!-- deja sitio a la izquierda --&gt;
+  &lt;input class="form-check-input" type="checkbox" id="acepto"&gt;
+  &lt;label class="form-check-label" for="acepto"&gt;Acepto las condiciones&lt;/label&gt;
+&lt;/div&gt;</code></pre>
+      <p>
+        <code>checkbox</code>: casillas independientes. <code>radio</code>: solo una del grupo, que lo forma el mismo <code>name</code>.
+        <code>fieldset</code> + <code>legend</code> dan título al grupo (el lector de pantalla lee el <code>legend</code> antes de cada opción).
+        <code>form-check-inline</code> las pone en línea y <code>form-check-reverse</code> pasa la casilla a la derecha.
+      </p>
+      <div class="demo mb-0">
+        <div class="row g-4">
+          <div class="col-md-4">
+            <fieldset>
+              <legend class="fs-6 fw-semibold">checkbox</legend>
+              <div class="form-check"><input class="form-check-input" type="checkbox" id="c-ofertas" checked><label class="form-check-label" for="c-ofertas">Ofertas</label></div>
+              <div class="form-check"><input class="form-check-input" type="checkbox" id="c-novedades"><label class="form-check-label" for="c-novedades">Novedades</label></div>
+              <div class="form-check"><input class="form-check-input" type="checkbox" id="c-eventos" disabled><label class="form-check-label" for="c-eventos">Eventos (disabled)</label></div>
+            </fieldset>
+          </div>
+          <div class="col-md-4">
+            <fieldset>
+              <legend class="fs-6 fw-semibold">radio (mismo name)</legend>
+              <div class="form-check"><input class="form-check-input" type="radio" name="envio" id="r-normal" checked><label class="form-check-label" for="r-normal">Normal (3-5 días)</label></div>
+              <div class="form-check"><input class="form-check-input" type="radio" name="envio" id="r-urgente"><label class="form-check-label" for="r-urgente">Urgente (24 h)</label></div>
+              <div class="form-check"><input class="form-check-input" type="radio" name="envio" id="r-tienda" disabled><label class="form-check-label" for="r-tienda">En tienda (disabled)</label></div>
+            </fieldset>
+          </div>
+          <div class="col-md-4">
+            <p class="fw-semibold mb-2">form-check-inline</p>
+            <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="talla" id="talla-s"><label class="form-check-label" for="talla-s">S</label></div>
+            <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="talla" id="talla-m" checked><label class="form-check-label" for="talla-m">M</label></div>
+            <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="talla" id="talla-l"><label class="form-check-label" for="talla-l">L</label></div>
+            <p class="fw-semibold mb-2 mt-3">form-check-reverse</p>
+            <div class="form-check form-check-reverse"><input class="form-check-input" type="checkbox" id="c-recordar"><label class="form-check-label" for="c-recordar">Recordar mis datos</label></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Switch y btn-check -->
+    <section id="switch" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">6. Switches y checks con aspecto de botón</h2>
+      <p>
+        <code>form-switch</code> en el contenedor de un checkbox lo dibuja como interruptor. Sigue siendo un checkbox;
+        <code>role="switch"</code> hace que el lector de pantalla lo anuncie como interruptor. Para opciones que se aplican al momento.
+      </p>
+      <p>
+        <code>btn-check</code> oculta el input y el <code>label</code> lleva las clases de botón: al marcarlo, el botón aparece pulsado.
+        Aquí el <code>label</code> va <strong>después</strong> del input y sin <code>div.form-check</code>.
+      </p>
+      <div class="demo">
+        <div class="row g-4">
+          <div class="col-md-5">
+            <div class="form-check form-switch"><input class="form-check-input" type="checkbox" role="switch" id="s-notif" checked><label class="form-check-label" for="s-notif">Notificaciones por correo</label></div>
+            <div class="form-check form-switch"><input class="form-check-input" type="checkbox" role="switch" id="s-boletin"><label class="form-check-label" for="s-boletin">Boletín semanal</label></div>
+            <div class="form-check form-switch"><input class="form-check-input" type="checkbox" role="switch" id="s-sms" disabled><label class="form-check-label" for="s-sms">Avisos por SMS (disabled)</label></div>
+          </div>
+          <div class="col-md-7">
+            <p class="etiqueta">btn-check (checkbox)</p>
+            <input type="checkbox" class="btn-check" id="b-oferta" autocomplete="off"><label class="btn btn-outline-primary" for="b-oferta">En oferta</label>
+            <input type="checkbox" class="btn-check" id="b-stock" autocomplete="off" checked><label class="btn btn-outline-primary" for="b-stock">Con stock</label>
+            <p class="etiqueta mt-3">btn-check (radio) en un btn-group</p>
+            <div class="btn-group" role="group" aria-label="Vista del catálogo">
+              <input type="radio" class="btn-check" name="vista" id="v-tarjetas" autocomplete="off" checked><label class="btn btn-outline-secondary" for="v-tarjetas">Tarjetas</label>
+              <input type="radio" class="btn-check" name="vista" id="v-lista" autocomplete="off"><label class="btn btn-outline-secondary" for="v-lista">Lista</label>
+              <input type="radio" class="btn-check" name="vista" id="v-tabla" autocomplete="off"><label class="btn btn-outline-secondary" for="v-tabla">Tabla</label>
+            </div>
+          </div>
+        </div>
+      </div>
+<pre><code>&lt;div class="form-check form-switch"&gt;
+  &lt;input class="form-check-input" type="checkbox" role="switch" id="notif"&gt;
+  &lt;label class="form-check-label" for="notif"&gt;Notificaciones&lt;/label&gt;
+&lt;/div&gt;
+
+&lt;input type="checkbox" class="btn-check" id="oferta" autocomplete="off"&gt;
+&lt;label class="btn btn-outline-primary" for="oferta"&gt;En oferta&lt;/label&gt;</code></pre>
+    </section>
+
+    <!-- 7. Rango -->
+    <section id="rango" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">7. Deslizadores: <code>form-range</code></h2>
+      <p>
+        Un <code>&lt;input type="range"&gt;</code> con <code>form-range</code> ocupa todo el ancho y se ve igual en todos los navegadores.
+        <code>min</code> y <code>max</code> marcan los extremos (0 y 100 por defecto) y <code>step</code> el salto.
+        El deslizador no muestra su valor: lo escribimos al lado con JavaScript en el evento <code>input</code>.
+      </p>
+      <div class="demo mb-3">
+        <label for="rango-volumen" class="form-label">Volumen: <span id="valor-volumen">50</span></label>
+        <input type="range" class="form-range" id="rango-volumen" min="0" max="100" step="5" value="50">
+      </div>
+<pre><code>document.getElementById('volumen').oninput = () =&gt; {
+  document.getElementById('valor-volumen').textContent = document.getElementById('volumen').value
+}</code></pre>
+    </section>
+
+    <!-- 8. input-group -->
+    <section id="input-group" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">8. Grupos de entrada: <code>input-group</code></h2>
+      <p>
+        Un <code>div.input-group</code> pega al campo textos (<code>input-group-text</code>), iconos o botones, como una sola pieza.
+        Es un contenedor flex: el campo crece y lo demás se queda a su tamaño, y Bootstrap quita las esquinas redondeadas entre piezas.
+        El tamaño de todo el grupo se cambia con <code>input-group-lg</code> o <code>input-group-sm</code>.
+      </p>
+      <div class="demo mb-3">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="ig-usuario" class="form-label">Prefijo</label>
+            <div class="input-group"><span class="input-group-text">@</span><input type="text" class="form-control" id="ig-usuario" placeholder="nombre_de_usuario"></div>
+          </div>
+          <div class="col-md-6">
+            <label for="ig-precio" class="form-label">Unidad</label>
+            <div class="input-group"><input type="number" class="form-control" id="ig-precio" step="0.01"><span class="input-group-text">€</span></div>
+          </div>
+          <div class="col-md-6">
+            <label for="ig-web" class="form-label">Delante y detrás</label>
+            <div class="input-group"><span class="input-group-text">https://</span><input type="text" class="form-control" id="ig-web" placeholder="mi-tienda"><span class="input-group-text">.com</span></div>
+          </div>
+          <div class="col-md-6">
+            <label for="ig-correo" class="form-label">Icono</label>
+            <div class="input-group"><span class="input-group-text"><i class="bi bi-envelope" aria-hidden="true"></i></span><input type="email" class="form-control" id="ig-correo" placeholder="nombre@ejemplo.com"></div>
+          </div>
+          <div class="col-md-6">
+            <label for="ig-buscar" class="form-label">Botón</label>
+            <div class="input-group"><input type="search" class="form-control" id="ig-buscar" placeholder="Nombre del producto"><button class="btn btn-primary" type="button"><i class="bi bi-search" aria-hidden="true"></i> Buscar</button></div>
+          </div>
+          <div class="col-md-6">
+            <label for="ig-cantidad" class="form-label">Botones a los lados</label>
+            <div class="input-group" style="max-width: 12rem"><button class="btn btn-outline-secondary" type="button" aria-label="Quitar uno">−</button><input type="text" class="form-control text-center" id="ig-cantidad" value="1"><button class="btn btn-outline-secondary" type="button" aria-label="Añadir uno">+</button></div>
+          </div>
+          <div class="col-md-6">
+            <label for="ig-telefono" class="form-label">Lista</label>
+            <div class="input-group"><select class="form-select flex-grow-0 w-auto" aria-label="Prefijo"><option selected>+34</option><option>+33</option><option>+351</option></select><input type="tel" class="form-control" id="ig-telefono"></div>
+          </div>
+          <div class="col-md-6">
+            <label for="ig-regalo" class="form-label">Check dentro (con mt-0)</label>
+            <div class="input-group"><div class="input-group-text"><input class="form-check-input mt-0" type="checkbox" aria-label="Incluir mensaje de regalo"></div><input type="text" class="form-control" id="ig-regalo" placeholder="¡Feliz cumpleaños!"></div>
+          </div>
+        </div>
+      </div>
+<pre><code>&lt;div class="input-group"&gt;
+  &lt;input type="number" class="form-control" id="precio"&gt;
+  &lt;span class="input-group-text"&gt;€&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <!-- 9. form-floating -->
+    <section id="floating" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">9. Etiquetas flotantes: <code>form-floating</code></h2>
+      <p>
+        La etiqueta empieza dentro del campo y, al entrar o escribir, sube y se hace pequeña. Tres reglas:
+      </p>
+      <ul>
+        <li>El <code>input</code> va <strong>antes</strong> del <code>label</code>.</li>
+        <li>El <code>input</code> necesita un <code>placeholder</code>, aunque no se vea: Bootstrap usa <code>:placeholder-shown</code> para saber si está vacío.</li>
+        <li>El <code>label</code> no lleva <code>form-label</code>.</li>
+      </ul>
+      <div class="demo mb-3">
+        <div class="row g-3">
+          <div class="col-md-6"><div class="form-floating"><input type="email" class="form-control" id="f-email" placeholder="nombre@ejemplo.com"><label for="f-email">Correo electrónico</label></div></div>
+          <div class="col-md-6"><div class="form-floating"><input type="text" class="form-control" id="f-ciudad" placeholder="Ciudad" value="Madrid"><label for="f-ciudad">Ciudad (con value)</label></div></div>
+          <div class="col-md-6"><div class="form-floating"><textarea class="form-control" id="f-mensaje" placeholder="Mensaje" style="height: 7rem"></textarea><label for="f-mensaje">Mensaje (altura con style)</label></div></div>
+          <div class="col-md-6"><div class="form-floating"><select class="form-select" id="f-asunto"><option selected>Información</option><option>Pedido</option><option>Devolución</option></select><label for="f-asunto">Asunto (select: siempre arriba)</label></div></div>
+          <div class="col-md-6"><p class="etiqueta">Sin placeholder: la etiqueta se queda arriba</p><div class="form-floating"><input type="text" class="form-control" id="f-sin"><label for="f-sin">Nombre</label></div></div>
+          <div class="col-md-6"><p class="etiqueta">Dentro de un input-group</p><div class="input-group"><span class="input-group-text"><i class="bi bi-person" aria-hidden="true"></i></span><div class="form-floating"><input type="text" class="form-control" id="f-grupo" placeholder="Usuario"><label for="f-grupo">Usuario</label></div></div></div>
+        </div>
+      </div>
+<pre class="mb-3"><code>&lt;div class="form-floating"&gt;
+  &lt;input type="email" class="form-control" id="email" placeholder="nombre@ejemplo.com"&gt;
+  &lt;label for="email"&gt;Correo electrónico&lt;/label&gt;
+&lt;/div&gt;</code></pre>
+      <div class="alert alert-secondary mb-0" role="alert">
+        En un <code>textarea</code> flotante, <code>rows</code> no funciona: la altura se fija con <code>style="height: …"</code>.
+        En un <code>select</code> la etiqueta siempre está arriba, porque un <code>select</code> nunca está vacío.
+      </div>
+    </section>
+
+    <!-- 10. Rejilla -->
+    <section id="rejilla" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">10. La rejilla en los formularios</h2>
+      <p>Bootstrap no tiene un sistema propio para colocar campos: se usa la rejilla de siempre.</p>
+      <table class="table table-sm mb-3">
+        <thead><tr><th>Disposición</th><th>Cómo</th></tr></thead>
+        <tbody>
+          <tr><td>Un campo debajo de otro</td><td>Cada etiqueta + campo en un <code>div.mb-3</code> (<code>form-control</code> ya ocupa todo el ancho)</td></tr>
+          <tr><td>Varios por fila</td><td><code>form.row.g-3</code> y columnas <code>col-md-6</code>, <code>col-12</code>…: en el móvil se apilan</td></tr>
+          <tr><td>Horizontal (etiqueta a la izquierda)</td><td>Cada campo en un <code>row mb-3</code>; etiqueta <code>col-sm-3 col-form-label</code> y campo en <code>col-sm-9</code></td></tr>
+          <tr><td>En línea</td><td><code>row g-2 align-items-center</code> con columnas <code>col-auto</code>; etiquetas con <code>visually-hidden</code></td></tr>
+          <tr><td>Campo que crece y botón a su tamaño</td><td><code>col</code> + <code>col-auto</code></td></tr>
+        </tbody>
+      </table>
+      <p class="etiqueta">form.row.g-3 con col-md-*</p>
+      <div class="demo">
+        <form class="row g-3">
+          <div class="col-md-6"><label for="g-nombre" class="form-label">Nombre</label><input type="text" class="form-control" id="g-nombre"></div>
+          <div class="col-md-6"><label for="g-apellidos" class="form-label">Apellidos</label><input type="text" class="form-control" id="g-apellidos"></div>
+          <div class="col-12"><label for="g-direccion" class="form-label">Dirección</label><input type="text" class="form-control" id="g-direccion" placeholder="Calle, número, piso"></div>
+          <div class="col-md-6"><label for="g-ciudad" class="form-label">Ciudad</label><input type="text" class="form-control" id="g-ciudad"></div>
+          <div class="col-md-4"><label for="g-provincia" class="form-label">Provincia</label><select class="form-select" id="g-provincia"><option selected disabled>Elige...</option><option>Madrid</option><option>Valencia</option></select></div>
+          <div class="col-md-2"><label for="g-cp" class="form-label">C. P.</label><input type="text" class="form-control" id="g-cp"></div>
+          <div class="col-12"><button type="button" class="btn btn-primary">Guardar dirección</button></div>
+        </form>
+      </div>
+      <p class="etiqueta">Horizontal: col-form-label (abajo) frente a form-label (primera fila)</p>
+      <div class="demo">
+        <div class="row mb-3"><label for="h-form-label" class="col-sm-3 form-label">form-label</label><div class="col-sm-9"><input type="text" class="form-control" id="h-form-label"></div></div>
+        <div class="row mb-3"><label for="h-email" class="col-sm-3 col-form-label">Correo electrónico</label><div class="col-sm-9"><input type="email" class="form-control" id="h-email"></div></div>
+        <div class="row mb-3"><label for="h-clave" class="col-sm-3 col-form-label">Contraseña</label><div class="col-sm-9"><input type="password" class="form-control" id="h-clave"></div></div>
+        <div class="row"><div class="col-sm-9 offset-sm-3"><button type="button" class="btn btn-primary">Entrar</button></div></div>
+      </div>
+      <p class="etiqueta">En línea: col-auto · y col + col-auto</p>
+      <div class="demo mb-3">
+        <form class="row g-2 align-items-center mb-3">
+          <div class="col-auto"><label for="l-email" class="visually-hidden">Correo electrónico</label><input type="email" class="form-control" id="l-email" placeholder="nombre@ejemplo.com"></div>
+          <div class="col-auto"><div class="form-check"><input class="form-check-input" type="checkbox" id="l-ofertas"><label class="form-check-label" for="l-ofertas">Solo ofertas</label></div></div>
+          <div class="col-auto"><button type="button" class="btn btn-primary">Suscribirme</button></div>
+        </form>
+        <form class="row g-2">
+          <div class="col"><label for="b-buscar" class="visually-hidden">Buscar</label><input type="search" class="form-control" id="b-buscar" placeholder="Buscar productos"></div>
+          <div class="col-auto"><button type="button" class="btn btn-primary">Buscar</button></div>
+        </form>
+      </div>
+      <div class="alert alert-info mb-0" role="alert">
+        <code>col-form-label</code> da a la etiqueta el mismo relleno vertical que al campo, para que el texto quede a la misma altura.
+        Sin <code>g-3</code> en la fila, al apilarse en el móvil los campos quedarían pegados.
+      </div>
+    </section>
+
+    <!-- 11. Validación -->
+    <section id="validacion" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">11. Validación</h2>
+      <p>
+        Quien valida es el <strong>navegador</strong>, con los atributos de HTML5 (<code>required</code>, <code>type="email"</code>,
+        <code>minlength</code>, <code>min</code>/<code>max</code>, <code>pattern</code>). Bootstrap no valida nada: pinta en verde o rojo
+        lo que el navegador ya ha decidido y muestra nuestros mensajes en lugar de sus globos.
+      </p>
+      <table class="table table-sm mb-3">
+        <thead><tr><th>Pieza</th><th>Para qué</th></tr></thead>
+        <tbody>
+          <tr><td><code>novalidate</code> en el <code>form</code></td><td>El navegador sigue validando, pero no muestra sus globos ni bloquea el envío</td></tr>
+          <tr><td><code>was-validated</code> en el <code>form</code> (con JavaScript, al enviar)</td><td>Bootstrap pinta cada campo según <code>:valid</code> (verde) o <code>:invalid</code> (rojo)</td></tr>
+          <tr><td><code>invalid-feedback</code> / <code>valid-feedback</code></td><td>Mensajes que solo se ven si el campo es inválido / válido. Van <strong>después del campo y como hermanos</strong></td></tr>
+          <tr><td><code>is-invalid</code> / <code>is-valid</code> en el campo</td><td>Marcar a mano, sin depender del navegador (errores que decide el servidor)</td></tr>
+          <tr><td><code>invalid-tooltip</code> / <code>valid-tooltip</code></td><td>El mensaje como globo; el contenedor necesita <code>position-relative</code></td></tr>
+          <tr><td><code>has-validation</code> en el <code>input-group</code></td><td>Las esquinas quedan bien con el mensaje dentro del grupo</td></tr>
+        </tbody>
+      </table>
+      <p class="etiqueta">form novalidate · pulsar «Crear cuenta» con campos vacíos o mal</p>
+      <div class="demo">
+        <form class="row g-3" novalidate>
+          <div class="col-md-6"><label for="v-nombre" class="form-label">Nombre</label><input type="text" class="form-control" id="v-nombre" required minlength="2"><div class="valid-feedback">Correcto.</div><div class="invalid-feedback">El nombre es obligatorio (mínimo 2 letras).</div></div>
+          <div class="col-md-6"><label for="v-email" class="form-label">Correo electrónico</label><input type="email" class="form-control" id="v-email" required><div class="invalid-feedback">Escribe un correo válido, como nombre@ejemplo.com.</div></div>
+          <div class="col-md-6"><label for="v-usuario" class="form-label">Usuario</label><div class="input-group has-validation"><span class="input-group-text">@</span><input type="text" class="form-control" id="v-usuario" required pattern="[a-z0-9_]{3,15}"><div class="invalid-feedback">Entre 3 y 15 caracteres: minúsculas, números y _.</div></div></div>
+          <div class="col-md-3"><label for="v-provincia" class="form-label">Provincia</label><select class="form-select" id="v-provincia" required><option selected disabled value="">Elige...</option><option>Madrid</option><option>Valencia</option></select><div class="invalid-feedback">Elige una provincia.</div></div>
+          <div class="col-md-3"><label for="v-cp" class="form-label">C. P.</label><input type="text" class="form-control" id="v-cp" required pattern="[0-9]{5}"><div class="invalid-feedback">Cinco cifras.</div></div>
+          <div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" id="v-condiciones" required><label class="form-check-label" for="v-condiciones">Acepto las condiciones</label><div class="invalid-feedback">Hay que aceptar las condiciones.</div></div></div>
+          <div class="col-12"><button type="submit" class="btn btn-primary">Crear cuenta</button></div>
+          <div class="col-12"><div class="alert alert-success d-none mb-0 aviso-enviado" role="alert">Todo correcto: el formulario se enviaría.</div></div>
+        </form>
+      </div>
+<pre class="mb-3"><code>window.onload = () =&gt; {
+  const formAlta = document.getElementById('form-alta')
+
+  formAlta.onsubmit = (evento) =&gt; {
+    evento.preventDefault()
+    formAlta.classList.add('was-validated')
+    if (formAlta.checkValidity()) {
+      document.getElementById('aviso-enviado').classList.remove('d-none')
+    }
+  }
+}</code></pre>
+      <div class="alert alert-info" role="alert">
+        ¿Por qué esperar a <code>was-validated</code>? Porque <code>:invalid</code> se cumple desde que carga la página:
+        un campo <code>required</code> vacío ya es inválido, y el formulario aparecería en rojo antes de escribir nada.
+      </div>
+      <p class="etiqueta">is-invalid e is-valid puestos a mano (respuesta del servidor)</p>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-6"><label for="m-email" class="form-label">Correo electrónico</label><input type="email" class="form-control is-invalid" id="m-email" value="cliente@ejemplo.com"><div class="invalid-feedback">Ya hay una cuenta con este correo.</div></div>
+          <div class="col-md-6"><label for="m-usuario" class="form-label">Usuario</label><input type="text" class="form-control is-valid" id="m-usuario" value="luis_r"><div class="valid-feedback">Nombre de usuario disponible.</div></div>
+        </div>
+      </div>
+      <p class="etiqueta">invalid-tooltip (contenedor con position-relative)</p>
+      <div class="demo">
+        <form class="row g-3" novalidate>
+          <div class="col-md-6 position-relative"><label for="tt-nombre" class="form-label">Nombre</label><input type="text" class="form-control" id="tt-nombre" required><div class="invalid-tooltip">El nombre es obligatorio.</div></div>
+          <div class="col-md-6 position-relative"><label for="tt-ciudad" class="form-label">Ciudad</label><input type="text" class="form-control" id="tt-ciudad" required><div class="valid-tooltip">Correcto.</div><div class="invalid-tooltip">La ciudad es obligatoria.</div></div>
+          <div class="col-12 pt-4"><button type="submit" class="btn btn-primary">Enviar</button></div>
+        </form>
+      </div>
+      <div class="alert alert-warning mb-0" role="alert">
+        La validación del navegador es una ayuda para el usuario, no una seguridad: desde las herramientas de desarrollo se puede quitar
+        un <code>required</code> y enviar cualquier cosa. El servidor tiene que volver a validarlo todo.
+      </div>
+    </section>
+
+    <!-- 12. Práctica -->
+    <section id="practica" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">12. Práctica</h2>
+      <p>Página de contacto para la tienda de la práctica de la sesión:</p>
+      <ul>
+        <li>Nombre y apellidos en la misma fila desde <code>md</code>; correo y teléfono (con prefijo en un <code>input-group</code>) en otra.</li>
+        <li>Asunto con <code>form-select</code> y mensaje con <code>textarea</code>.</li>
+        <li>Preferencia de respuesta con radios en línea (correo / teléfono) y un switch para el boletín.</li>
+        <li>Casilla obligatoria de aceptación de la política de privacidad.</li>
+        <li>Validación con <code>novalidate</code>, <code>was-validated</code> y un mensaje <code>invalid-feedback</code> en cada campo obligatorio.</li>
+        <li>Al ser válido, mostrar un <code>alert-success</code> en lugar de enviar.</li>
+        <li>Variante: los campos de texto con <code>form-floating</code>.</li>
+      </ul>
+      <p class="etiqueta">Un resultado posible</p>
+      <div class="demo mb-0">
+        <form class="row g-3" novalidate>
+          <div class="col-md-6"><label for="p-nombre" class="form-label">Nombre</label><input type="text" class="form-control" id="p-nombre" required><div class="invalid-feedback">El nombre es obligatorio.</div></div>
+          <div class="col-md-6"><label for="p-apellidos" class="form-label">Apellidos</label><input type="text" class="form-control" id="p-apellidos"></div>
+          <div class="col-md-6"><label for="p-email" class="form-label">Correo electrónico</label><input type="email" class="form-control" id="p-email" required><div class="invalid-feedback">Hace falta un correo válido.</div></div>
+          <div class="col-md-6"><label for="p-telefono" class="form-label">Teléfono</label><div class="input-group has-validation"><span class="input-group-text">+34</span><input type="tel" class="form-control" id="p-telefono" pattern="[0-9 ]{9,11}"><div class="invalid-feedback">Nueve cifras.</div></div></div>
+          <div class="col-md-6"><label for="p-asunto" class="form-label">Asunto</label><select class="form-select" id="p-asunto" required><option selected disabled value="">Elige un asunto</option><option>Información</option><option>Pedido</option><option>Devolución</option></select><div class="invalid-feedback">Elige un asunto.</div></div>
+          <div class="col-md-6">
+            <p class="form-label mb-2">Responder por</p>
+            <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="p-responder" id="p-por-correo" checked><label class="form-check-label" for="p-por-correo">Correo</label></div>
+            <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="p-responder" id="p-por-telefono"><label class="form-check-label" for="p-por-telefono">Teléfono</label></div>
+          </div>
+          <div class="col-12"><label for="p-mensaje" class="form-label">Mensaje</label><textarea class="form-control" id="p-mensaje" rows="4" required minlength="10"></textarea><div class="invalid-feedback">Mínimo 10 caracteres.</div></div>
+          <div class="col-12"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" role="switch" id="p-boletin"><label class="form-check-label" for="p-boletin">Quiero recibir el boletín</label></div></div>
+          <div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" id="p-privacidad" required><label class="form-check-label" for="p-privacidad">He leído y acepto la política de privacidad</label><div class="invalid-feedback">Hay que aceptar la política de privacidad.</div></div></div>
+          <div class="col-12"><button type="submit" class="btn btn-primary">Enviar mensaje</button></div>
+          <div class="col-12"><div class="alert alert-success d-none mb-0 aviso-enviado" role="alert">Mensaje enviado. Responderemos en 24 horas.</div></div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-top py-4 text-center text-body-secondary small">
+    Curso de Bootstrap 5 · Formularios ·
+    Referencia: <a href="https://getbootstrap.com/docs/5.3/forms/overview/">Forms</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/forms/form-control/">Form controls</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/forms/select/">Select</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/forms/checks-radios/">Checks and radios</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/forms/range/">Range</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/forms/input-group/">Input group</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/forms/floating-labels/">Floating labels</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/forms/layout/">Layout</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/forms/validation/">Validation</a>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>10 A · Formularios: controles</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    FORMULARIOS: LOS CONTROLES
+    Bootstrap no cambia cómo funciona un formulario: sigue siendo HTML
+    (<form>, <input>, <select>, <textarea>, <label>...). Solo les da estilo con clases:
+      form-label   → la etiqueta
+      form-control → cajas de texto y textarea
+      form-select  → listas desplegables
+      form-text    → texto de ayuda debajo del campo
+    Los checks, switches y rangos van en el 10_B.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Formularios: controles</h1>
+
+    <!--
+      SIN CLASE Y CON form-control
+      Sin clase, cada navegador dibuja el input a su manera, y es un elemento en línea:
+      la etiqueta y la caja quedan en la misma línea, con el ancho que decide el navegador.
+
+      form-control:
+        display: block y width: 100%  → ocupa todo el ancho, en su propia línea
+        padding, borde y esquinas     → el mismo aspecto en todos los navegadores
+        :focus                        → borde azul y un halo (box-shadow) al entrar en el campo
+      form-label solo pone un margen inferior (margin-bottom: .5rem) a la etiqueta.
+    -->
+    <h2 class="h4 mt-5">Sin clase y con <code>form-control</code></h2>
+
+    <div class="row g-4">
+      <div class="col-md-6">
+        <p class="mb-1">Sin clases:</p>
+        <div class="bg-primary-subtle border border-primary-subtle p-3">
+          <label for="nombre-sin">Nombre</label>
+          <input type="text" id="nombre-sin">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <p class="mb-1"><code>form-label</code> y <code>form-control</code>:</p>
+        <div class="bg-success-subtle border border-success-subtle p-3">
+          <label for="nombre-con" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombre-con">
+        </div>
+      </div>
+    </div>
+
+    <!--
+      LA ETIQUETA Y SU CAMPO: for e id
+      El for del label tiene que coincidir con el id del input. Así:
+        - al hacer clic en la etiqueta, el cursor entra en el campo
+        - el lector de pantalla lee la etiqueta al llegar al campo
+      El placeholder NO sustituye a la etiqueta: desaparece al escribir
+      y tiene poco contraste. Lo usamos solo como ejemplo del formato esperado.
+
+      TEXTO DE AYUDA: form-text
+      Texto pequeño y atenuado debajo del campo. Con aria-describedby en el input
+      (apuntando al id de la ayuda), el lector de pantalla también la lee.
+    -->
+    <h2 class="h4 mt-5">La etiqueta, el campo y la ayuda</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="mb-3">
+        <label for="email" class="form-label">Correo electrónico</label>
+        <input type="email" class="form-control" id="email" placeholder="nombre@ejemplo.com" aria-describedby="email-ayuda">
+        <div id="email-ayuda" class="form-text">No compartiremos el correo con nadie.</div>
+      </div>
+      <div>
+        <label for="clave" class="form-label">Contraseña</label>
+        <input type="password" class="form-control" id="clave" aria-describedby="clave-ayuda">
+        <div id="clave-ayuda" class="form-text">Entre 8 y 20 caracteres, con letras y números.</div>
+      </div>
+    </div>
+
+    <!--
+      LOS TIPOS DE INPUT
+      form-control sirve para todos los input de texto. El type lo pone HTML, no Bootstrap,
+      y cambia el teclado en el móvil y lo que valida el navegador:
+        email    → teclado con @
+        tel      → teclado numérico de teléfono
+        number   → flechas para subir y bajar
+        date     → calendario del navegador
+        search   → una X para borrar
+      El textarea también lleva form-control; rows fija la altura inicial.
+    -->
+    <h2 class="h4 mt-5">Tipos de input y <code>textarea</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label for="tipo-tel" class="form-label">type="tel"</label>
+          <input type="tel" class="form-control" id="tipo-tel" placeholder="600 123 456">
+        </div>
+        <div class="col-md-4">
+          <label for="tipo-number" class="form-label">type="number"</label>
+          <input type="number" class="form-control" id="tipo-number" value="1" min="1" max="10">
+        </div>
+        <div class="col-md-4">
+          <label for="tipo-date" class="form-label">type="date"</label>
+          <input type="date" class="form-control" id="tipo-date">
+        </div>
+        <div class="col-md-4">
+          <label for="tipo-search" class="form-label">type="search"</label>
+          <input type="search" class="form-control" id="tipo-search" placeholder="Buscar productos">
+        </div>
+        <div class="col-md-4">
+          <label for="tipo-file" class="form-label">type="file"</label>
+          <input type="file" class="form-control" id="tipo-file">
+        </div>
+        <div class="col-md-4">
+          <!--
+            type="color" lleva además form-control-color: sin ella, el selector de color
+            se estira a todo el ancho.
+          -->
+          <label for="tipo-color" class="form-label">type="color"</label>
+          <input type="color" class="form-control form-control-color" id="tipo-color" value="#198754">
+        </div>
+        <div class="col-12">
+          <label for="mensaje" class="form-label">Mensaje (textarea, rows="3")</label>
+          <textarea class="form-control" id="mensaje" rows="3"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      TAMAÑOS: form-control-lg Y form-control-sm
+      Cambian la altura, el relleno y el tamaño de letra.
+      Lo mismo para las listas: form-select-lg y form-select-sm.
+    -->
+    <h2 class="h4 mt-5">Tamaños: <code>form-control-lg</code> y <code>form-control-sm</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <input type="text" class="form-control form-control-lg mb-2" placeholder="form-control-lg" aria-label="Ejemplo grande">
+      <input type="text" class="form-control mb-2" placeholder="form-control" aria-label="Ejemplo normal">
+      <input type="text" class="form-control form-control-sm" placeholder="form-control-sm" aria-label="Ejemplo pequeño">
+    </div>
+
+    <!--
+      DESHABILITADO, SOLO LECTURA Y TEXTO PLANO
+      Son atributos de HTML; Bootstrap solo les da aspecto:
+        disabled → gris, no se puede tocar y NO se envía con el formulario
+        readonly → no se puede cambiar, pero se puede seleccionar y SÍ se envía
+      form-control-plaintext (con readonly) quita la caja: el valor parece texto normal,
+      pero sigue alineado con los demás campos.
+
+      Para deshabilitar todo un grupo de campos de golpe: <fieldset disabled>.
+    -->
+    <h2 class="h4 mt-5">Deshabilitado, solo lectura y texto plano</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="mb-3">
+        <label for="campo-disabled" class="form-label">disabled</label>
+        <input type="text" class="form-control" id="campo-disabled" value="No se puede tocar" disabled>
+      </div>
+      <div class="mb-3">
+        <label for="campo-readonly" class="form-label">readonly</label>
+        <input type="text" class="form-control" id="campo-readonly" value="Se puede seleccionar, no cambiar" readonly>
+      </div>
+      <div class="mb-3">
+        <label for="campo-plaintext" class="form-label">readonly + form-control-plaintext</label>
+        <input type="text" class="form-control-plaintext" id="campo-plaintext" value="cliente@ejemplo.com" readonly>
+      </div>
+      <fieldset disabled>
+        <legend class="fs-6 fw-semibold">fieldset disabled</legend>
+        <div class="mb-3">
+          <label for="campo-fieldset" class="form-label">Un campo dentro del fieldset</label>
+          <input type="text" class="form-control" id="campo-fieldset" value="Deshabilitado por el fieldset">
+        </div>
+        <button type="submit" class="btn btn-primary">También el botón</button>
+      </fieldset>
+    </div>
+
+    <!--
+      LISTAS DESPLEGABLES: form-select
+      En un <select>, form-select en lugar de form-control: dibuja su propia flecha.
+      Con multiple o size, se convierte en una lista con varias filas visibles.
+      La primera opción con selected y disabled hace de "Elige una opción".
+    -->
+    <h2 class="h4 mt-5">Listas desplegables: <code>form-select</code></h2>
+
+    <div class="row g-4 mb-5">
+      <div class="col-md-6">
+        <p class="mb-1">Sin clase:</p>
+        <div class="bg-primary-subtle border border-primary-subtle p-3">
+          <label for="categoria-sin">Categoría</label>
+          <select id="categoria-sin">
+            <option selected disabled>Elige una categoría</option>
+            <option value="perifericos">Periféricos</option>
+            <option value="pantallas">Pantallas</option>
+            <option value="audio">Audio</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <p class="mb-1"><code>form-select</code>:</p>
+        <div class="bg-success-subtle border border-success-subtle p-3">
+          <label for="categoria-con" class="form-label">Categoría</label>
+          <select class="form-select" id="categoria-con">
+            <option selected disabled>Elige una categoría</option>
+            <option value="perifericos">Periféricos</option>
+            <option value="pantallas">Pantallas</option>
+            <option value="audio">Audio</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <p class="mb-1"><code>form-select</code> con <code>multiple</code> (Ctrl + clic para elegir varias):</p>
+        <div class="bg-success-subtle border border-success-subtle p-3">
+          <label for="categorias-multiple" class="form-label">Categorías</label>
+          <select class="form-select" id="categorias-multiple" multiple>
+            <option value="perifericos">Periféricos</option>
+            <option value="pantallas">Pantallas</option>
+            <option value="audio">Audio</option>
+            <option value="cables">Cables</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <p class="mb-1"><code>form-select-sm</code>:</p>
+        <div class="bg-success-subtle border border-success-subtle p-3">
+          <label for="orden" class="form-label">Ordenar por</label>
+          <select class="form-select form-select-sm" id="orden">
+            <option value="precio">Precio</option>
+            <option value="nombre">Nombre</option>
+            <option value="stock">Stock</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

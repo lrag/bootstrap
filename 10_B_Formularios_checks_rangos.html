@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>10 B · Formularios: checks, switches y rangos</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <script>
+    window.onload = () => {
+      document.getElementById('volumen').oninput = () => {
+        document.getElementById('valor-volumen').textContent = document.getElementById('volumen').value
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!--
+    CHECKS, SWITCHES Y RANGOS
+    Las casillas (checkbox), los botones de opción (radio) y los deslizadores (range)
+    los dibuja Bootstrap entero: el aspecto del navegador se sustituye por el suyo,
+    igual en todos los navegadores y con el color primary.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Formularios: checks, switches y rangos</h1>
+
+    <!--
+      LA ESTRUCTURA DE UN CHECK
+      Siempre tres piezas:
+        <div class="form-check">                       → el contenedor: deja sitio a la izquierda para la casilla
+          <input class="form-check-input" type="...">  → la casilla
+          <label class="form-check-label">             → el texto, con for apuntando al id
+      Al hacer clic en el texto se marca la casilla: es más fácil acertar, sobre todo en el móvil.
+    -->
+    <h2 class="h4 mt-5">La estructura de un check</h2>
+
+    <div class="row g-4">
+      <div class="col-md-6">
+        <p class="mb-1">Sin clases:</p>
+        <div class="bg-primary-subtle border border-primary-subtle p-3 h-100">
+          <input type="checkbox" id="acepto-sin">
+          <label for="acepto-sin">Acepto las condiciones</label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <p class="mb-1"><code>form-check</code>, <code>form-check-input</code> y <code>form-check-label</code>:</p>
+        <div class="bg-success-subtle border border-success-subtle p-3 h-100">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="acepto-con">
+            <label class="form-check-label" for="acepto-con">Acepto las condiciones</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      CHECKBOX Y RADIO
+        checkbox → cada casilla es independiente: se marcan varias
+        radio    → solo una del grupo; el grupo lo forma el mismo name
+      checked marca la opción por defecto y disabled la deshabilita.
+      fieldset + legend agrupan las opciones y dan título al grupo (el lector de pantalla
+      lee el legend antes de cada opción).
+    -->
+    <h2 class="h4 mt-5">Checkbox y radio</h2>
+
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="bg-success-subtle border border-success-subtle p-3 h-100">
+          <fieldset>
+            <legend class="fs-6 fw-semibold">Intereses (checkbox: varias)</legend>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="interes-ofertas" checked>
+              <label class="form-check-label" for="interes-ofertas">Ofertas</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="interes-novedades">
+              <label class="form-check-label" for="interes-novedades">Novedades</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="interes-eventos" disabled>
+              <label class="form-check-label" for="interes-eventos">Eventos (disabled)</label>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="bg-success-subtle border border-success-subtle p-3 h-100">
+          <fieldset>
+            <legend class="fs-6 fw-semibold">Envío (radio: solo una, mismo name)</legend>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="envio" id="envio-normal" checked>
+              <label class="form-check-label" for="envio-normal">Normal (3-5 días)</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="envio" id="envio-urgente">
+              <label class="form-check-label" for="envio-urgente">Urgente (24 h)</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="envio" id="envio-tienda" disabled>
+              <label class="form-check-label" for="envio-tienda">Recogida en tienda (disabled)</label>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      EN LÍNEA Y AL REVÉS
+        form-check-inline  → las opciones una al lado de otra
+        form-check-reverse → la casilla a la derecha del texto
+    -->
+    <h2 class="h4 mt-5">En línea y al revés: <code>form-check-inline</code> y <code>form-check-reverse</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <p class="mb-1">form-check-inline:</p>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="talla" id="talla-s">
+        <label class="form-check-label" for="talla-s">S</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="talla" id="talla-m" checked>
+        <label class="form-check-label" for="talla-m">M</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="talla" id="talla-l">
+        <label class="form-check-label" for="talla-l">L</label>
+      </div>
+
+      <p class="mb-1 mt-3">form-check-reverse:</p>
+      <div class="form-check form-check-reverse">
+        <input class="form-check-input" type="checkbox" id="recordar">
+        <label class="form-check-label" for="recordar">Recordar mis datos</label>
+      </div>
+    </div>
+
+    <!--
+      INTERRUPTORES: form-switch
+      Un checkbox normal con form-switch en el contenedor: se dibuja como un interruptor.
+      Sigue siendo un checkbox (marcado o no). role="switch" le dice al lector de pantalla
+      que lo anuncie como interruptor (activado / desactivado).
+      Se usa para opciones que se aplican al momento: notificaciones, modo oscuro...
+    -->
+    <h2 class="h4 mt-5">Interruptores: <code>form-switch</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="notificaciones" checked>
+        <label class="form-check-label" for="notificaciones">Notificaciones por correo</label>
+      </div>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="boletin">
+        <label class="form-check-label" for="boletin">Boletín semanal</label>
+      </div>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="sms" disabled>
+        <label class="form-check-label" for="sms">Avisos por SMS (disabled)</label>
+      </div>
+    </div>
+
+    <!--
+      CHECKS CON ASPECTO DE BOTÓN: btn-check
+      El input se oculta (btn-check) y el label lleva las clases de botón.
+      Al marcarlo, el botón aparece pulsado. Funciona con checkbox y con radio.
+      Aquí el label va DESPUÉS del input y sin div form-check.
+    -->
+    <h2 class="h4 mt-5">Checks con aspecto de botón: <code>btn-check</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <p class="mb-1">checkbox:</p>
+      <input type="checkbox" class="btn-check" id="filtro-oferta" autocomplete="off">
+      <label class="btn btn-outline-primary" for="filtro-oferta">En oferta</label>
+
+      <input type="checkbox" class="btn-check" id="filtro-stock" autocomplete="off" checked>
+      <label class="btn btn-outline-primary" for="filtro-stock">Con stock</label>
+
+      <p class="mb-1 mt-3">radio, dentro de un btn-group:</p>
+      <div class="btn-group" role="group" aria-label="Vista del catálogo">
+        <input type="radio" class="btn-check" name="vista" id="vista-tarjetas" autocomplete="off" checked>
+        <label class="btn btn-outline-secondary" for="vista-tarjetas">Tarjetas</label>
+
+        <input type="radio" class="btn-check" name="vista" id="vista-lista" autocomplete="off">
+        <label class="btn btn-outline-secondary" for="vista-lista">Lista</label>
+
+        <input type="radio" class="btn-check" name="vista" id="vista-tabla" autocomplete="off">
+        <label class="btn btn-outline-secondary" for="vista-tabla">Tabla</label>
+      </div>
+    </div>
+
+    <!--
+      DESLIZADORES: form-range
+      Un <input type="range"> con form-range: ocupa todo el ancho y se dibuja igual en
+      todos los navegadores.
+        min y max → los extremos (por defecto 0 y 100)
+        step      → de cuánto en cuánto avanza (por defecto 1)
+      El deslizador no muestra su valor: lo escribimos al lado con JavaScript,
+      en el evento input (salta en cada movimiento).
+    -->
+    <h2 class="h4 mt-5">Deslizadores: <code>form-range</code></h2>
+
+    <div class="row g-4 mb-5">
+      <div class="col-md-6">
+        <p class="mb-1">Sin clase:</p>
+        <div class="bg-primary-subtle border border-primary-subtle p-3">
+          <label for="rango-sin">Volumen</label>
+          <input type="range" id="rango-sin">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <p class="mb-1"><code>form-range</code> con el valor escrito al lado:</p>
+        <div class="bg-success-subtle border border-success-subtle p-3">
+          <label for="volumen" class="form-label">Volumen: <span id="valor-volumen">50</span></label>
+          <input type="range" class="form-range" id="volumen" min="0" max="100" step="5" value="50">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

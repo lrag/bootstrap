@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>10 C · Formularios: input-group y form-floating</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    GRUPOS DE ENTRADA Y ETIQUETAS FLOTANTES
+    Dos formas de combinar el campo con lo que le rodea:
+      input-group   → pega al campo textos, iconos o botones, como una sola pieza
+      form-floating → la etiqueta va DENTRO del campo y sube al escribir
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Formularios: <code>input-group</code> y <code>form-floating</code></h1>
+
+    <!--
+      GRUPOS DE ENTRADA: input-group
+      Un div input-group con el campo y, delante o detrás, un span input-group-text.
+      input-group es un contenedor flex: el campo crece y los textos se quedan a su tamaño.
+      Bootstrap quita las esquinas redondeadas entre las piezas para que parezcan una sola.
+      Sirve para unidades (€, kg), prefijos (@, https://) y sufijos (.com).
+    -->
+    <h2 class="h4 mt-5">Grupos de entrada: <code>input-group</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <label for="usuario" class="form-label">Usuario</label>
+      <div class="input-group mb-3">
+        <span class="input-group-text">@</span>
+        <input type="text" class="form-control" id="usuario" placeholder="nombre_de_usuario">
+      </div>
+
+      <label for="precio" class="form-label">Precio</label>
+      <div class="input-group mb-3">
+        <input type="number" class="form-control" id="precio" step="0.01">
+        <span class="input-group-text">€</span>
+      </div>
+
+      <label for="web" class="form-label">Página web</label>
+      <div class="input-group mb-3">
+        <span class="input-group-text">https://</span>
+        <input type="text" class="form-control" id="web" placeholder="mi-tienda">
+        <span class="input-group-text">.com</span>
+      </div>
+
+      <label for="importe" class="form-label">Importe (varios textos seguidos)</label>
+      <div class="input-group">
+        <span class="input-group-text">€</span>
+        <span class="input-group-text">0,00</span>
+        <input type="text" class="form-control" id="importe">
+      </div>
+    </div>
+
+    <!--
+      CON ICONOS Y BOTONES
+      En el input-group-text cabe un icono de Bootstrap Icons (aria-hidden: es decorativo,
+      la etiqueta ya dice qué es el campo).
+      Un botón va directamente en el grupo, sin input-group-text.
+      Un select (form-select) también puede formar parte del grupo.
+    -->
+    <h2 class="h4 mt-5">Con iconos, botones y listas</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <label for="correo-icono" class="form-label">Correo</label>
+      <div class="input-group mb-3">
+        <span class="input-group-text"><i class="bi bi-envelope" aria-hidden="true"></i></span>
+        <input type="email" class="form-control" id="correo-icono" placeholder="nombre@ejemplo.com">
+      </div>
+
+      <label for="buscar" class="form-label">Buscar</label>
+      <div class="input-group mb-3">
+        <input type="search" class="form-control" id="buscar" placeholder="Nombre del producto">
+        <button class="btn btn-primary" type="button">
+          <i class="bi bi-search" aria-hidden="true"></i> Buscar
+        </button>
+      </div>
+
+      <label for="cantidad" class="form-label">Cantidad</label>
+      <div class="input-group mb-3" style="max-width: 12rem">
+        <button class="btn btn-outline-secondary" type="button" aria-label="Quitar uno">−</button>
+        <input type="text" class="form-control text-center" id="cantidad" value="1">
+        <button class="btn btn-outline-secondary" type="button" aria-label="Añadir uno">+</button>
+      </div>
+
+      <label for="telefono" class="form-label">Teléfono</label>
+      <div class="input-group">
+        <select class="form-select flex-grow-0 w-auto" aria-label="Prefijo">
+          <option selected>+34</option>
+          <option>+33</option>
+          <option>+351</option>
+        </select>
+        <input type="tel" class="form-control" id="telefono">
+      </div>
+    </div>
+
+    <!--
+      CON UN CHECK DENTRO
+      Un checkbox o un radio dentro del input-group-text. Le quitamos el margen
+      superior que trae form-check-input con mt-0.
+    -->
+    <h2 class="h4 mt-5">Con un check dentro</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <label for="regalo" class="form-label">Mensaje de regalo</label>
+      <div class="input-group">
+        <div class="input-group-text">
+          <input class="form-check-input mt-0" type="checkbox" aria-label="Incluir mensaje de regalo">
+        </div>
+        <input type="text" class="form-control" id="regalo" placeholder="¡Feliz cumpleaños!">
+      </div>
+    </div>
+
+    <!--
+      TAMAÑOS: input-group-lg E input-group-sm
+      En el div del grupo: cambia el tamaño de todas las piezas a la vez.
+    -->
+    <h2 class="h4 mt-5">Tamaños: <code>input-group-lg</code> e <code>input-group-sm</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="input-group input-group-lg mb-2">
+        <span class="input-group-text">input-group-lg</span>
+        <input type="text" class="form-control" aria-label="Ejemplo grande">
+      </div>
+      <div class="input-group mb-2">
+        <span class="input-group-text">input-group</span>
+        <input type="text" class="form-control" aria-label="Ejemplo normal">
+      </div>
+      <div class="input-group input-group-sm">
+        <span class="input-group-text">input-group-sm</span>
+        <input type="text" class="form-control" aria-label="Ejemplo pequeño">
+      </div>
+    </div>
+
+    <!--
+      ETIQUETAS FLOTANTES: form-floating
+      La etiqueta empieza dentro del campo, como si fuera un placeholder,
+      y al entrar o escribir sube y se hace pequeña. Ahorra espacio y la etiqueta no se pierde.
+
+      Tres reglas:
+        - el input va ANTES del label (al revés que en un formulario normal)
+        - el input necesita un placeholder, aunque no se vea: Bootstrap usa
+          :placeholder-shown para saber si el campo está vacío
+        - no lleva form-label: la etiqueta la coloca form-floating
+    -->
+    <h2 class="h4 mt-5">Etiquetas flotantes: <code>form-floating</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="flotante-email" placeholder="nombre@ejemplo.com">
+        <label for="flotante-email">Correo electrónico</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="password" class="form-control" id="flotante-clave" placeholder="Contraseña">
+        <label for="flotante-clave">Contraseña</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="flotante-ciudad" placeholder="Ciudad" value="Madrid">
+        <label for="flotante-ciudad">Ciudad (con value: la etiqueta ya está arriba)</label>
+      </div>
+
+      <!--
+        En un textarea, la altura se fija con style: rows no funciona dentro de form-floating.
+      -->
+      <div class="form-floating mb-3">
+        <textarea class="form-control" id="flotante-mensaje" placeholder="Mensaje" style="height: 7rem"></textarea>
+        <label for="flotante-mensaje">Mensaje</label>
+      </div>
+
+      <!--
+        En un select la etiqueta siempre está arriba: un select nunca está vacío.
+      -->
+      <div class="form-floating">
+        <select class="form-select" id="flotante-asunto">
+          <option selected>Información</option>
+          <option>Pedido</option>
+          <option>Devolución</option>
+        </select>
+        <label for="flotante-asunto">Asunto</label>
+      </div>
+    </div>
+
+    <!--
+      SIN PLACEHOLDER NO FUNCIONA
+      Sin placeholder, :placeholder-shown nunca se cumple: Bootstrap cree que el campo
+      tiene contenido y la etiqueta se queda siempre arriba, pequeña.
+    -->
+    <h2 class="h4 mt-5">Sin <code>placeholder</code> no funciona</h2>
+
+    <div class="row g-4">
+      <div class="col-md-6">
+        <p class="mb-1">Con <code>placeholder</code>:</p>
+        <div class="bg-success-subtle border border-success-subtle p-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="flotante-con" placeholder="Nombre">
+            <label for="flotante-con">Nombre</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <p class="mb-1">Sin <code>placeholder</code>:</p>
+        <div class="bg-success-subtle border border-success-subtle p-3">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="flotante-sin">
+            <label for="flotante-sin">Nombre</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      FLOTANTES DENTRO DE UN input-group
+      El div form-floating ocupa el sitio del campo dentro del grupo.
+    -->
+    <h2 class="h4 mt-5">Flotante dentro de un <code>input-group</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <div class="input-group">
+        <span class="input-group-text"><i class="bi bi-person" aria-hidden="true"></i></span>
+        <div class="form-floating">
+          <input type="text" class="form-control" id="flotante-grupo" placeholder="Usuario">
+          <label for="flotante-grupo">Usuario</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

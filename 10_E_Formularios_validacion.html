@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>10 E · Formularios: validación</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <script>
+    window.onload = () => {
+      const formAlta = document.getElementById('form-alta')
+
+      formAlta.onsubmit = (evento) => {
+        evento.preventDefault()
+        formAlta.classList.add('was-validated')
+        if (formAlta.checkValidity()) {
+          document.getElementById('aviso-enviado').classList.remove('d-none')
+        }
+      }
+
+      const formTooltips = document.getElementById('form-tooltips')
+
+      formTooltips.onsubmit = (evento) => {
+        evento.preventDefault()
+        formTooltips.classList.add('was-validated')
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!--
+    VALIDACIÓN DE FORMULARIOS
+    Quien valida es el NAVEGADOR, con los atributos de HTML5:
+      required           → obligatorio
+      type="email"       → tiene que parecer un correo
+      minlength / maxlength
+      min / max          → en números y fechas
+      pattern            → una expresión regular (pattern="[0-9]{5}": cinco cifras)
+    Bootstrap no valida nada: solo pinta en verde o rojo lo que el navegador
+    ya ha decidido, y muestra nuestros mensajes en lugar de los del navegador.
+
+    La validación del navegador es para ayudar al usuario. El servidor tiene que
+    volver a validarlo todo: desde las herramientas de desarrollo se puede quitar
+    un required y enviar cualquier cosa.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Formularios: validación</h1>
+
+    <!--
+      LA VALIDACIÓN DEL NAVEGADOR, SIN BOOTSTRAP
+      Al pulsar Enviar con un campo mal, el navegador no envía el formulario
+      y muestra un globo con su propio mensaje, en el primer campo que falla.
+      El aspecto y el texto del globo los decide cada navegador.
+    -->
+    <h2 class="h4 mt-5">La validación del navegador, sin Bootstrap</h2>
+
+    <div class="bg-primary-subtle border border-primary-subtle p-3">
+      <form>
+        <p class="mb-2">
+          <label for="n-email">Correo (required, type="email")</label>
+          <input type="email" id="n-email" required>
+        </p>
+        <p class="mb-2">
+          <label for="n-cp">Código postal (pattern="[0-9]{5}")</label>
+          <input type="text" id="n-cp" pattern="[0-9]{5}" title="Cinco cifras">
+        </p>
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+
+    <!--
+      CON BOOTSTRAP: novalidate + was-validated
+      Tres piezas:
+        - novalidate en el <form>: el navegador sigue validando, pero no muestra sus globos
+          ni bloquea el envío. Lo controlamos nosotros.
+        - Al enviar, JavaScript añade la clase was-validated al form.
+          Con ella, Bootstrap pinta cada campo según la pseudoclase del navegador:
+            :valid   → borde verde y un check
+            :invalid → borde rojo y una exclamación
+        - Debajo de cada campo, los mensajes:
+            invalid-feedback → solo se ve si el campo es inválido
+            valid-feedback   → solo se ve si el campo es válido
+          Tienen que ir DESPUÉS del campo y como hermanos (mismo padre):
+          Bootstrap los muestra con el selector :invalid ~ .invalid-feedback.
+
+      ¿Por qué esperar a was-validated? Porque :invalid se cumple desde que carga la página:
+      un campo required vacío ya es inválido, y sin esperar el formulario
+      aparecería todo en rojo antes de que el usuario escriba nada.
+
+      En el JavaScript: preventDefault() para que la página no se recargue (no hay servidor),
+      y checkValidity() devuelve true si todos los campos son válidos.
+    -->
+    <h2 class="h4 mt-5">Con Bootstrap: <code>novalidate</code> y <code>was-validated</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <form id="form-alta" class="row g-3" novalidate>
+        <div class="col-md-6">
+          <label for="v-nombre" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="v-nombre" required minlength="2">
+          <div class="valid-feedback">Correcto.</div>
+          <div class="invalid-feedback">El nombre es obligatorio (mínimo 2 letras).</div>
+        </div>
+        <div class="col-md-6">
+          <label for="v-email" class="form-label">Correo electrónico</label>
+          <input type="email" class="form-control" id="v-email" required>
+          <div class="invalid-feedback">Escribe un correo válido, como nombre@ejemplo.com.</div>
+        </div>
+
+        <!--
+          En un input-group, el grupo lleva además has-validation: así las esquinas
+          redondeadas quedan bien aunque el mensaje vaya dentro del grupo.
+        -->
+        <div class="col-md-6">
+          <label for="v-usuario" class="form-label">Usuario</label>
+          <div class="input-group has-validation">
+            <span class="input-group-text">@</span>
+            <input type="text" class="form-control" id="v-usuario" required pattern="[a-z0-9_]{3,15}">
+            <div class="invalid-feedback">Entre 3 y 15 caracteres: minúsculas, números y _.</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="v-provincia" class="form-label">Provincia</label>
+          <select class="form-select" id="v-provincia" required>
+            <option selected disabled value="">Elige...</option>
+            <option>Madrid</option>
+            <option>Valencia</option>
+            <option>Sevilla</option>
+          </select>
+          <div class="invalid-feedback">Elige una provincia.</div>
+        </div>
+        <div class="col-md-3">
+          <label for="v-cp" class="form-label">C. P.</label>
+          <input type="text" class="form-control" id="v-cp" required pattern="[0-9]{5}">
+          <div class="invalid-feedback">Cinco cifras.</div>
+        </div>
+        <div class="col-12">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="v-condiciones" required>
+            <label class="form-check-label" for="v-condiciones">Acepto las condiciones</label>
+            <div class="invalid-feedback">Hay que aceptar las condiciones.</div>
+          </div>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Crear cuenta</button>
+        </div>
+        <div class="col-12">
+          <div id="aviso-enviado" class="alert alert-success d-none mb-0" role="alert">Todo correcto: el formulario se enviaría.</div>
+        </div>
+      </form>
+    </div>
+
+    <!--
+      MARCAR UN CAMPO A MANO: is-invalid E is-valid
+      Hay errores que el navegador no puede saber: "ese correo ya está registrado".
+      Los decide el servidor, y al devolver la página marcamos el campo con
+      is-invalid (o is-valid). No dependen de was-validated: se ven siempre.
+      El invalid-feedback aparece porque el campo tiene is-invalid.
+    -->
+    <h2 class="h4 mt-5">Marcar un campo a mano: <code>is-invalid</code> e <code>is-valid</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="s-email" class="form-label">Correo electrónico</label>
+          <input type="email" class="form-control is-invalid" id="s-email" value="cliente@ejemplo.com">
+          <div class="invalid-feedback">Ya hay una cuenta con este correo.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="s-usuario" class="form-label">Usuario</label>
+          <input type="text" class="form-control is-valid" id="s-usuario" value="luis_r">
+          <div class="valid-feedback">Nombre de usuario disponible.</div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      MENSAJES COMO GLOBO: invalid-tooltip Y valid-tooltip
+      En lugar de un texto debajo, un globo de color que flota sobre lo que haya debajo.
+      Se posiciona con position: absolute, así que el contenedor del campo
+      necesita position-relative.
+    -->
+    <h2 class="h4 mt-5">Mensajes como globo: <code>invalid-tooltip</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <form id="form-tooltips" class="row g-3" novalidate>
+        <div class="col-md-6 position-relative">
+          <label for="t-nombre" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="t-nombre" required>
+          <div class="invalid-tooltip">El nombre es obligatorio.</div>
+        </div>
+        <div class="col-md-6 position-relative">
+          <label for="t-ciudad" class="form-label">Ciudad</label>
+          <input type="text" class="form-control" id="t-ciudad" required>
+          <div class="valid-tooltip">Correcto.</div>
+          <div class="invalid-tooltip">La ciudad es obligatoria.</div>
+        </div>
+        <div class="col-12 pt-4">
+          <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

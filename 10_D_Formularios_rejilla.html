@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>10 D · Formularios: rejilla</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    LA REJILLA EN LOS FORMULARIOS
+    Bootstrap no tiene un sistema propio para colocar campos: usamos la rejilla
+    de siempre (row, col, g-*) y las utilidades de espaciado.
+    Estrechamos la ventana para ver cómo se apilan los campos en el móvil.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Formularios: rejilla</h1>
+
+    <!--
+      UN CAMPO DEBAJO DE OTRO: mb-3
+      Como form-control ocupa todo el ancho, los campos se apilan solos.
+      Solo hace falta separarlos: cada etiqueta + campo en un div con mb-3.
+    -->
+    <h2 class="h4 mt-5">Un campo debajo de otro: <code>mb-3</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <form>
+        <div class="mb-3">
+          <label for="v-nombre" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="v-nombre">
+        </div>
+        <div class="mb-3">
+          <label for="v-email" class="form-label">Correo electrónico</label>
+          <input type="email" class="form-control" id="v-email">
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+    </div>
+
+    <!--
+      VARIOS CAMPOS POR FILA: row + col-md-*
+      Una fila con columnas, como cualquier maquetación.
+      g-3 separa los campos en horizontal y en vertical (sin g-3, al apilarse en el móvil
+      quedarían pegados).
+      col-md-6: dos por fila desde md; en el móvil, uno debajo de otro.
+      col-12: la fila entera en todos los tamaños.
+    -->
+    <h2 class="h4 mt-5">Varios campos por fila: <code>row g-3</code> y <code>col-md-*</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <form class="row g-3">
+        <div class="col-md-6">
+          <label for="g-nombre" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="g-nombre">
+        </div>
+        <div class="col-md-6">
+          <label for="g-apellidos" class="form-label">Apellidos</label>
+          <input type="text" class="form-control" id="g-apellidos">
+        </div>
+        <div class="col-12">
+          <label for="g-direccion" class="form-label">Dirección</label>
+          <input type="text" class="form-control" id="g-direccion" placeholder="Calle, número, piso">
+        </div>
+        <div class="col-md-6">
+          <label for="g-ciudad" class="form-label">Ciudad</label>
+          <input type="text" class="form-control" id="g-ciudad">
+        </div>
+        <div class="col-md-4">
+          <label for="g-provincia" class="form-label">Provincia</label>
+          <select class="form-select" id="g-provincia">
+            <option selected disabled>Elige...</option>
+            <option>Madrid</option>
+            <option>Valencia</option>
+            <option>Sevilla</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label for="g-cp" class="form-label">C. P.</label>
+          <input type="text" class="form-control" id="g-cp">
+        </div>
+        <div class="col-12">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="g-factura">
+            <label class="form-check-label" for="g-factura">Quiero factura</label>
+          </div>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Guardar dirección</button>
+        </div>
+      </form>
+    </div>
+
+    <!--
+      FORMULARIO HORIZONTAL: la etiqueta a la izquierda
+      Cada campo es una fila (row mb-3): la etiqueta en una columna y el campo en otra.
+      La etiqueta lleva col-form-label en lugar de form-label: le da el mismo relleno
+      vertical que al campo, para que el texto quede a la altura del texto del campo.
+        col-sm-3 → etiqueta (un cuarto)
+        col-sm-9 → campo (tres cuartos)
+      En el móvil (por debajo de sm) la etiqueta vuelve a quedar encima.
+      Para alinear el check con los campos, offset-sm-3.
+    -->
+    <h2 class="h4 mt-5">Formulario horizontal: <code>col-form-label</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <form>
+        <div class="row mb-3">
+          <label for="h-email" class="col-sm-3 col-form-label">Correo electrónico</label>
+          <div class="col-sm-9">
+            <input type="email" class="form-control" id="h-email">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="h-clave" class="col-sm-3 col-form-label">Contraseña</label>
+          <div class="col-sm-9">
+            <input type="password" class="form-control" id="h-clave">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-9 offset-sm-3">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="h-recordar">
+              <label class="form-check-label" for="h-recordar">Recordarme</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-9 offset-sm-3">
+            <button type="submit" class="btn btn-primary">Entrar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!--
+      form-label FRENTE A col-form-label
+      Con form-label la etiqueta queda pegada arriba; con col-form-label, centrada
+      con el texto del campo. Se nota en el formulario horizontal.
+    -->
+    <h2 class="h4 mt-5"><code>form-label</code> frente a <code>col-form-label</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="row mb-3">
+        <label for="c-form-label" class="col-sm-3 form-label">form-label</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="c-form-label">
+        </div>
+      </div>
+      <div class="row">
+        <label for="c-col-form-label" class="col-sm-3 col-form-label">col-form-label</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" id="c-col-form-label">
+        </div>
+      </div>
+    </div>
+
+    <!--
+      FORMULARIO EN LÍNEA: col-auto
+      Todo en una sola línea: un buscador, una suscripción al boletín...
+        row g-2 align-items-center → fila con hueco pequeño y todo centrado en vertical
+        col-auto                   → cada columna mide lo que su contenido
+      La etiqueta no se ve (visually-hidden), pero el lector de pantalla la lee.
+    -->
+    <h2 class="h4 mt-5">Formulario en línea: <code>col-auto</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <form class="row g-2 align-items-center">
+        <div class="col-auto">
+          <label for="l-email" class="visually-hidden">Correo electrónico</label>
+          <input type="email" class="form-control" id="l-email" placeholder="nombre@ejemplo.com">
+        </div>
+        <div class="col-auto">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="l-ofertas">
+            <label class="form-check-label" for="l-ofertas">Solo ofertas</label>
+          </div>
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary">Suscribirme</button>
+        </div>
+      </form>
+    </div>
+
+    <!--
+      CAMPOS DE ANCHO AUTOMÁTICO: col y col-auto juntas
+      col reparte el espacio sobrante y col-auto se ajusta al contenido:
+      el campo de búsqueda crece y el botón se queda a su tamaño.
+    -->
+    <h2 class="h4 mt-5">Campo que crece y botón a su tamaño: <code>col</code> + <code>col-auto</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <form class="row g-2">
+        <div class="col">
+          <label for="b-buscar" class="visually-hidden">Buscar</label>
+          <input type="search" class="form-control" id="b-buscar" placeholder="Buscar productos">
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>
