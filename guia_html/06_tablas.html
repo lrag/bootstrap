@@ -341,8 +341,10 @@
   &lt;table class="table"&gt;…&lt;/table&gt;
 &lt;/div&gt;</code></pre>
       <p>
-        La clase va en el <strong>div que envuelve</strong>, no en la tabla. Por dentro es solo <code>overflow-x: auto</code>:
-        si la tabla cabe, no aparece ningún scroll.
+        La clase va en el <strong>div que envuelve</strong>, no en la tabla, y a la tabla no le hace nada: no la encoge ni reparte las columnas.
+        Por dentro es solo <code>overflow-x: auto</code>: si la tabla cabe, no aparece ningún scroll.
+        Por eso, en una pantalla ancha, una tabla con <code>table-responsive</code> y otra sin él se ven iguales; en estos ejemplos
+        las metemos en una caja estrecha para que se vea la diferencia a cualquier ancho.
       </p>
       <h3 class="h5 mt-4">Solo hasta un breakpoint: <code>table-responsive-{bp}</code></h3>
       <p>

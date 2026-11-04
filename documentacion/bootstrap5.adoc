@@ -2012,6 +2012,238 @@ image::05_iconos.png[Bootstrap Icons]
 IMPORTANT: Un icono decorativo junto a un texto lleva `aria-hidden="true"`, para que el lector de pantalla no lo lea.
 Un botón que solo tiene un icono necesita un texto alternativo: `visually-hidden` o `aria-label`.
 
+== Tablas
+
+La clase `.table` y sus variantes (rayas, hover, bordes, tamaño y color), tablas que no rompen la página en el móvil y alineación de las celdas.
+Ejemplos de clase: `09_A_Tablas_variantes.html` y `09_B_Tablas_responsive_alineacion.html`.
+
+=== La clase `.table`
+
+Las tablas son para *datos tabulares* (filas y columnas con sentido), nunca para maquetar: para eso está la rejilla.
+En Bootstrap una `<table>` no cambia hasta que le ponemos la clase `.table`; las variantes se suman con más clases.
+
+.Una tabla sin clase (solo Reboot) y la misma con `.table`
+image::06_base.png[Tabla sin clase y con la clase table]
+
+[cols="2,3",options="header"]
+|===
+|Regla de `.table` |Para qué
+|`width: 100%` |Ocupa todo el ancho de su contenedor
+|`padding: .5rem` en las celdas |Aire alrededor de cada dato
+|`border-bottom` en las celdas |Una línea bajo cada fila
+|`margin-bottom: 1rem` |Separación con lo que viene después
+|`vertical-align: top` |El contenido de las celdas, arriba (ver <<_alineación_de_las_celdas>>)
+|===
+
+Sin clase solo actúa Reboot: `border-collapse: collapse` (los bordes de las celdas se funden en uno) y el `caption` debajo de la tabla.
+
+NOTE: Los colores de `.table` salen de variables CSS (`--bs-table-bg`, `--bs-table-striped-bg`…) que dependen del modo de color: las tablas se adaptan solas al modo oscuro.
+
+.Tablas con `table-striped` y `table-hover` en modo oscuro
+image::06_modo_oscuro.png[Tablas en modo oscuro]
+
+=== La estructura de una tabla
+
+[cols="1m,3",options="header"]
+|===
+|Etiqueta |Contenido
+|<caption> |Título de la tabla (Reboot lo pone debajo, pequeño y atenuado)
+|<thead> |Fila o filas de cabecera
+|<tbody> |Los datos
+|<tfoot> |Totales o resumen
+|<th scope="col"> |Cabecera de una columna
+|<th scope="row"> |Cabecera de una fila
+|===
+
+[source,html]
+----
+<table class="table">
+  <caption>Catálogo de productos (precios con IVA)</caption>
+  <thead>
+    <tr>
+      <th scope="col">Producto</th>
+      <th scope="col">Categoría</th>
+      <th scope="col">Precio</th>
+      <th scope="col">Stock</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Teclado</th>
+      <td>Periféricos</td>
+      <td>39,90 €</td>
+      <td>25</td>
+    </tr>
+    …
+  </tbody>
+  <tfoot>
+    <tr>
+      <th scope="row">Total</th>
+      <td></td>
+      <td></td>
+      <td>33</td>
+    </tr>
+  </tfoot>
+</table>
+----
+
+.`caption`, `thead`, `tbody` y `tfoot`
+image::06_estructura.png[Estructura completa de una tabla]
+
+IMPORTANT: `scope` le dice al lector de pantalla a qué datos se refiere cada cabecera: al llegar a «8» lee «Monitor 27", Stock, 8».
+Además, algunas variantes (`table-striped`, `table-group-divider`) solo actúan dentro de `<tbody>`: conviene escribir siempre la estructura completa.
+
+=== Filas a rayas y hover
+
+[cols="2,1,3",options="header"]
+|===
+|Clase |Dónde |Efecto
+|`table-striped` |table |Fondo suave en las filas impares del `tbody`
+|`table-striped-columns` |table |Lo mismo, en las columnas
+|`table-hover` |table |Oscurece la fila bajo el ratón (útil si la fila es clicable)
+|`table-active` |tr o td |La marca como seleccionada, con el tono del hover
+|===
+
+.`table-striped table-hover` y `table-striped-columns` con `table-active` en una fila y en una celda
+image::06_striped_hover.png[Tablas a rayas, hover y table-active]
+
+Con CSS propio, las rayas serían un selector `:nth-child` con un gris fijo, que no cambia con el modo oscuro:
+
+[source,css]
+----
+tbody tr:nth-child(odd) td { background-color: #f2f2f2; }
+----
+
+=== Bordes y tabla compacta
+
+`table-bordered` pone borde en los cuatro lados de cada celda; `table-borderless` quita todas las líneas.
+El color del borde se cambia con las utilidades de siempre (`border-primary`…).
+`table-sm` reduce el relleno de las celdas a la mitad (de `.5rem` a `.25rem`): para tablas con muchas filas o dentro de una tarjeta.
+
+.`table-bordered`, con `border-primary`, `table-borderless` y `table-sm`
+image::06_bordes_sm.png[Bordes y tabla compacta]
+
+=== Colores: `table-{color}`
+
+Los ocho colores del tema en versión suave: `table-primary`, `table-secondary`, `table-success`, `table-danger`, `table-warning`, `table-info`, `table-light` y `table-dark`.
+Se ponen en la *tabla*, en un *tr* o en un *td*.
+Un color en el `thead` (`table-light` o `table-dark`) separa la cabecera de los datos.
+
+[source,html]
+----
+<tr class="table-danger">…</tr>          <!-- toda la fila -->
+<td class="table-danger">0</td>          <!-- una celda -->
+<thead class="table-dark">…</thead>      <!-- la cabecera -->
+<table class="table table-dark table-striped">…</table>  <!-- la tabla entera -->
+----
+
+.Filas de cada color, una celda en `table-danger`, cabecera `table-dark` y tabla `table-dark table-striped`
+image::06_colores.png[Colores de tabla]
+
+NOTE: `table-success` no es `bg-success`: además del fondo ajusta el color del texto, de los bordes y de las rayas y el hover para que combinen.
+En una tabla usamos siempre `table-*`.
+El color debe dar significado (sin stock en rojo, stock bajo en amarillo), no decorar.
+
+=== Separar grupos de filas: `table-group-divider`
+
+En un `tbody` o `tfoot`, pone encima una línea del doble de grosor con el color del texto.
+Separa la cabecera de los datos, o los datos de los totales.
+
+[source,html]
+----
+<tbody class="table-group-divider">…</tbody>
+<tfoot class="table-group-divider">…</tfoot>
+----
+
+.`table-group-divider` en el `tbody` y en el `tfoot`
+image::06_divider.png[Separadores de grupos de filas]
+
+=== Tablas responsive
+
+Una tabla no se puede partir como una rejilla, y *no se encoge por debajo del ancho de su contenido*.
+Con muchas columnas, en el móvil se sale del contenedor y aparece scroll horizontal en *toda la página*.
+La solución es envolverla en un `div` con `table-responsive`: el scroll queda dentro de ese div.
+
+[source,html]
+----
+<div class="table-responsive">        <!-- overflow-x: auto -->
+  <table class="table">…</table>
+</div>
+----
+
+.La misma tabla en una caja de 360 px: sin envolver se sale; dentro de `table-responsive` aparece el scroll en la caja
+image::06_responsive.png[Tabla sin envolver y con table-responsive]
+
+La clase va en el *div que envuelve*, no en la tabla, y a la tabla no le hace nada: no la encoge ni reparte las columnas.
+Por dentro es solo `overflow-x: auto`: si la tabla cabe, no aparece ningún scroll.
+Por eso, en una pantalla ancha, una tabla con `table-responsive` y otra sin él se ven iguales; en los ejemplos de clase las metemos en una caja de `max-width: 400px` para que se vea la diferencia a cualquier ancho.
+
+==== Solo hasta un breakpoint: `table-responsive-{bp}`
+
+`table-responsive-sm`, `-md`, `-lg`, `-xl` y `-xxl` aplican el scroll solo *por debajo* de ese breakpoint.
+Desde él, la tabla se comporta como una normal.
+
+----
+table-responsive-md
+|      xs      |      sm      |      md      |      lg      |
+0             576            768            992           ...px
+[  overflow-x: auto (scroll)  ][        sin scroll           ]
+----
+
+TIP: Casi siempre basta con `table-responsive` a secas.
+La variante con breakpoint sirve cuando el overflow molesta en pantallas grandes, por ejemplo porque recorta un menú desplegable que hay dentro de la tabla.
+
+=== Alineación de las celdas
+
+==== Horizontal: las utilidades de texto
+
+`text-end` para los números (las unidades quedan en columna), `text-center` para cantidades cortas o estados, y `text-nowrap` para que un precio o una fecha no se partan.
+Se ponen en cada celda *y también en el `th`* de la cabecera, para que el título quede sobre los datos.
+
+[source,html]
+----
+<th scope="col" class="text-end">Precio</th>
+…
+<td class="text-end text-nowrap">1.249,00 €</td>
+----
+
+.Todo a la izquierda y con el precio a la derecha y el stock centrado
+image::06_alineacion_horizontal.png[Alineación horizontal en tablas]
+
+==== Vertical: `align-top`, `align-middle`, `align-bottom`
+
+`.table` tiene `vertical-align: top`: si una celda tiene más líneas, las demás se quedan arriba (el `thead` lleva `vertical-align: bottom`, para que los títulos se apoyen sobre los datos).
+Las utilidades `align-*` lo cambian en la tabla, en un `tr` o en un `td`.
+
+.Por defecto y con `align-middle` en la tabla y `align-bottom` en la última celda
+image::06_alineacion_vertical.png[Alineación vertical en tablas]
+
+WARNING: No confundir `align-middle` (la propiedad `vertical-align`, para celdas y elementos en línea) con `align-items-center` (flexbox).
+
+==== El título arriba: `caption-top`
+
+Reboot coloca el `<caption>` debajo de la tabla (`caption-side: bottom`); `caption-top`, en la tabla, lo sube.
+
+.`caption-top`
+image::06_caption_top.png[Caption encima de la tabla]
+
+=== Práctica
+
+Tabla de inventario para el catálogo de la práctica de la sesión: al menos seis productos y siete columnas (referencia, producto, categoría, proveedor, precio, stock y estado).
+
+* Estructura completa: `caption`, `thead` con `th scope="col"`, `tbody` y un `tfoot` con el stock total.
+* Filas a rayas y hover; cabecera con `table-dark` o `table-light`.
+* Productos sin stock con `table-danger` y con stock bajo (menos de 5) con `table-warning`.
+* Precio alineado a la derecha y sin partir; stock centrado; todo centrado en vertical.
+* Un `table-group-divider` antes del `tfoot`.
+* Envuelta en `table-responsive`: al estrechar la ventana, el scroll queda dentro de la tabla y no en la página.
+* Comprobar el resultado en modo oscuro.
+
+.Un resultado posible, en pantalla ancha y en el móvil (con scroll dentro de la tabla)
+image::06_practica_lg.png[Práctica de tabla de inventario en pantalla ancha]
+
+image::06_practica_xs.png[Práctica de tabla de inventario en el móvil]
+
 == Referencias
 
 * https://getbootstrap.com/docs/5.3/getting-started/introduction/[Documentación oficial de Bootstrap 5.3]
@@ -2040,4 +2272,7 @@ Un botón que solo tiene un icono necesita un texto alternativo: `visually-hidde
 * https://getbootstrap.com/docs/5.3/helpers/color-background/[Color and background]
 * https://getbootstrap.com/docs/5.3/content/images/[Images]
 * https://getbootstrap.com/docs/5.3/content/figures/[Figures]
+* https://getbootstrap.com/docs/5.3/content/tables/[Tables]
+* https://getbootstrap.com/docs/5.3/utilities/vertical-align/[Vertical alignment]
+* https://developer.mozilla.org/es/docs/Web/HTML/Element/table[El elemento <table> (MDN)]
 * https://icons.getbootstrap.com/[Bootstrap Icons]

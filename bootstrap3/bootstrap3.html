@@ -199,6 +199,31 @@
       </table>
     </div>
 
+    <!-- TABLAS -->
+    <h2 class="h4 mt-5">Tablas</h2>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>.table</code>: celdas con <code>padding: .5rem</code> y línea por debajo (<code>border-bottom</code>)</td><td><code>.table</code>: celdas con <code>padding: 8px</code> y línea por encima (<code>border-top</code>); la cabecera, con una línea de 2 px</td></tr>
+          <tr><td>Colores de la tabla en variables CSS (<code>--bs-table-bg</code>…): se adapta al modo oscuro</td><td>Grises fijos en el CSS (rayas <code>#f9f9f9</code>, hover <code>#f5f5f5</code>); sin modo oscuro</td></tr>
+          <tr><td><code>table-sm</code></td><td><code>.table-condensed</code> (<code>padding: 5px</code>)</td></tr>
+          <tr><td><code>table-striped</code>, <code>table-hover</code>, <code>table-bordered</code></td><td><span class="badge text-bg-success">Sí existen</span></td></tr>
+          <tr><td><code>table-striped-columns</code>, <code>table-borderless</code>, <code>table-group-divider</code></td><td>No existen</td></tr>
+          <tr><td><code>table-active</code>, <code>table-success</code>, <code>table-info</code>, <code>table-warning</code>, <code>table-danger</code></td><td>Sin prefijo: <code>.active</code>, <code>.success</code>, <code>.info</code>, <code>.warning</code>, <code>.danger</code> en el <code>tr</code> o la celda</td></tr>
+          <tr><td><code>table-primary</code>, <code>table-secondary</code>, <code>table-light</code>, <code>table-dark</code> (también en el <code>thead</code>)</td><td>No existen: ni tabla oscura ni cabecera de color</td></tr>
+          <tr><td><code>border-primary</code> para el color de los bordes</td><td>No existe: CSS propio</td></tr>
+          <tr><td><code>table-responsive</code>: solo <code>overflow-x: auto</code></td><td><code>.table-responsive</code>: <code>overflow-x: auto</code> y, por debajo de 768 px, además borde gris y celdas con <code>white-space: nowrap</code></td></tr>
+          <tr><td><code>table-responsive-sm</code> … <code>-xxl</code></td><td>No existen</td></tr>
+          <tr><td><code>&lt;caption&gt;</code> debajo de la tabla (Reboot: <code>caption-side: bottom</code>); <code>caption-top</code> lo sube</td><td>El <code>&lt;caption&gt;</code> va encima (el valor por defecto del navegador); no hay <code>caption-top</code></td></tr>
+          <tr><td><code>align-top</code>, <code>align-middle</code>, <code>align-bottom</code></td><td>No existen: <code>vertical-align</code> con CSS propio</td></tr>
+          <tr><td><code>text-end</code>, <code>text-start</code> en las celdas</td><td><code>.text-right</code>, <code>.text-left</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
     <!-- COMPONENTES -->
     <h2 class="h4 mt-5">Componentes que han salido de pasada</h2>
     <div class="table-responsive">
@@ -219,7 +244,7 @@
     <h2 class="h4 mt-5">Lo que sí funciona igual</h2>
     <div class="alert alert-success mb-5">
       <code>.container</code>, <code>.container-fluid</code>, <code>.row</code>, <code>.btn</code>, <code>.btn-group</code>,
-      <code>.alert</code>, <code>.table</code>, <code>.table-striped</code>, <code>.form-control</code>,
+      <code>.alert</code>, <code>.table</code>, <code>.table-striped</code>, <code>.table-hover</code>, <code>.table-bordered</code>, <code>.table-responsive</code>, <code>.form-control</code>,
       <code>.h1</code>… <code>.h6</code>, <code>.lead</code>, <code>.small</code>, <code>.mark</code>,
       <code>.list-unstyled</code>, <code>.list-inline</code> (sin <code>-item</code>),
       <code>text-center</code>, <code>text-uppercase</code>, <code>text-lowercase</code>, <code>text-capitalize</code>, <code>text-nowrap</code>,

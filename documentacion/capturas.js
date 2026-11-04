@@ -13,6 +13,7 @@ const GUIA_02 = guia('02_contenedores.html')
 const GUIA_03 = guia('03_flexbox_utilidades.html')
 const GUIA_04 = guia('04_rejilla.html')
 const GUIA_05 = guia('05_tipografia_color.html')
+const GUIA_06 = guia('06_tablas.html')
 
 // Capturas de las demos: [fichero, selector de la demo, anchos de ventana]
 // Si hay varios anchos, el fichero lleva el sufijo del breakpoint (04_responsive_xs.png...)
@@ -89,6 +90,19 @@ const CAPTURAS_05 = [
   ['05_img_otras',     '#imagenes .demo >> nth=1',    ['lg']],
   ['05_iconos',        '#iconos .demo >> nth=0',      ['lg']],
 ]
+const CAPTURAS_06 = [
+  ['06_base',          '#base .row >> nth=0',         ['lg']],
+  ['06_estructura',    '#estructura .demo >> nth=0',  ['lg']],
+  ['06_striped_hover', '#striped .row >> nth=0',      ['lg']],
+  ['06_bordes_sm',     '#bordes .demo >> nth=0',      ['lg']],
+  ['06_colores',       '#colores .row >> nth=0',      ['lg']],
+  ['06_divider',       '#divider .demo >> nth=0',     ['lg']],
+  ['06_responsive',    '#responsive .row >> nth=0',   ['lg']],
+  ['06_alineacion_horizontal', '#alineacion .row >> nth=0', ['lg']],
+  ['06_alineacion_vertical',   '#alineacion .row >> nth=1', ['lg']],
+  ['06_caption_top',   '#alineacion .demo >> nth=4',  ['lg']],
+  ['06_practica',      '#practica .demo >> nth=0',    ['xs', 'lg']],
+]
 
 async function capturarElemento(page, selector, fichero) {
   await page.locator(selector).first().screenshot({ path: path.join(DESTINO, fichero) })
@@ -149,8 +163,8 @@ async function capturarElemento(page, selector, fichero) {
     await page.close()
   }
 
-  // 02, 03, 04 y 05 · Demos de las guías, una página por ancho de ventana
-  for (const [url, capturas] of [[GUIA_02, CAPTURAS_02], [GUIA_03, CAPTURAS_03], [GUIA_04, CAPTURAS_04], [GUIA_05, CAPTURAS_05]]) {
+  // 02 a 06 · Demos de las guías, una página por ancho de ventana
+  for (const [url, capturas] of [[GUIA_02, CAPTURAS_02], [GUIA_03, CAPTURAS_03], [GUIA_04, CAPTURAS_04], [GUIA_05, CAPTURAS_05], [GUIA_06, CAPTURAS_06]]) {
     for (const [bp, ancho] of Object.entries(ANCHOS)) {
       const pendientes = capturas.filter(([, , bps]) => bps.includes(bp))
       if (!pendientes.length) continue
@@ -174,6 +188,15 @@ async function capturarElemento(page, selector, fichero) {
     await capturarElemento(page, '#visibilidad .demo >> nth=5', '03_visibilidad_print_pantalla.png')
     await page.emulateMedia({ media: 'print' })
     await capturarElemento(page, '#visibilidad .demo >> nth=5', '03_visibilidad_print_impresion.png')
+    await page.close()
+  }
+
+  // 06 · Las tablas de rayas y hover en modo oscuro
+  {
+    const page = await browser.newPage({ viewport: { width: 1000, height: 900 } })
+    await page.goto(GUIA_06, { waitUntil: 'networkidle' })
+    await page.evaluate(() => document.documentElement.setAttribute('data-bs-theme', 'dark'))
+    await capturarElemento(page, '#striped .row >> nth=0', '06_modo_oscuro.png')
     await page.close()
   }
 
