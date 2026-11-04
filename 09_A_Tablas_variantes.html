@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>09 A · Tablas: variantes</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <script>
+    window.onload = () => {
+      document.getElementById('btn-claro').onclick = () => {
+        document.documentElement.setAttribute('data-bs-theme', 'light')
+      }
+
+      document.getElementById('btn-oscuro').onclick = () => {
+        document.documentElement.setAttribute('data-bs-theme', 'dark')
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!--
+    TABLAS
+    Las tablas son para datos tabulares (filas y columnas con sentido), nunca para maquetar:
+    para eso está la rejilla.
+    En Bootstrap, una tabla no cambia hasta que le ponemos la clase .table.
+    A partir de ahí, las variantes se suman con más clases: table-striped, table-hover...
+
+    En todos los ejemplos usamos los mismos datos: un pequeño catálogo de productos.
+    Con los botones de arriba vemos que las tablas se adaptan al modo oscuro.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Tablas: variantes</h1>
+
+    <div class="text-center my-4">
+      <div class="btn-group" role="group" aria-label="Modo de color">
+        <button type="button" class="btn btn-outline-primary" id="btn-claro">Claro</button>
+        <button type="button" class="btn btn-outline-primary" id="btn-oscuro">Oscuro</button>
+      </div>
+    </div>
+
+    <!--
+      SIN CLASE Y CON .table
+      Sin clase solo actúa Reboot: border-collapse: collapse (los bordes de las celdas
+      se funden en uno) y poco más. Sin relleno ni líneas: los datos quedan apelotonados.
+
+      Con .table:
+        width: 100%               → ocupa todo el ancho de su contenedor
+        padding: .5rem en celdas  → aire alrededor de cada dato
+        border-bottom en celdas   → una línea bajo cada fila
+        margin-bottom: 1rem       → separación con lo que viene después
+    -->
+    <h2 class="h4 mt-5">Sin clase y con <code>.table</code></h2>
+
+    <p class="mb-1"><code>&lt;table&gt;</code> sin clase:</p>
+    <div class="bg-primary-subtle border border-primary-subtle p-3 mb-3">
+      <table>
+        <thead>
+          <tr><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Teclado</td><td>Periféricos</td><td>39,90 €</td><td>25</td></tr>
+          <tr><td>Monitor 27"</td><td>Pantallas</td><td>249,00 €</td><td>8</td></tr>
+          <tr><td>Ratón</td><td>Periféricos</td><td>19,50 €</td><td>0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="mb-1"><code>&lt;table class="table"&gt;</code>:</p>
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-4">
+      <table class="table mb-0">
+        <thead>
+          <tr><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Teclado</td><td>Periféricos</td><td>39,90 €</td><td>25</td></tr>
+          <tr><td>Monitor 27"</td><td>Pantallas</td><td>249,00 €</td><td>8</td></tr>
+          <tr><td>Ratón</td><td>Periféricos</td><td>19,50 €</td><td>0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!--
+      LA ESTRUCTURA DE UNA TABLA
+        <caption>        → título de la tabla (Reboot lo pone debajo, pequeño y atenuado)
+        <thead>          → fila o filas de cabecera
+        <tbody>          → los datos
+        <tfoot>          → totales o resumen
+        <th scope="col"> → celda de cabecera de una columna
+        <th scope="row"> → celda de cabecera de una fila
+      scope le dice al lector de pantalla a qué datos se refiere cada cabecera:
+      al llegar a "8" lee "Monitor 27", Stock, 8".
+      Bootstrap no necesita esta estructura para funcionar, pero algunas variantes
+      (table-striped, table-group-divider) se aplican solo dentro de tbody.
+    -->
+    <h2 class="h4 mt-5">La estructura de una tabla</h2>
+
+    <table class="table">
+      <caption>Catálogo de productos (precios con IVA)</caption>
+      <thead>
+        <tr><th scope="col">Producto</th><th scope="col">Categoría</th><th scope="col">Precio</th><th scope="col">Stock</th></tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">Teclado</th><td>Periféricos</td><td>39,90 €</td><td>25</td></tr>
+        <tr><th scope="row">Monitor 27"</th><td>Pantallas</td><td>249,00 €</td><td>8</td></tr>
+        <tr><th scope="row">Ratón</th><td>Periféricos</td><td>19,50 €</td><td>0</td></tr>
+      </tbody>
+      <tfoot>
+        <tr><th scope="row">Total</th><td></td><td></td><td>33</td></tr>
+      </tfoot>
+    </table>
+
+    <!--
+      FILAS A RAYAS: table-striped
+      Fondo gris muy suave en las filas impares del tbody. Ayuda a seguir una fila
+      con la vista en tablas anchas.
+      table-striped-columns hace lo mismo con las columnas.
+
+      Con CSS propio sería:
+        tbody tr:nth-child(odd) td { background-color: #f2f2f2; }
+      pero ese gris fijo no cambia con el modo oscuro; el de Bootstrap sí.
+    -->
+    <h2 class="h4 mt-5">Filas a rayas: <code>table-striped</code></h2>
+
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <p class="mb-1"><code>table-striped</code></p>
+        <table class="table table-striped">
+          <thead>
+            <tr><th scope="col">Producto</th><th scope="col">Categoría</th><th scope="col">Precio</th><th scope="col">Stock</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Teclado</td><td>Periféricos</td><td>39,90 €</td><td>25</td></tr>
+            <tr><td>Monitor 27"</td><td>Pantallas</td><td>249,00 €</td><td>8</td></tr>
+            <tr><td>Ratón</td><td>Periféricos</td><td>19,50 €</td><td>0</td></tr>
+            <tr><td>Auriculares</td><td>Audio</td><td>59,00 €</td><td>12</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-lg-6">
+        <p class="mb-1"><code>table-striped-columns</code></p>
+        <table class="table table-striped-columns">
+          <thead>
+            <tr><th scope="col">Producto</th><th scope="col">Categoría</th><th scope="col">Precio</th><th scope="col">Stock</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Teclado</td><td>Periféricos</td><td>39,90 €</td><td>25</td></tr>
+            <tr><td>Monitor 27"</td><td>Pantallas</td><td>249,00 €</td><td>8</td></tr>
+            <tr><td>Ratón</td><td>Periféricos</td><td>19,50 €</td><td>0</td></tr>
+            <tr><td>Auriculares</td><td>Audio</td><td>59,00 €</td><td>12</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!--
+      RESALTAR AL PASAR EL RATÓN: table-hover
+      La fila bajo el ratón se oscurece un poco. Útil cuando la fila es clicable
+      (abre el detalle del producto, por ejemplo).
+      Se combina con table-striped sin problema.
+
+      FILA O CELDA ACTIVA: table-active
+      Se pone en un tr o en un td: lo marca como seleccionado, con el mismo tono del hover.
+    -->
+    <h2 class="h4 mt-5">Resaltar al pasar el ratón: <code>table-hover</code> y <code>table-active</code></h2>
+
+    <table class="table table-hover">
+      <thead>
+        <tr><th scope="col">Producto</th><th scope="col">Categoría</th><th scope="col">Precio</th><th scope="col">Stock</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Teclado</td><td>Periféricos</td><td>39,90 €</td><td>25</td></tr>
+        <tr class="table-active"><td>Monitor 27" (tr con table-active)</td><td>Pantallas</td><td>249,00 €</td><td>8</td></tr>
+        <tr><td>Ratón</td><td>Periféricos</td><td class="table-active">19,50 € (td con table-active)</td><td>0</td></tr>
+        <tr><td>Auriculares</td><td>Audio</td><td>59,00 €</td><td>12</td></tr>
+      </tbody>
+    </table>
+
+    <!--
+      BORDES
+        table-bordered    → borde en los cuatro lados de cada celda (una cuadrícula)
+        table-borderless  → sin ninguna línea
+        border-primary... → cambia el color de los bordes (la utilidad de bordes de siempre)
+    -->
+    <h2 class="h4 mt-5">Bordes: <code>table-bordered</code> y <code>table-borderless</code></h2>
+
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <p class="mb-1"><code>table-bordered</code></p>
+        <table class="table table-bordered">
+          <thead><tr><th scope="col">Producto</th><th scope="col">Stock</th></tr></thead>
+          <tbody>
+            <tr><td>Teclado</td><td>25</td></tr>
+            <tr><td>Monitor 27"</td><td>8</td></tr>
+            <tr><td>Ratón</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-lg-4">
+        <p class="mb-1"><code>table-bordered border-primary</code></p>
+        <table class="table table-bordered border-primary">
+          <thead><tr><th scope="col">Producto</th><th scope="col">Stock</th></tr></thead>
+          <tbody>
+            <tr><td>Teclado</td><td>25</td></tr>
+            <tr><td>Monitor 27"</td><td>8</td></tr>
+            <tr><td>Ratón</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-lg-4">
+        <p class="mb-1"><code>table-borderless</code></p>
+        <table class="table table-borderless">
+          <thead><tr><th scope="col">Producto</th><th scope="col">Stock</th></tr></thead>
+          <tbody>
+            <tr><td>Teclado</td><td>25</td></tr>
+            <tr><td>Monitor 27"</td><td>8</td></tr>
+            <tr><td>Ratón</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!--
+      TABLA COMPACTA: table-sm
+      Reduce el relleno de las celdas a la mitad: de .5rem a .25rem.
+      Para tablas con muchas filas, o dentro de una tarjeta o un panel lateral.
+    -->
+    <h2 class="h4 mt-5">Tabla compacta: <code>table-sm</code></h2>
+
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <p class="mb-1"><code>table</code></p>
+        <table class="table table-bordered">
+          <thead><tr><th scope="col">Producto</th><th scope="col">Precio</th><th scope="col">Stock</th></tr></thead>
+          <tbody>
+            <tr><td>Teclado</td><td>39,90 €</td><td>25</td></tr>
+            <tr><td>Monitor 27"</td><td>249,00 €</td><td>8</td></tr>
+            <tr><td>Ratón</td><td>19,50 €</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-lg-6">
+        <p class="mb-1"><code>table table-sm</code></p>
+        <table class="table table-bordered table-sm">
+          <thead><tr><th scope="col">Producto</th><th scope="col">Precio</th><th scope="col">Stock</th></tr></thead>
+          <tbody>
+            <tr><td>Teclado</td><td>39,90 €</td><td>25</td></tr>
+            <tr><td>Monitor 27"</td><td>249,00 €</td><td>8</td></tr>
+            <tr><td>Ratón</td><td>19,50 €</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!--
+      COLORES: table-{color}
+      Los mismos ocho colores del tema, en versión suave para que el texto se lea bien:
+      table-primary, table-secondary, table-success, table-danger, table-warning,
+      table-info, table-light y table-dark.
+      Se pueden poner en la tabla entera, en un tr o en un td.
+      No son bg-*: table-success también ajusta el color del texto, de los bordes
+      y de las rayas y el hover para que combinen con ese fondo.
+      Aquí usamos el color para dar significado: sin stock en rojo, stock bajo en amarillo.
+    -->
+    <h2 class="h4 mt-5">Colores: <code>table-{color}</code></h2>
+
+    <table class="table">
+      <thead>
+        <tr><th scope="col">Clase en el tr</th><th scope="col">Producto</th><th scope="col">Stock</th></tr>
+      </thead>
+      <tbody>
+        <tr class="table-primary"><td>table-primary</td><td>Teclado</td><td>25</td></tr>
+        <tr class="table-secondary"><td>table-secondary</td><td>Alfombrilla</td><td>40</td></tr>
+        <tr class="table-success"><td>table-success</td><td>Auriculares</td><td>12</td></tr>
+        <tr class="table-danger"><td>table-danger</td><td>Ratón</td><td>0</td></tr>
+        <tr class="table-warning"><td>table-warning</td><td>Monitor 27"</td><td>3</td></tr>
+        <tr class="table-info"><td>table-info</td><td>Webcam</td><td>18</td></tr>
+        <tr class="table-light"><td>table-light</td><td>Cable HDMI</td><td>60</td></tr>
+        <tr class="table-dark"><td>table-dark</td><td>Altavoces</td><td>7</td></tr>
+        <tr><td>td con <span class="text-danger">table-danger</span> en la última celda</td><td>Micrófono</td><td class="table-danger">0</td></tr>
+      </tbody>
+    </table>
+
+    <!--
+      CABECERA DESTACADA
+      Un color en el thead separa la cabecera de los datos: table-light (gris claro)
+      o table-dark (oscura).
+      También podemos poner la tabla entera en table-dark.
+    -->
+    <h2 class="h4 mt-5">Cabecera destacada: color en el <code>thead</code></h2>
+
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <p class="mb-1"><code>&lt;thead class="table-dark"&gt;</code></p>
+        <table class="table">
+          <thead class="table-dark">
+            <tr><th scope="col">Producto</th><th scope="col">Precio</th><th scope="col">Stock</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Teclado</td><td>39,90 €</td><td>25</td></tr>
+            <tr><td>Monitor 27"</td><td>249,00 €</td><td>8</td></tr>
+            <tr><td>Ratón</td><td>19,50 €</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-lg-6">
+        <p class="mb-1"><code>&lt;table class="table table-dark table-striped"&gt;</code></p>
+        <table class="table table-dark table-striped">
+          <thead>
+            <tr><th scope="col">Producto</th><th scope="col">Precio</th><th scope="col">Stock</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Teclado</td><td>39,90 €</td><td>25</td></tr>
+            <tr><td>Monitor 27"</td><td>249,00 €</td><td>8</td></tr>
+            <tr><td>Ratón</td><td>19,50 €</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!--
+      SEPARAR GRUPOS DE FILAS: table-group-divider
+      En un tbody o tfoot: pone una línea más gruesa (el doble) encima.
+      Separa la cabecera de los datos, o los datos de los totales.
+    -->
+    <h2 class="h4 mt-5">Separar grupos: <code>table-group-divider</code></h2>
+
+    <table class="table mb-5">
+      <thead>
+        <tr><th scope="col">Producto</th><th scope="col">Precio</th><th scope="col">Stock</th></tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <tr><td>Teclado</td><td>39,90 €</td><td>25</td></tr>
+        <tr><td>Monitor 27"</td><td>249,00 €</td><td>8</td></tr>
+        <tr><td>Ratón</td><td>19,50 €</td><td>0</td></tr>
+      </tbody>
+      <tfoot class="table-group-divider">
+        <tr><th scope="row">Total</th><td></td><td>33</td></tr>
+      </tfoot>
+    </table>
+  </div>
+
+</body>
+</html>

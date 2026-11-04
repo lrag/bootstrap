@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>09 B · Tablas: responsive y alineación</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    TABLAS EN PANTALLAS ESTRECHAS Y ALINEACIÓN
+    Una tabla no se puede partir como una rejilla: sus columnas van siempre en fila.
+    Si tiene muchas columnas y la pantalla es estrecha, no cabe.
+    Vemos cómo evitar que rompa la página y cómo alinear el contenido de las celdas.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Tablas: responsive y alineación</h1>
+
+    <!--
+      EL PROBLEMA: UNA TABLA ANCHA
+      Una tabla no se encoge por debajo del ancho de su contenido.
+      Con muchas columnas, en el móvil se sale por la derecha del contenedor
+      y aparece scroll horizontal en TODA la página (estrechamos la ventana para verlo).
+    -->
+    <h2 class="h4 mt-5">El problema: una tabla ancha</h2>
+
+    <p class="mb-1">Tabla de ocho columnas, sin envolver:</p>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Referencia</th><th scope="col">Producto</th><th scope="col">Categoría</th><th scope="col">Proveedor</th>
+          <th scope="col">Almacén</th><th scope="col">Precio</th><th scope="col">Stock</th><th scope="col">Última entrada</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>PER-0012</td><td>Teclado mecánico</td><td>Periféricos</td><td>Distribuciones Norte</td><td>Madrid</td><td>39,90 €</td><td>25</td><td>02/11/2026</td></tr>
+        <tr><td>PAN-0103</td><td>Monitor 27"</td><td>Pantallas</td><td>Imagen y Sonido S.L.</td><td>Valencia</td><td>249,00 €</td><td>8</td><td>28/10/2026</td></tr>
+        <tr><td>PER-0045</td><td>Ratón inalámbrico</td><td>Periféricos</td><td>Distribuciones Norte</td><td>Madrid</td><td>19,50 €</td><td>0</td><td>15/09/2026</td></tr>
+      </tbody>
+    </table>
+
+    <!--
+      LA SOLUCIÓN: table-responsive
+      Envolvemos la tabla en un div con table-responsive.
+      Ese div tiene overflow-x: auto: si la tabla no cabe, el scroll horizontal
+      aparece SOLO en ese div. La página no se mueve; la tabla se desliza dentro de su caja.
+      La clase va en el div que envuelve, no en la tabla.
+    -->
+    <h2 class="h4 mt-5">La solución: <code>table-responsive</code></h2>
+
+    <p class="mb-1">La misma tabla dentro de <code>&lt;div class="table-responsive"&gt;</code>:</p>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Referencia</th><th scope="col">Producto</th><th scope="col">Categoría</th><th scope="col">Proveedor</th>
+            <th scope="col">Almacén</th><th scope="col">Precio</th><th scope="col">Stock</th><th scope="col">Última entrada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>PER-0012</td><td>Teclado mecánico</td><td>Periféricos</td><td>Distribuciones Norte</td><td>Madrid</td><td>39,90 €</td><td>25</td><td>02/11/2026</td></tr>
+          <tr><td>PAN-0103</td><td>Monitor 27"</td><td>Pantallas</td><td>Imagen y Sonido S.L.</td><td>Valencia</td><td>249,00 €</td><td>8</td><td>28/10/2026</td></tr>
+          <tr><td>PER-0045</td><td>Ratón inalámbrico</td><td>Periféricos</td><td>Distribuciones Norte</td><td>Madrid</td><td>19,50 €</td><td>0</td><td>15/09/2026</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!--
+      Con CSS propio sería lo mismo: un div con overflow-x: auto.
+    -->
+    <p class="mb-1">Con CSS propio: <code>&lt;div style="overflow-x: auto"&gt;</code></p>
+    <div class="bg-primary-subtle border border-primary-subtle p-3 mb-3">
+      <div style="overflow-x: auto">
+        <table class="table table-bordered mb-0">
+          <thead>
+            <tr>
+              <th scope="col">Referencia</th><th scope="col">Producto</th><th scope="col">Categoría</th><th scope="col">Proveedor</th>
+              <th scope="col">Almacén</th><th scope="col">Precio</th><th scope="col">Stock</th><th scope="col">Última entrada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>PER-0012</td><td>Teclado mecánico</td><td>Periféricos</td><td>Distribuciones Norte</td><td>Madrid</td><td>39,90 €</td><td>25</td><td>02/11/2026</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!--
+      SOLO HASTA UN BREAKPOINT: table-responsive-{breakpoint}
+      table-responsive-md: el scroll horizontal solo hasta md (por debajo de 768 px).
+      Desde md, el div no tiene overflow: la tabla se comporta como una normal.
+
+        table-responsive-md
+        |      xs      |      sm      |      md      |      lg      |
+        0             576            768            992           ...px
+        [  overflow-x: auto (scroll)  ][        sin scroll           ]
+
+      Casi siempre basta con table-responsive a secas: si la tabla cabe, el scroll
+      no aparece. La variante con breakpoint sirve cuando el overflow molesta en
+      pantallas grandes (por ejemplo, porque recorta un menú desplegable dentro de la tabla).
+    -->
+    <h2 class="h4 mt-5">Solo hasta un breakpoint: <code>table-responsive-md</code></h2>
+
+    <div class="table-responsive-md">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Referencia</th><th scope="col">Producto</th><th scope="col">Categoría</th><th scope="col">Proveedor</th>
+            <th scope="col">Almacén</th><th scope="col">Precio</th><th scope="col">Stock</th><th scope="col">Última entrada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>PER-0012</td><td>Teclado mecánico</td><td>Periféricos</td><td>Distribuciones Norte</td><td>Madrid</td><td>39,90 €</td><td>25</td><td>02/11/2026</td></tr>
+          <tr><td>PAN-0103</td><td>Monitor 27"</td><td>Pantallas</td><td>Imagen y Sonido S.L.</td><td>Valencia</td><td>249,00 €</td><td>8</td><td>28/10/2026</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!--
+      ALINEACIÓN HORIZONTAL
+      Se usan las utilidades de texto de siempre, en la celda (td o th):
+        text-end    → los números a la derecha, para que las unidades queden en columna
+        text-center → cantidades cortas, iconos, estados
+      Hay que ponerlas también en el th de la cabecera, para que el título
+      quede sobre los datos.
+      text-nowrap evita que un precio o una fecha se partan en dos líneas.
+    -->
+    <h2 class="h4 mt-5">Alineación horizontal: <code>text-end</code> y <code>text-center</code></h2>
+
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <p class="mb-1">Todo a la izquierda (por defecto):</p>
+        <table class="table">
+          <thead><tr><th scope="col">Producto</th><th scope="col">Precio</th><th scope="col">Stock</th></tr></thead>
+          <tbody>
+            <tr><td>Teclado</td><td>39,90 €</td><td>25</td></tr>
+            <tr><td>Monitor 27"</td><td>1.249,00 €</td><td>8</td></tr>
+            <tr><td>Ratón</td><td>9,50 €</td><td>120</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-lg-6">
+        <p class="mb-1">Precio con <code>text-end text-nowrap</code>, stock con <code>text-center</code>:</p>
+        <table class="table">
+          <thead><tr><th scope="col">Producto</th><th scope="col" class="text-end">Precio</th><th scope="col" class="text-center">Stock</th></tr></thead>
+          <tbody>
+            <tr><td>Teclado</td><td class="text-end text-nowrap">39,90 €</td><td class="text-center">25</td></tr>
+            <tr><td>Monitor 27"</td><td class="text-end text-nowrap">1.249,00 €</td><td class="text-center">8</td></tr>
+            <tr><td>Ratón</td><td class="text-end text-nowrap">9,50 €</td><td class="text-center">120</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!--
+      ALINEACIÓN VERTICAL: align-top, align-middle, align-bottom
+      Cuando una celda tiene más líneas que las demás, el resto de celdas de la fila
+      se quedan arriba: .table tiene vertical-align: top.
+      (El thead tiene vertical-align: bottom: los títulos se apoyan sobre los datos).
+
+      Las utilidades align-* cambian el vertical-align. Se pueden poner en la tabla,
+      en un tr o en un td. Son las mismas que en elementos en línea: no confundir
+      con align-items-*, que es de flexbox.
+    -->
+    <h2 class="h4 mt-5">Alineación vertical: <code>align-middle</code></h2>
+
+    <p class="mb-1">Por defecto (<code>vertical-align: top</code>):</p>
+    <table class="table table-bordered">
+      <thead><tr><th scope="col">Producto</th><th scope="col">Descripción</th><th scope="col">Precio</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Teclado</td>
+          <td>Teclado mecánico con interruptores marrones,<br>retroiluminación blanca<br>y reposamuñecas desmontable.</td>
+          <td>39,90 €</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="mb-1"><code>&lt;table class="table align-middle"&gt;</code>, y la última celda con <code>align-bottom</code>:</p>
+    <table class="table table-bordered align-middle">
+      <thead><tr><th scope="col">Producto</th><th scope="col">Descripción</th><th scope="col">Precio</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Teclado</td>
+          <td>Teclado mecánico con interruptores marrones,<br>retroiluminación blanca<br>y reposamuñecas desmontable.</td>
+          <td class="align-bottom">39,90 €</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!--
+      EL TÍTULO ARRIBA: caption-top
+      Reboot pone el caption debajo de la tabla (caption-side: bottom).
+      caption-top, en la tabla, lo sube.
+    -->
+    <h2 class="h4 mt-5">El título arriba: <code>caption-top</code></h2>
+
+    <table class="table caption-top mb-5">
+      <caption>Productos con stock bajo</caption>
+      <thead><tr><th scope="col">Producto</th><th scope="col" class="text-end">Precio</th><th scope="col" class="text-center">Stock</th></tr></thead>
+      <tbody>
+        <tr><td>Monitor 27"</td><td class="text-end">249,00 €</td><td class="text-center">3</td></tr>
+        <tr><td>Ratón</td><td class="text-end">19,50 €</td><td class="text-center">0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>
