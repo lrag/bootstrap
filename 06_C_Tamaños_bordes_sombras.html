@@ -16,7 +16,7 @@
     Más utilidades: cada clase aplica una sola propiedad CSS, igual que las de espaciado.
     Ninguna depende de la rejilla: se pueden poner en cualquier elemento.
 
-    Como en los ficheros anteriores, el contenido va en verde si lo resuelve una clase
+    El contenido va en verde si lo resuelve una clase
     de Bootstrap y en azul si lo resuelve CSS normal.
   -->
   <div class="container">
@@ -60,7 +60,7 @@
         mw-100 → max-width: 100%
       Puede medir menos que el padre, pero nunca más. El caso típico son las imágenes:
       una imagen de 800 px en un móvil de 400 px se saldría de la pantalla.
-      Aquí lo simulamos con una caja de 600 px: en pantallas estrechas, la verde se ajusta
+      Aquí lo simulamos con una caja de 1500 px, más ancha que cualquier container: las dos primeras se ajustan
       y la que no lleva mw-100 se sale del contenedor.
       También existe mh-100 (max-height: 100%).
     -->
@@ -68,15 +68,21 @@
 
     <p class="mb-1"><code>class="mw-100"</code></p>
     <div class="bg-secondary-subtle border p-2 mb-2">
-      <div class="bg-success-subtle border border-success-subtle px-2 py-1 mw-100" style="width: 600px">600 px con mw-100</div>
+      <div class="bg-success-subtle border border-success-subtle px-2 py-1 mw-100" style="width: 1500px">
+        1500 px con mw-100
+      </div>
     </div>
     <p class="mb-1"><code>style="max-width: 100%"</code></p>
     <div class="bg-secondary-subtle border p-2 mb-2">
-      <div class="bg-primary-subtle border border-primary-subtle px-2 py-1" style="width: 600px; max-width: 100%">600 px con max-width: 100%</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-2 py-1" style="width: 1500px; max-width: 100%">
+        1500 px con max-width: 100%
+      </div>
     </div>
-    <p class="mb-1">Sin <code>mw-100</code> (en pantallas estrechas se sale)</p>
+    <p class="mb-1">Sin <code>mw-100</code> (se sale del contenedor)</p>
     <div class="bg-secondary-subtle border p-2 mb-4">
-      <div class="bg-primary-subtle border border-primary-subtle px-2 py-1" style="width: 600px">600 px sin límite</div>
+      <div class="bg-primary-subtle border border-primary-subtle px-2 py-1" style="width: 1500px">
+        1500 px sin límite
+      </div>
     </div>
 
     <!--
