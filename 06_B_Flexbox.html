@@ -93,12 +93,33 @@
       <div class="bg-success-subtle border border-success-subtle px-3 py-2">1</div>
       <div class="bg-success-subtle border border-success-subtle px-3 py-2">2</div>
       <div class="bg-success-subtle border border-success-subtle px-3 py-2">3</div>
+      <span class="bg-success-subtle border border-success-subtle px-3 py-2">Span 1</span>
+      <span class="bg-success-subtle border border-success-subtle px-3 py-2">Span 2</span>
+      <span class="bg-success-subtle border border-success-subtle px-3 py-2">Span 3</span>
     </div>
     <p class="mb-1"><code>style="display: flex; flex-direction: column"</code></p>
     <div class="bg-secondary-subtle border p-2 mb-4" style="display: flex; flex-direction: column">
       <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">1</div>
       <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">2</div>
       <div class="bg-primary-subtle border border-primary-subtle px-3 py-2">3</div>
+      <span class="bg-primary-subtle border border-primary-subtle px-3 py-2">Span 1</span>
+      <span class="bg-primary-subtle border border-primary-subtle px-3 py-2">Span 2</span>
+      <span class="bg-primary-subtle border border-primary-subtle px-3 py-2">Span 3</span>
+    </div>
+
+    <!--
+      Sin flex, los div se apilan igual porque son de bloque, pero los span son
+      elementos en línea y se quedan uno al lado del otro.
+      Con flex-column todos los hijos pasan a ser elementos flex y se apilan.
+    -->
+    <p class="mb-1">Sin flex: los <code>div</code> se apilan, los <code>span</code> no</p>
+    <div class="bg-secondary-subtle border p-2 mb-4">
+      <div class="bg-light border px-3 py-2">1</div>
+      <div class="bg-light border px-3 py-2">2</div>
+      <div class="bg-light border px-3 py-2">3</div>
+      <span class="bg-light border px-3 py-2">Span 1</span>
+      <span class="bg-light border px-3 py-2">Span 2</span>
+      <span class="bg-light border px-3 py-2">Span 3</span>
     </div>
 
     <p class="mb-1"><code>class="d-flex flex-row-reverse"</code></p>
