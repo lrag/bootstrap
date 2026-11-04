@@ -32,7 +32,7 @@
     Clases de Bootstrap que aplican UNA sola propiedad CSS: un margen o un relleno.
     El nombre se forma con tres partes, siempre en este orden:
 
-      {qué}{dónde}-{cuánto}        p  y  - 2   →   py-2
+      {qué}{dónde}-{cuánto}   p y - 2 → py-2
 
     QUÉ
       p = padding (relleno, espacio por DENTRO del borde)
@@ -145,14 +145,24 @@
     <h2 class="h4 mt-5">Margin: <code>m-*</code></h2>
 
     <p class="mb-1"><code>class="m-3"</code></p>
-    <div class="bg-secondary-subtle border mb-2"><div class="bg-success-subtle border border-success-subtle m-3">contenido</div></div>
+    <div class="bg-secondary-subtle border mb-2">
+      <div class="bg-success-subtle border border-success-subtle m-3">contenido</div>
+    </div>
+
     <p class="mb-1"><code>style="margin: 1rem"</code></p>
-    <div class="bg-secondary-subtle border mb-4"><div class="bg-primary-subtle border border-primary-subtle" style="margin: 1rem">contenido</div></div>
+    <div class="bg-secondary-subtle border mb-4">
+      <div class="bg-primary-subtle border border-primary-subtle" style="margin: 1rem">contenido</div>
+    </div>
 
     <p class="mb-1"><code>class="mx-5"</code></p>
-    <div class="bg-secondary-subtle border mb-2"><div class="bg-success-subtle border border-success-subtle mx-5">contenido</div></div>
+    <div class="bg-secondary-subtle border mb-2">
+      <div class="bg-success-subtle border border-success-subtle mx-5">contenido</div>
+    </div>
+
     <p class="mb-1"><code>style="margin-left: 3rem; margin-right: 3rem"</code></p>
-    <div class="bg-secondary-subtle border mb-4"><div class="bg-primary-subtle border border-primary-subtle" style="margin-left: 3rem; margin-right: 3rem">contenido</div></div>
+    <div class="bg-secondary-subtle border mb-4">
+      <div class="bg-primary-subtle border border-primary-subtle" style="margin-left: 3rem; margin-right: 3rem">contenido</div>
+    </div>
 
     <!--
       MARGIN AUTO
@@ -164,15 +174,45 @@
     -->
     <h2 class="h4 mt-5">Margin auto: <code>mx-auto</code> y <code>ms-auto</code></h2>
 
+    <p class="mb-1">Sin auto</code></p>
+    <div class="bg-secondary-subtle border mb-2">
+      <div class="bg-success-subtle border border-success-subtle" style="width: 200px">
+        200 px a la izquierda
+      </div>
+    </div>
+
+    <p class="mb-1"><code>style="margin-right: auto"</code></p>
+    <div class="bg-secondary-subtle border mb-2">
+      <div class="bg-success-subtle border border-success-subtle  margin-left: auto" style="width: 200px">
+        200 px a la izquierda
+      </div>
+    </div>
+
     <p class="mb-1"><code>class="mx-auto"</code></p>
-    <div class="bg-secondary-subtle border mb-2"><div class="bg-success-subtle border border-success-subtle mx-auto" style="width: 200px">200 px centrado</div></div>
+    <div class="bg-secondary-subtle border mb-2">
+      <div class="bg-success-subtle border border-success-subtle mx-auto" style="width: 200px">
+        200 px centrado
+      </div>
+    </div>
     <p class="mb-1"><code>style="margin-left: auto; margin-right: auto"</code></p>
-    <div class="bg-secondary-subtle border mb-4"><div class="bg-primary-subtle border border-primary-subtle" style="width: 200px; margin-left: auto; margin-right: auto">200 px centrado</div></div>
+    <div class="bg-secondary-subtle border mb-4">
+      <div class="bg-primary-subtle border border-primary-subtle" style="width: 200px; margin-left: auto; margin-right: auto">
+        200 px centrado
+      </div>
+    </div>
 
     <p class="mb-1"><code>class="ms-auto"</code></p>
-    <div class="bg-secondary-subtle border mb-2"><div class="bg-success-subtle border border-success-subtle ms-auto" style="width: 200px">200 px a la derecha</div></div>
+    <div class="bg-secondary-subtle border mb-2">
+      <div class="bg-success-subtle border border-success-subtle ms-auto" style="width: 200px">
+        200 px a la derecha
+      </div>
+    </div>
     <p class="mb-1"><code>style="margin-left: auto"</code></p>
-    <div class="bg-secondary-subtle border mb-4"><div class="bg-primary-subtle border border-primary-subtle" style="width: 200px; margin-left: auto">200 px a la derecha</div></div>
+    <div class="bg-secondary-subtle border mb-4">
+      <div class="bg-primary-subtle border border-primary-subtle" style="width: 200px; margin-left: auto">
+        200 px a la derecha
+      </div>
+    </div>
 
     <!--
       START Y END EN LUGAR DE LEFT Y RIGHT
@@ -203,20 +243,41 @@
 
     <p class="mb-1"><code>style="margin-inline-end: 1rem"</code> en la lupa (hueco correcto en los dos)</p>
     <p class="mb-3">
-      <button type="button" class="btn bg-primary-subtle border border-primary-subtle"><span style="margin-inline-end: 1rem">🔍</span>Buscar</button>
-      <button type="button" class="btn bg-primary-subtle border border-primary-subtle" dir="rtl"><span style="margin-inline-end: 1rem">🔍</span>بحث</button>
+      <button type="button" class="btn bg-primary-subtle border border-primary-subtle">
+        <span style="margin-inline-end: 1rem">🔍</span>Buscar
+      </button>
+      <button type="button" dir="rtl" class="btn bg-primary-subtle border border-primary-subtle" >
+        <span style="margin-inline-end: 1rem">🔍</span>بحث
+      </button>
     </p>
 
     <p class="mb-1"><code>style="margin-right: 1rem"</code> en la lupa (en árabe se pega al texto)</p>
     <p class="mb-3">
-      <button type="button" class="btn bg-primary-subtle border border-primary-subtle"><span style="margin-right: 1rem">🔍</span>Buscar</button>
-      <button type="button" class="btn bg-primary-subtle border border-primary-subtle" dir="rtl"><span style="margin-right: 1rem">🔍</span>بحث</button>
+      <button type="button" class="btn bg-primary-subtle border border-primary-subtle">
+        <span style="margin-right: 1rem">🔍</span>Buscar
+      </button>
+      <button type="button" dir="rtl" class="btn bg-primary-subtle border border-primary-subtle">
+        <span style="margin-right: 1rem">🔍</span>بحث
+      </button>
+
+      <!-- Esto es un apaño y una chapuza para una web que esté en árabe -->
+      <button type="button" class="btn bg-primary-subtle border border-primary-subtle">
+        <span style="margin-right: 1rem">بحث</span>🔍
+      </button>
     </p>
 
+    <!-- 
+    Para que con bootstrap quede como en el primer ejemplo en vez de 
+    bootstrap.min.css	hay que cargar bootstrap.rtl.min.css
+     -->
     <p class="mb-1"><code>class="me-3"</code> en la lupa con <code>bootstrap.min.css</code> (igual que margin-right)</p>
     <p class="mb-4">
-      <button type="button" class="btn bg-success-subtle border border-success-subtle"><span class="me-3">🔍</span>Buscar</button>
-      <button type="button" class="btn bg-success-subtle border border-success-subtle" dir="rtl"><span class="me-3">🔍</span>بحث</button>
+      <button type="button" class="btn bg-success-subtle border border-success-subtle">
+        <span class="me-3">🔍</span>Buscar
+      </button>
+      <button type="button" dir="rtl" class="btn bg-success-subtle border border-success-subtle">
+        <span class="me-3">🔍</span>بحث
+      </button>
     </p>
 
     <!--
