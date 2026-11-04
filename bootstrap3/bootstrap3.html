@@ -34,6 +34,9 @@
         </thead>
         <tbody>
           <tr><td>Sin jQuery</td><td><strong>jQuery obligatorio</strong> para el JavaScript</td></tr>
+          <tr><td><code>bootstrap.bundle.min.js</code> (incluye Popper), en el <code>&lt;head&gt;</code> con <code>defer</code></td><td>Sin bundle ni Popper: jQuery y después <code>bootstrap.min.js</code>, al final del <code>&lt;body&gt;</code></td></tr>
+          <tr><td>Sin soporte para Internet Explorer</td><td>Internet Explorer 8 a 11; IE8 necesita html5shiv y Respond.js</td></tr>
+          <tr><td><code>font-size</code> de <code>&lt;html&gt;</code> sin tocar (16 px); <code>body</code> a <code>1rem</code>, <code>line-height: 1.5</code></td><td><code>html { font-size: 10px }</code>; <code>body</code> a 14 px, <code>line-height: 1.428</code>, color <code>#333</code>, Helvetica Neue. Al estar todo en <code>px</code>, la preferencia de tamaño de fuente del navegador no escala el diseño</td></tr>
           <tr><td><code>data-bs-theme</code> (modo claro y oscuro)</td><td>No existe: solo tema claro</td></tr>
           <tr><td>Variables CSS <code>--bs-*</code></td><td>No existen: valores fijos en el CSS compilado</td></tr>
           <tr><td>Sass</td><td><strong>Less</strong> (hay un port oficial a Sass, en un repositorio aparte)</td></tr>
@@ -52,7 +55,9 @@
           <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
         </thead>
         <tbody>
-          <tr><td>6 breakpoints: xs, sm, md, lg, xl, xxl</td><td>4: xs (&lt;768), sm (≥768), md (≥992), lg (≥1200)</td></tr>
+          <tr><td>6 breakpoints: xs, sm (≥576), md (≥768), lg (≥992), xl (≥1200), xxl (≥1400)</td><td>4: xs (&lt;768), sm (≥768), md (≥992), lg (≥1200)</td></tr>
+          <tr><td>Los nombres no coinciden en píxeles: md (≥768) de Bootstrap 5</td><td>Es sm (≥768) en Bootstrap 3; lg (≥992) es md y xl (≥1200) es lg</td></tr>
+          <tr><td><code>.container</code>: 540, 720, 960, 1140 y 1320 px, con 12 px (<code>0.75rem</code>) de relleno por lado</td><td>750, 970 y 1170 px (100 % por debajo de 768), con 15 px de relleno por lado</td></tr>
           <tr><td><code>.container-sm</code>, <code>.container-md</code>…</td><td>No existen: solo <code>.container</code> y <code>.container-fluid</code></td></tr>
         </tbody>
       </table>
@@ -68,7 +73,7 @@
         <tbody>
           <tr><td><code>m-*</code>, <code>p-*</code>, <code>mt-3</code>, <code>px-2</code>, <code>py-2</code>…</td><td><strong>No hay utilidades de espaciado</strong>: CSS propio</td></tr>
           <tr><td><code>mx-auto</code></td><td><code>.center-block</code> (para bloques)</td></tr>
-          <tr><td><code>ms-auto</code> / <code>me-auto</code></td><td><code>.pull-right</code> / <code>.pull-left</code> (con <code>float</code>)</td></tr>
+          <tr><td><code>ms-auto</code> / <code>me-auto</code></td><td>Lo más parecido es <code>.pull-right</code> / <code>.pull-left</code>, pero son un <code>float</code>: mueven un elemento suelto a un lado, no empujan a los siguientes como el margen automático en una fila flex</td></tr>
           <tr><td><code>start</code> / <code>end</code></td><td>Solo <code>left</code> / <code>right</code></td></tr>
         </tbody>
       </table>
@@ -91,8 +96,8 @@
           <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>w-25</code>… <code>w-100</code>, <code>h-*</code>, <code>mw-100</code></td><td>No existen</td></tr>
-          <tr><td><code>min-vh-100</code>, <code>vh-100</code></td><td>No existen</td></tr>
+          <tr><td><code>w-25</code>… <code>w-100</code>, <code>h-*</code>, <code>mw-100</code>, <code>mh-100</code></td><td>No existen</td></tr>
+          <tr><td><code>min-vh-100</code>, <code>vh-100</code>, <code>vw-100</code></td><td>No existen</td></tr>
           <tr><td><code>border</code>, <code>border-top</code>, <code>border-primary</code>, <code>border-3</code></td><td>No existen</td></tr>
           <tr><td><code>rounded</code>, <code>rounded-circle</code>, <code>rounded-pill</code></td><td>Solo para imágenes: <code>.img-rounded</code>, <code>.img-circle</code></td></tr>
           <tr><td><code>shadow-sm</code>, <code>shadow</code>, <code>shadow-lg</code></td><td>No existen</td></tr>
@@ -108,8 +113,10 @@
           <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>d-none d-md-block</code></td><td><code>.hidden-xs .hidden-sm</code></td></tr>
-          <tr><td><code>d-md-none</code></td><td><code>.visible-xs-block .visible-sm-block</code> (o <code>-inline</code>, <code>-inline-block</code>); <code>.visible-xs</code> a secas está obsoleta desde 3.2</td></tr>
+          <tr><td><code>d-none</code> / <code>d-block</code></td><td><code>.hidden</code> / <code>.show</code> (las dos con <code>!important</code>)</td></tr>
+          <tr><td><code>d-inline</code>, <code>d-inline-block</code>, <code>d-flex</code>…</td><td>No existen</td></tr>
+          <tr><td><code>d-none d-md-block</code> (visible desde 768 px)</td><td><code>.hidden-xs</code>: por ancho, el md de Bootstrap 5 es el sm de Bootstrap 3</td></tr>
+          <tr><td><code>d-md-none</code> (visible por debajo de 768 px)</td><td><code>.visible-xs-block</code> (o <code>-inline</code>, <code>-inline-block</code>); <code>.visible-xs</code> a secas está obsoleta desde 3.2</td></tr>
           <tr><td><code>visually-hidden</code></td><td><code>.sr-only</code></td></tr>
           <tr><td><code>d-print-none</code> / <code>d-print-block</code></td><td><code>.hidden-print</code> / <code>.visible-print-block</code></td></tr>
           <tr><td><code>invisible</code></td><td><span class="badge text-bg-success">Sí existe</span></td></tr>
@@ -139,23 +146,71 @@
       </table>
     </div>
 
-    <!-- TEXTO, COLOR Y COMPONENTES -->
-    <h2 class="h4 mt-5">Texto, color y componentes que han salido de pasada</h2>
+    <!-- TIPOGRAFÍA -->
+    <h2 class="h4 mt-5">Tipografía</h2>
     <div class="table-responsive">
       <table class="table table-striped align-middle">
         <thead>
           <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>text-center</code>, <code>text-success</code>, <code>text-uppercase</code></td><td><span class="badge text-bg-success">Sí existen</span></td></tr>
+          <tr><td>Reboot</td><td>normalize.css más unos estilos base propios</td></tr>
+          <tr><td>Encabezados con margen solo abajo (<code>0.5rem</code>), tamaños en <code>rem</code> que se ajustan en pantallas pequeñas (RFS), <code>line-height: 1.2</code></td><td>Margen arriba y abajo (h1-h3: 20 / 10 px; h4-h6: 10 / 10 px), tamaños fijos en <code>px</code> (36, 30, 24, 18, 14 y 12), <code>line-height: 1.1</code></td></tr>
+          <tr><td><code>.h1</code>… <code>.h6</code></td><td><span class="badge text-bg-success">Sí existen</span></td></tr>
+          <tr><td>Enlaces subrayados</td><td>Sin subrayar salvo al pasar el ratón o con el foco; color <code>#337ab7</code></td></tr>
+          <tr><td><code>&lt;small&gt;</code> dentro de un título: solo más pequeño; el gris se pone con <code>text-body-secondary</code></td><td>Se estiliza solo: gris <code>#777</code> y al 65 % (h1-h3) o al 75 % (h4-h6)</td></tr>
+          <tr><td><code>display-1</code>… <code>display-6</code></td><td>No existen</td></tr>
+          <tr><td><code>.lead</code> (<code>1.25rem</code>, peso 300)</td><td><span class="badge text-bg-success">Sí existe</span> 16 px, y 21 px desde 768 px; peso 300</td></tr>
+          <tr><td><code>fs-*</code>, <code>fw-*</code>, <code>fst-*</code>, <code>lh-*</code>, <code>text-decoration-*</code></td><td>No existen</td></tr>
+          <tr><td><code>text-truncate</code></td><td>No existe como clase</td></tr>
+          <tr><td><code>text-center</code>, <code>text-uppercase</code>, <code>text-lowercase</code>, <code>text-capitalize</code>, <code>text-nowrap</code></td><td><span class="badge text-bg-success">Sí existen</span></td></tr>
           <tr><td><code>text-start</code> / <code>text-end</code>, <code>text-md-start</code></td><td><code>.text-left</code> / <code>.text-right</code>, sin versiones responsive</td></tr>
-          <tr><td><code>fs-4</code>, <code>fw-bold</code></td><td>No existen</td></tr>
-          <tr><td><code>bg-success-subtle</code>, <code>text-bg-success</code>, <code>bg-body-tertiary</code></td><td>No existen (sí <code>bg-success</code>, <code>bg-primary</code>)</td></tr>
+          <tr><td><code>.small</code> (<code>0.875em</code>), <code>.mark</code></td><td><span class="badge text-bg-success">Sí existen</span> (<code>.small</code> al 85 %)</td></tr>
+          <tr><td><code>list-unstyled</code></td><td><span class="badge text-bg-success">Sí existe</span></td></tr>
+          <tr><td><code>list-inline</code> + <code>list-inline-item</code> en cada <code>&lt;li&gt;</code></td><td>Solo <code>.list-inline</code>: estiliza directamente los <code>&lt;li&gt;</code> hijos</td></tr>
+          <tr><td><code>&lt;figure&gt;</code> con <code>.blockquote</code> y <code>.blockquote-footer</code></td><td><code>&lt;blockquote&gt;</code> sin clase, con la fuente en un <code>&lt;footer&gt;</code> dentro; <code>.blockquote-reverse</code> para alinearla a la derecha</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- COLOR, IMÁGENES E ICONOS -->
+    <h2 class="h4 mt-5">Color, imágenes e iconos</h2>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Colores de tema: primary, secondary, success, danger, warning, info, light, dark</td><td>primary, success, info, warning y danger (más <code>default</code> en botones y etiquetas); sin secondary, light ni dark</td></tr>
+          <tr><td><code>text-primary</code>, <code>text-success</code>…, <code>text-secondary</code>, <code>text-light</code>, <code>text-dark</code>, <code>text-body</code>, <code>text-white</code></td><td>Solo <code>.text-muted</code>, <code>.text-primary</code>, <code>.text-success</code>, <code>.text-info</code>, <code>.text-warning</code> y <code>.text-danger</code>, en tonos oscuros (<code>.text-success</code> es <code>#3c763d</code>)</td></tr>
+          <tr><td><code>bg-primary</code>, <code>bg-success</code>…, <code>bg-secondary</code>, <code>bg-light</code>, <code>bg-dark</code></td><td>Solo <code>.bg-primary</code> es sólido (con texto blanco); <code>.bg-success</code>, <code>.bg-info</code>, <code>.bg-warning</code> y <code>.bg-danger</code> son tonos pálidos (<code>.bg-success</code> es <code>#dff0d8</code>); sin secondary, light ni dark</td></tr>
+          <tr><td><code>text-primary</code> = <code>rgba(var(--bs-primary-rgb), 1)</code></td><td>Sin variables CSS: el color va escrito en el CSS</td></tr>
+          <tr><td><code>text-bg-*</code>, <code>bg-opacity-*</code>, <code>text-opacity-*</code></td><td>No existen</td></tr>
+          <tr><td><code>*-subtle</code> y <code>*-emphasis</code> (<code>bg-success-subtle</code>, <code>border-success-subtle</code>, <code>text-success-emphasis</code>)</td><td>No existen</td></tr>
+          <tr><td><code>text-body-secondary</code>, <code>bg-body-tertiary</code></td><td>No existen; el gris atenuado es <code>.text-muted</code> (que en 5.3 sigue funcionando, pero está obsoleta)</td></tr>
+          <tr><td><code>img-fluid</code></td><td><code>.img-responsive</code>, que además pone <code>display: block</code>; se centra con <code>.center-block</code>, no con <code>.text-center</code></td></tr>
+          <tr><td><code>img-thumbnail</code></td><td><span class="badge text-bg-success">Sí existe</span></td></tr>
+          <tr><td><code>rounded</code>, <code>rounded-circle</code> en una imagen</td><td><code>.img-rounded</code>, <code>.img-circle</code></td></tr>
+          <tr><td><code>.figure</code>, <code>.figure-img</code>, <code>.figure-caption</code></td><td>No existen</td></tr>
+          <tr><td>Bootstrap Icons (aparte): <code>&lt;i class="bi bi-star"&gt;&lt;/i&gt;</code></td><td>Glyphicons Halflings incluidos (más de 250): <code>&lt;span class="glyphicon glyphicon-star" aria-hidden="true"&gt;&lt;/span&gt;</code>, en un elemento vacío y sin otras clases. Bootstrap Icons no forma parte de Bootstrap 3, pero se puede cargar aparte</td></tr>
+          <tr><td>Tamaño del icono con <code>fs-*</code> o <code>display-*</code></td><td>CSS propio (<code>font-size</code>)</td></tr>
+          <tr><td><code>aria-hidden="true"</code>, <code>aria-label</code></td><td><span class="badge text-bg-success">Funcionan igual</span> (son HTML)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- COMPONENTES -->
+    <h2 class="h4 mt-5">Componentes que han salido de pasada</h2>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
+        </thead>
+        <tbody>
           <tr><td><code>badge text-bg-success</code></td><td><code>.label .label-success</code> (<code>.badge</code> era un contador de elementos nuevos o sin leer, como «Bandeja 42»)</td></tr>
           <tr><td><code>btn-outline-primary</code></td><td>No existe (sí <code>btn-primary</code>, <code>btn-default</code>…)</td></tr>
           <tr><td><code>card</code></td><td>No existe: <code>.panel</code>, <code>.well</code>, <code>.thumbnail</code></td></tr>
           <tr><td><code>form-select</code></td><td>No existe: <code>.form-control</code> también en el <code>&lt;select&gt;</code></td></tr>
-          <tr><td><code>img-fluid</code></td><td><code>.img-responsive</code></td></tr>
         </tbody>
       </table>
     </div>
@@ -165,7 +220,12 @@
     <div class="alert alert-success mb-5">
       <code>.container</code>, <code>.container-fluid</code>, <code>.row</code>, <code>.btn</code>, <code>.btn-group</code>,
       <code>.alert</code>, <code>.table</code>, <code>.table-striped</code>, <code>.form-control</code>,
-      <code>text-center</code>, los colores de texto, <code>text-uppercase</code>, <code>invisible</code> y <code>clearfix</code>.
+      <code>.h1</code>… <code>.h6</code>, <code>.lead</code>, <code>.small</code>, <code>.mark</code>,
+      <code>.list-unstyled</code>, <code>.list-inline</code> (sin <code>-item</code>),
+      <code>text-center</code>, <code>text-uppercase</code>, <code>text-lowercase</code>, <code>text-capitalize</code>, <code>text-nowrap</code>,
+      <code>text-primary</code>, <code>text-success</code>, <code>text-info</code>, <code>text-warning</code> y <code>text-danger</code> (con otros tonos),
+      <code>text-muted</code>, <code>img-thumbnail</code>, <code>invisible</code>, <code>clearfix</code>,
+      <code>box-sizing: border-box</code> en todos los elementos y las metas <code>charset</code> y <code>viewport</code>.
     </div>
   </div>
 

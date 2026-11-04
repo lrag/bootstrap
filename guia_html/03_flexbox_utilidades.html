@@ -21,6 +21,13 @@
     @media (min-width: 768px) {
       .relleno-responsive { padding: 3rem; }
     }
+    /* Equivalente con CSS propio de d-none d-md-block */
+    .solo-desde-md { display: none; }
+    @media (min-width: 768px) {
+      .solo-desde-md { display: block; }
+    }
+    /* Hueco que se ve cuando la caja de una demo de visibilidad está oculta en ese ancho */
+    .oculta { border: 1px dashed var(--bs-border-color); color: var(--bs-secondary-color); font-style: italic; }
   </style>
 </head>
 <body>
@@ -58,6 +65,10 @@
         <li class="list-group-item"><a href="#gap-wrap">gap y flex-wrap</a></li>
         <li class="list-group-item"><a href="#elementos">Clases para un elemento</a></li>
         <li class="list-group-item"><a href="#flex-responsive">Flexbox responsive</a></li>
+        <li class="list-group-item"><a href="#tamanos">Tamaños</a></li>
+        <li class="list-group-item"><a href="#bordes">Bordes y esquinas</a></li>
+        <li class="list-group-item"><a href="#sombras">Sombras</a></li>
+        <li class="list-group-item"><a href="#visibilidad">Visibilidad responsive</a></li>
         <li class="list-group-item"><a href="#practica">Práctica</a></li>
       </ol>
     </nav>
@@ -195,11 +206,15 @@
       <h2 class="border-bottom pb-2 mb-4">5. Margin auto</h2>
       <p>Con un ancho fijo, el margen automático reparte el espacio sobrante:</p>
       <ul>
+        <li>Sin <code>auto</code>: la caja se queda a la izquierda y el espacio sobrante queda a su derecha.</li>
+        <li><code>margin-right: auto</code>: todo el margen a la derecha, así que la caja queda <strong>igual</strong>, a la izquierda.</li>
         <li><code>mx-auto</code>: el mismo margen a los dos lados, así que la caja queda <strong>centrada</strong>.</li>
         <li><code>ms-auto</code>: todo el margen a la izquierda, así que la caja se va a la <strong>derecha</strong>.</li>
       </ul>
       <div class="demo">
         <div class="row g-3">
+          <div class="col-md-6"><p class="etiqueta">sin auto</p><div class="espacio"><div class="bs" style="width: 150px">150 px a la izquierda</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">margin-right: auto</p><div class="espacio"><div class="css" style="width: 150px; margin-right: auto">150 px a la izquierda</div></div></div>
           <div class="col-md-6"><p class="etiqueta">class="mx-auto"</p><div class="espacio"><div class="bs mx-auto" style="width: 150px">150 px centrado</div></div></div>
           <div class="col-md-6"><p class="etiqueta">margin-left: auto; margin-right: auto</p><div class="espacio"><div class="css" style="width: 150px; margin-left: auto; margin-right: auto">150 px centrado</div></div></div>
           <div class="col-md-6"><p class="etiqueta">class="ms-auto"</p><div class="espacio"><div class="bs ms-auto" style="width: 150px">150 px a la derecha</div></div></div>
@@ -280,7 +295,18 @@
             <button type="button" class="btn bs" dir="rtl"><span class="me-3">🔍</span>بحث</button>
           </div>
           <div class="col-md-3 small text-danger-emphasis">Igual que margin-right</div>
+
+          <div class="col-md-5 etiqueta mb-0">texto árabe primero, lupa después, margin-right y sin dir</div>
+          <div class="col-md-4">
+            <button type="button" class="btn css"><span style="margin-right: 1rem">بحث</span>🔍</button>
+          </div>
+          <div class="col-md-3 small text-danger-emphasis">Apaño: lo que no hay que hacer</div>
         </div>
+      </div>
+      <div class="alert alert-warning" role="alert">
+        La última fila «parece» correcta, pero es una chapuza: cambiamos el orden del HTML para imitar el resultado.
+        El texto sigue alineado a la izquierda y el diseño deja de servir en cuanto el idioma cambia. La solución es
+        <code>dir="rtl"</code> más propiedades lógicas o la hoja RTL de Bootstrap.
       </div>
 
       <h3 class="h5">Las dos hojas de estilos de Bootstrap</h3>
@@ -370,6 +396,19 @@
           <div class="col-md-4"><p class="etiqueta">d-flex flex-row-reverse</p><div class="espacio p-2 d-flex flex-row-reverse"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item">3</div></div></div>
         </div>
       </div>
+
+      <h3 class="h5"><code>flex-column</code> frente al flujo normal</h3>
+      <p>
+        Sin flex, los <code>div</code> ya se apilan porque son de bloque, pero los <code>span</code> son elementos en línea
+        y se quedan uno al lado del otro. Con <code>flex-column</code> todos los hijos pasan a ser elementos flex y se apilan,
+        sean del tipo que sean.
+      </p>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-6"><p class="etiqueta">sin d-flex: los div se apilan, los span no</p><div class="espacio p-2"><div class="css item">div 1</div><div class="css item">div 2</div><span class="css item">span 1</span><span class="css item">span 2</span><span class="css item">span 3</span></div></div>
+          <div class="col-md-6"><p class="etiqueta">d-flex flex-column: se apila todo</p><div class="espacio p-2 d-flex flex-column"><div class="bs item">div 1</div><div class="bs item">div 2</div><span class="bs item">span 1</span><span class="bs item">span 2</span><span class="bs item">span 3</span></div></div>
+        </div>
+      </div>
     </section>
 
     <!-- 9. justify-content -->
@@ -436,6 +475,17 @@
           <div class="col-md-6"><p class="etiqueta">d-flex flex-wrap gap-2</p><div class="espacio p-2 d-flex flex-wrap gap-2"><div class="bs item" style="width: 6rem">1</div><div class="bs item" style="width: 6rem">2</div><div class="bs item" style="width: 6rem">3</div><div class="bs item" style="width: 6rem">4</div><div class="bs item" style="width: 6rem">5</div><div class="bs item" style="width: 6rem">6</div></div></div>
         </div>
       </div>
+
+      <h3 class="h5">Sin wrap, lo que no cabe se sale</h3>
+      <p>
+        Siete elementos de 150 px con <code>flex-shrink-0</code> para que no se encojan: sin <code>flex-wrap</code>, cuando no caben
+        (en cualquier ancho por debajo de xxl) se salen del contenedor y provocan scroll horizontal. Aquí la caja de la demo hace scroll para no desbordar la página;
+        en una página real, el que hace scroll es toda la página.
+      </p>
+      <div class="demo" style="overflow-x: auto">
+        <p class="etiqueta">d-flex gap-2 + flex-shrink-0 y width: 150px en cada elemento</p>
+        <div class="espacio p-2 d-flex gap-2"><div class="bs item flex-shrink-0" style="width: 150px">1</div><div class="bs item flex-shrink-0" style="width: 150px">2</div><div class="bs item flex-shrink-0" style="width: 150px">3</div><div class="bs item flex-shrink-0" style="width: 150px">4</div><div class="bs item flex-shrink-0" style="width: 150px">5</div><div class="bs item flex-shrink-0" style="width: 150px">6</div><div class="bs item flex-shrink-0" style="width: 150px">7</div></div>
+      </div>
     </section>
 
     <!-- 12. Clases para un elemento -->
@@ -445,23 +495,47 @@
       <table class="table table-sm mb-4">
         <thead><tr><th>Bootstrap</th><th>CSS</th><th>Efecto</th></tr></thead>
         <tbody>
+          <tr><td><code>flex-grow-0</code></td><td><code>flex-grow: 0</code></td><td>No crece (valor por defecto)</td></tr>
           <tr><td><code>flex-grow-1</code></td><td><code>flex-grow: 1</code></td><td>El elemento se queda con el espacio sobrante</td></tr>
           <tr><td><code>flex-shrink-0</code></td><td><code>flex-shrink: 0</code></td><td>El elemento no se encoge aunque falte sitio</td></tr>
           <tr><td><code>ms-auto</code></td><td><code>margin-left: auto</code></td><td>Empuja el elemento y los siguientes hasta el final</td></tr>
+          <tr><td><code>me-auto</code></td><td><code>margin-right: auto</code></td><td>Empuja hasta el final a los que le <strong>siguen</strong></td></tr>
           <tr><td><code>align-self-*</code></td><td><code>align-self</code></td><td>Alinea solo ese elemento en el eje cruzado</td></tr>
           <tr><td><code>order-*</code></td><td><code>order</code></td><td>Cambia su posición visual (como en la rejilla)</td></tr>
         </tbody>
       </table>
       <div class="demo">
         <div class="row g-3">
-          <div class="col-md-4"><p class="etiqueta">flex-grow-1 en el 2</p><div class="espacio p-2 d-flex gap-1"><div class="bs item">1</div><div class="bs item flex-grow-1">2</div><div class="bs item">3</div></div></div>
-          <div class="col-md-4"><p class="etiqueta">ms-auto en el 3</p><div class="espacio p-2 d-flex gap-1"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item ms-auto">3</div><div class="bs item">4</div></div></div>
-          <div class="col-md-4"><p class="etiqueta">align-self-end en el 2</p><div class="espacio p-2 d-flex gap-1 alto align-items-start"><div class="bs item">1</div><div class="bs item align-self-end">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">flex-grow-1 en el 2</p><div class="espacio p-2 d-flex gap-1"><div class="bs item">1</div><div class="bs item flex-grow-1">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">align-self-end en el 2</p><div class="espacio p-2 d-flex gap-1 alto align-items-start"><div class="bs item">1</div><div class="bs item align-self-end">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">ms-auto en el 3</p><div class="espacio p-2 d-flex gap-1"><div class="bs item">1</div><div class="bs item">2</div><div class="bs item ms-auto">3</div><div class="bs item">4</div></div></div>
+          <div class="col-md-6"><p class="etiqueta">me-auto en el 2 (mismo resultado)</p><div class="espacio p-2 d-flex gap-1"><div class="bs item">1</div><div class="bs item me-auto">2</div><div class="bs item">3</div><div class="bs item">4</div></div></div>
         </div>
       </div>
-      <div class="alert alert-info mb-0" role="alert">
+      <div class="alert alert-info" role="alert">
         <code>ms-auto</code> dentro de un contenedor flex es el truco típico de las barras de navegación:
-        logo a la izquierda y enlaces a la derecha, sin <code>justify-content</code>.
+        logo a la izquierda y enlaces a la derecha, sin <code>justify-content</code>. <code>me-auto</code> hace lo contrario:
+        el margen va a la derecha del elemento y empuja hasta el final a los que le siguen. <code>me-auto</code> en el 2 y
+        <code>ms-auto</code> en el 3 dan el mismo resultado: el 1 y el 2 a un lado, el 3 y el 4 al otro.
+      </div>
+
+      <h3 class="h5">Los valores de <code>flex-grow</code></h3>
+      <p>
+        El número es la parte del espacio <strong>sobrante</strong> que se lleva cada elemento: primero cada uno ocupa lo que
+        pide su contenido y lo que sobra se reparte según los números. Si crecen dos con 1, se reparten el sobrante a partes
+        iguales. Bootstrap solo trae <code>flex-grow-0</code> y <code>flex-grow-1</code>; para otras proporciones hace falta
+        CSS propio: con 1 y 2 el sobrante se divide en tres partes, una para el 2 y dos para el 3.
+      </p>
+<pre class="mb-3"><code>Contenedor de 600 px, cada caja pide 100 px, sobran 300 px:
+  0, 0, 0 → |[ 1 ][ 2 ][ 3 ]                              |
+  0, 1, 1 → |[ 1 ][      2 (+150)     ][      3 (+150)    ]|
+  0, 1, 2 → |[ 1 ][   2 (+100)   ][         3 (+200)      ]|</code></pre>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-12"><p class="etiqueta">flex-grow-0 en todos (igual que no poner nada)</p><div class="espacio p-2 d-flex gap-1"><div class="bs item flex-grow-0">1</div><div class="bs item flex-grow-0">2</div><div class="bs item flex-grow-0">3</div></div></div>
+          <div class="col-12"><p class="etiqueta">flex-grow-1 en el 2 y en el 3: a partes iguales</p><div class="espacio p-2 d-flex gap-1"><div class="bs item">1</div><div class="bs item flex-grow-1">2</div><div class="bs item flex-grow-1">3</div></div></div>
+          <div class="col-12"><p class="etiqueta">flex-grow: 1 en el 2 y flex-grow: 2 en el 3 (CSS propio): el 3 se lleva el doble</p><div class="espacio p-2 d-flex gap-1"><div class="css item">1</div><div class="css item" style="flex-grow: 1">2</div><div class="css item" style="flex-grow: 2">3</div></div></div>
+        </div>
       </div>
     </section>
 
@@ -479,9 +553,418 @@
       </div>
     </section>
 
-    <!-- 14. Práctica -->
+    <!-- 14. Tamaños -->
+    <section id="tamanos" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">14. Tamaños: <code>w-*</code>, <code>h-*</code>, <code>mw-100</code>, <code>vh-100</code></h2>
+      <p>
+        Más utilidades de una sola propiedad, como las de espaciado. Ninguna depende de la rejilla: se pueden poner en cualquier elemento.
+        Los porcentajes son del <strong>padre</strong>, no de la pantalla.
+      </p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Bootstrap</th><th>CSS</th><th>Nota</th></tr></thead>
+        <tbody>
+          <tr><td><code>w-25</code> / <code>w-50</code> / <code>w-75</code> / <code>w-100</code></td><td><code>width: 25%</code> … <code>100%</code></td><td>Solo estos valores; otro ancho (300 px, 20rem…) necesita CSS propio</td></tr>
+          <tr><td><code>w-auto</code></td><td><code>width: auto</code></td><td></td></tr>
+          <tr><td><code>h-25</code> … <code>h-100</code>, <code>h-auto</code></td><td><code>height: 25%</code> …</td><td>No hace nada si el padre no tiene una altura definida</td></tr>
+          <tr><td><code>mw-100</code></td><td><code>max-width: 100%</code></td><td>Puede medir menos que el padre, nunca más</td></tr>
+          <tr><td><code>mh-100</code></td><td><code>max-height: 100%</code></td><td></td></tr>
+          <tr><td><code>vh-100</code></td><td><code>height: 100vh</code></td><td>Exactamente el alto de la pantalla</td></tr>
+          <tr><td><code>min-vh-100</code></td><td><code>min-height: 100vh</code></td><td>Como mínimo la pantalla; si el contenido es más largo, crece</td></tr>
+          <tr><td><code>vw-100</code></td><td><code>width: 100vw</code></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="h5">Ancho y alto</h3>
+      <p>
+        <code>h-50</code> es el 50 % del alto del padre: si el padre mide «lo que mida su contenido», el porcentaje no se puede
+        calcular y la clase no hace nada. Por eso en la demo el padre lleva <code>height: 8rem</code>.
+      </p>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <p class="etiqueta">w-* (porcentaje del ancho del padre)</p>
+            <div class="espacio p-2">
+              <div class="bs item mb-1 w-25">w-25</div>
+              <div class="bs item mb-1 w-50">w-50</div>
+              <div class="bs item mb-1 w-75">w-75</div>
+              <div class="bs item mb-1 w-100">w-100</div>
+              <div class="css item" style="width: 33%">width: 33%</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <p class="etiqueta">h-* (el padre lleva height: 8rem)</p>
+            <div class="espacio p-2 d-flex gap-1 align-items-start" style="height: 8rem">
+              <div class="bs item h-25">h-25</div>
+              <div class="bs item h-50">h-50</div>
+              <div class="bs item h-75">h-75</div>
+              <div class="bs item h-100">h-100</div>
+              <div class="css item" style="height: 33%">33%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="h5">Que no se salga: <code>mw-100</code></h3>
+      <p>
+        El caso típico son las <strong>imágenes</strong>: una imagen de 800 px en un móvil de 400 px se sale de la pantalla.
+        Lo simulamos con una caja de 1500 px, más ancha que cualquier contenedor: las dos primeras se ajustan y la que no lleva
+        límite se sale (la demo hace scroll para no desbordar la página).
+      </p>
+      <div class="demo" style="overflow-x: auto">
+        <p class="etiqueta">class="mw-100"</p>
+        <div class="espacio p-2 mb-2"><div class="bs item mw-100" style="width: 1500px">1500 px con mw-100</div></div>
+        <p class="etiqueta">max-width: 100%</p>
+        <div class="espacio p-2 mb-2"><div class="css item" style="width: 1500px; max-width: 100%">1500 px con max-width: 100%</div></div>
+        <p class="etiqueta">sin límite</p>
+        <div class="espacio p-2"><div class="css item" style="width: 1500px">1500 px sin límite: se sale</div></div>
+      </div>
+
+      <h3 class="h5">Respecto a la pantalla: <code>min-vh-100</code></h3>
+      <p>
+        <code>vh</code> y <code>vw</code> son unidades de CSS: <code>1vh</code> es el 1 % del alto del viewport y <code>1vw</code>,
+        el 1 % del ancho. <code>min-vh-100</code> es lo habitual para una portada que ocupa toda la pantalla al entrar; con
+        <code>d-flex justify-content-center align-items-center</code> centramos su contenido. La caja de la demo mide toda la pantalla.
+      </p>
+      <div class="demo">
+        <p class="etiqueta">min-vh-100 d-flex justify-content-center align-items-center</p>
+        <div class="bs min-vh-100 d-flex justify-content-center align-items-center">
+          <p class="fs-4 mb-0">Una portada de pantalla completa</p>
+        </div>
+      </div>
+<pre><code>&lt;div class="w-50"&gt;La mitad del padre&lt;/div&gt;
+&lt;img src="foto.jpg" class="mw-100" alt="…"&gt;
+&lt;header class="min-vh-100 d-flex justify-content-center align-items-center"&gt;
+  &lt;h1&gt;Portada&lt;/h1&gt;
+&lt;/header&gt;</code></pre>
+    </section>
+
+    <!-- 15. Bordes y esquinas -->
+    <section id="bordes" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">15. Bordes y esquinas: <code>border-*</code> y <code>rounded-*</code></h2>
+      <p>
+        Las clases de borde dicen <strong>dónde</strong>, de qué <strong>color</strong> y con qué <strong>grosor</strong>.
+        Los lados se llaman igual que en el espaciado: <code>start</code> y <code>end</code> en lugar de <code>left</code> y <code>right</code>.
+      </p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Bootstrap</th><th>CSS</th></tr></thead>
+        <tbody>
+          <tr><td><code>border</code></td><td><code>border: 1px solid</code> (gris de Bootstrap) en los cuatro lados</td></tr>
+          <tr><td><code>border-top</code> / <code>-end</code> / <code>-bottom</code> / <code>-start</code></td><td>Borde solo en ese lado</td></tr>
+          <tr><td><code>border-0</code></td><td><code>border: 0</code>: quita todos</td></tr>
+          <tr><td><code>border-top-0</code> / <code>-end-0</code>…</td><td>Quita solo ese lado</td></tr>
+          <tr><td><code>border-primary</code>, <code>border-success</code>… y <code>border-success-subtle</code>…</td><td><code>border-color</code> del tema (también las versiones suaves)</td></tr>
+          <tr><td><code>border-1</code> … <code>border-5</code></td><td><code>border-width</code> de 1 a 5 px</td></tr>
+        </tbody>
+      </table>
+      <div class="demo">
+        <p class="etiqueta">Dónde</p>
+        <div class="d-flex flex-wrap gap-3 mb-3">
+          <div class="bg-success-subtle p-3 border border-primary">border</div>
+          <div class="bg-success-subtle p-3 border-top border-primary">border-top</div>
+          <div class="bg-success-subtle p-3 border-end border-primary">border-end</div>
+          <div class="bg-success-subtle p-3 border-bottom border-primary">border-bottom</div>
+          <div class="bg-success-subtle p-3 border-start border-primary">border-start</div>
+          <div class="bg-success-subtle p-3 border border-top-0 border-primary">border border-top-0</div>
+          <div class="css p-3" style="border: 1px solid #0480fc">border: 1px solid #0480fc</div>
+        </div>
+        <p class="etiqueta">Color y grosor (se combinan: border border-danger border-3)</p>
+        <div class="d-flex flex-wrap gap-3">
+          <div class="p-3 border border-primary">border-primary</div>
+          <div class="p-3 border border-success">border-success</div>
+          <div class="p-3 border border-danger">border-danger</div>
+          <div class="p-3 border border-warning">border-warning</div>
+          <div class="p-3 border border-success-subtle">border-success-subtle</div>
+          <div class="p-3 border border-success border-1">border-1</div>
+          <div class="p-3 border border-success border-3">border-3</div>
+          <div class="p-3 border border-success border-5">border-5</div>
+          <div class="p-3" style="border: 3px solid #0d6efd">border: 3px solid #0d6efd</div>
+        </div>
+      </div>
+
+      <h3 class="h5">Esquinas redondeadas</h3>
+      <table class="table table-sm mb-3">
+        <thead><tr><th>Bootstrap</th><th>CSS <code>border-radius</code></th></tr></thead>
+        <tbody>
+          <tr><td><code>rounded</code></td><td><code>0.375rem</code> (6 px)</td></tr>
+          <tr><td><code>rounded-0</code> · <code>-1</code> · <code>-2</code> · <code>-3</code> · <code>-4</code> · <code>-5</code></td><td><code>0</code> · <code>0.25rem</code> · <code>0.375rem</code> · <code>0.5rem</code> · <code>1rem</code> · <code>2rem</code></td></tr>
+          <tr><td><code>rounded-circle</code></td><td><code>50%</code>: un círculo si la caja es cuadrada</td></tr>
+          <tr><td><code>rounded-pill</code></td><td><code>50rem</code>: extremos totalmente redondos (píldora)</td></tr>
+          <tr><td><code>rounded-top</code> / <code>-end</code> / <code>-bottom</code> / <code>-start</code></td><td>Solo las esquinas de ese lado</td></tr>
+        </tbody>
+      </table>
+      <p>El redondeo funciona aunque no haya borde: redondea también el fondo.</p>
+      <div class="demo">
+        <div class="d-flex flex-wrap gap-3 align-items-center">
+          <div class="bs p-3 rounded-0">rounded-0</div>
+          <div class="bs p-3 rounded">rounded</div>
+          <div class="bs p-3 rounded-3">rounded-3</div>
+          <div class="bs p-3 rounded-5">rounded-5</div>
+          <div class="bs rounded-circle d-flex justify-content-center align-items-center" style="width: 6rem; height: 6rem">circle</div>
+          <div class="bs px-4 py-2 rounded-pill">rounded-pill</div>
+          <div class="bs p-3 rounded-top-4">rounded-top-4</div>
+          <div class="p-3 rounded-4" style="background: var(--bs-success-bg-subtle)">sin borde, rounded-4</div>
+          <div class="css p-3" style="border-radius: 1rem">border-radius: 1rem</div>
+        </div>
+      </div>
+<pre><code>&lt;div class="border border-danger border-3 rounded-3 p-3"&gt;…&lt;/div&gt;
+&lt;img src="avatar.jpg" class="rounded-circle" width="96" height="96" alt="…"&gt;</code></pre>
+    </section>
+
+    <!-- 16. Sombras -->
+    <section id="sombras" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">16. Sombras: <code>shadow-*</code></h2>
+      <p>
+        La sombra da sensación de altura: cuanto mayor, más «flota» el elemento. Los números de <code>box-shadow</code> son
+        el desplazamiento horizontal, el vertical, el difuminado y el color (negro con poca opacidad).
+      </p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Bootstrap</th><th>CSS <code>box-shadow</code></th></tr></thead>
+        <tbody>
+          <tr><td><code>shadow-none</code></td><td><code>none</code></td></tr>
+          <tr><td><code>shadow-sm</code></td><td><code>0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)</code></td></tr>
+          <tr><td><code>shadow</code></td><td><code>0 0.5rem 1rem rgba(0, 0, 0, 0.15)</code></td></tr>
+          <tr><td><code>shadow-lg</code></td><td><code>0 1rem 3rem rgba(0, 0, 0, 0.175)</code></td></tr>
+        </tbody>
+      </table>
+      <div class="demo">
+        <div class="d-flex flex-wrap gap-4 p-3">
+          <div class="bg-body p-4 rounded shadow-none">shadow-none</div>
+          <div class="bg-body p-4 rounded shadow-sm">shadow-sm</div>
+          <div class="bg-body p-4 rounded shadow">shadow</div>
+          <div class="bg-body p-4 rounded shadow-lg">shadow-lg</div>
+          <div class="css p-4 rounded" style="box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15)">box-shadow (= shadow)</div>
+        </div>
+      </div>
+      <div class="alert alert-warning" role="alert">
+        En modo oscuro las sombras apenas se ven: una sombra negra sobre un fondo oscuro no destaca.
+      </div>
+
+      <h3 class="h5">Todo junto</h3>
+      <p>
+        Una tarjeta hecha solo con utilidades: borde, esquinas, sombra, relleno y centrado. Sin una línea de CSS propio salvo el
+        ancho máximo. Es casi lo que hace el componente <em>card</em>, que veremos más adelante.
+      </p>
+      <div class="demo">
+        <p class="etiqueta">class="border rounded-3 shadow p-4 mx-auto" + max-width: 22rem</p>
+        <div class="bg-body border rounded-3 shadow p-4 mx-auto my-3" style="max-width: 22rem">
+          <h3 class="h5">Una tarjeta</h3>
+          <p class="mb-0">Hecha solo con utilidades.</p>
+        </div>
+      </div>
+<pre><code>&lt;div class="border rounded-3 shadow p-4 mx-auto" style="max-width: 22rem"&gt;
+  &lt;h3 class="h5"&gt;Una tarjeta&lt;/h3&gt;
+  &lt;p class="mb-0"&gt;Hecha solo con utilidades.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+    </section>
+
+    <!-- 17. Visibilidad responsive -->
+    <section id="visibilidad" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">17. Visibilidad responsive: <code>d-*</code></h2>
+      <p>
+        Para mostrar u ocultar elementos según el ancho de pantalla se usan las utilidades de <code>display</code>
+        (la <code>d</code> viene de <em>display</em>). Siguen el patrón de siempre, mobile-first:
+      </p>
+<pre class="mb-3"><code>d-{valor}                → en todos los anchos
+d-{breakpoint}-{valor}   → a partir de ese breakpoint</code></pre>
+      <table class="table table-sm mb-3">
+        <thead><tr><th>Bootstrap</th><th>CSS</th></tr></thead>
+        <tbody>
+          <tr><td><code>d-none</code></td><td><code>display: none</code>: el elemento desaparece por completo</td></tr>
+          <tr><td><code>d-block</code> / <code>d-inline</code> / <code>d-inline-block</code></td><td><code>display: block</code> / <code>inline</code> / <code>inline-block</code></td></tr>
+          <tr><td><code>d-flex</code> / <code>d-inline-flex</code> / <code>d-grid</code></td><td><code>display: flex</code> / <code>inline-flex</code> / <code>grid</code></td></tr>
+          <tr><td><code>d-md-none</code>, <code>d-lg-block</code>…</td><td>Lo mismo dentro de <code>@media (min-width: …)</code></td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-primary" role="alert">
+        No hay clases «ocultar en móvil» ni «mostrar en escritorio». Siempre se combinan dos: una para el punto de partida y
+        otra para el cambio. Se leen de izquierda a derecha: <code>d-none d-md-block</code> es «oculto; a partir de md, visible».
+      </div>
+
+      <h3 class="h5">El indicador de breakpoint</h3>
+      <p>
+        Seis etiquetas, una por breakpoint. Cada una está oculta y solo se muestra en su tramo; por ejemplo, la de md lleva
+        <code>d-none d-md-inline d-lg-none</code>. En cada ancho solo queda visible una, sin JavaScript. Es el mismo indicador
+        que hay fijo abajo a la derecha de esta página.
+      </p>
+      <div class="demo">
+        <p class="fs-4 text-center mb-0">
+          <span class="badge text-bg-success d-inline d-sm-none">xs</span>
+          <span class="badge text-bg-success d-none d-sm-inline d-md-none">sm</span>
+          <span class="badge text-bg-success d-none d-md-inline d-lg-none">md</span>
+          <span class="badge text-bg-success d-none d-lg-inline d-xl-none">lg</span>
+          <span class="badge text-bg-success d-none d-xl-inline d-xxl-none">xl</span>
+          <span class="badge text-bg-success d-none d-xxl-inline">xxl</span>
+        </p>
+      </div>
+<pre class="mb-4"><code>&lt;span class="badge text-bg-success d-inline d-sm-none"&gt;xs&lt;/span&gt;
+&lt;span class="badge text-bg-success d-none d-sm-inline d-md-none"&gt;sm&lt;/span&gt;
+&lt;span class="badge text-bg-success d-none d-md-inline d-lg-none"&gt;md&lt;/span&gt;
+&lt;span class="badge text-bg-success d-none d-lg-inline d-xl-none"&gt;lg&lt;/span&gt;
+&lt;span class="badge text-bg-success d-none d-xl-inline d-xxl-none"&gt;xl&lt;/span&gt;
+&lt;span class="badge text-bg-success d-none d-xxl-inline"&gt;xxl&lt;/span&gt;</code></pre>
+
+      <h3 class="h5">Las combinaciones habituales</h3>
+      <table class="table table-sm mb-3">
+        <thead><tr><th>Queremos</th><th>Clases</th></tr></thead>
+        <tbody>
+          <tr><td>Oculto en todos los anchos</td><td><code>d-none</code></td></tr>
+          <tr><td>Visible solo desde md (escritorio)</td><td><code>d-none d-md-block</code></td></tr>
+          <tr><td>Visible solo por debajo de md (móvil)</td><td><code>d-md-none</code></td></tr>
+          <tr><td>Visible solo en md</td><td><code>d-none d-md-block d-lg-none</code></td></tr>
+        </tbody>
+      </table>
+      <p>
+        En la demo, cada caja verde lleva las clases de su etiqueta; cuando está oculta, en su lugar aparece un hueco punteado
+        (que lleva las clases contrarias). Arriba, el breakpoint actual.
+      </p>
+      <div class="demo">
+        <p class="etiqueta">
+          Ancho actual:
+          <span class="badge text-bg-success d-inline d-sm-none">xs</span><span class="badge text-bg-success d-none d-sm-inline d-md-none">sm</span><span class="badge text-bg-success d-none d-md-inline d-lg-none">md</span><span class="badge text-bg-success d-none d-lg-inline d-xl-none">lg</span><span class="badge text-bg-success d-none d-xl-inline d-xxl-none">xl</span><span class="badge text-bg-success d-none d-xxl-inline">xxl</span>
+        </p>
+        <p class="etiqueta">class="d-none"</p>
+        <div class="bs p-2 mb-2 d-none">Nunca se ve</div>
+        <div class="oculta p-2 mb-3">oculta en todos los anchos</div>
+
+        <p class="etiqueta">class="d-none d-md-block"</p>
+        <div class="bs p-2 mb-3 d-none d-md-block">Visible: la ventana mide 768 px o más</div>
+        <div class="oculta p-2 mb-3 d-md-none">oculta por debajo de md</div>
+
+        <p class="etiqueta">class="d-md-none"</p>
+        <div class="bs p-2 mb-3 d-md-none">Visible: la ventana mide menos de 768 px</div>
+        <div class="oculta p-2 mb-3 d-none d-md-block">oculta desde md</div>
+
+        <p class="etiqueta">class="d-none d-md-block d-lg-none"</p>
+        <div class="bs p-2 mb-3 d-none d-md-block d-lg-none">Visible: la ventana está entre 768 y 991 px</div>
+        <div class="oculta p-2 mb-3 d-md-none">oculta por debajo de md</div>
+        <div class="oculta p-2 mb-3 d-none d-lg-block">oculta desde lg</div>
+
+        <p class="etiqueta">class="solo-desde-md" (CSS propio con @media, igual que d-none d-md-block)</p>
+        <div class="css p-2 solo-desde-md">Visible: la ventana mide 768 px o más</div>
+        <div class="oculta p-2 d-md-none">oculta por debajo de md</div>
+      </div>
+      <div class="row g-3 mb-4">
+        <div class="col-xl-6">
+          <p class="etiqueta">d-none d-md-block</p>
+<pre><code>xs        sm        md        lg        xl       xxl
+0 px     576 px    768 px    992 px   1200 px  1400 px
+|---------|---------|---------|---------|---------|--------|
+d-none ─────────────►
+                    d-md-block ────────────────────────────►
+oculta   oculta    VISIBLE   VISIBLE   VISIBLE   VISIBLE</code></pre>
+        </div>
+        <div class="col-xl-6">
+          <p class="etiqueta">d-md-none</p>
+<pre><code>xs        sm        md        lg        xl       xxl
+0 px     576 px    768 px    992 px   1200 px  1400 px
+|---------|---------|---------|---------|---------|--------|
+block (el div ya es de bloque)
+────────────────────►
+                    d-md-none ─────────────────────────────►
+VISIBLE   VISIBLE   oculta    oculta    oculta    oculta</code></pre>
+        </div>
+        <div class="col-xl-6">
+          <p class="etiqueta">d-none d-md-block d-lg-none</p>
+<pre><code>xs        sm        md        lg        xl       xxl
+0 px     576 px    768 px    992 px   1200 px  1400 px
+|---------|---------|---------|---------|---------|--------|
+d-none ─────────────►
+                    d-md-block ►
+                              d-lg-none ───────────────────►
+oculta    oculta    VISIBLE   oculta    oculta    oculta</code></pre>
+        </div>
+        <div class="col-xl-6">
+          <p class="etiqueta">.solo-desde-md (CSS propio)</p>
+<pre><code>xs        sm        md        lg        xl       xxl
+0 px     576 px    768 px    992 px   1200 px  1400 px
+|---------|---------|---------|---------|---------|--------|
+display: none ──────►
+                    @media (min-width: 768px) display: block ►
+oculta    oculta    VISIBLE   VISIBLE   VISIBLE   VISIBLE</code></pre>
+        </div>
+      </div>
+<pre class="mb-4"><code>.solo-desde-md { display: none; }
+
+@media (min-width: 768px) {
+  .solo-desde-md { display: block; }
+}</code></pre>
+
+      <h3 class="h5">Menú de escritorio y de móvil</h3>
+      <p>
+        Dos versiones del mismo contenido, cada una en su tramo: en escritorio los enlaces en fila (<code>d-none d-md-flex</code>,
+        que muestra como flex desde md) y en móvil un botón (<code>d-md-none</code>) que en un caso real abriría el menú.
+      </p>
+      <div class="demo">
+        <p class="etiqueta">
+          Ancho actual:
+          <span class="badge text-bg-success d-inline d-sm-none">xs</span><span class="badge text-bg-success d-none d-sm-inline d-md-none">sm</span><span class="badge text-bg-success d-none d-md-inline d-lg-none">md</span><span class="badge text-bg-success d-none d-lg-inline d-xl-none">lg</span><span class="badge text-bg-success d-none d-xl-inline d-xxl-none">xl</span><span class="badge text-bg-success d-none d-xxl-inline">xxl</span>
+        </p>
+        <div class="bg-body d-flex align-items-center gap-3 border rounded p-2">
+          <strong>Mi web</strong>
+          <div class="d-none d-md-flex gap-3 ms-auto">
+            <a href="#visibilidad">Inicio</a>
+            <a href="#visibilidad">Productos</a>
+            <a href="#visibilidad">Contacto</a>
+          </div>
+          <button type="button" class="btn btn-outline-secondary btn-sm d-md-none ms-auto">☰ Menú</button>
+        </div>
+      </div>
+<pre class="mb-4"><code>&lt;div class="d-flex align-items-center gap-3 border rounded p-2"&gt;
+  &lt;strong&gt;Mi web&lt;/strong&gt;
+  &lt;div class="d-none d-md-flex gap-3 ms-auto"&gt;
+    &lt;a href="#"&gt;Inicio&lt;/a&gt; &lt;a href="#"&gt;Productos&lt;/a&gt; &lt;a href="#"&gt;Contacto&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;button type="button" class="btn btn-outline-secondary btn-sm d-md-none ms-auto"&gt;☰ Menú&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+
+      <h3 class="h5"><code>d-none</code> frente a <code>invisible</code></h3>
+      <table class="table table-sm mb-3">
+        <thead><tr><th>Bootstrap</th><th>CSS</th><th>¿Conserva el hueco?</th></tr></thead>
+        <tbody>
+          <tr><td><code>d-none</code></td><td><code>display: none</code></td><td>No: los demás se mueven para ocuparlo</td></tr>
+          <tr><td><code>invisible</code></td><td><code>visibility: hidden</code></td><td>Sí: no se ve, pero sigue ocupando su sitio</td></tr>
+        </tbody>
+      </table>
+      <p><code>invisible</code> no tiene versiones responsive: no existe <code>invisible-md</code>.</p>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-4"><p class="etiqueta">d-none en el 2</p><div class="espacio p-2 d-flex gap-1"><div class="bs item">1</div><div class="bs item d-none">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-4"><p class="etiqueta">invisible en el 2</p><div class="espacio p-2 d-flex gap-1"><div class="bs item">1</div><div class="bs item invisible">2</div><div class="bs item">3</div></div></div>
+          <div class="col-md-4"><p class="etiqueta">visibility: hidden en el 2</p><div class="espacio p-2 d-flex gap-1"><div class="css item">1</div><div class="css item" style="visibility: hidden">2</div><div class="css item">3</div></div></div>
+        </div>
+      </div>
+
+      <h3 class="h5">Solo para lectores de pantalla: <code>visually-hidden</code></h3>
+      <p>
+        <code>d-none</code> oculta el elemento para todo el mundo, también para los lectores de pantalla que usan las personas
+        ciegas. <code>visually-hidden</code> lo oculta solo a la vista: el lector lo sigue leyendo. Caso típico: un botón que solo
+        muestra un icono necesita un texto que diga qué hace. Se verá más a fondo en accesibilidad.
+      </p>
+      <div class="demo">
+        <p class="etiqueta">botón con 🔍 y «Buscar» en visually-hidden</p>
+        <button type="button" class="btn btn-outline-secondary">🔍<span class="visually-hidden">Buscar</span></button>
+      </div>
+<pre class="mb-4"><code>&lt;button type="button" class="btn btn-outline-secondary"&gt;
+  🔍&lt;span class="visually-hidden"&gt;Buscar&lt;/span&gt;
+&lt;/button&gt;</code></pre>
+
+      <h3 class="h5">Al imprimir: <code>d-print-*</code></h3>
+      <p>
+        Las mismas clases con <code>print</code> en lugar de un breakpoint se aplican solo al imprimir:
+        <code>d-print-none</code> no sale en papel (menús, botones, publicidad…) y <code>d-none d-print-block</code> solo sale en papel.
+        Se comprueba con Ctrl+P y la vista previa de impresión.
+      </p>
+      <div class="demo">
+        <div class="bs p-2 mb-2 d-print-none">Este bloque no sale al imprimir (d-print-none)</div>
+        <div class="bs p-2 d-none d-print-block">Este bloque solo sale al imprimir (d-none d-print-block)</div>
+      </div>
+<pre><code>&lt;nav class="d-print-none"&gt;…&lt;/nav&gt;
+&lt;p class="d-none d-print-block"&gt;Impreso desde www.mi-web.es&lt;/p&gt;</code></pre>
+    </section>
+
+    <!-- 18. Práctica -->
     <section id="practica" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">14. Práctica</h2>
+      <h2 class="border-bottom pb-2 mb-4">18. Práctica</h2>
       <div class="card border-success">
         <div class="card-body">
           <h3 class="h5 card-title">Ejercicio</h3>
@@ -494,6 +977,9 @@
             <li>Rehacerla con <code>justify-content-between</code> y comparar.</li>
             <li>Centrar un texto en una caja de 300 px de alto en las dos direcciones.</li>
             <li>Hacer que la barra pase a columna en móvil con <code>flex-column flex-md-row</code>.</li>
+            <li>Convertir una de las cajas en una tarjeta con <code>border</code>, <code>rounded-3</code> y <code>shadow</code>.</li>
+            <li>Hacer una portada a pantalla completa con <code>min-vh-100</code> y el texto centrado.</li>
+            <li>En la barra, mostrar los enlaces solo desde md y un botón «Menú» solo por debajo de md.</li>
             <li>Escribir el CSS normal equivalente de cada clase usada.</li>
           </ol>
         </div>
@@ -506,7 +992,13 @@
     Curso de Bootstrap 5 · Flexbox y utilidades ·
     Referencia: <a href="https://getbootstrap.com/docs/5.3/utilities/spacing/">Spacing</a> ·
     <a href="https://getbootstrap.com/docs/5.3/getting-started/rtl/">RTL</a> ·
-    <a href="https://getbootstrap.com/docs/5.3/utilities/flex/">Flex</a>
+    <a href="https://getbootstrap.com/docs/5.3/utilities/flex/">Flex</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/utilities/sizing/">Sizing</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/utilities/borders/">Borders</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/utilities/shadows/">Shadows</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/utilities/display/">Display</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/utilities/visibility/">Visibility</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/helpers/visually-hidden/">Visually hidden</a>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

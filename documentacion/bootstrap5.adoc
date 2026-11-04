@@ -27,7 +27,7 @@ Apuntes del curso práctico de Bootstrap 5.3: maquetación responsive, component
 
 == Introducción y entorno
 
-Qué es Bootstrap, qué cambia respecto a la versión 4 y cómo preparar una plantilla base.
+Qué es Bootstrap, qué cambia respecto a la versión 4, la unidad `rem` y cómo preparar una plantilla base.
 
 === ¿Qué es Bootstrap?
 
@@ -78,6 +78,65 @@ Personalización:: Variables CSS `--bs-*` y código fuente en Sass para adaptarl
 |Sin soporte
 |===
 
+=== La unidad `rem`
+
+*rem* (_root em_) es una unidad relativa al tamaño de letra del elemento *raíz*, es decir, de `<html>`:
+
+----
+1rem = el font-size de <html>
+----
+
+Es *CSS puro*, no tiene nada que ver con Bootstrap, pero Bootstrap la usa en casi todo, así que conviene entenderla antes de empezar.
+Los navegadores usan *16 px* por defecto, así que normalmente:
+
+[cols="1m,1",options="header"]
+|===
+|rem |px (base 16)
+|0.25rem |4 px
+|0.5rem |8 px
+|1rem |16 px
+|1.5rem |24 px
+|3rem |48 px
+|===
+
+IMPORTANT: *Accesibilidad.* Si cambia el `font-size` de `<html>`, cambia todo lo que esté medido en rem.
+Eso ocurre, por ejemplo, cuando alguien aumenta el tamaño de letra en la configuración del navegador porque ve mal: con rem el diseño crece entero, en proporción y sin descuadrarse; con px se queda igual.
+
+==== rem frente a px
+
+Con la base de 16 px, `10rem` = 10 × 16 = *160 px*, y `1.5rem` = 24 px, pero solo mientras la base sea 16 px.
+En la demo, los botones simulan la preferencia del navegador cambiando el `font-size` de `<html>`:
+
+[source,javascript]
+----
+document.documentElement.style.fontSize = '20px'
+----
+
+.Con la base de 16 px, las dos barras y los dos textos miden lo mismo
+image::01_rem_base16.png[rem y px con la base de 16 px]
+
+.Con la base de 24 px, lo que está en rem crece y lo que está en px se queda igual
+image::01_rem_base24.png[rem y px con la base de 24 px]
+
+==== rem frente a em
+
+`em` es relativo al tamaño de letra del elemento *padre*, así que al anidar *se acumula*: `1.2em` dentro de `1.2em` dentro de `1.2em` = 1.2 × 1.2 × 1.2 = *1.728* veces la base.
+`rem` siempre mira a `<html>`: aunque lo anidemos, `1.2rem` es siempre 1.2 veces la base. Por eso rem es más predecible.
+
+.Tres niveles anidados con `1.2em` y con `1.2rem`
+image::01_rem_em.png[em se acumula al anidar y rem no]
+
+==== Bootstrap usa rem
+
+Los márgenes y rellenos (`m-*`, `p-*`), los gutters y los tamaños de letra de Bootstrap están en rem.
+Su escala de espaciado: `1` → 0.25rem (4 px), `2` → 0.5rem (8 px), `3` → 1rem (16 px), `4` → 1.5rem (24 px), `5` → 3rem (48 px).
+Al cambiar la base, estas cajas cambian su relleno en proporción al texto: el diseño crece entero, sin descuadrarse.
+
+.De `p-1` a `p-5`
+image::01_rem_bootstrap.png[Cajas con p-1 a p-5]
+
+WARNING: *Excepción:* los *breakpoints* (576, 768, 992… px) y los *anchos de los contenedores* (540, 720, 960… px) están en *px*, no en rem.
+
 === Instalación
 
 ==== Opción A: CDN
@@ -114,9 +173,10 @@ Los ficheros quedan en `node_modules/bootstrap/`:
 * `dist/js/bootstrap.bundle.min.js`: JavaScript con Popper.
 * `scss/`: código fuente Sass.
 
-==== Descarga directa
+==== Opción C: copia local descargada
 
-También se pueden descargar los ficheros compilados y servirlos desde el propio proyecto, sin CDN ni npm:
+Se descargan el CSS y el JS compilados desde https://getbootstrap.com/docs/5.3/getting-started/download/[getbootstrap.com], se copian en una carpeta del proyecto (en el curso, `recursos/bootstrap/`) y se enlazan con rutas relativas.
+Funciona sin conexión y no depende de un servidor externo, pero las actualizaciones son manuales.
 
 [source,html]
 ----
@@ -152,7 +212,7 @@ NOTE: `bootstrap.bundle.min.js` incluye *Popper*, necesario para dropdowns, tool
 <3> Codificación de caracteres. Debe ir la primera para que tildes y eñes se lean bien.
 <4> Meta viewport: imprescindible para que el diseño responsive funcione en móviles.
 <5> CSS en el `<head>`: evita que la página se pinte sin estilos.
-<6> JavaScript con `defer`.
+<6> JavaScript en el `<head>` con `defer`: se descarga en paralelo sin bloquear el pintado y se ejecuta con el DOM completo.
 
 ==== ¿Script en el `<head>` o al final del `<body>`?
 
@@ -160,6 +220,23 @@ Un `<script>` normal detiene el análisis del HTML hasta que se descarga y ejecu
 
 Al final del `<body>`:: Es lo que hace la plantilla oficial. El contenido ya está pintado cuando empieza la descarga y el DOM existe cuando se ejecuta.
 En el `<head>` con `defer`:: El script se descarga en paralelo mientras se analiza el HTML y se ejecuta cuando el documento está completo. Los scripts con `defer` respetan su orden de aparición.
+
+En el curso usamos la segunda forma: el JS de Bootstrap va en el `<head>`, justo después del CSS.
+
+==== Nuestro código y `window.onload`
+
+Nuestro propio código va en otro `<script>` del `<head>`, después del de Bootstrap.
+En ese momento los elementos del `<body>` todavía no existen, así que lo metemos en `window.onload`: se ejecuta cuando la página ha terminado de cargar.
+
+[source,html]
+----
+<script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+<script>
+  window.onload = () => {
+    document.getElementById('ancho').textContent = window.innerWidth
+  }
+</script>
+----
 
 === El elemento `<meta>`
 
@@ -198,6 +275,7 @@ El *viewport* es el área visible donde el navegador pinta la página.
 
 Cuando aparecieron los smartphones, casi todas las webs estaban pensadas para escritorio.
 Para que no se vieran rotas, los navegadores móviles simulan un viewport de unos *980 px*: pintan la página a ese tamaño y luego la reducen para que quepa en la pantalla.
+Todo se ve diminuto y los breakpoints de Bootstrap *creen que están en un escritorio*: 980 px es `md`, así que se activa `md` en lugar de `xs`.
 
 [source,html]
 ----
@@ -227,7 +305,8 @@ Basta con elegir un modelo concreto (por ejemplo, «iPhone 12 Pro»).
 === Modos de color con `data-bs-theme`
 
 Desde la versión 5.3, el atributo `data-bs-theme` fija el modo de color: `light` (por defecto) o `dark`.
-Bootstrap redefine sus variables CSS (`--bs-body-bg`, `--bs-body-color`, `--bs-border-color`…) y todos los componentes cambian de color a la vez, sin tocar ninguna clase.
+Bootstrap redefine sus variables CSS (`--bs-body-bg`, `--bs-body-color`, `--bs-border-color`…) para ese modo, y todos los componentes que las usan cambian de color a la vez, *sin tocar ninguna clase*.
+Si quitamos el atributo, la página es clara: `light` es el valor por defecto.
 
 En `<html>`:: Afecta a toda la página.
 En un elemento concreto:: Solo cambia esa zona.
@@ -239,11 +318,17 @@ En un elemento concreto:: Solo cambia esa zona.
 <div class="card" data-bs-theme="dark">…</div>
 ----
 
-Para cambiarlo con JavaScript basta con modificar el atributo del elemento `<html>`:
+También funciona al revés: con la página en oscuro, `data-bs-theme="light"` en un elemento deja esa zona clara.
+
+==== Cambiar el modo con JavaScript
+
+Basta con modificar el atributo del elemento `<html>`.
+`document` es la raíz del árbol DOM, pero no es una etiqueta HTML; `document.documentElement` sí: es la etiqueta `<html>`.
 
 [source,javascript]
 ----
 document.documentElement.setAttribute('data-bs-theme', 'dark')
+document.documentElement.removeAttribute('data-bs-theme')
 ----
 
 .La misma sección en modo claro y en modo oscuro
@@ -251,7 +336,67 @@ image::01_tema_claro.png[Sección en modo claro]
 
 image::01_tema_oscuro.png[Sección en modo oscuro]
 
-La card de la derecha tiene su propio `data-bs-theme="dark"`, por eso es oscura en los dos casos.
+La card del centro tiene su propio `data-bs-theme="dark"`, por eso es oscura en los dos casos.
+La de la derecha tiene `data-bs-theme="light"` y sigue clara aunque la página esté en oscuro.
+
+==== Cómo funciona por dentro
+
+Es CSS normal: *variables CSS* declaradas en `:root`, leídas con `var()`, y *selectores de atributo* que aplican unas u otras según el valor del atributo.
+Lo vemos primero con un atributo inventado, `modo`, como en `04_Data_bs_theme.html`:
+
+[source,css]
+----
+:root {
+  --color-modo1: lightGreen;
+  --color-modo2: darkGreen;
+  --estilo-texto-modo1: uppercase;
+  --estilo-texto-modo2: capitalize;
+}
+[modo=modo1] {
+  color: var(--color-modo1);
+  text-transform: var(--estilo-texto-modo1);
+}
+[modo=modo2] {
+  color: var(--color-modo2);
+  text-transform: var(--estilo-texto-modo2);
+}
+----
+
+[source,html]
+----
+<span modo="modo1"><b>modo 1</b></span>
+<span modo="modo2"><b>modo 2</b></span>
+<span modo="modo1">
+  <span><b>modo 1</b></span>
+</span>
+<span><b>modo</b></span>
+----
+
+.Los cuatro `<span>` con el atributo `modo`
+image::01_tema_modo.png[Textos con el atributo modo]
+
+El `<span>` interior del tercer ejemplo no tiene atributo, pero *hereda* el color y el `text-transform` de su padre; el último no tiene ningún antepasado con `modo` y se queda con los estilos normales.
+Bootstrap hace lo mismo con `data-bs-theme` (simplificado):
+
+[source,css]
+----
+:root, [data-bs-theme=light] {
+  --bs-body-bg: #fff;
+  --bs-body-color: #212529;
+  --bs-border-color: #dee2e6;
+}
+[data-bs-theme=dark] {
+  --bs-body-bg: #212529;
+  --bs-body-color: #dee2e6;
+  --bs-border-color: #495057;
+}
+body {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}
+----
+
+Como las variables CSS se heredan, un `data-bs-theme` en un elemento concreto redefine las variables para él y sus descendientes: por eso funciona tanto en `<html>` como en una sola card.
 
 === Práctica: la primera plantilla
 
@@ -260,7 +405,7 @@ La card de la derecha tiene su propio `data-bs-theme="dark"`, por eso es oscura 
 . Abrirlo en el navegador y comprobar en F12 → Red que se cargan el CSS y el JS de Bootstrap.
 . Añadir un párrafo con la clase `lead` y un botón con `class="btn btn-primary"`.
 . Cambiar `data-bs-theme` a `dark` y observar qué cambia.
-. _Opcional:_ instalar Bootstrap con npm y enlazar los ficheros de `node_modules` en lugar del CDN.
+. _Opcional:_ instalar Bootstrap con npm, o descargar la copia local, y enlazar esos ficheros en lugar del CDN.
 
 == Contenedores y breakpoints
 
@@ -311,6 +456,31 @@ NOTE: *xxl es nuevo en Bootstrap 5.* Bootstrap 4 solo llegaba hasta xl (1200 px)
 Los breakpoints se definen en Sass (mapa `$grid-breakpoints`), así que se pueden cambiar al compilar Bootstrap.
 Desde la 5.3 también están expuestos como variables CSS (`--bs-breakpoint-md`, etc.), aunque solo como información: las variables CSS no funcionan dentro de una media query.
 
+==== Indicador del breakpoint activo solo con CSS
+
+En `05_Containers.html` el breakpoint activo se muestra sin JavaScript: seis badges, y cada uno solo se ve en su tramo de anchos gracias a las clases de visibilidad responsive (se ven a fondo en el capítulo de flexbox y utilidades).
+Cada badge parte oculto con `d-none`, aparece en su breakpoint con `d-{bp}-inline` y vuelve a ocultarse en el siguiente con `d-{bp+1}-none`.
+El de xs es al revés: visible de partida (`d-inline`) y oculto desde sm.
+
+[source,html]
+----
+<span class="badge text-bg-danger d-inline d-sm-none">xs (&lt; 576 px)</span>
+<span class="badge text-bg-warning d-none d-sm-inline d-md-none">sm (≥ 576 px)</span>
+<span class="badge text-bg-info d-none d-md-inline d-lg-none">md (≥ 768 px)</span>
+<span class="badge text-bg-primary d-none d-lg-inline d-xl-none">lg (≥ 992 px)</span>
+<span class="badge text-bg-success d-none d-xl-inline d-xxl-none">xl (≥ 1200 px)</span>
+<span class="badge text-bg-dark d-none d-xxl-inline">xxl (≥ 1400 px)</span>
+----
+
+.xs: ventana de 400 px
+image::02_indicador_xs.png[Indicador en xs]
+
+.md: ventana de 800 px
+image::02_indicador_md.png[Indicador en md]
+
+.xl: ventana de 1250 px
+image::02_indicador_xl.png[Indicador en xl]
+
 === Tipos de contenedor
 
 `.container`:: Ancho fijo que salta en cada breakpoint. Al 100 % solo en móvil (xs). El más habitual.
@@ -332,6 +502,17 @@ Desde la 5.3 también están expuestos como variables CSS (`--bs-breakpoint-md`,
 |===
 
 Los anchos fijos son `max-width` en píxeles. `.container` y `.container-sm` se comportan igual.
+
+==== Ejemplo resuelto: ventana de 862 px
+
+El breakpoint es el ancho de la *ventana*; el contenedor es algo más estrecho para que siempre quede margen a los lados.
+
+. Con la ventana a *862 px* estamos en `md` (≥ 768 y < 992).
+. `.container` mide *720 px*, así que quedan (862 − 720) / 2 = *71 px* a cada lado.
+. El ancho incluye el relleno (`box-sizing: border-box`): el contenido útil es 720 − 2 × 12 = *696 px*.
+
+.Ventana de 862 px: margen en gris, contenedor en azul y relleno en amarillo
+image::02_ejemplo_862.png[Reparto de los 862 px de la ventana]
 
 === Los contenedores en cada breakpoint
 
@@ -421,6 +602,7 @@ Los `.98` evitan que dos media queries coincidan en el mismo píxel.
 
 Las utilidades son clases de Bootstrap que aplican *una sola propiedad CSS*.
 Este capítulo cubre las de espaciado, que separan unos elementos de otros, y las de flexbox, que los colocan, reparten el espacio y los alinean.
+Después vienen las de tamaños, bordes, sombras y visibilidad responsive, que siguen la misma idea: una clase, una propiedad CSS.
 
 === Cómo se forma el nombre
 
@@ -515,13 +697,15 @@ image::03_espaciado_margin.png[Márgenes]
 
 Con un ancho fijo, el margen automático reparte el espacio sobrante:
 
+* Sin `auto`: la caja se queda a la izquierda y el espacio sobrante queda a su derecha.
+* `margin-right: auto`: todo el margen a la derecha, así que la caja queda *igual*, a la izquierda.
 * `mx-auto`: el mismo margen a los dos lados, así que la caja queda *centrada*.
 * `ms-auto`: todo el margen a la izquierda, así que la caja se va a la *derecha*.
 
 Es la forma clásica de centrar un bloque.
 Sin ancho no hace nada visible: un `div` ya ocupa todo el ancho y no sobra espacio que repartir.
 
-.`mx-auto` y `ms-auto` en una caja de 150 px
+.Sin `auto`, `margin-right: auto`, `mx-auto` y `ms-auto` en una caja de 150 px
 image::03_espaciado_margin_auto.png[Margin auto]
 
 === Start y end: por qué no se llaman left y right
@@ -580,6 +764,11 @@ image::03_espaciado_start_end.png[Botones con lupa en español y en árabe]
 * `margin-inline-end`: hueco correcto en los dos idiomas.
 * `margin-right`: en árabe la lupa se pega al texto.
 * `me-3`: con `bootstrap.min.css` se comporta igual que `margin-right`.
+* Texto árabe primero, lupa después, `margin-right` y sin `dir`: un apaño, lo que *no* hay que hacer.
+
+WARNING: La última fila «parece» correcta, pero es una chapuza: cambiamos el orden del HTML para imitar el resultado.
+El texto sigue alineado a la izquierda y el diseño deja de servir en cuanto el idioma cambia.
+La solución es `dir="rtl"` más propiedades lógicas o la hoja RTL de Bootstrap.
 
 ==== Las dos hojas de estilos de Bootstrap
 
@@ -661,6 +850,14 @@ Si la dirección cambia a columna, los ejes se intercambian.
 .Sin `d-flex`, con `d-flex` y con `flex-row-reverse`
 image::03_flex_contenedor.png[Contenedor flex]
 
+==== `flex-column` frente al flujo normal
+
+Sin flex, los `div` ya se apilan porque son de bloque, pero los `span` son elementos en línea y se quedan uno al lado del otro.
+Con `flex-column` todos los hijos pasan a ser elementos flex y se apilan, sean del tipo que sean.
+
+.Dos `div` y tres `span` sin `d-flex` y con `d-flex flex-column`
+image::03_flex_column_span.png[Flujo normal frente a flex-column]
+
 === Reparto en el eje principal: `justify-content-*`
 
 Decide qué se hace con el espacio que sobra en la fila.
@@ -682,6 +879,7 @@ image::03_flex_justify.png[justify-content]
 === Alineación en el eje cruzado: `align-items-*`
 
 En fila, el eje cruzado es el vertical: para que se note, el contenedor necesita más altura que sus elementos.
+Bootstrap no tiene clases para una altura concreta, así que en los ejemplos el contenedor lleva un `style="height: 7rem"`.
 
 [cols="2m,2m,3",options="header"]
 |===
@@ -712,6 +910,14 @@ Con `flex-wrap` (`flex-wrap: wrap`) los que no caben bajan a la línea siguiente
 .`gap-3` y `flex-wrap`
 image::03_flex_gap_wrap.png[gap y flex-wrap]
 
+==== Sin wrap, lo que no cabe se sale
+
+Siete elementos de 150 px con `flex-shrink-0` para que no se encojan: sin `flex-wrap`, cuando no caben (en cualquier ancho por debajo de xxl) se salen del contenedor y provocan scroll horizontal.
+En la captura, la caja de la demo hace scroll para no desbordar la página; en una página real, el que hace scroll es toda la página.
+
+.`d-flex gap-2` con siete elementos de 150 px y `flex-shrink-0`
+image::03_flex_nowrap.png[Elementos que se salen del contenedor sin flex-wrap]
+
 === Clases para un elemento
 
 Las clases anteriores van en el contenedor; estas van en un elemento concreto.
@@ -719,17 +925,39 @@ Las clases anteriores van en el contenedor; estas van en un elemento concreto.
 [cols="2m,2m,3",options="header"]
 |===
 |Bootstrap |CSS |Efecto
+|flex-grow-0 |flex-grow: 0 |No crece (valor por defecto)
 |flex-grow-1 |flex-grow: 1 |El elemento se queda con el espacio sobrante
 |flex-shrink-0 |flex-shrink: 0 |El elemento no se encoge aunque falte sitio
 |ms-auto |margin-left: auto |Empuja el elemento y los siguientes hasta el final
+|me-auto |margin-right: auto |Empuja hasta el final a los que le *siguen*
 |align-self-* |align-self |Alinea solo ese elemento en el eje cruzado
 |order-* |order |Cambia su posición visual
 |===
 
-.`flex-grow-1`, `ms-auto` y `align-self-end`
+.`flex-grow-1`, `align-self-end`, `ms-auto` y `me-auto`
 image::03_flex_elementos.png[Clases para un elemento]
 
 NOTE: `ms-auto` dentro de un contenedor flex es el truco típico de las barras de navegación: logo a la izquierda y enlaces a la derecha, sin `justify-content`.
+`me-auto` hace lo contrario: el margen va a la derecha del elemento y empuja hasta el final a los que le siguen.
+`me-auto` en el 2 y `ms-auto` en el 3 dan el mismo resultado: el 1 y el 2 a un lado, el 3 y el 4 al otro.
+
+==== Los valores de `flex-grow`
+
+El número es la parte del espacio *sobrante* que se lleva cada elemento: primero cada uno ocupa lo que pide su contenido y lo que sobra se reparte según los números.
+
+* `0` es el valor por defecto: el elemento no crece.
+* Si crecen dos con `1`, se reparten el sobrante a partes iguales.
+* Bootstrap solo trae `flex-grow-0` y `flex-grow-1`; para otras proporciones hace falta CSS propio. Con 1 y 2 el sobrante se divide en tres partes: una para el 2 y dos para el 3.
+
+----
+Contenedor de 600 px, cada caja pide 100 px, sobran 300 px:
+  0, 0, 0 → |[ 1 ][ 2 ][ 3 ]                              |
+  0, 1, 1 → |[ 1 ][      2 (+150)     ][      3 (+150)    ]|
+  0, 1, 2 → |[ 1 ][   2 (+100)   ][         3 (+200)      ]|
+----
+
+.`flex-grow-0` en todos, `flex-grow-1` en dos y `flex-grow: 1` / `flex-grow: 2` con CSS propio
+image::03_flex_grow.png[Valores de flex-grow]
 
 === Flexbox responsive
 
@@ -761,6 +989,335 @@ image::03_flex_responsive_xs.png[Flexbox responsive en xs]
 .md: en fila
 image::03_flex_responsive_md.png[Flexbox responsive en md]
 
+=== Tamaños: `w-*`, `h-*`, `mw-100` y `vh-100`
+
+Más utilidades de una sola propiedad, como las de espaciado. Ninguna depende de la rejilla: se pueden poner en cualquier elemento.
+Los porcentajes son del *padre*, no de la pantalla.
+
+[cols="2m,2m,3",options="header"]
+|===
+|Bootstrap |CSS |Nota
+|w-25 / w-50 / w-75 / w-100 |width: 25% … 100% |Solo estos valores; otro ancho (300 px, 20rem…) necesita CSS propio
+|w-auto |width: auto |
+|h-25 … h-100, h-auto |height: 25% … |No hace nada si el padre no tiene una altura definida
+|mw-100 |max-width: 100% |Puede medir menos que el padre, nunca más
+|mh-100 |max-height: 100% |
+|vh-100 |height: 100vh |Exactamente el alto de la pantalla
+|min-vh-100 |min-height: 100vh |Como mínimo la pantalla; si el contenido es más largo, crece
+|vw-100 |width: 100vw |
+|===
+
+==== Ancho y alto
+
+`h-50` es el 50 % del alto del padre: si el padre mide «lo que mida su contenido», el porcentaje no se puede calcular y la clase no hace nada.
+Por eso en el ejemplo el padre lleva `height: 8rem`.
+
+.`w-*` y `h-*`, con su equivalente en CSS en azul
+image::03_tamanos_w_h.png[Anchos y altos en porcentaje]
+
+==== Que no se salga: `mw-100`
+
+El caso típico son las *imágenes*: una imagen de 800 px en un móvil de 400 px se sale de la pantalla.
+Lo simulamos con una caja de 1500 px, más ancha que cualquier contenedor: las dos primeras se ajustan y la que no lleva límite se sale.
+
+.Una caja de 1500 px con `mw-100`, con `max-width: 100%` y sin límite
+image::03_tamanos_mw.png[mw-100 frente a una caja sin límite]
+
+==== Respecto a la pantalla: `min-vh-100`
+
+`vh` y `vw` son unidades de CSS: `1vh` es el 1 % del alto del viewport y `1vw`, el 1 % del ancho.
+`min-vh-100` es lo habitual para una portada que ocupa toda la pantalla al entrar; con `d-flex justify-content-center align-items-center` centramos su contenido.
+
+[source,html]
+----
+<div class="w-50">La mitad del padre</div>
+<img src="foto.jpg" class="mw-100" alt="…">
+<header class="min-vh-100 d-flex justify-content-center align-items-center">
+  <h1>Portada</h1>
+</header>
+----
+
+=== Bordes y esquinas: `border-*` y `rounded-*`
+
+Las clases de borde dicen *dónde*, de qué *color* y con qué *grosor*.
+Los lados se llaman igual que en el espaciado: `start` y `end` en lugar de `left` y `right`.
+
+[cols="2m,3",options="header"]
+|===
+|Bootstrap |CSS
+|border |`border: 1px solid` (gris de Bootstrap) en los cuatro lados
+|border-top / -end / -bottom / -start |Borde solo en ese lado
+|border-0 |`border: 0`: quita todos
+|border-top-0 / -end-0… |Quita solo ese lado
+|border-primary, border-success… y border-success-subtle… |`border-color` del tema (también las versiones suaves)
+|border-1 … border-5 |`border-width` de 1 a 5 px
+|===
+
+Se combinan: `border border-danger border-3`.
+
+.Dónde, color y grosor
+image::03_bordes.png[Bordes]
+
+==== Esquinas redondeadas
+
+[cols="2m,3",options="header"]
+|===
+|Bootstrap |CSS `border-radius`
+|rounded |`0.375rem` (6 px)
+|rounded-0 · -1 · -2 · -3 · -4 · -5 |`0` · `0.25rem` · `0.375rem` · `0.5rem` · `1rem` · `2rem`
+|rounded-circle |`50%`: un círculo si la caja es cuadrada
+|rounded-pill |`50rem`: extremos totalmente redondos (píldora)
+|rounded-top / -end / -bottom / -start |Solo las esquinas de ese lado
+|===
+
+El redondeo funciona aunque no haya borde: redondea también el fondo.
+
+.De `rounded-0` a `rounded-5`, `rounded-circle`, `rounded-pill` y `rounded-top-4`
+image::03_bordes_rounded.png[Esquinas redondeadas]
+
+[source,html]
+----
+<div class="border border-danger border-3 rounded-3 p-3">…</div>
+<img src="avatar.jpg" class="rounded-circle" width="96" height="96" alt="…">
+----
+
+=== Sombras: `shadow-*`
+
+La sombra da sensación de altura: cuanto mayor, más «flota» el elemento.
+Los números de `box-shadow` son el desplazamiento horizontal, el desplazamiento vertical, el difuminado y el color (negro con poca opacidad).
+
+[cols="1m,3m",options="header"]
+|===
+|Bootstrap |CSS box-shadow
+|shadow-none |none
+|shadow-sm |0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)
+|shadow |0 0.5rem 1rem rgba(0, 0, 0, 0.15)
+|shadow-lg |0 1rem 3rem rgba(0, 0, 0, 0.175)
+|===
+
+.`shadow-none`, `shadow-sm`, `shadow`, `shadow-lg` y el equivalente en CSS de `shadow`
+image::03_sombras.png[Sombras]
+
+NOTE: En modo oscuro las sombras apenas se ven: una sombra negra sobre un fondo oscuro no destaca.
+
+==== Todo junto
+
+Una tarjeta hecha solo con utilidades: borde, esquinas, sombra, relleno y centrado, sin una línea de CSS propio salvo el ancho máximo.
+Es casi lo que hace el componente _card_, que veremos más adelante.
+
+[source,html]
+----
+<div class="border rounded-3 shadow p-4 mx-auto" style="max-width: 22rem">
+  <h3 class="h5">Una tarjeta</h3>
+  <p class="mb-0">Hecha solo con utilidades.</p>
+</div>
+----
+
+.Una tarjeta solo con utilidades
+image::03_sombras_tarjeta.png[Tarjeta hecha con utilidades]
+
+=== Visibilidad responsive: `d-*`
+
+Para mostrar u ocultar elementos según el ancho de pantalla se usan las utilidades de `display` (la `d` viene de _display_).
+Siguen el patrón de siempre, mobile-first:
+
+----
+d-{valor}                → en todos los anchos
+d-{breakpoint}-{valor}   → a partir de ese breakpoint
+----
+
+[cols="2m,3",options="header"]
+|===
+|Bootstrap |CSS
+|d-none |`display: none`: el elemento desaparece por completo
+|d-block / d-inline / d-inline-block |`display: block` / `inline` / `inline-block`
+|d-flex / d-inline-flex / d-grid |`display: flex` / `inline-flex` / `grid`
+|d-md-none, d-lg-block… |Lo mismo dentro de `@media (min-width: …)`
+|===
+
+IMPORTANT: No hay clases «ocultar en móvil» ni «mostrar en escritorio».
+Siempre se combinan dos: una para el punto de partida y otra para el cambio.
+Se leen de izquierda a derecha: `d-none d-md-block` es «oculto; a partir de md, visible».
+
+==== El indicador de breakpoint
+
+Seis etiquetas, una por breakpoint. Cada una está oculta y solo se muestra en su tramo; por ejemplo, la de md lleva `d-none d-md-inline d-lg-none`:
+
+* `d-none`: oculta por defecto.
+* `d-md-inline`: visible a partir de md.
+* `d-lg-none`: otra vez oculta a partir de lg.
+
+En cada ancho solo queda visible una, sin JavaScript. Es la misma técnica del indicador del capítulo de contenedores.
+
+[source,html]
+----
+<span class="badge text-bg-success d-inline d-sm-none">xs</span>
+<span class="badge text-bg-success d-none d-sm-inline d-md-none">sm</span>
+<span class="badge text-bg-success d-none d-md-inline d-lg-none">md</span>
+<span class="badge text-bg-success d-none d-lg-inline d-xl-none">lg</span>
+<span class="badge text-bg-success d-none d-xl-inline d-xxl-none">xl</span>
+<span class="badge text-bg-success d-none d-xxl-inline">xxl</span>
+----
+
+.El indicador en xs, md y xl
+image::03_visibilidad_indicador_xs.png[Indicador en xs]
+
+image::03_visibilidad_indicador_md.png[Indicador en md]
+
+image::03_visibilidad_indicador_xl.png[Indicador en xl]
+
+==== Las combinaciones habituales
+
+[cols="3,2m",options="header"]
+|===
+|Queremos |Clases
+|Oculto en todos los anchos |d-none
+|Visible solo desde md (escritorio) |d-none d-md-block
+|Visible solo por debajo de md (móvil) |d-md-none
+|Visible solo en md |d-none d-md-block d-lg-none
+|===
+
+Cada clase actúa desde su breakpoint hacia la derecha, y la siguiente la sustituye:
+
+.`d-none d-md-block`
+----
+xs        sm        md        lg        xl       xxl
+0 px     576 px    768 px    992 px   1200 px  1400 px
+|---------|---------|---------|---------|---------|--------|
+d-none ─────────────►
+                    d-md-block ────────────────────────────►
+oculta   oculta    VISIBLE   VISIBLE   VISIBLE   VISIBLE
+----
+
+.`d-md-none`
+----
+xs        sm        md        lg        xl       xxl
+0 px     576 px    768 px    992 px   1200 px  1400 px
+|---------|---------|---------|---------|---------|--------|
+block (el div ya es de bloque)
+────────────────────►
+                    d-md-none ─────────────────────────────►
+VISIBLE   VISIBLE   oculta    oculta    oculta    oculta
+----
+
+.`d-none d-md-block d-lg-none`
+----
+xs        sm        md        lg        xl       xxl
+0 px     576 px    768 px    992 px   1200 px  1400 px
+|---------|---------|---------|---------|---------|--------|
+d-none ─────────────►
+                    d-md-block ►
+                              d-lg-none ───────────────────►
+oculta    oculta    VISIBLE   oculta    oculta    oculta
+----
+
+El equivalente de `d-none d-md-block` con CSS propio necesita una media query:
+
+[source,css]
+----
+.solo-desde-md {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .solo-desde-md {
+    display: block;
+  }
+}
+----
+
+.`.solo-desde-md`
+----
+xs        sm        md        lg        xl       xxl
+0 px     576 px    768 px    992 px   1200 px  1400 px
+|---------|---------|---------|---------|---------|--------|
+display: none ──────►
+                    @media (min-width: 768px) display: block ►
+oculta    oculta    VISIBLE   VISIBLE   VISIBLE   VISIBLE
+----
+
+En las capturas, cada caja verde lleva las clases de su etiqueta; cuando está oculta, en su lugar aparece un hueco punteado (que lleva las clases contrarias).
+
+.xs (400 px)
+image::03_visibilidad_combinaciones_xs.png[Combinaciones de visibilidad en xs]
+
+.md (800 px)
+image::03_visibilidad_combinaciones_md.png[Combinaciones de visibilidad en md]
+
+.lg (1000 px)
+image::03_visibilidad_combinaciones_lg.png[Combinaciones de visibilidad en lg]
+
+==== Menú de escritorio y de móvil
+
+Dos versiones del mismo contenido, cada una en su tramo: en escritorio los enlaces en fila (`d-none d-md-flex`, que muestra como flex desde md) y en móvil un botón (`d-md-none`) que en un caso real abriría el menú.
+
+[source,html]
+----
+<div class="d-flex align-items-center gap-3 border rounded p-2">
+  <strong>Mi web</strong>
+  <div class="d-none d-md-flex gap-3 ms-auto">
+    <a href="#">Inicio</a> <a href="#">Productos</a> <a href="#">Contacto</a>
+  </div>
+  <button type="button" class="btn btn-outline-secondary btn-sm d-md-none ms-auto">☰ Menú</button>
+</div>
+----
+
+.xs: botón de menú
+image::03_visibilidad_menu_xs.png[Menú en móvil]
+
+.md: enlaces en fila
+image::03_visibilidad_menu_md.png[Menú en escritorio]
+
+==== `d-none` frente a `invisible`
+
+[cols="1m,2m,3",options="header"]
+|===
+|Bootstrap |CSS |¿Conserva el hueco?
+|d-none |display: none |No: los demás se mueven para ocuparlo
+|invisible |visibility: hidden |Sí: no se ve, pero sigue ocupando su sitio
+|===
+
+`invisible` no tiene versiones responsive: no existe `invisible-md`.
+
+.`d-none`, `invisible` y `visibility: hidden` en el elemento 2
+image::03_visibilidad_invisible.png[d-none frente a invisible]
+
+==== Solo para lectores de pantalla: `visually-hidden`
+
+`d-none` oculta el elemento para todo el mundo, también para los lectores de pantalla que usan las personas ciegas.
+`visually-hidden` lo oculta solo a la vista: el lector lo sigue leyendo.
+Caso típico: un botón que solo muestra un icono necesita un texto que diga qué hace. Se verá más a fondo en accesibilidad.
+
+[source,html]
+----
+<button type="button" class="btn btn-outline-secondary">
+  🔍<span class="visually-hidden">Buscar</span>
+</button>
+----
+
+.Solo se ve la lupa; el lector de pantalla lee «Buscar»
+image::03_visibilidad_visually_hidden.png[Botón con texto visually-hidden]
+
+==== Al imprimir: `d-print-*`
+
+Las mismas clases con `print` en lugar de un breakpoint se aplican solo al imprimir:
+
+* `d-print-none`: no sale en papel (menús, botones, publicidad…).
+* `d-none d-print-block`: solo sale en papel.
+
+[source,html]
+----
+<nav class="d-print-none">…</nav>
+<p class="d-none d-print-block">Impreso desde www.mi-web.es</p>
+----
+
+.La misma demo en pantalla y al imprimir
+image::03_visibilidad_print_pantalla.png[En pantalla]
+
+image::03_visibilidad_print_impresion.png[Al imprimir]
+
+TIP: Se comprueba con Ctrl+P y la vista previa de impresión.
+
 === Práctica: flexbox y utilidades
 
 . Crear una caja con un título y un párrafo, y darle relleno con `p-*` hasta que el texto respire.
@@ -771,6 +1328,9 @@ image::03_flex_responsive_md.png[Flexbox responsive en md]
 . Rehacerla con `justify-content-between` y comparar.
 . Centrar un texto en una caja de 300 px de alto en las dos direcciones.
 . Hacer que la barra pase a columna en móvil con `flex-column flex-md-row`.
+. Convertir una de las cajas en una tarjeta con `border`, `rounded-3` y `shadow`.
+. Hacer una portada a pantalla completa con `min-vh-100` y el texto centrado.
+. En la barra, mostrar los enlaces solo desde md y un botón «Menú» solo por debajo de md.
 . Escribir el CSS normal equivalente de cada clase usada.
 
 == Sistema de rejilla
@@ -807,6 +1367,30 @@ La fila tiene un margen negativo del mismo tamaño para que la primera y la últ
 image::04_filas.png[Tres columnas iguales]
 
 IMPORTANT: Una `.row` debe ir dentro de un contenedor (o de otra columna): si no, su margen negativo provoca scroll horizontal.
+
+==== Las 12 columnas
+
+Doce columnas `.col-1`: cada una ocupa 1/12 del ancho de la fila. Todo el sistema se basa en repartir estas 12 partes.
+
+.Doce `.col-1`
+image::04_filas_12.png[Doce columnas col-1]
+
+==== ¿Por qué el contenido va en un elemento interior?
+
+Con el fondo en la propia `.col`, el relleno queda *dentro* del color y no vemos el hueco: parece una sola franja.
+Con el fondo en un `div` dentro de cada `.col`, el relleno queda *fuera* del color y el hueco aparece.
+Por eso el contenido (y su fondo) va siempre en un elemento dentro de la columna.
+
+.Fondo en la `.col` y fondo en un `div` interior
+image::04_filas_fondo.png[Fondo en la columna frente a fondo en un div interior]
+
+==== El margen negativo de la fila, a la vista
+
+Si pintamos el fondo en la `.row`, vemos que sobresale 0.75rem del contenedor por cada lado.
+Así compensa el relleno de la primera y la última columna, y su contenido queda alineado con el texto que va directamente en el contenedor.
+
+.Una `.row` con fondo amarillo bajo un párrafo que va directamente en el contenedor
+image::04_filas_margen_negativo.png[Margen negativo de la fila]
 
 === Columnas automáticas
 
@@ -900,6 +1484,7 @@ image::04_offset_ms_auto.png[Columna con ms-auto]
 
 Las columnas se muestran en el orden del HTML.
 Con `.order-{0..5}`, `.order-first` y `.order-last` (y sus versiones responsive) cambiamos el orden *visual* sin tocar el HTML.
+Las columnas sin clase `order-*` cuentan como `order-0`.
 
 [source,html]
 ----
@@ -917,6 +1502,25 @@ image::04_order_xs.png[Orden en móvil]
 image::04_order_md.png[Orden desde md]
 
 Caso típico: en móvil, el contenido principal antes que la barra lateral.
+
+==== Caso real: contenido primero y menú a la izquierda
+
+En el HTML el contenido va antes que el menú lateral: es lo importante y así se apila primero en móvil.
+Desde md, el menú pasa a la izquierda con `order-md-first`.
+
+[source,html]
+----
+<div class="row">
+  <div class="col-md-8">Contenido</div>
+  <div class="col-md-4 order-md-first">Menú</div>  <!-- a la izquierda desde md -->
+</div>
+----
+
+.xs: el contenido arriba
+image::04_order_real_xs.png[Contenido y menú en móvil]
+
+.md: el menú a la izquierda
+image::04_order_real_md.png[Contenido y menú desde md]
 
 CAUTION: *Accesibilidad:* `order` solo cambia lo que se ve.
 Lectores de pantalla y navegación con tabulador siguen el orden del HTML, así que el HTML debe tener ya un orden lógico.
@@ -943,6 +1547,28 @@ Se cambia *en la fila* con una escala de 0 a 5:
 |4 |1.5rem (el de por defecto en horizontal)
 |5 |3rem
 |===
+
+Por dentro, `g-*`, `gx-*` y `gy-*` solo cambian dos variables CSS de la fila, `--bs-gutter-x` y `--bs-gutter-y`.
+El relleno de las columnas y el margen negativo de la fila se calculan a partir de ellas, así que todo se ajusta a la vez:
+
+[source,css]
+----
+.row {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  margin-right: calc(-.5 * var(--bs-gutter-x));
+  …
+}
+.row > * {
+  padding-right: calc(var(--bs-gutter-x) * .5);
+  margin-top: var(--bs-gutter-y);
+  …
+}
+.g-5 {
+  --bs-gutter-x: 3rem;
+  --bs-gutter-y: 3rem;
+}
+----
 
 .`g-0`: sin hueco
 image::04_gutters_g0.png[Gutter 0]
@@ -983,7 +1609,7 @@ Admite de `row-cols-1` a `row-cols-6` y `row-cols-auto` (cada columna con el anc
 === Anidado
 
 Dentro de una columna podemos poner una *nueva `.row`*, que vuelve a tener 12 columnas *relativas al ancho de esa columna*, no al de la página.
-No hace falta otro contenedor.
+No hace falta otro contenedor: el margen negativo de la fila interior anula el relleno de la columna padre, igual que la fila exterior compensa el del contenedor.
 
 [source,html]
 ----
@@ -1072,6 +1698,8 @@ image::04_layout_panel_lg.png[Panel en escritorio]
 . En el layout 2, quitar `g-3` y observar qué ocurre al apilarse en móvil.
 . En el layout 3, centrar el bloque de datos en una columna de 6 con `offset` en lugar de tres datos.
 
+NOTE: El enunciado y la solución de este ejercicio están en link:../ejercicios/07_rejilla_tres_layouts_enunciado.html[07_rejilla_tres_layouts_enunciado.html] y link:../ejercicios/07_rejilla_tres_layouts_solucion.html[07_rejilla_tres_layouts_solucion.html].
+
 == Tipografía y color
 
 Los estilos de base que Bootstrap aplica sin clases, las utilidades de texto, la paleta de colores del tema, las imágenes responsive y los iconos.
@@ -1101,6 +1729,9 @@ image::05_reboot.png[HTML sin clases con los estilos de Reboot]
 NOTE: La fuente es la del sistema operativo (`system-ui`: Segoe UI en Windows, San Francisco en macOS…).
 Carga rápido porque no se descarga nada, y cada usuario ve la letra a la que está acostumbrado.
 
+TIP: Para ver lo que hace Reboot, comentamos el `<link>` de Bootstrap y recargamos.
+Vuelven la fuente con remates (_serif_), el margen del `body` y los márgenes de arriba de títulos y párrafos.
+
 === Encabezados
 
 `h1` a `h6` tienen tamaños fijados por Bootstrap.
@@ -1125,6 +1756,18 @@ image::05_encabezados.png[Tamaños de encabezado]
 <h2 class="h4">Un título de segundo nivel que se ve pequeño</h2>
 <p class="h1">Un párrafo con aspecto de h1</p>
 <h3>Catálogo <small class="text-body-secondary">otoño 2026</small></h3>
+----
+
+`.h4` no es solo un tamaño: copia todo el estilo de encabezado (`font-size: 1.5rem`, `font-weight: 500` y `line-height: 1.2`). `fs-4` solo da el tamaño.
+En CSS propio, `.h4` equivale a:
+
+[source,css]
+----
+.titulo-mediano {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
 ----
 
 NOTE: `h1` a `h4` son *responsive*: en pantallas pequeñas se reducen solos (Bootstrap lo llama RFS, _responsive font sizes_).
@@ -1162,24 +1805,25 @@ Las utilidades de texto, como las de espaciado, aplican *una sola propiedad CSS*
 |Bootstrap |CSS |Efecto
 |`fs-1` … `fs-6` |`font-size` |Los tamaños de `h1` a `h6`, sin el resto del estilo de encabezado
 |`fw-light`, `fw-normal`, `fw-semibold`, `fw-bold` |`font-weight` |Grosor: 300, 400, 600, 700
-|`fst-italic`, `fst-normal` |`font-style` |Cursiva o normal
+|`fst-italic`, `fst-normal` |`font-style` |Cursiva o normal (`fst-normal` quita la cursiva a lo que la trae de serie, como `<em>`)
 |`text-decoration-underline`, `-line-through`, `-none` |`text-decoration` |Subrayado, tachado o nada (quitar el subrayado de un enlace)
-|`text-uppercase`, `text-lowercase`, `text-capitalize` |`text-transform` |Mayúsculas, minúsculas, primera letra en mayúscula
+|`text-uppercase`, `text-lowercase`, `text-capitalize` |`text-transform` |Mayúsculas, minúsculas, primera letra en mayúscula. Solo cambia cómo se ve: en el HTML el texto sigue como se escribió
 |`text-start`, `text-center`, `text-end` |`text-align` |Alineación; con breakpoint: `text-md-start`
 |`lh-1`, `lh-sm`, `lh-base`, `lh-lg` |`line-height` |Interlineado: 1, 1.25, 1.5, 2
-|`text-nowrap` |`white-space: nowrap` |Sin saltos de línea
+|`text-nowrap` |`white-space: nowrap` |Sin saltos de línea: el texto no baja y puede salirse de su caja
 |`text-truncate` |`overflow` + `text-overflow: ellipsis` + `nowrap` |Corta con «…» lo que no cabe en una línea (necesita un ancho)
 |`small` / `<small>` |`font-size: .875em` |Texto más pequeño, relativo al del padre
 |`mark` / `<mark>` |fondo amarillo |Texto resaltado
 |===
 
-.Tamaño, grosor, decoración y otras utilidades
+.Tamaño, grosor, `fst-normal`, decoración, `text-nowrap` y otras utilidades
 image::05_utilidades.png[Utilidades de texto]
 
 === Listas
 
 Dos clases para las listas: `list-unstyled` quita viñetas y sangría (solo del primer nivel), y `list-inline` + `list-inline-item` pone los elementos en línea.
 Los menús y los pies de página suelen ser listas así.
+Una lista anidada dentro de una `list-unstyled` conserva su viñeta.
 
 [source,html]
 ----
@@ -1231,6 +1875,8 @@ Si la marca es verde, se cambia `primary` y todo se adapta.
 |===
 
 Cada color se aplica al texto con `text-{color}` y al fondo con `bg-{color}`.
+Por dentro usan variables CSS, como todo lo que vimos en `data-bs-theme`: `text-primary` es `color: rgba(var(--bs-primary-rgb), 1)`.
+`text-light` casi no se ve sobre fondo claro: necesita un fondo oscuro.
 
 .`text-*` y `bg-*`
 image::05_colores.png[Colores del tema]
@@ -1248,7 +1894,7 @@ Además están los colores *del cuerpo de la página*, que son los que cambian c
 
 WARNING: `text-muted` sigue funcionando, pero está obsoleta desde la 5.3: se usa `text-body-secondary`.
 
-TIP: Opacidad: `bg-opacity-10`, `-25`, `-50` y `-75`, y `text-opacity-*`, junto a una clase de color, por ejemplo `bg-success bg-opacity-25`.
+TIP: Opacidad: `bg-opacity-10`, `-25`, `-50`, `-75` y `-100`, y `text-opacity-*`, junto a una clase de color, por ejemplo `bg-success bg-opacity-25`.
 
 === Variantes `*-subtle` y `*-emphasis`
 
@@ -1272,6 +1918,7 @@ image::05_subtle.png[Variantes subtle y emphasis en claro y oscuro]
 
 IMPORTANT: Los colores normales (`bg-primary`, `bg-success`…) *no cambian* en modo oscuro.
 Si una página va a tener los dos modos, conviene usar las variantes `-subtle` y `-emphasis` y los colores `body`.
+`text-bg-*` tampoco cambia, y menos aún un color fijo como `style="color: #198754"`: es el mismo verde que `text-success`, pero no lo controla el tema.
 
 === Fondo y texto a la vez: `text-bg-*`
 
@@ -1288,13 +1935,14 @@ Es la clase habitual en las etiquetas: `<span class="badge text-bg-success">`.
 
 Una imagen se muestra a su tamaño real aunque no quepa.
 `img-fluid` aplica `max-width: 100%` y `height: auto`: nunca es más ancha que su contenedor y no se deforma.
+`max-width: 100%` solo limita: una imagen más pequeña que su contenedor *no crece*.
 
 [source,html]
 ----
 <img src="foto.jpg" class="img-fluid" alt="Descripción de la foto">
 ----
 
-.Una imagen de 800 px sin clase (recortada) y con `img-fluid`
+.Una imagen de 800 px sin clase (se sale de su caja) y con `img-fluid`
 image::05_img_fluid.png[Imagen sin clase y con img-fluid]
 
 [cols="2,3",options="header"]
@@ -1308,8 +1956,20 @@ image::05_img_fluid.png[Imagen sin clase y con img-fluid]
 .`img-thumbnail`, `rounded-circle` y `figure`
 image::05_img_otras.png[Otras clases de imagen]
 
+Para la imagen con pie de foto, `<figure>` y `<figcaption>` son etiquetas semánticas: unen la imagen con su descripción.
+Las clases solo les dan estilo:
+
+[source,html]
+----
+<figure class="figure">                                       <!-- el bloque: display: inline-block -->
+  <img class="figure-img img-fluid rounded" src="…" alt="…">  <!-- con margen inferior -->
+  <figcaption class="figure-caption">Un pie de foto.</figcaption>  <!-- más pequeño y atenuado -->
+</figure>
+----
+
 WARNING: El atributo `alt` es obligatorio: describe la imagen para quien no la ve.
-Si es puramente decorativa, `alt=""` (vacío, pero presente).
+Es lo que lee el lector de pantalla y lo que aparece si la imagen no carga.
+Si es puramente decorativa, `alt=""` (vacío, pero presente): así el lector de pantalla se la salta.
 
 === Bootstrap Icons
 
@@ -1325,11 +1985,13 @@ La forma más cómoda es como fuente: una hoja de estilos y una etiqueta `<i>` p
 ----
 
 `bi` activa la fuente de iconos y `bi-{nombre}` elige el icono (los nombres están en https://icons.getbootstrap.com/[icons.getbootstrap.com]).
-Como es texto, el *tamaño* se cambia con `fs-*` y el *color* con `text-*`.
+Como es texto, el *tamaño* se cambia con `fs-*` (o `display-*`) y el *color* con `text-*`.
+Usamos `<i>` por costumbre; vale cualquier etiqueta en línea, como `<span>`.
 
 [source,html]
 ----
 <i class="bi bi-star-fill fs-2 text-warning"></i>
+<i class="bi bi-star-fill display-4 text-warning"></i>
 
 <button type="button" class="btn btn-primary">
   <i class="bi bi-cart3" aria-hidden="true"></i> Añadir al carrito
@@ -1337,6 +1999,10 @@ Como es texto, el *tamaño* se cambia con `fs-*` y el *color* con `text-*`.
 
 <button type="button" class="btn btn-outline-secondary">
   <i class="bi bi-search" aria-hidden="true"></i><span class="visually-hidden">Buscar</span>
+</button>
+
+<button type="button" class="btn btn-outline-danger" aria-label="Borrar">
+  <i class="bi bi-trash" aria-hidden="true"></i>
 </button>
 ----
 
@@ -1349,6 +2015,8 @@ Un botón que solo tiene un icono necesita un texto alternativo: `visually-hidde
 == Referencias
 
 * https://getbootstrap.com/docs/5.3/getting-started/introduction/[Documentación oficial de Bootstrap 5.3]
+* https://getbootstrap.com/docs/5.3/getting-started/download/[Download]
+* https://developer.mozilla.org/es/docs/Learn_web_development/Core/Styling_basics/Values_and_units[Valores y unidades en CSS (MDN): rem y em]
 * https://getbootstrap.com/docs/5.3/layout/containers/[Containers]
 * https://getbootstrap.com/docs/5.3/layout/breakpoints/[Breakpoints]
 * https://getbootstrap.com/docs/5.3/customize/color-modes/[Color modes]
@@ -1358,6 +2026,12 @@ Un botón que solo tiene un icono necesita un texto alternativo: `visually-hidde
 * https://getbootstrap.com/docs/5.3/utilities/spacing/[Spacing]
 * https://getbootstrap.com/docs/5.3/getting-started/rtl/[RTL]
 * https://getbootstrap.com/docs/5.3/utilities/flex/[Flex]
+* https://getbootstrap.com/docs/5.3/utilities/sizing/[Sizing]
+* https://getbootstrap.com/docs/5.3/utilities/borders/[Borders]
+* https://getbootstrap.com/docs/5.3/utilities/shadows/[Shadows]
+* https://getbootstrap.com/docs/5.3/utilities/display/[Display]
+* https://getbootstrap.com/docs/5.3/utilities/visibility/[Visibility]
+* https://getbootstrap.com/docs/5.3/helpers/visually-hidden/[Visually hidden]
 * https://getbootstrap.com/docs/5.3/content/reboot/[Reboot]
 * https://getbootstrap.com/docs/5.3/content/typography/[Typography]
 * https://getbootstrap.com/docs/5.3/utilities/text/[Text]
@@ -1365,4 +2039,5 @@ Un botón que solo tiene un icono necesita un texto alternativo: `visually-hidde
 * https://getbootstrap.com/docs/5.3/utilities/colors/[Colors]
 * https://getbootstrap.com/docs/5.3/helpers/color-background/[Color and background]
 * https://getbootstrap.com/docs/5.3/content/images/[Images]
+* https://getbootstrap.com/docs/5.3/content/figures/[Figures]
 * https://icons.getbootstrap.com/[Bootstrap Icons]

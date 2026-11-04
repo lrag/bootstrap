@@ -11,6 +11,10 @@
     .banda { border: 1px dashed var(--bs-border-color); margin-bottom: .5rem; }
     .banda > div { background: var(--bs-primary-bg-subtle); border: 1px solid var(--bs-primary-border-subtle); padding: .5rem 0; font-family: var(--bs-font-monospace); font-size: .875rem; }
     .banda > div > span { background: var(--bs-body-bg); }
+    /* Caja de las demos */
+    .demo { background: var(--bs-tertiary-bg); border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius); padding: 1rem; margin-bottom: 1rem; }
+    /* Esquema del ejemplo de 862 px */
+    .esquema > div { padding: .5rem .25rem; font-family: var(--bs-font-monospace); font-size: .8rem; text-align: center; overflow: hidden; white-space: nowrap; }
   </style>
 </head>
 <body>
@@ -114,6 +118,30 @@
         Bootstrap. Desde la 5.3 también están expuestos como variables CSS <code>--bs-breakpoint-md</code>, etc.,
         aunque solo como información: las variables CSS no funcionan dentro de una media query.
       </p>
+
+      <h3 class="h5 mt-4">Indicador del breakpoint activo solo con CSS</h3>
+      <p>
+        En <code>05_Containers.html</code> el breakpoint activo se muestra sin JavaScript: seis badges, y cada uno
+        solo se ve en su tramo de anchos gracias a las clases de visibilidad responsive (se ven a fondo en el punto 4).
+        Cada badge parte oculto con <code>d-none</code>, aparece en su breakpoint con <code>d-{bp}-inline</code> y
+        vuelve a ocultarse en el siguiente con <code>d-{bp+1}-none</code>. El de xs es al revés: visible de partida
+        (<code>d-inline</code>) y oculto desde sm.
+      </p>
+      <div class="demo fs-5 text-center">
+        Breakpoint activo:
+        <span class="badge text-bg-danger d-inline d-sm-none">xs (&lt; 576 px)</span>
+        <span class="badge text-bg-warning d-none d-sm-inline d-md-none">sm (≥ 576 px)</span>
+        <span class="badge text-bg-info d-none d-md-inline d-lg-none">md (≥ 768 px)</span>
+        <span class="badge text-bg-primary d-none d-lg-inline d-xl-none">lg (≥ 992 px)</span>
+        <span class="badge text-bg-success d-none d-xl-inline d-xxl-none">xl (≥ 1200 px)</span>
+        <span class="badge text-bg-dark d-none d-xxl-inline">xxl (≥ 1400 px)</span>
+      </div>
+<pre class="mb-0"><code>&lt;span class="badge text-bg-danger d-inline d-sm-none"&gt;xs (&amp;lt; 576 px)&lt;/span&gt;
+&lt;span class="badge text-bg-warning d-none d-sm-inline d-md-none"&gt;sm (≥ 576 px)&lt;/span&gt;
+&lt;span class="badge text-bg-info d-none d-md-inline d-lg-none"&gt;md (≥ 768 px)&lt;/span&gt;
+&lt;span class="badge text-bg-primary d-none d-lg-inline d-xl-none"&gt;lg (≥ 992 px)&lt;/span&gt;
+&lt;span class="badge text-bg-success d-none d-xl-inline d-xxl-none"&gt;xl (≥ 1200 px)&lt;/span&gt;
+&lt;span class="badge text-bg-dark d-none d-xxl-inline"&gt;xxl (≥ 1400 px)&lt;/span&gt;</code></pre>
     </section>
 
     <!-- 3. Tipos de contenedor -->
@@ -174,6 +202,28 @@
       <p class="text-body-secondary small mb-0">
         Los anchos fijos son <code>max-width</code> en píxeles. <code>.container</code> y <code>.container-sm</code> se comportan igual.
       </p>
+
+      <h3 class="h5 mt-4">Ejemplo resuelto: ventana de 862 px</h3>
+      <p>
+        El breakpoint es el ancho de la <strong>ventana</strong>; el contenedor es algo más estrecho para que siempre
+        quede margen a los lados. Con la ventana a <strong>862 px</strong> estamos en <code>md</code> (≥ 768 y &lt; 992),
+        así que <code>.container</code> mide <strong>720 px</strong> y quedan (862 − 720) / 2 = <strong>71 px</strong> a cada lado.
+        El ancho incluye el relleno (<code>box-sizing: border-box</code>): el contenido útil es 720 − 2 × 12 = <strong>696 px</strong>.
+      </p>
+      <div class="demo">
+        <div class="esquema d-flex border">
+          <div class="bg-secondary-subtle" style="width: 8.24%;">71</div>
+          <div class="d-flex p-0 bg-primary-subtle border-start border-end border-primary" style="width: 83.52%;">
+            <div class="bg-warning-subtle" style="width: 1.67%;"></div>
+            <div class="py-2 text-truncate" style="width: 96.66%;">contenido útil: 696 px</div>
+            <div class="bg-warning-subtle" style="width: 1.67%;"></div>
+          </div>
+          <div class="bg-secondary-subtle" style="width: 8.24%;">71</div>
+        </div>
+        <p class="small text-body-secondary text-center mt-2 mb-0">
+          Ventana: 862 px · <code>.container</code>: 720 px (en azul) · relleno: 12 px por lado (en amarillo) · margen: 71 px por lado (en gris)
+        </p>
+      </div>
     </section>
 
     <!-- 4. Demo -->
@@ -186,6 +236,11 @@
       <p class="fs-5">
         Viewport: <strong id="ancho"></strong> px ·
         Breakpoint: <span class="badge text-bg-primary" id="bp"></span>
+      </p>
+      <p class="text-body-secondary small mb-0">
+        Este indicador se calcula con JavaScript a partir de <code>window.innerWidth</code>. Para el breakpoint basta
+        con CSS: la técnica de los seis badges con <code>d-none</code> / <code>d-{bp}-inline</code> /
+        <code>d-{bp+1}-none</code> del <a href="#breakpoints">apartado 2</a>.
       </p>
     </section>
   </main>

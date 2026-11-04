@@ -90,9 +90,69 @@
           </div>
         </div>
       </div>
-      <div class="alert alert-info mb-0" role="alert">
+      <div class="alert alert-info" role="alert">
         Por eso <strong>una <code>.row</code> debe ir dentro de un contenedor</strong> (o de otra columna):
         si no, su margen negativo provoca scroll horizontal.
+      </div>
+
+      <h3 class="h5 mt-4">Las 12 columnas</h3>
+      <p class="mb-2">Doce columnas <code>.col-1</code>: cada una ocupa 1/12 del ancho de la fila. Todo el sistema se basa en repartir estas 12 partes.</p>
+      <div class="demo">
+        <div class="container">
+          <div class="row">
+            <div class="col-1"><div class="caja">1</div></div>
+            <div class="col-1"><div class="caja">2</div></div>
+            <div class="col-1"><div class="caja">3</div></div>
+            <div class="col-1"><div class="caja">4</div></div>
+            <div class="col-1"><div class="caja">5</div></div>
+            <div class="col-1"><div class="caja">6</div></div>
+            <div class="col-1"><div class="caja">7</div></div>
+            <div class="col-1"><div class="caja">8</div></div>
+            <div class="col-1"><div class="caja">9</div></div>
+            <div class="col-1"><div class="caja">10</div></div>
+            <div class="col-1"><div class="caja">11</div></div>
+            <div class="col-1"><div class="caja">12</div></div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="h5 mt-4">¿Por qué el contenido va en un elemento interior?</h3>
+      <p class="mb-2">
+        Con el fondo en la propia <code>.col</code>, el relleno queda <strong>dentro</strong> del color y no vemos el hueco:
+        parece una sola franja. Con el fondo en un <code>div</code> dentro de cada <code>.col</code>, el relleno queda
+        <strong>fuera</strong> del color y el hueco aparece. Por eso el contenido (y su fondo) va siempre en un elemento dentro de la columna.
+      </p>
+      <div class="demo">
+        <div class="container">
+          <p class="small mb-1">Fondo en la propia <code>.col</code>:</p>
+          <div class="row mb-3">
+            <div class="col bg-success-subtle border border-success-subtle py-2 small text-center font-monospace">col</div>
+            <div class="col bg-success-subtle border border-success-subtle py-2 small text-center font-monospace">col</div>
+            <div class="col bg-success-subtle border border-success-subtle py-2 small text-center font-monospace">col</div>
+          </div>
+          <p class="small mb-1">Fondo en un <code>div</code> dentro de cada <code>.col</code>:</p>
+          <div class="row">
+            <div class="col"><div class="caja caja-alt">div dentro de col</div></div>
+            <div class="col"><div class="caja caja-alt">div dentro de col</div></div>
+            <div class="col"><div class="caja caja-alt">div dentro de col</div></div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="h5 mt-4">El margen negativo de la fila, a la vista</h3>
+      <p class="mb-2">
+        Si pintamos el fondo en la <code>.row</code>, vemos que sobresale 0.75rem del contenedor por cada lado.
+        Así compensa el relleno de la primera y la última columna, y su contenido queda alineado con el texto
+        que va directamente en el contenedor.
+      </p>
+      <div class="demo">
+        <div class="container">
+          <p class="small mb-2">Este párrafo está directamente en el contenedor: su borde izquierdo marca dónde empieza el contenido.</p>
+          <div class="row bg-warning-subtle py-2">
+            <div class="col"><div class="caja">col</div></div>
+            <div class="col"><div class="caja">col</div></div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -256,6 +316,7 @@
       <p>
         Las columnas se muestran en el orden del HTML. Con <code>.order-{0..5}</code>, <code>.order-first</code> y
         <code>.order-last</code> (y sus versiones responsive) cambiamos el orden <strong>visual</strong> sin tocar el HTML.
+        Las columnas sin clase <code>order-*</code> cuentan como <code>order-0</code>.
       </p>
       <div class="demo">
         <div class="container">
@@ -270,6 +331,23 @@
         En móvil la segunda columna sube la primera; desde md pasa a ser la última.
         Caso típico: en móvil, el contenido principal antes que la barra lateral.
       </p>
+
+      <p class="mb-2">
+        Caso real: en el HTML el contenido va antes que el menú lateral (es lo importante y así se apila primero en móvil).
+        Desde md, el menú pasa a la izquierda con <code>order-md-first</code>.
+      </p>
+      <div class="demo">
+        <div class="container">
+          <div class="row g-2">
+            <div class="col-md-8"><div class="caja" style="min-height: 4rem">Contenido (primero en el HTML)</div></div>
+            <div class="col-md-4 order-md-first"><div class="caja caja-alt" style="min-height: 4rem">Menú · col-md-4 order-md-first</div></div>
+          </div>
+        </div>
+      </div>
+<pre class="mb-3"><code>&lt;div class="row"&gt;
+  &lt;div class="col-md-8"&gt;Contenido&lt;/div&gt;
+  &lt;div class="col-md-4 order-md-first"&gt;Menú&lt;/div&gt;  &lt;!-- a la izquierda desde md --&gt;
+&lt;/div&gt;</code></pre>
       <div class="alert alert-warning mb-0" role="alert">
         <strong>Accesibilidad:</strong> <code>order</code> solo cambia lo que se ve. Lectores de pantalla y navegación
         con tabulador siguen el orden del HTML, así que el HTML debe tener ya un orden lógico.
@@ -283,6 +361,14 @@
         El gutter por defecto es de <strong>1.5rem</strong> (24 px) en horizontal y 0 en vertical. Se cambia
         <strong>en la fila</strong> con una escala de 0 a 5:
       </p>
+      <p>
+        Por dentro, <code>g-*</code>, <code>gx-*</code> y <code>gy-*</code> solo cambian dos variables CSS de la fila,
+        <code>--bs-gutter-x</code> y <code>--bs-gutter-y</code>. El relleno de las columnas y el margen negativo de la fila
+        se calculan a partir de ellas, así que todo se ajusta a la vez.
+      </p>
+<pre class="mb-4"><code>.row { --bs-gutter-x: 1.5rem; --bs-gutter-y: 0; margin-right: calc(-.5 * var(--bs-gutter-x)); … }
+.row &gt; * { padding-right: calc(var(--bs-gutter-x) * .5); margin-top: var(--bs-gutter-y); … }
+.g-5 { --bs-gutter-x: 3rem; --bs-gutter-y: 3rem; }</code></pre>
       <div class="row g-4 mb-4">
         <div class="col-md-6">
           <table class="table table-sm mb-0">
@@ -385,7 +471,9 @@
       <h2 class="border-bottom pb-2 mb-4">9. Anidado</h2>
       <p>
         Dentro de una columna podemos poner una <strong>nueva <code>.row</code></strong>, que vuelve a tener 12 columnas
-        <strong>relativas al ancho de esa columna</strong>, no al de la página. No hace falta otro contenedor.
+        <strong>relativas al ancho de esa columna</strong>, no al de la página. No hace falta otro contenedor:
+        el margen negativo de la fila interior anula el relleno de la columna padre, igual que la fila exterior
+        compensa el del contenedor.
       </p>
       <div class="demo">
         <div class="container">

@@ -6,13 +6,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Introducción a Bootstrap 5</title>
 
-  <!-- Bootstrap 5.3 por CDN (jsDelivr). En producción añade el atributo integrity que da getbootstrap.com -->
+  <!-- Bootstrap 5.3 por CDN (jsDelivr). En producción se añade el atributo integrity que da getbootstrap.com -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" defer></script>
+
   <style>
-    /* Único CSS propio: resaltar los bloques de código */
+    /* Resaltar los bloques de código */
     pre { background: var(--bs-tertiary-bg); padding: 1rem; border-radius: var(--bs-border-radius); }
+    /* Caja de las demos */
+    .demo { background: var(--bs-tertiary-bg); border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius); padding: 1rem; margin-bottom: 1rem; }
+    .etiqueta { font-family: var(--bs-font-monospace); font-size: .8rem; margin-bottom: .25rem; }
+    /* Demo de variables CSS y selectores de atributo (igual que en 04_Data_bs_theme.html) */
+    :root {
+      --color-modo1: lightGreen;
+      --color-modo2: darkGreen;
+      --estilo-texto-modo1: uppercase;
+      --estilo-texto-modo2: capitalize;
+    }
+    [modo=modo1] { color: var(--color-modo1); text-transform: var(--estilo-texto-modo1); }
+    [modo=modo2] { color: var(--color-modo2); text-transform: var(--estilo-texto-modo2); }
   </style>
+
+  <script>
+    // El script está en el <head>: window.onload espera a que la página termine de cargar
+    window.onload = () => {
+      // Demo de rem: cambia el font-size de <html>
+      const base = document.getElementById('base')
+      document.querySelectorAll('[data-base]').forEach(boton => {
+        boton.addEventListener('click', () => {
+          document.documentElement.style.fontSize = boton.dataset.base + 'px'
+          base.textContent = boton.dataset.base
+        })
+      })
+
+      // Selector de tema de la demo: cambia o quita data-bs-theme en <html>
+      document.querySelectorAll('[data-tema]').forEach(boton => {
+        boton.addEventListener('click', () => {
+          const tema = boton.dataset.tema
+          if (tema) {
+            document.documentElement.setAttribute('data-bs-theme', tema)
+          } else {
+            document.documentElement.removeAttribute('data-bs-theme')
+          }
+          document.getElementById('tema-actual').textContent = tema || 'sin atributo'
+        })
+      })
+    }
+  </script>
 </head>
 <body>
 
@@ -32,6 +74,7 @@
       <ol class="list-group list-group-numbered list-group-horizontal-lg">
         <li class="list-group-item"><a href="#que-es">Qué es Bootstrap</a></li>
         <li class="list-group-item"><a href="#novedades">Novedades frente a v4</a></li>
+        <li class="list-group-item"><a href="#rem">La unidad rem</a></li>
         <li class="list-group-item"><a href="#instalacion">Instalación</a></li>
         <li class="list-group-item"><a href="#plantilla">Plantilla base</a></li>
         <li class="list-group-item"><a href="#tema">data-bs-theme</a></li>
@@ -141,20 +184,128 @@
       </div>
     </section>
 
-    <!-- 3. Instalación -->
+    <!-- 3. La unidad rem -->
+    <section id="rem" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">3. La unidad <code>rem</code></h2>
+      <p>
+        <strong>rem</strong> (<em>root em</em>) es una unidad relativa al tamaño de letra del elemento
+        <strong>raíz</strong>, es decir, de <code>&lt;html&gt;</code>: <code>1rem</code> = el <code>font-size</code> de
+        <code>&lt;html&gt;</code>. Es <strong>CSS puro</strong>, no tiene nada que ver con Bootstrap, pero Bootstrap
+        la usa en casi todo, así que conviene entenderla antes de empezar.
+      </p>
+      <div class="row g-4 mb-4">
+        <div class="col-md-5">
+          <p class="mb-1">Los navegadores usan <strong>16 px</strong> por defecto, así que normalmente:</p>
+          <table class="table table-sm table-striped text-center mb-0">
+            <thead><tr><th scope="col">rem</th><th scope="col">px (base 16)</th></tr></thead>
+            <tbody>
+              <tr><td><code>0.25rem</code></td><td>4 px</td></tr>
+              <tr><td><code>0.5rem</code></td><td>8 px</td></tr>
+              <tr><td><code>1rem</code></td><td>16 px</td></tr>
+              <tr><td><code>1.5rem</code></td><td>24 px</td></tr>
+              <tr><td><code>3rem</code></td><td>48 px</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-7">
+          <div class="alert alert-success h-100 mb-0" role="alert">
+            <strong>Accesibilidad.</strong> Si cambia el <code>font-size</code> de <code>&lt;html&gt;</code>, cambia todo
+            lo que esté medido en rem. Eso ocurre, por ejemplo, cuando alguien aumenta el tamaño de letra en la
+            configuración del navegador porque ve mal: con rem el diseño crece entero, en proporción y sin descuadrarse;
+            con px se queda igual.
+          </div>
+        </div>
+      </div>
+
+      <h3 class="h4">rem frente a px</h3>
+      <p>
+        Con la base de 16 px, <code>10rem</code> = 10 × 16 = <strong>160 px</strong>, y <code>1.5rem</code> = 24 px, pero
+        solo mientras la base sea 16 px. Los botones de la demo simulan la preferencia del navegador cambiando el
+        <code>font-size</code> de <code>&lt;html&gt;</code> (afecta a toda esta página): la barra en rem crece o encoge,
+        la de px se queda igual.
+      </p>
+      <div class="demo">
+        <p class="fs-5 mb-2">Ahora mismo <strong>1rem = <span id="base">16</span> px</strong></p>
+        <div class="btn-group mb-3" role="group" aria-label="Tamaño de letra de html">
+          <button type="button" class="btn btn-outline-primary" data-base="12">12 px</button>
+          <button type="button" class="btn btn-outline-primary" data-base="16">16 px</button>
+          <button type="button" class="btn btn-outline-primary" data-base="20">20 px</button>
+          <button type="button" class="btn btn-outline-primary" data-base="24">24 px</button>
+        </div>
+        <div class="bg-primary-subtle border border-primary-subtle p-2 mb-2" style="width: 10rem;">width: 10rem</div>
+        <div class="bg-secondary-subtle border border-secondary-subtle p-2 mb-3" style="width: 160px;">width: 160px</div>
+        <p class="mb-1" style="font-size: 1.5rem;">Texto con font-size: 1.5rem</p>
+        <p class="mb-0" style="font-size: 24px;">Texto con font-size: 24px</p>
+      </div>
+<pre><code>document.documentElement.style.fontSize = '20px'</code></pre>
+
+      <h3 class="h4 mt-4">rem frente a em</h3>
+      <p>
+        <code>em</code> es relativo al tamaño de letra del elemento <strong>padre</strong>, así que al anidar
+        <strong>se acumula</strong>: <code>1.2em</code> dentro de <code>1.2em</code> dentro de <code>1.2em</code> =
+        1.2 × 1.2 × 1.2 = <strong>1.728</strong> veces la base. <code>rem</code> siempre mira a <code>&lt;html&gt;</code>:
+        aunque lo anidemos, <code>1.2rem</code> es siempre 1.2 veces la base. Por eso rem es más predecible.
+      </p>
+      <div class="demo">
+        <div class="row g-3 align-items-start">
+          <div class="col-md-6">
+            <div class="border p-2" style="font-size: 1.2em;">
+              1.2em
+              <div class="border p-2" style="font-size: 1.2em;">
+                1.2em dentro de 1.2em
+                <div class="border p-2" style="font-size: 1.2em;">1.2em dentro de 1.2em dentro de 1.2em</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="border p-2" style="font-size: 1.2rem;">
+              1.2rem
+              <div class="border p-2" style="font-size: 1.2rem;">
+                1.2rem dentro de 1.2rem
+                <div class="border p-2" style="font-size: 1.2rem;">1.2rem dentro de 1.2rem dentro de 1.2rem</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="h4 mt-4">Bootstrap usa rem</h3>
+      <p>
+        Los márgenes y rellenos (<code>m-*</code>, <code>p-*</code>), los gutters y los tamaños de letra de Bootstrap
+        están en rem. Su escala de espaciado: <code>1</code> → 0.25rem (4 px), <code>2</code> → 0.5rem (8 px),
+        <code>3</code> → 1rem (16 px), <code>4</code> → 1.5rem (24 px), <code>5</code> → 3rem (48 px).
+        Al cambiar la base con los botones de arriba, estas cajas cambian su relleno en proporción al texto.
+      </p>
+      <div class="demo">
+        <div class="d-flex flex-wrap gap-3 align-items-start">
+          <div class="bg-success-subtle border border-success-subtle p-1">p-1</div>
+          <div class="bg-success-subtle border border-success-subtle p-2">p-2</div>
+          <div class="bg-success-subtle border border-success-subtle p-3">p-3</div>
+          <div class="bg-success-subtle border border-success-subtle p-4">p-4</div>
+          <div class="bg-success-subtle border border-success-subtle p-5">p-5</div>
+        </div>
+      </div>
+      <div class="alert alert-warning mb-0" role="alert">
+        <strong>Excepción:</strong> los <strong>breakpoints</strong> (576, 768, 992… px) y los <strong>anchos de los
+        contenedores</strong> (540, 720, 960… px) están en <strong>px</strong>, no en rem.
+      </div>
+    </section>
+
+    <!-- 4. Instalación -->
     <section id="instalacion" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">3. Instalación</h2>
+      <h2 class="border-bottom pb-2 mb-4">4. Instalación</h2>
       <div class="row g-4">
         <div class="col-lg-6">
           <div class="card h-100">
             <div class="card-header fw-semibold">Opción A · CDN</div>
             <div class="card-body">
               <p>La más rápida: no requiere instalar nada. Ideal para prototipos y para empezar el curso.</p>
-              <p class="mb-1">En el <code>&lt;head&gt;</code>:</p>
+              <p class="mb-1">En el <code>&lt;head&gt;</code>, primero el CSS:</p>
 <pre><code>&lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"&gt;</code></pre>
-              <p class="mb-1">Al final del <code>&lt;body&gt;</code> (incluye Popper):</p>
-<pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;</code></pre>
+              <p class="mb-1">Y después el JS (incluye Popper), también en el <code>&lt;head&gt;</code> y con <code>defer</code>:</p>
+<pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        defer&gt;&lt;/script&gt;</code></pre>
             </div>
           </div>
         </div>
@@ -174,16 +325,37 @@ npm install bootstrap@5.3</code></pre>
             </div>
           </div>
         </div>
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header fw-semibold">Opción C · Copia local descargada</div>
+            <div class="card-body">
+              <div class="row g-4">
+                <div class="col-lg-5">
+                  <p class="mb-0">
+                    Se descarga el CSS y el JS compilados desde <a href="https://getbootstrap.com/docs/5.3/getting-started/download/">getbootstrap.com</a>,
+                    se copian en una carpeta del proyecto (en el curso, <code>recursos/bootstrap/</code>) y se enlazan con
+                    rutas relativas. Funciona sin conexión y no depende de un servidor externo, pero las actualizaciones
+                    son manuales.
+                  </p>
+                </div>
+                <div class="col-lg-7">
+<pre class="mb-0"><code>&lt;link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet"&gt;
+&lt;script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer&gt;&lt;/script&gt;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="alert alert-info mt-4 mb-0" role="alert">
         <strong>¿bundle o no bundle?</strong> <code>bootstrap.bundle.min.js</code> incluye Popper, necesario para
-        dropdowns, tooltips y popovers. <code>bootstrap.min.js</code> no lo incluye y tendrías que cargarlo aparte.
+        dropdowns, tooltips y popovers. <code>bootstrap.min.js</code> no lo incluye y hay que cargarlo aparte.
       </div>
     </section>
 
-    <!-- 4. Plantilla base -->
+    <!-- 5. Plantilla base -->
     <section id="plantilla" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">4. Estructura de una plantilla base</h2>
+      <h2 class="border-bottom pb-2 mb-4">5. Estructura de una plantilla base</h2>
       <div class="row g-4">
         <div class="col-lg-7">
 <pre><code>&lt;!doctype html&gt;
@@ -194,13 +366,13 @@ npm install bootstrap@5.3</code></pre>
   &lt;title&gt;Mi primera página con Bootstrap&lt;/title&gt;
   &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
         rel="stylesheet"&gt;
+  &lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+          defer&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
   &lt;div class="container"&gt;
     &lt;h1&gt;¡Hola, Bootstrap!&lt;/h1&gt;
   &lt;/div&gt;
-
-  &lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
         </div>
@@ -222,34 +394,78 @@ npm install bootstrap@5.3</code></pre>
               <strong>CSS en el <code>&lt;head&gt;</code></strong>: evita que la página se pinte sin estilos.
             </li>
             <li class="list-group-item">
-              <strong>JS al final del <code>&lt;body&gt;</code></strong>: no bloquea el pintado del contenido.
+              <strong>JS en el <code>&lt;head&gt;</code> con <code>defer</code></strong>: se descarga en paralelo
+              sin bloquear el pintado y se ejecuta con el DOM completo.
             </li>
           </ol>
         </div>
       </div>
 
+      <h3 class="h4 mt-5">El atributo <code>defer</code> y <code>window.onload</code></h3>
+      <p>
+        Un <code>&lt;script&gt;</code> normal detiene la lectura del HTML hasta que se descarga y se ejecuta. Con
+        <code>defer</code>, el fichero <strong>se descarga en paralelo</strong> sin bloquear el HTML y
+        <strong>se ejecuta cuando el DOM está completo</strong>, respetando el orden de los scripts. Por eso el JS de
+        Bootstrap puede ir en el <code>&lt;head&gt;</code>, justo después del CSS.
+      </p>
+      <p>
+        Nuestro propio código va en otro <code>&lt;script&gt;</code> del <code>&lt;head&gt;</code>, después del de
+        Bootstrap. Como en ese momento los elementos del <code>&lt;body&gt;</code> todavía no existen, lo metemos en
+        <code>window.onload</code>: se ejecuta cuando la página ha terminado de cargar.
+      </p>
+<pre><code>&lt;script src="…/bootstrap.bundle.min.js" defer&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.onload = () =&gt; {
+    document.getElementById('ancho').textContent = window.innerWidth
+  }
+&lt;/script&gt;</code></pre>
+
+      <h3 class="h4 mt-5">El elemento <code>&lt;meta&gt;</code></h3>
+      <p>
+        Etiqueta de <strong>metadatos</strong>: información <em>sobre</em> el documento que no se muestra en la página.
+        Siempre va dentro del <code>&lt;head&gt;</code>, es un <strong>elemento vacío</strong> (no tiene contenido ni
+        etiqueta de cierre <code>&lt;/meta&gt;</code>) y cada una expresa una pareja <strong>nombre-valor</strong> con
+        atributos (<code>charset</code>, <code>name</code> + <code>content</code>…). La <code>meta charset</code> va la
+        primera para que tildes y eñes se lean bien.
+      </p>
+
       <h3 class="h4 mt-5">La meta viewport</h3>
       <p>
-        Sin ella, los móviles simulan una pantalla de unos 980 px de ancho y reducen la página: los breakpoints
-        nunca se activan y todo se ve diminuto. Con <code>width=device-width</code> el ancho de la página es el
-        del dispositivo, y con <code>initial-scale=1</code> no se aplica zoom inicial.
+        El viewport es el área visible donde el navegador pinta la página. Sin la meta viewport, el navegador del móvil
+        simula una pantalla de escritorio de unos <strong>980 px</strong>, pinta la página a ese tamaño y luego la reduce
+        para que quepa: todo se ve diminuto y los breakpoints de Bootstrap <strong>creen que están en un escritorio</strong>
+        (980 px es <code>md</code>, así que se activa <code>md</code> en lugar de <code>xs</code>).
       </p>
+      <p>
+        Con <code>width=device-width</code> el ancho de la página es el del dispositivo en <strong>píxeles CSS</strong>, y
+        con <code>initial-scale=1</code> el zoom inicial es del 100 %. Los píxeles CSS no son los físicos de la
+        pantalla: un iPhone de <strong>1170 px físicos</strong> con densidad ×3 mide <strong>390 px CSS</strong>.
+      </p>
+      <div class="alert alert-info" role="alert">
+        La meta <strong>no hace la página responsive</strong>: solo hace que el navegador diga la verdad sobre su ancho,
+        para que las media queries de Bootstrap (sm, md, lg…) puedan funcionar.
+      </div>
       <div class="alert alert-warning mb-0" role="alert">
-        <strong>Prueba:</strong> abre esta página en las herramientas de desarrollo (F12 → modo dispositivo),
-        borra la meta viewport y recarga. Observa cómo la rejilla deja de adaptarse.
+        <strong>Prueba:</strong> en las herramientas de desarrollo (F12 → modo dispositivo), al borrar la meta viewport
+        y recargar, la rejilla deja de adaptarse y el indicador de breakpoint de <code>03_Meta.html</code> marca
+        <code>md</code> en un móvil.
       </div>
     </section>
 
-    <!-- 5. data-bs-theme -->
+    <!-- 6. data-bs-theme -->
     <section id="tema" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">5. Modos de color con <code>data-bs-theme</code></h2>
+      <h2 class="border-bottom pb-2 mb-4">6. Modos de color con <code>data-bs-theme</code></h2>
       <p>
         Desde la versión 5.3, el atributo <code>data-bs-theme</code> cambia los colores de todos los componentes.
         Se puede poner en <code>&lt;html&gt;</code> para toda la página o en un elemento concreto para solo esa zona.
+        Bootstrap <strong>redefine sus variables CSS</strong> (<code>--bs-body-bg</code>, <code>--bs-body-color</code>,
+        <code>--bs-border-color</code>…) para ese modo, y todos los componentes que las usan cambian de color a la vez,
+        <strong>sin tocar ni una clase</strong>. Si quitamos el atributo, la página es clara: <code>light</code> es el
+        valor por defecto.
       </p>
 
       <div class="row g-4">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="card h-100">
             <div class="card-body">
               <h3 class="h5 card-title">Toda la página</h3>
@@ -257,6 +473,7 @@ npm install bootstrap@5.3</code></pre>
               <div class="btn-group" role="group" aria-label="Modo de color de la página">
                 <button type="button" class="btn btn-outline-primary" data-tema="light">Claro</button>
                 <button type="button" class="btn btn-outline-primary" data-tema="dark">Oscuro</button>
+                <button type="button" class="btn btn-outline-primary" data-tema="">Quitar</button>
               </div>
               <p class="card-text small text-body-secondary mt-3 mb-0">
                 Valor actual: <code id="tema-actual">light</code>
@@ -264,7 +481,7 @@ npm install bootstrap@5.3</code></pre>
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <!-- Esta card es siempre oscura, independientemente del tema de la página -->
           <div class="card h-100" data-bs-theme="dark">
             <div class="card-body">
@@ -274,25 +491,103 @@ npm install bootstrap@5.3</code></pre>
             </div>
           </div>
         </div>
+        <div class="col-md-4">
+          <!-- Caso inverso: con la página en oscuro, esta card sigue clara -->
+          <div class="card h-100" data-bs-theme="light">
+            <div class="card-body">
+              <h3 class="h5 card-title">Zona clara en página oscura</h3>
+              <p class="card-text">Al revés: con la página en oscuro, <code>data-bs-theme="light"</code> deja esta zona clara.</p>
+<pre class="mb-0"><code>&lt;div class="card" data-bs-theme="light"&gt;…&lt;/div&gt;</code></pre>
+            </div>
+          </div>
+        </div>
       </div>
-      <p class="mt-3 mb-0 text-body-secondary">
+
+      <h3 class="h4 mt-5">Cambiar el modo con JavaScript</h3>
+      <p>
+        Basta con cambiar el atributo del elemento <code>&lt;html&gt;</code>. <code>document</code> es la raíz del árbol
+        DOM, pero no es una etiqueta HTML; <code>document.documentElement</code> sí: es la etiqueta <code>&lt;html&gt;</code>.
+      </p>
+<pre><code>document.documentElement.setAttribute('data-bs-theme', 'dark')
+document.documentElement.removeAttribute('data-bs-theme')</code></pre>
+
+      <h3 class="h4 mt-5">Cómo funciona por dentro</h3>
+      <p>
+        Es CSS normal: <strong>variables CSS</strong> declaradas en <code>:root</code>, leídas con <code>var()</code>, y
+        <strong>selectores de atributo</strong> que aplican unas u otras según el valor del atributo. Lo vemos primero
+        con un atributo inventado, <code>modo</code>, como en <code>04_Data_bs_theme.html</code>:
+      </p>
+      <div class="row g-4">
+        <div class="col-lg-6">
+<pre><code>:root {
+  --color-modo1: lightGreen;
+  --color-modo2: darkGreen;
+  --estilo-texto-modo1: uppercase;
+  --estilo-texto-modo2: capitalize;
+}
+[modo=modo1] {
+  color: var(--color-modo1);
+  text-transform: var(--estilo-texto-modo1);
+}
+[modo=modo2] {
+  color: var(--color-modo2);
+  text-transform: var(--estilo-texto-modo2);
+}</code></pre>
+        </div>
+        <div class="col-lg-6">
+<pre><code>&lt;span modo="modo1"&gt;modo 1&lt;/span&gt;
+&lt;span modo="modo2"&gt;modo 2&lt;/span&gt;
+&lt;span modo="modo1"&gt;
+  &lt;span&gt;modo 1&lt;/span&gt;
+&lt;/span&gt;
+&lt;span&gt;modo&lt;/span&gt;</code></pre>
+          <div class="demo text-center fs-5 mb-0">
+            <span modo="modo1"><b>modo 1</b></span>
+            <span modo="modo2"><b>modo 2</b></span>
+            <span modo="modo1"><span><b>modo 1</b></span></span>
+            <span><b>modo</b></span>
+          </div>
+        </div>
+      </div>
+      <p class="mt-3">
+        El <code>&lt;span&gt;</code> interior del tercer ejemplo no tiene atributo, pero <strong>hereda</strong> el color y el
+        <code>text-transform</code> de su padre; el último no tiene ningún antepasado con <code>modo</code> y se queda
+        con los estilos normales. Bootstrap hace lo mismo con <code>data-bs-theme</code> (simplificado):
+      </p>
+<pre><code>:root, [data-bs-theme=light] {
+  --bs-body-bg: #fff;
+  --bs-body-color: #212529;
+  --bs-border-color: #dee2e6;
+}
+[data-bs-theme=dark] {
+  --bs-body-bg: #212529;
+  --bs-body-color: #dee2e6;
+  --bs-border-color: #495057;
+}
+body {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+}</code></pre>
+      <p class="mb-0">
+        Como las variables CSS se heredan, un <code>data-bs-theme</code> en un elemento concreto redefine las variables
+        para él y sus descendientes: por eso funciona tanto en <code>&lt;html&gt;</code> como en una sola card.
         En el punto de modo claro y oscuro veremos cómo crear un selector de tema completo que recuerde la preferencia.
       </p>
     </section>
 
-    <!-- 6. Práctica -->
+    <!-- 7. Práctica -->
     <section id="practica" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">6. Práctica</h2>
+      <h2 class="border-bottom pb-2 mb-4">7. Práctica</h2>
       <div class="card border-success">
         <div class="card-body">
-          <h3 class="h5 card-title">Tu primera plantilla</h3>
+          <h3 class="h5 card-title">Primera plantilla</h3>
           <ol class="mb-0">
-            <li>Crea una carpeta de proyecto y ábrela en VS Code.</li>
-            <li>Crea un fichero <code>index.html</code> con la plantilla base del apartado 4.</li>
-            <li>Ábrelo en el navegador y comprueba en F12 → Red que se cargan el CSS y el JS de Bootstrap.</li>
-            <li>Añade un párrafo con la clase <code>lead</code> y un botón con <code>class="btn btn-primary"</code>.</li>
-            <li>Cambia <code>data-bs-theme</code> a <code>dark</code> y observa qué cambia.</li>
-            <li><em>Opcional:</em> instala Bootstrap con npm y enlaza los ficheros de <code>node_modules</code> en lugar del CDN.</li>
+            <li>Crear una carpeta de proyecto y abrirla en VS Code.</li>
+            <li>Crear un fichero <code>index.html</code> con la plantilla base del apartado 5.</li>
+            <li>Abrirlo en el navegador y comprobar en F12 → Red que se cargan el CSS y el JS de Bootstrap.</li>
+            <li>Añadir un párrafo con la clase <code>lead</code> y un botón con <code>class="btn btn-primary"</code>.</li>
+            <li>Cambiar <code>data-bs-theme</code> a <code>dark</code> y observar qué cambia.</li>
+            <li><em>Opcional:</em> instalar Bootstrap con npm, o descargar la copia local, y enlazar esos ficheros en lugar del CDN.</li>
           </ol>
         </div>
       </div>
@@ -305,16 +600,5 @@ npm install bootstrap@5.3</code></pre>
     Referencia: <a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/">documentación oficial</a>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // Selector de tema de la demo: cambia data-bs-theme en <html>
-    document.querySelectorAll('[data-tema]').forEach(boton => {
-      boton.addEventListener('click', () => {
-        const tema = boton.dataset.tema
-        document.documentElement.setAttribute('data-bs-theme', tema)
-        document.getElementById('tema-actual').textContent = tema
-      })
-    })
-  </script>
 </body>
 </html>

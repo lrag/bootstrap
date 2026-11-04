@@ -17,6 +17,10 @@ const GUIA_05 = guia('05_tipografia_color.html')
 // Capturas de las demos: [fichero, selector de la demo, anchos de ventana]
 // Si hay varios anchos, el fichero lleva el sufijo del breakpoint (04_responsive_xs.png...)
 const ANCHOS = { xs: 400, sm: 600, md: 800, lg: 1000, xl: 1250 }
+const CAPTURAS_02 = [
+  ['02_indicador',  '#breakpoints .demo >> nth=0', ['xs', 'md', 'xl']],
+  ['02_ejemplo_862', '#tipos .demo >> nth=0',      ['lg']],
+]
 const CAPTURAS_03 = [
   ['03_espaciado_escala',      '#escala .demo >> nth=0',      ['lg']],
   ['03_espaciado_lados',       '#lados .demo >> nth=0',       ['lg']],
@@ -25,14 +29,32 @@ const CAPTURAS_03 = [
   ['03_espaciado_start_end',   '#start-end .demo >> nth=0',   ['lg']],
   ['03_espaciado_responsive',  '#responsive .demo >> nth=0',  ['xs', 'md']],
   ['03_flex_contenedor',       '#flex .demo >> nth=0',        ['lg']],
+  ['03_flex_column_span',      '#flex .demo >> nth=1',        ['lg']],
   ['03_flex_justify',          '#justify .demo >> nth=0',     ['lg']],
   ['03_flex_align',            '#align .demo >> nth=0',       ['lg']],
   ['03_flex_gap_wrap',         '#gap-wrap .demo >> nth=0',    ['lg']],
+  ['03_flex_nowrap',           '#gap-wrap .demo >> nth=1',    ['lg']],
   ['03_flex_elementos',        '#elementos .demo >> nth=0',   ['lg']],
+  ['03_flex_grow',             '#elementos .demo >> nth=1',   ['lg']],
   ['03_flex_responsive',       '#flex-responsive .demo >> nth=0', ['xs', 'md']],
+  // '#tamanos .demo >> nth=2' (portada con min-vh-100) no se captura: mide toda la pantalla
+  ['03_tamanos_w_h',           '#tamanos .demo >> nth=0',     ['lg']],
+  ['03_tamanos_mw',            '#tamanos .demo >> nth=1',     ['lg']],
+  ['03_bordes',                '#bordes .demo >> nth=0',      ['lg']],
+  ['03_bordes_rounded',        '#bordes .demo >> nth=1',      ['lg']],
+  ['03_sombras',               '#sombras .demo >> nth=0',     ['lg']],
+  ['03_sombras_tarjeta',       '#sombras .demo >> nth=1',     ['lg']],
+  ['03_visibilidad_indicador', '#visibilidad .demo >> nth=0', ['xs', 'md', 'xl']],
+  ['03_visibilidad_combinaciones', '#visibilidad .demo >> nth=1', ['xs', 'md', 'lg']],
+  ['03_visibilidad_menu',      '#visibilidad .demo >> nth=2', ['xs', 'md']],
+  ['03_visibilidad_invisible', '#visibilidad .demo >> nth=3', ['lg']],
+  ['03_visibilidad_visually_hidden', '#visibilidad .demo >> nth=4', ['lg']],
 ]
 const CAPTURAS_04 = [
   ['04_filas',           '#filas .demo >> nth=0',       ['lg']],
+  ['04_filas_12',        '#filas .demo >> nth=1',       ['lg']],
+  ['04_filas_fondo',     '#filas .demo >> nth=2',       ['lg']],
+  ['04_filas_margen_negativo', '#filas .demo >> nth=3', ['lg']],
   ['04_auto_iguales',    '#automaticas .demo >> nth=0', ['lg']],
   ['04_auto_col_auto',   '#automaticas .demo >> nth=1', ['lg']],
   ['04_fijas',           '#fijas .demo >> nth=0',       ['lg']],
@@ -42,6 +64,7 @@ const CAPTURAS_04 = [
   ['04_offset',          '#offset .demo >> nth=0',      ['lg']],
   ['04_offset_ms_auto',  '#offset .demo >> nth=1',      ['lg']],
   ['04_order',           '#order .demo >> nth=0',       ['xs', 'md']],
+  ['04_order_real',      '#order .demo >> nth=1',       ['xs', 'md']],
   ['04_gutters_g0',      '#gutters .demo >> nth=0',     ['lg']],
   ['04_gutters_g5',      '#gutters .demo >> nth=1',     ['lg']],
   ['04_gutters_gx1_gy4', '#gutters .demo >> nth=2',     ['lg']],
@@ -75,13 +98,20 @@ async function capturarElemento(page, selector, fichero) {
 (async () => {
   const browser = await chromium.launch()
 
-  // 01 · Modo claro y oscuro de la sección data-bs-theme
+  // 01 · La unidad rem (con la base de 16 px y de 24 px) y modos de color con data-bs-theme
   {
     const page = await browser.newPage({ viewport: { width: 1200, height: 900 } })
     await page.goto(GUIA_01, { waitUntil: 'networkidle' })
-    await capturarElemento(page, '#tema', '01_tema_claro.png')
+    await capturarElemento(page, '#rem .demo >> nth=0', '01_rem_base16.png')
+    await capturarElemento(page, '#rem .demo >> nth=1', '01_rem_em.png')
+    await capturarElemento(page, '#rem .demo >> nth=2', '01_rem_bootstrap.png')
+    await page.click('[data-base="24"]')
+    await capturarElemento(page, '#rem .demo >> nth=0', '01_rem_base24.png')
+    await page.click('[data-base="16"]')
+    await capturarElemento(page, '#tema .demo >> nth=0', '01_tema_modo.png')
+    await capturarElemento(page, '#tema .row >> nth=0', '01_tema_claro.png')
     await page.click('[data-tema="dark"]')
-    await capturarElemento(page, '#tema', '01_tema_oscuro.png')
+    await capturarElemento(page, '#tema .row >> nth=0', '01_tema_oscuro.png')
     await page.close()
   }
 
@@ -119,8 +149,8 @@ async function capturarElemento(page, selector, fichero) {
     await page.close()
   }
 
-  // 03, 04 y 05 · Demos del espaciado, la rejilla y la tipografía, una página por ancho de ventana
-  for (const [url, capturas] of [[GUIA_03, CAPTURAS_03], [GUIA_04, CAPTURAS_04], [GUIA_05, CAPTURAS_05]]) {
+  // 02, 03, 04 y 05 · Demos de las guías, una página por ancho de ventana
+  for (const [url, capturas] of [[GUIA_02, CAPTURAS_02], [GUIA_03, CAPTURAS_03], [GUIA_04, CAPTURAS_04], [GUIA_05, CAPTURAS_05]]) {
     for (const [bp, ancho] of Object.entries(ANCHOS)) {
       const pendientes = capturas.filter(([, , bps]) => bps.includes(bp))
       if (!pendientes.length) continue
@@ -134,6 +164,17 @@ async function capturarElemento(page, selector, fichero) {
       }
       await page.close()
     }
+  }
+
+  // 03 · d-print-*: la misma demo en pantalla y como se imprime
+  {
+    const page = await browser.newPage({ viewport: { width: 1000, height: 900 } })
+    await page.goto(GUIA_03, { waitUntil: 'networkidle' })
+    await page.addStyleTag({ content: '.indicador { display: none !important; }' })
+    await capturarElemento(page, '#visibilidad .demo >> nth=5', '03_visibilidad_print_pantalla.png')
+    await page.emulateMedia({ media: 'print' })
+    await capturarElemento(page, '#visibilidad .demo >> nth=5', '03_visibilidad_print_impresion.png')
+    await page.close()
   }
 
   await browser.close()
