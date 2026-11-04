@@ -24,37 +24,18 @@
       EL PROBLEMA: UNA TABLA ANCHA
       Una tabla no se encoge por debajo del ancho de su contenido.
       Con muchas columnas, en el móvil se sale por la derecha del contenedor
-      y aparece scroll horizontal en TODA la página (estrechamos la ventana para verlo).
+      y aparece scroll horizontal en TODA la página.
+
+      En una pantalla ancha la tabla cabe y no pasa nada. Para verlo a cualquier ancho,
+      metemos las tablas de este ejemplo y del siguiente en una caja de 400 px
+      (style="max-width: 400px"), como si fuera la pantalla de un móvil.
+      Aquí la tabla se sale por la derecha de la caja.
     -->
     <h2 class="h4 mt-5">El problema: una tabla ancha</h2>
 
-    <p class="mb-1">Tabla de ocho columnas, sin envolver:</p>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th scope="col">Referencia</th><th scope="col">Producto</th><th scope="col">Categoría</th><th scope="col">Proveedor</th>
-          <th scope="col">Almacén</th><th scope="col">Precio</th><th scope="col">Stock</th><th scope="col">Última entrada</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>PER-0012</td><td>Teclado mecánico</td><td>Periféricos</td><td>Distribuciones Norte</td><td>Madrid</td><td>39,90 €</td><td>25</td><td>02/11/2026</td></tr>
-        <tr><td>PAN-0103</td><td>Monitor 27"</td><td>Pantallas</td><td>Imagen y Sonido S.L.</td><td>Valencia</td><td>249,00 €</td><td>8</td><td>28/10/2026</td></tr>
-        <tr><td>PER-0045</td><td>Ratón inalámbrico</td><td>Periféricos</td><td>Distribuciones Norte</td><td>Madrid</td><td>19,50 €</td><td>0</td><td>15/09/2026</td></tr>
-      </tbody>
-    </table>
-
-    <!--
-      LA SOLUCIÓN: table-responsive
-      Envolvemos la tabla en un div con table-responsive.
-      Ese div tiene overflow-x: auto: si la tabla no cabe, el scroll horizontal
-      aparece SOLO en ese div. La página no se mueve; la tabla se desliza dentro de su caja.
-      La clase va en el div que envuelve, no en la tabla.
-    -->
-    <h2 class="h4 mt-5">La solución: <code>table-responsive</code></h2>
-
-    <p class="mb-1">La misma tabla dentro de <code>&lt;div class="table-responsive"&gt;</code>:</p>
-    <div class="table-responsive">
-      <table class="table table-bordered">
+    <p class="mb-1">Tabla de ocho columnas, sin envolver, en una caja de 400 px:</p>
+    <div class="border border-danger mb-3" style="max-width: 400px">
+      <table class="table table-bordered mb-0">
         <thead>
           <tr>
             <th scope="col">Referencia</th><th scope="col">Producto</th><th scope="col">Categoría</th><th scope="col">Proveedor</th>
@@ -70,10 +51,40 @@
     </div>
 
     <!--
+      LA SOLUCIÓN: table-responsive
+      Envolvemos la tabla en un div con table-responsive.
+      Ese div tiene overflow-x: auto: si la tabla no cabe, el scroll horizontal
+      aparece SOLO en ese div. La página no se mueve; la tabla se desliza dentro de su caja.
+      Si la tabla cabe, no hace nada: por eso en pantalla ancha y sin la caja de 400 px
+      las dos tablas se verían iguales.
+      La clase va en el div que envuelve, no en la tabla.
+    -->
+    <h2 class="h4 mt-5">La solución: <code>table-responsive</code></h2>
+
+    <p class="mb-1">La misma tabla dentro de <code>&lt;div class="table-responsive"&gt;</code>, en la caja de 400 px:</p>
+    <div class="border border-success mb-3" style="max-width: 400px">
+      <div class="table-responsive">
+        <table class="table table-bordered mb-0">
+          <thead>
+            <tr>
+              <th scope="col">Referencia</th><th scope="col">Producto</th><th scope="col">Categoría</th><th scope="col">Proveedor</th>
+              <th scope="col">Almacén</th><th scope="col">Precio</th><th scope="col">Stock</th><th scope="col">Última entrada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>PER-0012</td><td>Teclado mecánico</td><td>Periféricos</td><td>Distribuciones Norte</td><td>Madrid</td><td>39,90 €</td><td>25</td><td>02/11/2026</td></tr>
+            <tr><td>PAN-0103</td><td>Monitor 27"</td><td>Pantallas</td><td>Imagen y Sonido S.L.</td><td>Valencia</td><td>249,00 €</td><td>8</td><td>28/10/2026</td></tr>
+            <tr><td>PER-0045</td><td>Ratón inalámbrico</td><td>Periféricos</td><td>Distribuciones Norte</td><td>Madrid</td><td>19,50 €</td><td>0</td><td>15/09/2026</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!--
       Con CSS propio sería lo mismo: un div con overflow-x: auto.
     -->
     <p class="mb-1">Con CSS propio: <code>&lt;div style="overflow-x: auto"&gt;</code></p>
-    <div class="bg-primary-subtle border border-primary-subtle p-3 mb-3">
+    <div class="bg-primary-subtle border border-primary-subtle p-3 mb-3" style="max-width: 400px">
       <div style="overflow-x: auto">
         <table class="table table-bordered mb-0">
           <thead>
