@@ -1,0 +1,59 @@
+// INTRODUCCIÓN A SASS (sin Bootstrap)
+// Sass es CSS con extras: variables, anidamiento, mixins, funciones y bucles.
+// El navegador no entiende Sass: se compila a CSS normal (css/ejemplo-sass.css).
+// Los comentarios con // no pasan al CSS; los de /* */ sí.
+
+// VARIABLES: empiezan por $
+$color-marca: #c2410c;
+$radio:       .75rem;
+
+// MAPAS: parejas clave: valor, entre paréntesis
+$estados: (
+  "pendiente": #b45309,
+  "enviado":   #1d4ed8,
+  "entregado": #15803d
+);
+
+// MIXIN: un bloque de declaraciones reutilizable, con parámetros
+@mixin caja-color($fondo) {
+  background-color: $fondo;
+  color: #fff;
+  border-radius: $radio;
+  padding: .5rem 1rem;
+}
+
+// ANIDAMIENTO: las reglas de dentro se aplican a los descendientes
+.ficha {
+  border: 2px solid $color-marca;
+  border-radius: $radio;
+  padding: 1rem;
+
+  h3 {
+    color: $color-marca;
+  }
+
+  // & es el propio selector: aquí, .ficha:hover
+  &:hover {
+    // FUNCIÓN: mix() mezcla dos colores; aquí, 90 % blanco y 10 % del color de la marca
+    background-color: mix(#fff, $color-marca, 90%);
+  }
+}
+
+// @include usa el mixin
+.boton-marca {
+  @include caja-color($color-marca);
+  border: 0;
+
+  &:hover {
+    background-color: mix(#000, $color-marca, 20%);
+  }
+}
+
+// BUCLE @each: una clase por cada entrada del mapa
+// #{...} mete el valor de una variable dentro de un nombre
+@each $nombre, $color in $estados {
+  .estado-#{$nombre} {
+    @include caja-color($color);
+    display: inline-block;
+  }
+}

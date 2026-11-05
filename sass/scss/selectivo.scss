@@ -1,0 +1,33 @@
+// IMPORTACIÓN SELECTIVA
+// Solo lo que usa la página: rejilla, tipografía, botones, cards y utilidades.
+// Lo que no se importa no existe en el CSS (ni tablas, ni formularios, ni modales...).
+
+// Configuración: obligatoria siempre, no genera CSS por sí sola
+@import "bootstrap/scss/functions";
+
+$primary:   #c2410c;
+$secondary: #334155;
+$font-family-sans-serif: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+$border-radius: .75rem;
+
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+// Base: las variables --bs-* y Reboot
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/type";
+
+// Maquetación
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+
+// Componentes que usamos
+@import "bootstrap/scss/buttons";
+@import "bootstrap/scss/card";
+
+// Utilidades (m-*, p-*, d-*, text-*...)
+@import "bootstrap/scss/utilities/api";

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>15 B · Sass desde cero</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!--
+    El CSS que sale de compilar sass/scss/ejemplo-sass.scss.
+    El navegador solo recibe CSS: nunca ve el fichero .scss.
+  -->
+  <link href="sass/css/ejemplo-sass.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    SASS DESDE CERO
+    Sass es un preprocesador: escribimos en un lenguaje parecido a CSS, con extras,
+    y un programa (el compilador de Sass) lo convierte en CSS normal.
+    Bootstrap está escrito en Sass: el bootstrap.css que usamos es el resultado de compilarlo.
+
+    Hay dos sintaxis; usamos SCSS (ficheros .scss), que es CSS con extras:
+    todo CSS válido es también SCSS válido.
+
+    EL PROYECTO: LA CARPETA sass/
+      sass/
+      ├── package.json       → las dependencias y los comandos (scripts)
+      ├── node_modules/      → lo que instala npm: bootstrap (sus fuentes .scss) y sass (el compilador)
+      ├── scss/              → lo que escribimos nosotros
+      │   ├── ejemplo-sass.scss   (este fichero: Sass sin Bootstrap)
+      │   ├── bootstrap.scss      (Bootstrap completo, sin cambios)
+      │   ├── tema.scss           (15_C: variables)
+      │   ├── tema-mapas.scss     (15_D: mapas)
+      │   └── selectivo.scss      (15_E: importación selectiva)
+      └── css/               → lo que genera el compilador (no se edita a mano)
+
+    CÓMO SE MONTA (con Node.js instalado, desde la carpeta sass/):
+      npm init -y                          → crea package.json
+      npm install bootstrap@5.3.8          → las fuentes de Bootstrap
+      npm install --save-dev sass@1.77.8   → el compilador (--save-dev: solo hace falta para desarrollar)
+    En este proyecto ya está hecho: basta con npm install, que lee package.json y lo instala todo.
+
+    sass@1.77.8 y no la última: las versiones nuevas de sass piden un Node.js más reciente
+    y dan avisos con el código de Bootstrap 5.3 (que usa @import, que Sass va a retirar).
+
+    CÓMO SE COMPILA (los scripts de package.json):
+      npm run css      → compila todos los .scss de scss/ en css/
+      npm run vigilar  → igual, y se queda esperando: recompila cada vez que se guarda un .scss
+      npm run css:min  → versión minimizada, en css/min/
+    Los ficheros que empiezan por _ (_variables.scss) son parciales: no generan CSS propio,
+    solo se importan desde otros.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Sass desde cero</h1>
+
+    <!--
+      VARIABLES Y ANIDAMIENTO
+      En el .scss:
+        $color-marca: #c2410c;               → una variable: se escribe una vez y se usa en muchos sitios
+        .ficha {
+          border: 2px solid $color-marca;
+          h3 { color: $color-marca; }        → anidado: en el CSS sale .ficha h3
+          &:hover { ... }                    → & es el propio selector: sale .ficha:hover
+        }
+      En el CSS que genera, $color-marca ya no existe: se ha cambiado por #c2410c.
+      Diferencia con las variables CSS (--bs-*): las de Sass desaparecen al compilar;
+      las de CSS llegan al navegador y se pueden cambiar en él.
+    -->
+    <h2 class="h4 mt-5">Variables y anidamiento</h2>
+
+    <div class="bg-primary-subtle border border-primary-subtle p-3">
+      <div class="ficha bg-body">
+        <h3 class="h5">Teclado mecánico</h3>
+        <p class="mb-0">Una ficha con borde y título del color de la marca. Al pasar el ratón, el fondo se tiñe.</p>
+      </div>
+    </div>
+
+    <!--
+      MIXINS Y FUNCIONES
+      Un mixin es un bloque de declaraciones con parámetros, que se reutiliza con @include:
+        @mixin caja-color($fondo) {
+          background-color: $fondo;
+          color: #fff;
+          ...
+        }
+        .boton-marca { @include caja-color($color-marca); }
+      Una función calcula un valor. mix(#000, $color-marca, 20%) mezcla 20 % de negro
+      con el color de la marca: el tono del hover sale solo, sin elegirlo a mano.
+      Bootstrap tiene sus propias funciones: tint-color() (aclarar), shade-color() (oscurecer)
+      y color-contrast() (elegir texto blanco o negro según el fondo).
+    -->
+    <h2 class="h4 mt-5">Mixins y funciones</h2>
+
+    <div class="bg-primary-subtle border border-primary-subtle p-3">
+      <button type="button" class="boton-marca">Añadir al carrito</button>
+    </div>
+
+    <!--
+      MAPAS Y BUCLES
+      Un mapa es una lista de parejas clave: valor:
+        $estados: (
+          "pendiente": #b45309,
+          "enviado":   #1d4ed8,
+          "entregado": #15803d
+        );
+      @each recorre el mapa y genera una clase por pareja:
+        @each $nombre, $color in $estados {
+          .estado-#{$nombre} { @include caja-color($color); }
+        }
+      #{$nombre} mete el valor dentro del nombre de la clase: .estado-pendiente, .estado-enviado...
+      Así genera Bootstrap btn-primary, btn-success... a partir del mapa $theme-colors,
+      y m-0 ... m-5 a partir del mapa $spacers. Añadir una pareja al mapa = una clase más.
+    -->
+    <h2 class="h4 mt-5">Mapas y bucles</h2>
+
+    <div class="bg-primary-subtle border border-primary-subtle p-3 mb-5">
+      <div class="d-flex flex-wrap gap-2">
+        <span class="estado-pendiente">Pendiente</span>
+        <span class="estado-enviado">Enviado</span>
+        <span class="estado-entregado">Entregado</span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

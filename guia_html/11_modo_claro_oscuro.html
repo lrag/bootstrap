@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modo claro y oscuro</title>
+
+  <!-- Script mínimo, antes de todo: pone el tema guardado antes de pintar (sin parpadeo) -->
+  <script>
+    (() => {
+      const guardado = localStorage.getItem('tema-guia') || 'auto'
+      const oscuro = window.matchMedia('(prefers-color-scheme: dark)').matches
+      document.documentElement.setAttribute('data-bs-theme', guardado === 'auto' ? (oscuro ? 'dark' : 'light') : guardado)
+    })()
+  </script>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    pre { background: var(--bs-tertiary-bg); padding: 1rem; border-radius: var(--bs-border-radius); margin-bottom: 0; }
+    .demo { background: var(--bs-tertiary-bg); border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius); padding: 1rem; margin-bottom: 1rem; }
+    .etiqueta { font-family: var(--bs-font-monospace); font-size: .8rem; margin-bottom: .25rem; }
+    .muestra { display: inline-block; width: 2.5rem; height: 1.25rem; border: 1px solid var(--bs-border-color); border-radius: var(--bs-border-radius-sm); vertical-align: middle; }
+
+    /* Logo con dos versiones */
+    .logo-para-oscuro { display: none; }
+    [data-bs-theme=dark] .logo-para-claro { display: none; }
+    [data-bs-theme=dark] .logo-para-oscuro { display: inline; }
+
+    /* Componente propio con variables de Bootstrap */
+    .ficha-fija { background: #f8f9fa; color: #212529; border: 1px solid #dee2e6; border-radius: .5rem; padding: 1rem; }
+    .ficha-producto { background: var(--bs-tertiary-bg); color: var(--bs-body-color); border: var(--bs-border-width) solid var(--bs-border-color); border-radius: var(--bs-border-radius-lg); padding: 1rem; }
+    .ficha-producto .precio { color: var(--bs-emphasis-color); }
+    .ficha-producto .oferta { background: rgba(var(--bs-primary-rgb), .15); color: var(--bs-primary-text-emphasis); border-radius: var(--bs-border-radius-pill); padding: .1rem .6rem; font-size: .875rem; }
+
+    /* Colores de marca en los dos modos (limitados a .tienda) */
+    .tienda {
+      --bs-body-bg: #fbf8f3; --bs-body-bg-rgb: 251, 248, 243;
+      --bs-body-color: #3b2f2a; --bs-body-color-rgb: 59, 47, 42;
+      --bs-border-color: #e7dccd;
+      --bs-link-color: #b45309; --bs-link-color-rgb: 180, 83, 9;
+    }
+    [data-bs-theme=dark] .tienda {
+      --bs-body-bg: #1c1a17; --bs-body-bg-rgb: 28, 26, 23;
+      --bs-body-color: #e9e2d8; --bs-body-color-rgb: 233, 226, 216;
+      --bs-border-color: #4a423a;
+      --bs-link-color: #f59e0b; --bs-link-color-rgb: 245, 158, 11;
+    }
+
+    /* Botón con variables de componente */
+    .btn-marca {
+      --bs-btn-color: #fff; --bs-btn-bg: #6f42c1; --bs-btn-border-color: #6f42c1;
+      --bs-btn-hover-color: #fff; --bs-btn-hover-bg: #59359a; --bs-btn-hover-border-color: #59359a;
+      --bs-btn-active-color: #fff; --bs-btn-active-bg: #4d2e85; --bs-btn-active-border-color: #4d2e85;
+    }
+    [data-bs-theme=dark] .btn-marca {
+      --bs-btn-color: #000; --bs-btn-bg: #a98eda; --bs-btn-border-color: #a98eda;
+      --bs-btn-hover-color: #000; --bs-btn-hover-bg: #c5b3e6; --bs-btn-hover-border-color: #c5b3e6;
+      --bs-btn-active-color: #000; --bs-btn-active-bg: #d4c6ec; --bs-btn-active-border-color: #d4c6ec;
+    }
+
+    /* Modo propio */
+    [data-bs-theme=sepia] {
+      color-scheme: light;
+      --bs-body-bg: #f4ecd8; --bs-body-bg-rgb: 244, 236, 216;
+      --bs-body-color: #5b4636; --bs-body-color-rgb: 91, 70, 54;
+      --bs-emphasis-color: #3b2a1e; --bs-emphasis-color-rgb: 59, 42, 30;
+      --bs-secondary-color: rgba(91, 70, 54, .75);
+      --bs-secondary-bg: #e8dcc0; --bs-secondary-bg-rgb: 232, 220, 192;
+      --bs-tertiary-bg: #efe4cc; --bs-tertiary-bg-rgb: 239, 228, 204;
+      --bs-border-color: #d6c4a0;
+      --bs-link-color: #8b4513; --bs-link-color-rgb: 139, 69, 19;
+    }
+
+    /* Práctica: colores de marca de la landing en los dos modos */
+    .landing { --bs-link-color: #0f766e; --bs-link-color-rgb: 15, 118, 110; }
+    .landing[data-bs-theme=dark] { --bs-link-color: #5eead4; --bs-link-color-rgb: 94, 234, 212; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script>
+    window.addEventListener('load', () => {
+      const consultaOscuro = window.matchMedia('(prefers-color-scheme: dark)')
+      const iconos = { light: 'bi-sun-fill', dark: 'bi-moon-stars-fill', auto: 'bi-circle-half' }
+      const resolver = tema => tema === 'auto' ? (consultaOscuro.matches ? 'dark' : 'light') : tema
+
+      // Selector de tema de la propia guía (cabecera)
+      const aplicarTemaGuia = () => {
+        const elegido = localStorage.getItem('tema-guia') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', resolver(elegido))
+        document.getElementById('icono-guia').className = `bi ${iconos[elegido]}`
+        document.querySelectorAll('[data-tema-guia]').forEach(b => {
+          b.classList.toggle('active', b.dataset.temaGuia === elegido)
+          b.setAttribute('aria-pressed', b.dataset.temaGuia === elegido)
+        })
+        document.getElementById('estado-elegido').textContent = elegido
+        document.getElementById('estado-sistema').textContent = consultaOscuro.matches ? 'dark' : 'light'
+        document.getElementById('estado-aplicado').textContent = resolver(elegido)
+      }
+      document.querySelectorAll('[data-tema-guia]').forEach(b => {
+        b.addEventListener('click', () => {
+          localStorage.setItem('tema-guia', b.dataset.temaGuia)
+          aplicarTemaGuia()
+        })
+      })
+
+      // Modo propio: zona con tres modos
+      document.querySelectorAll('[data-modo-zona]').forEach(b => {
+        b.addEventListener('click', () => {
+          document.getElementById('zona-modos').setAttribute('data-bs-theme', b.dataset.modoZona)
+        })
+      })
+
+      // Práctica: selector de la landing (actúa sobre el bloque, no sobre <html>)
+      const landing = document.getElementById('landing')
+      const aplicarTemaLanding = () => {
+        const elegido = localStorage.getItem('tema-landing') || 'auto'
+        landing.setAttribute('data-bs-theme', resolver(elegido))
+        document.getElementById('icono-landing').className = `bi ${iconos[elegido]}`
+        document.querySelectorAll('[data-tema-landing]').forEach(b => {
+          b.classList.toggle('active', b.dataset.temaLanding === elegido)
+        })
+      }
+      document.querySelectorAll('[data-tema-landing]').forEach(b => {
+        b.addEventListener('click', () => {
+          localStorage.setItem('tema-landing', b.dataset.temaLanding)
+          aplicarTemaLanding()
+        })
+      })
+
+      consultaOscuro.addEventListener('change', () => {
+        aplicarTemaGuia()
+        aplicarTemaLanding()
+      })
+      aplicarTemaGuia()
+      aplicarTemaLanding()
+    })
+  </script>
+</head>
+<body>
+
+  <header class="bg-primary text-white py-5 mb-4">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-start gap-3">
+        <p class="text-uppercase small mb-1">Curso de Bootstrap 5 · Sesión 3 · Punto 3</p>
+        <div class="dropdown">
+          <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Cambiar el tema">
+            <i class="bi bi-circle-half" id="icono-guia"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><button type="button" class="dropdown-item" data-tema-guia="light"><i class="bi bi-sun-fill me-2"></i>Claro</button></li>
+            <li><button type="button" class="dropdown-item" data-tema-guia="dark"><i class="bi bi-moon-stars-fill me-2"></i>Oscuro</button></li>
+            <li><button type="button" class="dropdown-item" data-tema-guia="auto"><i class="bi bi-circle-half me-2"></i>Automático</button></li>
+          </ul>
+        </div>
+      </div>
+      <h1 class="display-5 fw-bold">Modo claro y oscuro</h1>
+      <p class="lead mb-0"><code class="text-white">data-bs-theme</code> a fondo, las variables CSS <code class="text-white">--bs-*</code> y un selector de tema con JavaScript que recuerda la elección.</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <nav class="mb-5" aria-label="Índice">
+      <ol class="list-group list-group-numbered">
+        <li class="list-group-item"><a href="#repaso">Lo que ya sabemos</a></li>
+        <li class="list-group-item"><a href="#zonas">Una zona con otro modo</a></li>
+        <li class="list-group-item"><a href="#utilidades">Utilidades fijas y utilidades que se adaptan</a></li>
+        <li class="list-group-item"><a href="#imagenes">Logos e imágenes</a></li>
+        <li class="list-group-item"><a href="#variables">Las variables <code>--bs-*</code></a></li>
+        <li class="list-group-item"><a href="#propias">Usarlas en nuestro CSS</a></li>
+        <li class="list-group-item"><a href="#sobrescribir">Cambiar los valores para los dos modos</a></li>
+        <li class="list-group-item"><a href="#componente">Variables de cada componente</a></li>
+        <li class="list-group-item"><a href="#selector">Selector de tema con JavaScript</a></li>
+        <li class="list-group-item"><a href="#parpadeo">Sin parpadeo: el script del <code>&lt;head&gt;</code></a></li>
+        <li class="list-group-item"><a href="#modo-propio">Un modo de color propio</a></li>
+        <li class="list-group-item"><a href="#practica">Práctica</a></li>
+      </ol>
+    </nav>
+
+    <!-- 1. Repaso -->
+    <section id="repaso" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">1. Lo que ya sabemos</h2>
+      <p>
+        En la sesión 1 (<a href="01_introducción.html#tema">Introducción, apartado 7</a> y <code>04_Data_bs_theme.html</code>) vimos que
+        <code>data-bs-theme="dark"</code> en <code>&lt;html&gt;</code> pone toda la página en oscuro, que en un elemento solo afecta a esa zona,
+        y que por dentro son <strong>variables CSS redefinidas con un selector de atributo</strong>. En la sesión 2 (<code>08_C_Colores.html</code>)
+        vimos qué colores cambian con el modo (<code>*-subtle</code>, <code>*-emphasis</code>, <code>body</code>) y cuáles no (<code>bg-primary</code>, <code>text-bg-*</code>).
+      </p>
+      <p>Este punto completa el tema:</p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Fichero</th><th>Contenido</th></tr></thead>
+        <tbody>
+          <tr><td><code>14_A_Modo_oscuro_data_bs_theme.html</code></td><td>Zonas con otro modo, componentes <code>-dark</code> obsoletos, utilidades fijas frente a adaptables, logos</td></tr>
+          <tr><td><code>14_B_Variables_CSS.html</code></td><td>Las variables <code>--bs-*</code>, usarlas en CSS propio, sobrescribirlas para los dos modos, variables de componente</td></tr>
+          <tr><td><code>14_C_Selector_tema.html</code></td><td>Selector Claro / Oscuro / Automático con <code>matchMedia</code>, <code>localStorage</code> y sin parpadeo; versión dropdown</td></tr>
+          <tr><td><code>14_D_Modo_propio_sepia.html</code></td><td>Opcional: un tercer modo, <code>data-bs-theme="sepia"</code>, solo con variables</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-info mb-0" role="alert">
+        Esta guía tiene su propio selector de tema arriba a la derecha (<i class="bi bi-circle-half"></i>): todas las demos se pueden ver en los dos modos.
+      </div>
+    </section>
+
+    <!-- 2. Zonas -->
+    <section id="zonas" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">2. Una zona con otro modo</h2>
+      <p>
+        <code>data-bs-theme</code> solo <strong>redefine variables</strong>. Un <code>&lt;div&gt;</code> normal no las usa: su fondo sigue transparente y
+        su texto conserva el color heredado del <code>&lt;body&gt;</code>. Solo cambia lo que hay dentro y sí las usa (un input, una card…).
+        Para que la zona entera se pinte, se le añaden <code>bg-body</code> y <code>text-body</code>.
+      </p>
+      <div class="row g-4 mb-3">
+        <div class="col-lg-6">
+          <p class="etiqueta">data-bs-theme="dark"</p>
+          <div class="demo mb-0">
+            <div class="border p-3" data-bs-theme="dark">
+              <p>El bloque no cambia; el input sí.</p>
+              <input type="text" class="form-control" placeholder="Buscar teclados...">
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <p class="etiqueta">data-bs-theme="dark" class="bg-body text-body"</p>
+          <div class="demo mb-0">
+            <div class="border p-3 bg-body text-body" data-bs-theme="dark">
+              <p>Ahora toda la zona es oscura.</p>
+              <input type="text" class="form-control" placeholder="Buscar teclados...">
+            </div>
+          </div>
+        </div>
+      </div>
+      <p>Uso típico: una navbar o un pie siempre oscuros. Y los componentes que tenían clase propia para el oscuro la cambian por el atributo:</p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Hasta la 5.2 (obsoleta en 5.3)</th><th>Desde la 5.3</th></tr></thead>
+        <tbody>
+          <tr><td><code>.navbar-dark</code></td><td><code>&lt;nav class="navbar bg-dark" data-bs-theme="dark"&gt;</code></td></tr>
+          <tr><td><code>.dropdown-menu-dark</code></td><td><code>&lt;div class="dropdown" data-bs-theme="dark"&gt;</code></td></tr>
+          <tr><td><code>.btn-close-white</code></td><td><code>&lt;button class="btn-close" data-bs-theme="dark"&gt;</code></td></tr>
+          <tr><td><code>.carousel-dark</code></td><td><code>&lt;div class="carousel" data-bs-theme="dark"&gt;</code></td></tr>
+        </tbody>
+      </table>
+      <p class="etiqueta">Navbar, dropdown y botón de cerrar siempre oscuros</p>
+      <div class="demo">
+        <nav class="navbar navbar-expand bg-dark rounded mb-3" data-bs-theme="dark">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#zonas"><i class="bi bi-keyboard"></i> Periféricos</a>
+            <ul class="navbar-nav">
+              <li class="nav-item"><a class="nav-link active" aria-current="page" href="#zonas">Teclados</a></li>
+              <li class="nav-item"><a class="nav-link" href="#zonas">Ratones</a></li>
+            </ul>
+          </div>
+        </nav>
+        <div class="d-flex flex-wrap align-items-center gap-3">
+          <div class="dropdown" data-bs-theme="dark">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Menú siempre oscuro</button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item active" href="#zonas">Teclados</a></li>
+              <li><a class="dropdown-item" href="#zonas">Ratones</a></li>
+            </ul>
+          </div>
+          <div class="bg-dark p-2 rounded d-flex align-items-center gap-2">
+            <span class="text-white small">Aviso</span>
+            <button type="button" class="btn-close" data-bs-theme="dark" aria-label="Cerrar"></button>
+          </div>
+        </div>
+      </div>
+<pre><code>&lt;nav class="navbar bg-dark" data-bs-theme="dark"&gt;…&lt;/nav&gt;
+&lt;footer class="bg-body text-body" data-bs-theme="dark"&gt;…&lt;/footer&gt;</code></pre>
+      <div class="alert alert-secondary mt-4 mb-0" role="alert">
+        <strong><code>color-scheme</code>:</strong> además de las variables, <code>[data-bs-theme=dark]</code> pone <code>color-scheme: dark</code>,
+        y el navegador pinta en oscuro sus propios controles: barras de desplazamiento, calendario de <code>input type="date"</code>, lista del select…
+      </div>
+    </section>
+
+    <!-- 3. Utilidades -->
+    <section id="utilidades" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">3. Utilidades fijas y utilidades que se adaptan</h2>
+      <p>
+        Al preparar una página para el modo oscuro, lo primero es buscar las clases de color <strong>fijo</strong> que dejan «islas» claras o textos ilegibles,
+        y cambiarlas por su equivalente que lee las variables del modo.
+      </p>
+      <table class="table table-sm align-middle mb-4">
+        <thead><tr><th>Fija</th><th>Se adapta</th><th>Variable que usa</th></tr></thead>
+        <tbody>
+          <tr><td><code>bg-white</code></td><td><code>bg-body</code></td><td><code>--bs-body-bg</code></td></tr>
+          <tr><td><code>bg-light</code></td><td><code>bg-body-tertiary</code></td><td><code>--bs-tertiary-bg</code></td></tr>
+          <tr><td><code>text-dark</code>, <code>text-black</code></td><td><code>text-body-emphasis</code></td><td><code>--bs-emphasis-color</code></td></tr>
+          <tr><td><code>text-black-50</code>, <code>text-muted</code></td><td><code>text-body-secondary</code></td><td><code>--bs-secondary-color</code></td></tr>
+          <tr><td><code>border-dark</code>, <code>border-light</code></td><td><code>border</code> (sin color)</td><td><code>--bs-border-color</code></td></tr>
+          <tr><td><code>bg-primary</code> + <code>text-white</code></td><td><code>bg-primary-subtle</code> + <code>text-primary-emphasis</code></td><td><code>--bs-primary-bg-subtle</code>, <code>--bs-primary-text-emphasis</code></td></tr>
+        </tbody>
+      </table>
+      <p class="etiqueta">Card con clases fijas / card con clases que se adaptan (cambiar el tema arriba)</p>
+      <div class="demo">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="card bg-light text-dark h-100"><div class="card-body">
+              <h3 class="h5 card-title">Teclado mecánico</h3>
+              <p class="card-text text-black-50">bg-light, text-dark, text-black-50</p>
+              <p class="fs-4 fw-bold mb-0">59,90 €</p>
+            </div></div>
+          </div>
+          <div class="col-md-6">
+            <div class="card bg-body-tertiary h-100"><div class="card-body">
+              <h3 class="h5 card-title text-body-emphasis">Teclado mecánico</h3>
+              <p class="card-text text-body-secondary">bg-body-tertiary, text-body-emphasis, text-body-secondary</p>
+              <p class="fs-4 fw-bold text-body-emphasis mb-0">59,90 €</p>
+            </div></div>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-info mb-0" role="alert">
+        <code>bg-primary</code> no es un error: un botón o una etiqueta pueden ser del color de la marca en los dos modos. El problema son los
+        blancos, negros y grises fijos, y los colores escritos a mano en <code>style=""</code>.
+      </div>
+    </section>
+
+    <!-- 4. Imágenes -->
+    <section id="imagenes" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">4. Logos e imágenes</h2>
+      <p>Un logo con el texto en un color fijo casi negro desaparece sobre fondo oscuro. Dos soluciones:</p>
+      <ul>
+        <li><strong>SVG con <code>fill="currentColor"</code></strong>: toma el color del texto, que ya cambia con el modo. Los iconos de Bootstrap Icons son una fuente y lo hacen siempre.</li>
+        <li><strong>Dos versiones</strong> (para fondo claro y para fondo oscuro) y CSS que muestra una u otra según <code>data-bs-theme</code>. Es lo que se hace con un PNG.</li>
+      </ul>
+      <div class="demo">
+        <div class="row g-3 text-center">
+          <div class="col-md-4">
+            <svg width="180" height="40" viewBox="0 0 180 40" role="img" aria-label="Logo con color fijo">
+              <rect x="2" y="8" width="36" height="24" rx="4" fill="none" stroke="#212529" stroke-width="3"/>
+              <text x="48" y="27" font-family="sans-serif" font-size="18" font-weight="bold" fill="#212529">Periféricos</text>
+            </svg>
+            <p class="etiqueta mt-2 mb-0">fill="#212529"</p>
+          </div>
+          <div class="col-md-4">
+            <svg width="180" height="40" viewBox="0 0 180 40" role="img" aria-label="Logo con currentColor">
+              <rect x="2" y="8" width="36" height="24" rx="4" fill="none" stroke="currentColor" stroke-width="3"/>
+              <text x="48" y="27" font-family="sans-serif" font-size="18" font-weight="bold" fill="currentColor">Periféricos</text>
+            </svg>
+            <p class="etiqueta mt-2 mb-0">fill="currentColor"</p>
+          </div>
+          <div class="col-md-4">
+            <svg class="logo-para-claro" width="180" height="40" viewBox="0 0 180 40" role="img" aria-label="Logo para fondo claro">
+              <rect x="2" y="8" width="36" height="24" rx="4" fill="#0d6efd"/>
+              <text x="48" y="27" font-family="sans-serif" font-size="18" font-weight="bold" fill="#052c65">Periféricos</text>
+            </svg>
+            <svg class="logo-para-oscuro" width="180" height="40" viewBox="0 0 180 40" role="img" aria-label="Logo para fondo oscuro">
+              <rect x="2" y="8" width="36" height="24" rx="4" fill="#6ea8fe"/>
+              <text x="48" y="27" font-family="sans-serif" font-size="18" font-weight="bold" fill="#cfe2ff">Periféricos</text>
+            </svg>
+            <p class="etiqueta mt-2 mb-0">dos versiones + CSS</p>
+          </div>
+        </div>
+      </div>
+<pre><code>.logo-para-oscuro { display: none; }
+[data-bs-theme=dark] .logo-para-claro { display: none; }
+[data-bs-theme=dark] .logo-para-oscuro { display: inline; }
+
+/* Fotos: un poco menos de brillo en oscuro */
+[data-bs-theme=dark] img.foto { filter: brightness(.85); }</code></pre>
+      <div class="alert alert-secondary mt-4 mb-0" role="alert">
+        <code>&lt;picture&gt;&lt;source media="(prefers-color-scheme: dark)"&gt;</code> también elige imagen, pero según el <strong>sistema operativo</strong>,
+        no según <code>data-bs-theme</code>: si el usuario elige Oscuro en la página con el sistema en claro, no cambia.
+      </div>
+    </section>
+
+    <!-- 5. Variables -->
+    <section id="variables" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">5. Las variables <code>--bs-*</code></h2>
+      <p>
+        Todo el color de Bootstrap 5.3 sale de variables CSS en <code>:root</code>. El modo oscuro no cambia ninguna clase: da otros valores a las variables.
+        Las muestras de la tabla son <code>style="background: var(--…)"</code> y cambian con el tema de la guía.
+      </p>
+      <table class="table table-sm align-middle mb-4">
+        <thead><tr><th>Variable</th><th>Claro</th><th>Oscuro</th><th>Ahora</th><th>Para qué</th></tr></thead>
+        <tbody>
+          <tr><td><code>--bs-body-bg</code></td><td><code>#fff</code></td><td><code>#212529</code></td><td><span class="muestra" style="background: var(--bs-body-bg)"></span></td><td>Fondo de la página</td></tr>
+          <tr><td><code>--bs-body-color</code></td><td><code>#212529</code></td><td><code>#dee2e6</code></td><td><span class="muestra" style="background: var(--bs-body-color)"></span></td><td>Texto normal</td></tr>
+          <tr><td><code>--bs-emphasis-color</code></td><td><code>#000</code></td><td><code>#fff</code></td><td><span class="muestra" style="background: var(--bs-emphasis-color)"></span></td><td>Texto de más contraste</td></tr>
+          <tr><td><code>--bs-secondary-color</code></td><td colspan="2">el color del texto al 75 %</td><td><span class="muestra" style="background: var(--bs-secondary-color)"></span></td><td>Texto atenuado</td></tr>
+          <tr><td><code>--bs-secondary-bg</code></td><td><code>#e9ecef</code></td><td><code>#343a40</code></td><td><span class="muestra" style="background: var(--bs-secondary-bg)"></span></td><td>Fondo distinto</td></tr>
+          <tr><td><code>--bs-tertiary-bg</code></td><td><code>#f8f9fa</code></td><td><code>#2b3035</code></td><td><span class="muestra" style="background: var(--bs-tertiary-bg)"></span></td><td>Fondo suave</td></tr>
+          <tr><td><code>--bs-border-color</code></td><td><code>#dee2e6</code></td><td><code>#495057</code></td><td><span class="muestra" style="background: var(--bs-border-color)"></span></td><td>Bordes</td></tr>
+          <tr><td><code>--bs-link-color</code></td><td><code>#0d6efd</code></td><td><code>#6ea8fe</code></td><td><span class="muestra" style="background: var(--bs-link-color)"></span></td><td>Enlaces</td></tr>
+          <tr><td><code>--bs-primary-bg-subtle</code></td><td><code>#cfe2ff</code></td><td><code>#031633</code></td><td><span class="muestra" style="background: var(--bs-primary-bg-subtle)"></span></td><td><code>bg-primary-subtle</code></td></tr>
+          <tr><td><code>--bs-primary-rgb</code></td><td colspan="2"><code>13, 110, 253</code> (igual en los dos)</td><td><span class="muestra" style="background: rgb(var(--bs-primary-rgb))"></span></td><td><code>bg-primary</code>, <code>text-primary</code></td></tr>
+        </tbody>
+      </table>
+<pre><code>/* bootstrap.css (simplificado) */
+:root, [data-bs-theme=light] {
+  --bs-body-bg: #fff;
+  --bs-body-bg-rgb: 255, 255, 255;
+  --bs-body-color: #212529;
+  ...
+}
+[data-bs-theme=dark] {
+  color-scheme: dark;
+  --bs-body-bg: #212529;
+  --bs-body-bg-rgb: 33, 37, 41;
+  --bs-body-color: #dee2e6;
+  ...
+}</code></pre>
+      <div class="row g-4 mt-1">
+        <div class="col-lg-6">
+          <div class="alert alert-info h-100 mb-0" role="alert">
+            <strong>Las parejas <code>-rgb</code>:</strong> muchas variables tienen otra con los tres números sueltos. Las utilidades las usan para poder poner
+            transparencia: <code>.bg-body { background-color: rgba(var(--bs-body-bg-rgb), var(--bs-bg-opacity)) }</code>.
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="alert alert-secondary h-100 mb-0" role="alert">
+            <strong>En DevTools:</strong> F12 → Elementos → <code>&lt;html&gt;</code> → Estilos. En oscuro, la regla <code>[data-bs-theme=dark]</code> aparece encima
+            y tacha los valores de <code>:root</code>. El panel <em>Calculado</em> da el valor final en cada elemento.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. CSS propio -->
+    <section id="propias" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">6. Usarlas en nuestro CSS</h2>
+      <p>Un componente nuestro con colores escritos a mano se queda claro. Si los toma de las variables de Bootstrap, se adapta sin escribir nada para el oscuro.</p>
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <p class="etiqueta">.ficha-fija / .ficha-producto</p>
+          <div class="demo mb-0">
+            <div class="ficha-fija mb-3">
+              <strong>Ratón inalámbrico</strong> · 24,90 €<br><small>Colores escritos a mano</small>
+            </div>
+            <div class="ficha-producto">
+              <strong class="precio">Ratón inalámbrico</strong> · 24,90 € <span class="oferta">-20 %</span><br><small>Colores de las variables</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+<pre><code>.ficha-producto {
+  background: var(--bs-tertiary-bg);
+  color: var(--bs-body-color);
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius-lg);
+}
+.ficha-producto .precio {
+  color: var(--bs-emphasis-color);
+}
+.ficha-producto .oferta {
+  background: rgba(var(--bs-primary-rgb), .15);
+  color: var(--bs-primary-text-emphasis);
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Sobrescribir -->
+    <section id="sobrescribir" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">7. Cambiar los valores para los dos modos</h2>
+      <p>
+        Para usar colores de marca, se redefinen las variables en un CSS propio cargado <strong>después</strong> de Bootstrap, con el mismo selector:
+        a igual especificidad, gana el último. En la demo se limita a <code>.tienda</code> para no cambiar el resto de la guía.
+      </p>
+      <div class="row g-4 mb-3">
+        <div class="col-lg-6">
+<pre><code>/* En un proyecto real */
+:root, [data-bs-theme=light] {
+  --bs-body-bg: #fbf8f3;
+  --bs-body-bg-rgb: 251, 248, 243;
+  --bs-link-color: #b45309;
+  --bs-link-color-rgb: 180, 83, 9;
+}
+[data-bs-theme=dark] {
+  --bs-body-bg: #1c1a17;
+  --bs-body-bg-rgb: 28, 26, 23;
+  --bs-link-color: #f59e0b;
+  --bs-link-color-rgb: 245, 158, 11;
+}</code></pre>
+        </div>
+        <div class="col-lg-6">
+          <p class="etiqueta">Bootstrap tal cual / .tienda</p>
+          <div class="demo mb-0">
+            <div class="bg-body text-body border rounded p-3 mb-3">
+              Teclados y ratones. <a href="#sobrescribir">Ver ofertas</a>
+              <input type="text" class="form-control form-control-sm mt-2" placeholder="Buscar...">
+            </div>
+            <div class="tienda bg-body text-body border rounded p-3">
+              Teclados y ratones. <a href="#sobrescribir">Ver ofertas</a>
+              <input type="text" class="form-control form-control-sm mt-2" placeholder="Buscar...">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-warning" role="alert">
+        <strong>Cuidado con las parejas <code>-rgb</code>:</strong> los enlaces usan <code>--bs-link-color-rgb</code>, <code>bg-body</code> usa <code>--bs-body-bg-rgb</code> y
+        <code>text-body</code> usa <code>--bs-body-color-rgb</code>. Si solo se cambia <code>--bs-link-color</code>, los enlaces siguen azules.
+      </div>
+      <p class="etiqueta">style="--bs-primary-rgb: 111, 66, 193"</p>
+      <div class="demo">
+        <div class="d-flex flex-wrap align-items-center gap-3" style="--bs-primary-rgb: 111, 66, 193">
+          <div class="bg-primary text-white rounded p-2">bg-primary</div>
+          <span class="text-primary fw-semibold">text-primary</span>
+          <button type="button" class="btn btn-primary">btn-primary (sigue azul)</button>
+        </div>
+      </div>
+      <div class="alert alert-info mb-0" role="alert">
+        <strong>Límite de las variables:</strong> <code>bg-primary</code> y <code>text-primary</code> leen <code>--bs-primary-rgb</code>, pero <code>.btn-primary</code>,
+        las alerts o los badges tienen el azul escrito en el CSS compilado. Para cambiar <code>primary</code> en todo hay que recompilar desde Sass con
+        <code>$primary</code>: es el punto siguiente.
+      </div>
+    </section>
+
+    <!-- 8. Variables de componente -->
+    <section id="componente" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">8. Variables de cada componente</h2>
+      <p>
+        Cada componente declara sus propias variables en su clase y las usa en sus propiedades: <code>.btn { --bs-btn-bg: transparent; … background-color: var(--bs-btn-bg) }</code>.
+        La documentación de cada componente las lista en su apartado <em>CSS → Variables</em>. Para crear una variante, basta una clase que les dé valores,
+        y otra regla para el oscuro.
+      </p>
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <p class="etiqueta">.btn-marca · style="--bs-btn-…" · style="--bs-card-bg: …"</p>
+          <div class="demo mb-0">
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <button type="button" class="btn btn-marca"><i class="bi bi-cart-plus"></i> Añadir al carrito</button>
+              <button type="button" class="btn btn-outline-secondary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: 1.5rem; --bs-btn-font-size: .875rem">Botón con style</button>
+            </div>
+            <div class="card" style="--bs-card-bg: var(--bs-tertiary-bg); --bs-card-border-color: var(--bs-primary-border-subtle)">
+              <div class="card-body">Card con <code>--bs-card-bg</code> y <code>--bs-card-border-color</code> propios.</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+<pre><code>.btn-marca {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #6f42c1;
+  --bs-btn-border-color: #6f42c1;
+  --bs-btn-hover-bg: #59359a;
+  --bs-btn-hover-border-color: #59359a;
+  --bs-btn-active-bg: #4d2e85;
+  /* ... */
+}
+[data-bs-theme=dark] .btn-marca {
+  --bs-btn-color: #000;
+  --bs-btn-bg: #a98eda;
+  --bs-btn-border-color: #a98eda;
+  /* ... */
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Selector -->
+    <section id="selector" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">9. Selector de tema con JavaScript</h2>
+      <p>Un selector completo, como el de la documentación de Bootstrap, tiene tres opciones y recuerda la elección. Conviene distinguir dos valores:</p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Valor</th><th>Posibles</th><th>Dónde está</th></tr></thead>
+        <tbody>
+          <tr><td>Tema <strong>elegido</strong></td><td><code>light</code>, <code>dark</code>, <code>auto</code></td><td><code>localStorage</code></td></tr>
+          <tr><td>Tema <strong>aplicado</strong></td><td><code>light</code>, <code>dark</code></td><td><code>data-bs-theme</code> de <code>&lt;html&gt;</code></td></tr>
+        </tbody>
+      </table>
+      <p class="etiqueta">Estado del selector de esta guía (arriba a la derecha)</p>
+      <div class="demo">
+        <div class="d-flex flex-wrap gap-4">
+          <span>Elegido: <code id="estado-elegido"></code></span>
+          <span>Sistema: <code id="estado-sistema"></code></span>
+          <span>Aplicado: <code id="estado-aplicado"></code></span>
+        </div>
+      </div>
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <h3 class="h5">Automático: <code>prefers-color-scheme</code></h3>
+          <p>
+            Es una media query que dice si el sistema operativo está en claro u oscuro. Desde JavaScript, <code>window.matchMedia()</code> devuelve un objeto con
+            <code>matches</code> (<code>true</code> / <code>false</code>) y el evento <code>change</code>, que salta cuando el sistema cambia de modo.
+          </p>
+          <p class="mb-0">
+            Para probarlo sin tocar el sistema: DevTools → ⋮ → <em>More tools</em> → <em>Rendering</em> → <em>Emulate CSS media feature prefers-color-scheme</em>.
+          </p>
+        </div>
+        <div class="col-lg-6">
+          <h3 class="h5">Recordar la elección: <code>localStorage</code></h3>
+          <p>Guarda texto en el navegador, por sitio, y no se borra al cerrar. Se ve en DevTools → <em>Aplicación</em> → <em>Almacenamiento local</em>.</p>
+<pre><code>localStorage.setItem('tema', 'dark')
+localStorage.getItem('tema')     // 'dark' o null
+localStorage.removeItem('tema')</code></pre>
+        </div>
+      </div>
+      <p class="etiqueta mt-4">14_C_Selector_tema.html (resumido): un manejador por botón, como en los ficheros del curso</p>
+<pre><code>window.onload = () =&gt; {
+  const consultaOscuro = window.matchMedia('(prefers-color-scheme: dark)')
+
+  const aplicarTema = () =&gt; {
+    const elegido = localStorage.getItem('tema') || 'auto'
+    let aplicado = elegido
+    if (elegido === 'auto') {
+      aplicado = consultaOscuro.matches ? 'dark' : 'light'
+    }
+    document.documentElement.setAttribute('data-bs-theme', aplicado)
+    document.getElementById('btn-claro').classList.toggle('active', elegido === 'light')
+    document.getElementById('btn-oscuro').classList.toggle('active', elegido === 'dark')
+    document.getElementById('btn-auto').classList.toggle('active', elegido === 'auto')
+  }
+
+  const elegirTema = (tema) =&gt; {
+    localStorage.setItem('tema', tema)
+    aplicarTema()
+  }
+
+  document.getElementById('btn-claro').onclick = () =&gt; { elegirTema('light') }
+  document.getElementById('btn-oscuro').onclick = () =&gt; { elegirTema('dark') }
+  document.getElementById('btn-auto').onclick = () =&gt; { elegirTema('auto') }
+
+  consultaOscuro.onchange = () =&gt; { aplicarTema() }
+
+  aplicarTema()
+}</code></pre>
+      <h3 class="h5 mt-4">Versión dropdown, como la documentación</h3>
+      <p>Un dropdown con <code>bi-sun-fill</code>, <code>bi-moon-stars-fill</code> y <code>bi-circle-half</code>; el icono del botón cambia según la opción elegida.</p>
+<pre><code>&lt;div class="dropdown"&gt;
+  &lt;button class="btn btn-link nav-link dropdown-toggle" type="button"
+          data-bs-toggle="dropdown" aria-expanded="false" aria-label="Cambiar el tema"&gt;
+    &lt;i class="bi bi-circle-half" id="icono-tema"&gt;&lt;/i&gt;
+  &lt;/button&gt;
+  &lt;ul class="dropdown-menu dropdown-menu-end"&gt;
+    &lt;li&gt;&lt;button type="button" class="dropdown-item" id="menu-claro"&gt;&lt;i class="bi bi-sun-fill me-2"&gt;&lt;/i&gt;Claro&lt;/button&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;button type="button" class="dropdown-item" id="menu-oscuro"&gt;&lt;i class="bi bi-moon-stars-fill me-2"&gt;&lt;/i&gt;Oscuro&lt;/button&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;button type="button" class="dropdown-item" id="menu-auto"&gt;&lt;i class="bi bi-circle-half me-2"&gt;&lt;/i&gt;Automático&lt;/button&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+
+document.getElementById('icono-tema').className = iconos[elegido]   // 'bi bi-sun-fill'...</code></pre>
+    </section>
+
+    <!-- 10. Parpadeo -->
+    <section id="parpadeo" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">10. Sin parpadeo: el script del <code>&lt;head&gt;</code></h2>
+      <p>
+        <code>window.onload</code> se ejecuta cuando la página ya está cargada y pintada. Si el tema guardado se aplicara ahí, con Oscuro elegido la página
+        se vería primero en claro y luego cambiaría: un fogonazo blanco en cada carga.
+      </p>
+      <p>
+        La solución, la misma que usa la documentación de Bootstrap, es un script <strong>mínimo</strong> al principio del <code>&lt;head&gt;</code>, sin <code>defer</code>
+        y fuera de <code>window.onload</code>: se ejecuta en cuanto se lee, cuando ya existe <code>&lt;html&gt;</code> (<code>document.documentElement</code>)
+        pero aún no se ha pintado nada.
+      </p>
+<pre><code>&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;title&gt;…&lt;/title&gt;
+  &lt;script&gt;
+    const temaInicial = localStorage.getItem('tema') || 'auto'
+    if (temaInicial === 'auto') {
+      document.documentElement.setAttribute('data-bs-theme',
+        window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    } else {
+      document.documentElement.setAttribute('data-bs-theme', temaInicial)
+    }
+  &lt;/script&gt;
+  &lt;link href="…/bootstrap.min.css" rel="stylesheet"&gt;
+  &lt;script src="…/bootstrap.bundle.min.js" defer&gt;&lt;/script&gt;
+  &lt;script&gt;
+    window.onload = () =&gt; { /* botones, menú, onchange... */ }
+  &lt;/script&gt;
+&lt;/head&gt;</code></pre>
+      <div class="alert alert-warning mt-4 mb-0" role="alert">
+        <strong>Excepción a la convención del curso</strong> (JavaScript en <code>window.onload</code>): este script es la única excepción justificada. Se mantiene
+        lo más corto posible, solo pone el atributo, y en el fichero se explica con un comentario HTML. Para ver el problema, se mueve dentro de
+        <code>window.onload</code>, se elige Oscuro y se recarga varias veces.
+      </div>
+    </section>
+
+    <!-- 11. Modo propio -->
+    <section id="modo-propio" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">11. Un modo de color propio</h2>
+      <p>
+        <code>data-bs-theme</code> admite cualquier valor. Basta una regla <code>[data-bs-theme=sepia]</code> que redefina las variables (con sus parejas <code>-rgb</code>)
+        para tener un tercer modo. Las reglas que Bootstrap tiene solo para el oscuro (icono del select, X de cerrar) no se aplican: se usan las de claro,
+        así que funciona bien con modos parecidos al claro.
+      </p>
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <p class="etiqueta">data-bs-theme en la zona: light / dark / sepia</p>
+          <div class="demo mb-0">
+            <div class="btn-group btn-group-sm mb-3" role="group" aria-label="Modo de la zona">
+              <button type="button" class="btn btn-outline-primary" data-modo-zona="light">Claro</button>
+              <button type="button" class="btn btn-outline-primary" data-modo-zona="dark">Oscuro</button>
+              <button type="button" class="btn btn-outline-primary" data-modo-zona="sepia">Sepia</button>
+            </div>
+            <div id="zona-modos" class="bg-body text-body border rounded p-3" data-bs-theme="sepia">
+              <h3 class="h6 text-body-emphasis">Condiciones de venta</h3>
+              <p class="text-body-secondary small">Los pedidos realizados antes de las 14:00 se envían el mismo día.</p>
+              <input type="email" class="form-control form-control-sm mb-2" placeholder="nombre@ejemplo.com">
+              <a href="#modo-propio">Leer más</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+<pre><code>[data-bs-theme=sepia] {
+  color-scheme: light;
+  --bs-body-bg: #f4ecd8;
+  --bs-body-bg-rgb: 244, 236, 216;
+  --bs-body-color: #5b4636;
+  --bs-body-color-rgb: 91, 70, 54;
+  --bs-emphasis-color: #3b2a1e;
+  --bs-tertiary-bg: #efe4cc;
+  --bs-border-color: #d6c4a0;
+  --bs-link-color: #8b4513;
+  --bs-link-color-rgb: 139, 69, 19;
+  /* ... */
+}</code></pre>
+        </div>
+      </div>
+      <p class="mt-3 mb-0">
+        Con Sass hay una alternativa: el mixin <code>color-mode()</code> y la variable <code>$color-mode-type</code> (atributo <code>data</code> o <code>media-query</code>).
+        Se ve en el punto de personalización.
+      </p>
+    </section>
+
+    <!-- 12. Práctica -->
+    <section id="practica" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">12. Práctica</h2>
+      <div class="card border-success mb-4">
+        <div class="card-body">
+          <h3 class="h5 card-title">Modo oscuro para la landing de la tienda</h3>
+          <p>Sobre la landing de la práctica de la sesión 1 (navbar, cabecera destacada y secciones en rejilla):</p>
+          <ol class="mb-0">
+            <li>Repasar las clases de color fijo (<code>bg-white</code>, <code>bg-light</code>, <code>text-dark</code>, <code>text-muted</code>…) y cambiarlas por las que se adaptan.</li>
+            <li>Un selector de tema en la navbar: dropdown con Claro / Oscuro / Automático y sus iconos; el icono del botón muestra la opción elegida.</li>
+            <li>Guardar la elección en <code>localStorage</code> y aplicarla con un script mínimo en el <code>&lt;head&gt;</code>, sin parpadeo al recargar.</li>
+            <li>Automático sigue al sistema y cambia sin recargar (<code>matchMedia</code> + <code>change</code>).</li>
+            <li>El pie, siempre oscuro, con <code>data-bs-theme="dark"</code> y <code>bg-body text-body</code>.</li>
+            <li>Logo en SVG con <code>fill="currentColor"</code>.</li>
+            <li>Un color de marca para los enlaces, distinto en cada modo, redefiniendo <code>--bs-link-color</code> y <code>--bs-link-color-rgb</code>.</li>
+            <li><em>Opcional:</em> un componente propio (por ejemplo, una ficha de oferta) cuyo CSS use solo variables <code>--bs-*</code>.</li>
+          </ol>
+        </div>
+      </div>
+      <p class="etiqueta">Resultado (el selector actúa sobre el bloque, no sobre la guía)</p>
+      <div class="demo p-0 overflow-hidden">
+        <div id="landing" class="landing bg-body text-body" data-bs-theme="light">
+          <nav class="navbar navbar-expand bg-body-tertiary border-bottom">
+            <div class="container-fluid">
+              <a class="navbar-brand d-flex align-items-center" href="#practica">
+                <svg width="150" height="32" viewBox="0 0 180 40" role="img" aria-label="Periféricos">
+                  <rect x="2" y="8" width="36" height="24" rx="4" fill="none" stroke="currentColor" stroke-width="3"/>
+                  <text x="48" y="27" font-family="sans-serif" font-size="18" font-weight="bold" fill="currentColor">Periféricos</text>
+                </svg>
+              </a>
+              <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item d-none d-sm-block"><a class="nav-link" href="#practica">Catálogo</a></li>
+                <li class="nav-item d-none d-sm-block"><a class="nav-link" href="#practica">Contacto</a></li>
+                <li class="nav-item dropdown">
+                  <button class="btn btn-link nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Cambiar el tema">
+                    <i class="bi bi-circle-half" id="icono-landing"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li><button type="button" class="dropdown-item" data-tema-landing="light"><i class="bi bi-sun-fill me-2"></i>Claro</button></li>
+                    <li><button type="button" class="dropdown-item" data-tema-landing="dark"><i class="bi bi-moon-stars-fill me-2"></i>Oscuro</button></li>
+                    <li><button type="button" class="dropdown-item" data-tema-landing="auto"><i class="bi bi-circle-half me-2"></i>Automático</button></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <div class="p-4 p-md-5 text-center bg-body-tertiary border-bottom">
+            <h3 class="display-6 fw-bold text-body-emphasis">Periféricos para trabajar y jugar</h3>
+            <p class="lead text-body-secondary">Teclados, ratones y monitores con envío en 24 horas.</p>
+            <a href="#practica" class="btn btn-primary">Ver catálogo</a>
+          </div>
+          <div class="container-fluid p-4">
+            <div class="row row-cols-1 row-cols-md-3 g-3">
+              <div class="col">
+                <div class="card h-100"><div class="card-body">
+                  <h4 class="h6 card-title text-body-emphasis"><i class="bi bi-keyboard"></i> Teclados</h4>
+                  <p class="card-text small text-body-secondary">Mecánicos y de membrana. <a href="#practica">Ver más</a></p>
+                </div></div>
+              </div>
+              <div class="col">
+                <div class="card h-100"><div class="card-body">
+                  <h4 class="h6 card-title text-body-emphasis"><i class="bi bi-mouse"></i> Ratones</h4>
+                  <p class="card-text small text-body-secondary">Con cable, inalámbricos y ergonómicos. <a href="#practica">Ver más</a></p>
+                </div></div>
+              </div>
+              <div class="col">
+                <div class="card h-100"><div class="card-body">
+                  <h4 class="h6 card-title text-body-emphasis"><i class="bi bi-display"></i> Monitores</h4>
+                  <p class="card-text small text-body-secondary">De 24 a 34 pulgadas. <span class="badge bg-success-subtle text-success-emphasis border border-success-subtle">-15 %</span></p>
+                </div></div>
+              </div>
+            </div>
+          </div>
+          <footer class="bg-body text-body-secondary small p-3 text-center" data-bs-theme="dark">
+            Periféricos S. L. · Envío gratis a partir de 50 €
+          </footer>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-top py-4 text-center text-body-secondary small">
+    Curso de Bootstrap 5 · Modo claro y oscuro ·
+    Referencia: <a href="https://getbootstrap.com/docs/5.3/customize/color-modes/">Color modes</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/customize/css-variables/">CSS variables</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/customize/color/">Color</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/utilities/background/">Background</a> ·
+    <a href="https://developer.mozilla.org/es/docs/Web/CSS/@media/prefers-color-scheme">prefers-color-scheme (MDN)</a>
+  </footer>
+
+</body>
+</html>

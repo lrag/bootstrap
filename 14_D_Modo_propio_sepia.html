@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>14 D · Un modo de color propio: sepia</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <script>
+    window.onload = () => {
+      document.getElementById('btn-claro').onclick = () => {
+        document.documentElement.setAttribute('data-bs-theme', 'light')
+      }
+
+      document.getElementById('btn-oscuro').onclick = () => {
+        document.documentElement.setAttribute('data-bs-theme', 'dark')
+      }
+
+      document.getElementById('btn-sepia').onclick = () => {
+        document.documentElement.setAttribute('data-bs-theme', 'sepia')
+      }
+    }
+  </script>
+
+  <style>
+    [data-bs-theme=sepia] {
+      color-scheme: light;
+      --bs-body-bg: #f4ecd8;
+      --bs-body-bg-rgb: 244, 236, 216;
+      --bs-body-color: #5b4636;
+      --bs-body-color-rgb: 91, 70, 54;
+      --bs-emphasis-color: #3b2a1e;
+      --bs-emphasis-color-rgb: 59, 42, 30;
+      --bs-secondary-color: rgba(91, 70, 54, .75);
+      --bs-secondary-color-rgb: 91, 70, 54;
+      --bs-secondary-bg: #e8dcc0;
+      --bs-secondary-bg-rgb: 232, 220, 192;
+      --bs-tertiary-bg: #efe4cc;
+      --bs-tertiary-bg-rgb: 239, 228, 204;
+      --bs-border-color: #d6c4a0;
+      --bs-border-color-translucent: rgba(91, 70, 54, .2);
+      --bs-link-color: #8b4513;
+      --bs-link-color-rgb: 139, 69, 19;
+      --bs-link-hover-color: #6b3410;
+      --bs-link-hover-color-rgb: 107, 52, 16;
+    }
+  </style>
+</head>
+<body>
+
+  <!--
+    UN MODO DE COLOR PROPIO: SEPIA
+    Bootstrap trae dos modos, light y dark, pero data-bs-theme admite cualquier valor.
+    Si escribimos en nuestro CSS una regla [data-bs-theme=sepia] que da valores
+    a las variables --bs-*, ya tenemos un tercer modo:
+      [data-bs-theme=sepia] {
+        --bs-body-bg: #f4ecd8;
+        --bs-body-bg-rgb: 244, 236, 216;
+        --bs-body-color: #5b4636;
+        ...
+      }
+    Son las mismas variables que redefine Bootstrap para el oscuro (las vimos en 14_B),
+    con sus parejas -rgb. color-scheme: light le dice al navegador que sus controles
+    (barras de desplazamiento, calendarios...) se pinten en claro.
+
+    Las reglas que Bootstrap tiene solo para el oscuro (el icono del select, el de la X
+    de cerrar...) no se aplican en sepia: se usan las de claro. Por eso un modo propio
+    funciona bien si es parecido al claro. Un modo propio oscuro (por ejemplo, azul noche)
+    tendría que repetir también esas reglas.
+
+    Cambiamos el modo con los tres botones de arriba.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Un modo de color propio: sepia</h1>
+
+    <div class="text-center my-4">
+      <div class="btn-group" role="group" aria-label="Modo de color">
+        <button type="button" class="btn btn-outline-primary" id="btn-claro">
+          <i class="bi bi-sun"></i> Claro
+        </button>
+        <button type="button" class="btn btn-outline-primary" id="btn-oscuro">
+          <i class="bi bi-moon-stars"></i> Oscuro
+        </button>
+        <button type="button" class="btn btn-outline-primary" id="btn-sepia">
+          <i class="bi bi-book"></i> Sepia
+        </button>
+      </div>
+    </div>
+
+    <!--
+      LOS COMPONENTES SE ADAPTAN SOLOS
+      Cards, formularios, tablas, list groups... ninguno lleva una clase para sepia:
+      leen --bs-body-bg, --bs-border-color, etc., y toman los valores del modo activo.
+      Los colores de tema (btn-primary, bg-success...) no cambian, igual que en el oscuro.
+    -->
+    <h2 class="h4 mt-5">Los componentes se adaptan solos</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="h5 card-title text-body-emphasis">Teclado mecánico</h3>
+              <p class="card-text text-body-secondary">Interruptores marrones, retroiluminación blanca.</p>
+              <p class="fs-4 fw-bold text-body-emphasis">59,90 €</p>
+              <button type="button" class="btn btn-primary">
+                <i class="bi bi-cart-plus"></i> Añadir
+              </button>
+              <a href="#" class="ms-2">Ver detalles</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <form class="h-100">
+            <label for="correo" class="form-label">Recibir ofertas</label>
+            <input type="email" id="correo" class="form-control mb-2" placeholder="nombre@ejemplo.com">
+            <select class="form-select mb-2" aria-label="Categoría">
+              <option>Teclados</option>
+              <option>Ratones</option>
+              <option>Monitores</option>
+            </select>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="acepto">
+              <label class="form-check-label" for="acepto">Acepto la política de privacidad</label>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <ul class="list-group">
+            <li class="list-group-item">Envío gratis desde 50 €</li>
+            <li class="list-group-item">Devolución en 30 días</li>
+            <li class="list-group-item">Garantía de 3 años</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <table class="table table-striped mb-0">
+            <thead>
+              <tr><th scope="col">Producto</th><th scope="col">Precio</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Teclado</td><td>59,90 €</td></tr>
+              <tr><td>Ratón</td><td>24,90 €</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      SEPIA EN UNA SOLA ZONA
+      Como el selector es solo [data-bs-theme=sepia], funciona en cualquier elemento,
+      igual que light y dark: aquí, una zona de lectura (las condiciones de venta)
+      que siempre se ve en sepia. Lleva bg-body y text-body para pintar su fondo y su texto,
+      como vimos en 14_A.
+    -->
+    <h2 class="h4 mt-5">Sepia en una sola zona</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <article class="bg-body text-body border rounded p-4" data-bs-theme="sepia">
+        <h3 class="h5 text-body-emphasis">Condiciones de venta</h3>
+        <p>Los pedidos realizados antes de las 14:00 se envían el mismo día laborable.</p>
+        <p class="mb-0">El cliente dispone de 30 días para devolver cualquier producto. <a href="#">Leer más</a></p>
+      </article>
+    </div>
+  </div>
+
+</body>
+</html>

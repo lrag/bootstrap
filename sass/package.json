@@ -1,0 +1,17 @@
+{
+  "name": "tema-bootstrap",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bootstrap 5.3 compilado desde Sass con un tema propio",
+  "scripts": {
+    "css": "sass --load-path=node_modules --quiet-deps scss:css",
+    "css:min": "sass --load-path=node_modules --quiet-deps --style=compressed --no-source-map scss:css/min",
+    "vigilar": "sass --load-path=node_modules --quiet-deps --watch scss:css"
+  },
+  "dependencies": {
+    "bootstrap": "5.3.8"
+  },
+  "devDependencies": {
+    "sass": "1.77.8"
+  }
+}

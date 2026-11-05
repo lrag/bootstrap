@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Personalización con CSS y Sass</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    pre { background: var(--bs-tertiary-bg); padding: 1rem; border-radius: var(--bs-border-radius); margin-bottom: 0; }
+    .demo { background: var(--bs-tertiary-bg); border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius); padding: 1rem; margin-bottom: 1rem; }
+    .etiqueta { font-family: var(--bs-font-monospace); font-size: .8rem; margin-bottom: .25rem; }
+
+    /* Demo de variables CSS globales, solo dentro de .marca */
+    .marca {
+      --bs-primary-rgb: 194, 65, 12;
+      --bs-link-color-rgb: 194, 65, 12;
+      --bs-border-radius: .75rem;
+      font-family: "Nunito", system-ui, sans-serif;
+    }
+
+    /* Demo de variables de componente: un botón propio */
+    .btn-marca {
+      --bs-btn-color: #fff; --bs-btn-bg: #c2410c; --bs-btn-border-color: #c2410c;
+      --bs-btn-hover-color: #fff; --bs-btn-hover-bg: #9a3412; --bs-btn-hover-border-color: #9a3412;
+      --bs-btn-active-color: #fff; --bs-btn-active-bg: #7c2d12; --bs-btn-active-border-color: #7c2d12;
+      --bs-btn-focus-shadow-rgb: 194, 65, 12;
+    }
+
+    /* CSS compilado de ejemplo-sass.scss (copiado tal cual) */
+    .ficha { border: 2px solid #c2410c; border-radius: .75rem; padding: 1rem; }
+    .ficha h3 { color: #c2410c; }
+    .ficha:hover { background-color: #f9ece7; }
+    .boton-marca { background-color: #c2410c; color: #fff; border-radius: .75rem; padding: .5rem 1rem; border: 0; }
+    .boton-marca:hover { background-color: #9b340a; }
+    .estado-pendiente, .estado-enviado, .estado-entregado { color: #fff; border-radius: .75rem; padding: .5rem 1rem; display: inline-block; }
+    .estado-pendiente { background-color: #b45309; }
+    .estado-enviado { background-color: #1d4ed8; }
+    .estado-entregado { background-color: #15803d; }
+
+    /* Fragmentos del CSS compilado de tema.scss y tema-mapas.scss, limitados a .tema (valores copiados tal cual) */
+    .tema {
+      --bs-primary: #c2410c; --bs-primary-rgb: 194, 65, 12;
+      --bs-secondary: #334155; --bs-secondary-rgb: 51, 65, 85;
+      --bs-primary-text-emphasis: #4e1a05; --bs-primary-bg-subtle: #f3d9ce; --bs-primary-border-subtle: #e7b39e;
+      --bs-link-color-rgb: 194, 65, 12; --bs-link-hover-color-rgb: 155, 52, 10;
+      --bs-oferta: #7e22ce; --bs-oferta-rgb: 126, 34, 206;
+      --bs-oferta-text-emphasis: #320e52; --bs-oferta-bg-subtle: #e5d3f5; --bs-oferta-border-subtle: #cba7eb;
+      --bs-border-radius: .75rem; --bs-border-radius-sm: .5rem; --bs-border-radius-lg: 1rem;
+      font-family: "Nunito", system-ui, sans-serif;
+    }
+    .tema a { text-decoration: none; }
+    .tema .btn-primary {
+      --bs-btn-color: #fff; --bs-btn-bg: #c2410c; --bs-btn-border-color: #c2410c;
+      --bs-btn-hover-color: #fff; --bs-btn-hover-bg: #a5370a; --bs-btn-hover-border-color: #9b340a;
+      --bs-btn-focus-shadow-rgb: 203, 94, 48;
+      --bs-btn-active-color: #fff; --bs-btn-active-bg: #9b340a; --bs-btn-active-border-color: #923109;
+    }
+    .tema .btn-outline-primary {
+      --bs-btn-color: #c2410c; --bs-btn-border-color: #c2410c;
+      --bs-btn-hover-color: #fff; --bs-btn-hover-bg: #c2410c; --bs-btn-hover-border-color: #c2410c;
+      --bs-btn-active-color: #fff; --bs-btn-active-bg: #c2410c; --bs-btn-active-border-color: #c2410c;
+    }
+    .tema .btn-secondary {
+      --bs-btn-color: #fff; --bs-btn-bg: #334155; --bs-btn-border-color: #334155;
+      --bs-btn-hover-color: #fff; --bs-btn-hover-bg: #2b3748; --bs-btn-hover-border-color: #293444;
+    }
+    .tema .btn-oferta {
+      --bs-btn-color: #fff; --bs-btn-bg: #7e22ce; --bs-btn-border-color: #7e22ce;
+      --bs-btn-hover-color: #fff; --bs-btn-hover-bg: #6b1daf; --bs-btn-hover-border-color: #651ba5;
+      --bs-btn-focus-shadow-rgb: 145, 67, 213;
+      --bs-btn-active-color: #fff; --bs-btn-active-bg: #651ba5; --bs-btn-active-border-color: #5f1a9b;
+    }
+    .tema .text-bg-oferta { color: #fff !important; background-color: RGBA(var(--bs-oferta-rgb), var(--bs-bg-opacity, 1)) !important; }
+    .tema .text-oferta { color: rgba(var(--bs-oferta-rgb), 1) !important; }
+    .tema .alert-oferta {
+      --bs-alert-color: var(--bs-oferta-text-emphasis); --bs-alert-bg: var(--bs-oferta-bg-subtle);
+      --bs-alert-border-color: var(--bs-oferta-border-subtle); --bs-alert-link-color: var(--bs-oferta-text-emphasis);
+    }
+    .tema .p-6 { padding: 5rem !important; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <header class="bg-primary text-white py-5 mb-4">
+    <div class="container">
+      <p class="text-uppercase small mb-1">Curso de Bootstrap 5 · Sesión 3 · Punto 4</p>
+      <h1 class="display-5 fw-bold">Personalización con CSS y Sass</h1>
+      <p class="lead mb-0">Adaptar Bootstrap a una marca: variables CSS sin compilar, y Sass con npm para cambiar colores, mapas e interruptores y quitar lo que no se usa.</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <nav class="mb-5" aria-label="Índice">
+      <ol class="list-group list-group-numbered">
+        <li class="list-group-item"><a href="#caminos">Dos caminos: variables CSS o Sass</a></li>
+        <li class="list-group-item"><a href="#css-globales">Variables CSS globales</a></li>
+        <li class="list-group-item"><a href="#css-componente">Variables CSS de componente</a></li>
+        <li class="list-group-item"><a href="#sass">Sass desde cero</a></li>
+        <li class="list-group-item"><a href="#proyecto">El proyecto con npm</a></li>
+        <li class="list-group-item"><a href="#variables">Compilar Bootstrap con variables propias</a></li>
+        <li class="list-group-item"><a href="#enable">Los interruptores <code>$enable-*</code></a></li>
+        <li class="list-group-item"><a href="#mapas">Mapas: <code>$theme-colors</code> y <code>$spacers</code></a></li>
+        <li class="list-group-item"><a href="#selectiva">Importación selectiva</a></li>
+        <li class="list-group-item"><a href="#practica">Práctica</a></li>
+      </ol>
+    </nav>
+
+    <!-- 1. Caminos -->
+    <section id="caminos" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">1. Dos caminos: variables CSS o Sass</h2>
+      <table class="table table-sm mb-4">
+        <thead><tr><th></th><th>Variables CSS (<code>--bs-*</code>)</th><th>Sass (<code>$primary</code>…)</th></tr></thead>
+        <tbody>
+          <tr><td>Instalar</td><td>Nada</td><td>Node.js, y con npm <code>bootstrap</code> y <code>sass</code></td></tr>
+          <tr><td>Cuándo actúa</td><td>En el navegador (se pueden cambiar con JavaScript)</td><td>Al compilar: genera un CSS nuevo</td></tr>
+          <tr><td>Alcance</td><td>Solo lo que Bootstrap dejó en variables</td><td>Todo, incluidos los tonos derivados (hover, foco, subtle, modo oscuro)</td></tr>
+          <tr><td>Colores nuevos</td><td>A mano, clase a clase</td><td>Una entrada en un mapa genera todas las clases</td></tr>
+          <tr><td>Quitar lo que no se usa</td><td>No</td><td>Sí, con la importación selectiva</td></tr>
+        </tbody>
+      </table>
+      <p class="mb-0">En la práctica se combinan: Sass para la marca (colores, fuentes, esquinas) y variables CSS para ajustes puntuales.</p>
+    </section>
+
+    <!-- 2. Variables CSS globales -->
+    <section id="css-globales" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">2. Variables CSS globales</h2>
+      <p>
+        Se redefinen en <code>:root</code> (o en un contenedor, porque se heredan), en un CSS cargado <strong>después</strong> del de Bootstrap.
+      </p>
+<pre class="mb-3"><code>:root {
+  --bs-primary-rgb: 194, 65, 12;
+  --bs-link-color-rgb: 194, 65, 12;
+  --bs-border-radius: .75rem;
+  --bs-body-font-family: "Nunito", system-ui, sans-serif;
+}</code></pre>
+      <div class="row g-4 mb-3">
+        <div class="col-md-6">
+          <p class="etiqueta">Sin cambios</p>
+          <div class="demo h-100 mb-0">
+            <p class="text-primary fw-bold">text-primary · <a href="#css-globales">enlace</a></p>
+            <span class="badge bg-primary mb-3">bg-primary</span>
+            <div class="card mb-3"><div class="card-body">card</div></div>
+            <button type="button" class="btn btn-primary">btn-primary</button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <p class="etiqueta">Con las variables redefinidas</p>
+          <div class="demo marca h-100 mb-0">
+            <p class="text-primary fw-bold">text-primary · <a href="#css-globales">enlace</a></p>
+            <span class="badge bg-primary mb-3">bg-primary</span>
+            <div class="card mb-3"><div class="card-body">card</div></div>
+            <button type="button" class="btn btn-primary">btn-primary (sigue azul)</button>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-warning mt-4 mb-0" role="alert">
+        <strong>Lo que no cambia:</strong> <code>btn-primary</code>, el foco de los campos o <code>alert-primary</code> tienen sus colores
+        escritos en el CSS compilado (<code>--bs-btn-bg: #0d6efd</code>), y el hover es un tono que Sass calculó al compilar.
+        Por eso <code>bg-primary</code> y <code>text-primary</code> usan <code>--bs-primary-rgb</code> (para poder aplicar <code>bg-opacity-*</code>), pero el botón no.
+        Para cambiar <em>primary</em> en todas partes hace falta Sass.
+      </div>
+    </section>
+
+    <!-- 3. Variables CSS de componente -->
+    <section id="css-componente" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">3. Variables CSS de componente</h2>
+      <p>
+        Cada componente dibuja con sus variables (<code>.btn</code> lee <code>--bs-btn-bg</code>, <code>--bs-btn-color</code>, <code>--bs-btn-hover-bg</code>…),
+        y las clases de color solo les dan valor. Una clase propia puede hacer lo mismo. La lista de variables de cada componente está en su
+        página de la documentación, apartado <em>CSS → Variables</em>.
+      </p>
+      <div class="row g-4">
+        <div class="col-lg-5">
+          <div class="demo mb-0">
+            <div class="d-flex flex-wrap gap-2">
+              <button type="button" class="btn btn-marca">btn btn-marca</button>
+              <button type="button" class="btn btn-primary" style="--bs-btn-border-radius: 2rem; --bs-btn-padding-x: 1.5rem">style="--bs-btn-…"</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7">
+<pre><code>.btn-marca {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #c2410c;
+  --bs-btn-border-color: #c2410c;
+  --bs-btn-hover-bg: #9a3412;
+  --bs-btn-hover-border-color: #9a3412;
+  /* active, focus, disabled... */
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Sass desde cero -->
+    <section id="sass" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">4. Sass desde cero</h2>
+      <p>
+        <strong>Sass</strong> es un preprocesador: se escribe en SCSS (CSS con extras) y el compilador lo convierte en CSS normal.
+        Bootstrap está escrito en Sass. Todo CSS válido es SCSS válido.
+      </p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Herramienta</th><th>SCSS</th><th>Para qué</th></tr></thead>
+        <tbody>
+          <tr><td>Variables</td><td><code>$color-marca: #c2410c;</code></td><td>Un valor con nombre; desaparece al compilar</td></tr>
+          <tr><td>Anidamiento</td><td><code>.ficha { h3 { … } &amp;:hover { … } }</code></td><td>Genera <code>.ficha h3</code> y <code>.ficha:hover</code></td></tr>
+          <tr><td>Mixins</td><td><code>@mixin caja-color($fondo) { … }</code> / <code>@include caja-color(red);</code></td><td>Bloques de declaraciones reutilizables, con parámetros</td></tr>
+          <tr><td>Funciones</td><td><code>mix(#000, $color-marca, 20%)</code></td><td>Calcular valores (Bootstrap: <code>tint-color()</code>, <code>shade-color()</code>, <code>color-contrast()</code>)</td></tr>
+          <tr><td>Mapas</td><td><code>$estados: ("pendiente": #b45309, …);</code></td><td>Parejas clave: valor</td></tr>
+          <tr><td>Bucles</td><td><code>@each $nombre, $color in $estados { .estado-#{$nombre} { … } }</code></td><td>Una clase por entrada del mapa</td></tr>
+        </tbody>
+      </table>
+      <div class="row g-4">
+        <div class="col-lg-6">
+<pre><code>$color-marca: #c2410c;
+$estados: ("pendiente": #b45309,
+           "enviado":   #1d4ed8,
+           "entregado": #15803d);
+
+@mixin caja-color($fondo) {
+  background-color: $fondo;
+  color: #fff;
+  border-radius: .75rem;
+  padding: .5rem 1rem;
+}
+
+.boton-marca {
+  @include caja-color($color-marca);
+  border: 0;
+  &amp;:hover { background-color: mix(#000, $color-marca, 20%); }
+}
+
+@each $nombre, $color in $estados {
+  .estado-#{$nombre} { @include caja-color($color); }
+}</code></pre>
+        </div>
+        <div class="col-lg-6">
+          <p class="etiqueta">Resultado (CSS compilado)</p>
+          <div class="demo">
+            <div class="ficha bg-body mb-3"><h3 class="h5">.ficha</h3><p class="mb-0">Borde y título del color de la marca; fondo teñido al pasar el ratón.</p></div>
+            <button type="button" class="boton-marca mb-3">.boton-marca</button>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="estado-pendiente">.estado-pendiente</span>
+              <span class="estado-enviado">.estado-enviado</span>
+              <span class="estado-entregado">.estado-entregado</span>
+            </div>
+          </div>
+          <div class="alert alert-info mb-0" role="alert">
+            Así genera Bootstrap <code>btn-primary</code>, <code>btn-success</code>… a partir del mapa <code>$theme-colors</code>, y <code>m-0</code>…<code>m-5</code> a partir de <code>$spacers</code>.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Proyecto -->
+    <section id="proyecto" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">5. El proyecto con npm</h2>
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <p class="etiqueta">Estructura (carpeta sass/ del workspace)</p>
+<pre><code>sass/
+├── package.json
+├── node_modules/        ← npm install
+│   ├── bootstrap/scss/  ← las fuentes de Bootstrap
+│   └── sass/            ← el compilador
+├── scss/                ← lo que escribimos
+│   ├── tema.scss
+│   └── ...
+└── css/                 ← lo que genera el compilador</code></pre>
+        </div>
+        <div class="col-lg-6">
+          <p class="etiqueta">Instalación</p>
+<pre class="mb-3"><code>npm init -y
+npm install bootstrap@5.3.8
+npm install --save-dev sass@1.77.8</code></pre>
+          <p class="etiqueta">Scripts de package.json</p>
+<pre><code>"css":     "sass --load-path=node_modules --quiet-deps scss:css",
+"vigilar": "sass --load-path=node_modules --quiet-deps --watch scss:css",
+"css:min": "sass ... --style=compressed --no-source-map scss:css/min"</code></pre>
+        </div>
+      </div>
+      <table class="table table-sm mt-4 mb-4">
+        <thead><tr><th>Opción</th><th>Para qué</th></tr></thead>
+        <tbody>
+          <tr><td><code>scss:css</code></td><td>Compila cada <code>.scss</code> de <code>scss/</code> en un <code>.css</code> de <code>css/</code> (los parciales, <code>_nombre.scss</code>, no)</td></tr>
+          <tr><td><code>--load-path=node_modules</code></td><td>Permite escribir <code>@import "bootstrap/scss/bootstrap"</code></td></tr>
+          <tr><td><code>--quiet-deps</code></td><td>Calla los avisos del código de Bootstrap (no es nuestro)</td></tr>
+          <tr><td><code>--watch</code></td><td>Se queda esperando y recompila al guardar</td></tr>
+          <tr><td><code>--style=compressed</code></td><td>CSS minimizado, sin espacios ni comentarios</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-warning mb-0" role="alert">
+        <strong>¿Por qué <code>sass@1.77.8</code>?</strong> Las versiones recientes de Sass necesitan un Node.js más nuevo que el 20.11 del aula
+        y avisan de que <code>@import</code> se va a retirar: Bootstrap 5.3 lo usa en todas sus fuentes, así que saldrían cientos de avisos.
+      </div>
+    </section>
+
+    <!-- 6. Variables -->
+    <section id="variables" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">6. Compilar Bootstrap con variables propias</h2>
+      <div class="row g-4 mb-3">
+        <div class="col-lg-6">
+          <p class="etiqueta">scss/tema.scss</p>
+<pre><code>$primary:   #c2410c;
+$secondary: #334155;
+
+$font-family-sans-serif: "Nunito", system-ui, sans-serif;
+$headings-font-weight:   700;
+$border-radius:          .75rem;
+$link-decoration:        none;
+
+@import "bootstrap/scss/bootstrap";</code></pre>
+        </div>
+        <div class="col-lg-6">
+          <p class="etiqueta">Resultado</p>
+          <div class="demo tema mb-0">
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <button type="button" class="btn btn-primary">btn-primary</button>
+              <button type="button" class="btn btn-outline-primary">btn-outline-primary</button>
+              <button type="button" class="btn btn-secondary">btn-secondary</button>
+            </div>
+            <p><span class="text-primary fw-bold">text-primary</span> · <a href="#variables">enlace</a> · <span class="badge text-bg-primary">text-bg-primary</span></p>
+            <div class="alert alert-primary mb-0" role="alert">alert-primary: los tonos subtle y emphasis salen de <code>$primary</code>.</div>
+          </div>
+        </div>
+      </div>
+      <p>
+        Nuestras variables van <strong>antes</strong> del <code>@import</code>. Todas las de Bootstrap llevan <code>!default</code>
+        (<code>$primary: $blue !default;</code>): «este valor, salvo que ya tenga uno». Cuando Bootstrap llega a esa línea, <code>$primary</code>
+        ya vale <code>#c2410c</code> y la respeta.
+      </p>
+      <div class="alert alert-info mb-0" role="alert">
+        El texto del botón (blanco o negro) lo elige <code>color-contrast()</code>: el que cumpla un contraste de 4.5 (<code>$min-contrast-ratio</code>) con el fondo.
+        Con un <code>$primary</code> claro, los botones llevarían texto negro. Las variables están en <code>node_modules/bootstrap/scss/_variables.scss</code>
+        y en la documentación de cada componente, apartado <em>Sass</em>. Nunca se edita nada dentro de <code>node_modules</code>.
+      </div>
+    </section>
+
+    <!-- 7. enable -->
+    <section id="enable" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">7. Los interruptores <code>$enable-*</code></h2>
+      <table class="table table-sm mb-0">
+        <thead><tr><th>Variable</th><th>Por defecto</th><th>Qué hace</th></tr></thead>
+        <tbody>
+          <tr><td><code>$enable-shadows</code></td><td><code>false</code></td><td>Sombras en botones, campos, dropdowns…</td></tr>
+          <tr><td><code>$enable-gradients</code></td><td><code>false</code></td><td>Degradado suave en botones, nav-pills activas, paginación activa, elementos activos de dropdown</td></tr>
+          <tr><td><code>$enable-rounded</code></td><td><code>true</code></td><td>Con <code>false</code>, todo con esquinas rectas</td></tr>
+          <tr><td><code>$enable-dark-mode</code></td><td><code>true</code></td><td>Con <code>false</code>, no se genera el modo oscuro</td></tr>
+          <tr><td><code>$enable-negative-margins</code></td><td><code>false</code></td><td>Con <code>true</code>, existen <code>m-n1</code>…<code>m-n5</code></td></tr>
+          <tr><td><code>$enable-important-utilities</code></td><td><code>true</code></td><td>Las utilidades llevan <code>!important</code></td></tr>
+          <tr><td><code>$enable-grid-classes</code>, <code>$enable-container-classes</code></td><td><code>true</code></td><td>Generar o no <code>row</code>/<code>col-*</code> y <code>container-*</code></td></tr>
+          <tr><td><code>$enable-cssgrid</code></td><td><code>false</code></td><td>Rejilla alternativa con CSS Grid (<code>.grid</code>, <code>.g-col-*</code>)</td></tr>
+          <tr><td><code>$enable-rfs</code></td><td><code>true</code></td><td>Tamaños de letra que se reducen en pantallas estrechas</td></tr>
+          <tr><td><code>$enable-transitions</code>, <code>$enable-reduced-motion</code></td><td><code>true</code></td><td>Animaciones, y respetar la preferencia de «reducir movimiento»</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 8. Mapas -->
+    <section id="mapas" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">8. Mapas: <code>$theme-colors</code> y <code>$spacers</code></h2>
+      <p>
+        Definir <code>$theme-colors</code> antes de Bootstrap lo <strong>sustituye entero</strong>. Para <strong>añadir</strong> una entrada,
+        se importa Bootstrap por partes y el cambio va en medio, cuando el mapa ya existe:
+      </p>
+      <div class="row g-4 mb-3">
+        <div class="col-lg-7">
+          <p class="etiqueta">scss/tema-mapas.scss (resumido)</p>
+<pre><code>@import "bootstrap/scss/functions";
+
+$primary: #c2410c;
+$oferta:  #7e22ce;
+
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+
+$theme-colors: map-merge($theme-colors, ("oferta": $oferta));
+$spacers:      map-merge($spacers, (6: $spacer * 5));
+
+@import "bootstrap/scss/maps";
+
+// tonos -subtle y -emphasis (y modo oscuro) para alerts y list groups
+$theme-colors-text: map-merge($theme-colors-text,
+                      ("oferta": shade-color($oferta, 60%)));
+// ... bg-subtle, border-subtle, sus versiones -dark
+// ... y $utilities-bg-subtle, $utilities-text-emphasis-colors,
+//     $utilities-border-subtle para las utilidades
+
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+@import "bootstrap/scss/root";
+// ... el resto, en el orden de bootstrap.scss
+@import "bootstrap/scss/utilities/api";</code></pre>
+        </div>
+        <div class="col-lg-5">
+          <p class="etiqueta">Resultado</p>
+          <div class="demo tema mb-3">
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <button type="button" class="btn btn-oferta">btn-oferta</button>
+              <span class="badge text-bg-oferta align-self-center">text-bg-oferta</span>
+              <span class="text-oferta fw-bold align-self-center">text-oferta</span>
+            </div>
+            <div class="alert alert-oferta mb-3" role="alert">alert-oferta: −20 % en teclados.</div>
+            <div class="d-flex align-items-start gap-2">
+              <div class="bg-body border p-5">p-5</div>
+              <div class="bg-body border p-6">p-6</div>
+            </div>
+          </div>
+          <div class="alert alert-secondary mb-0" role="alert">
+            <code>map-merge(mapa, (clave: valor))</code> añade la pareja (o la cambia si ya existe). <code>map-remove(mapa, "clave")</code> la quita.
+          </div>
+        </div>
+      </div>
+      <table class="table table-sm mb-0">
+        <thead><tr><th>Mapa</th><th>Genera</th></tr></thead>
+        <tbody>
+          <tr><td><code>$theme-colors</code></td><td><code>btn-*</code>, <code>btn-outline-*</code>, <code>bg-*</code>, <code>text-*</code>, <code>border-*</code>, <code>text-bg-*</code>, <code>link-*</code>, <code>alert-*</code>, <code>list-group-item-*</code>…</td></tr>
+          <tr><td><code>$theme-colors-text</code>, <code>-bg-subtle</code>, <code>-border-subtle</code> (y <code>-dark</code>)</td><td>Las variables <code>--bs-*-text-emphasis</code>, <code>--bs-*-bg-subtle</code>, <code>--bs-*-border-subtle</code> que usan alerts y list groups</td></tr>
+          <tr><td><code>$utilities-bg-subtle</code>, <code>$utilities-text-emphasis-colors</code>, <code>$utilities-border-subtle</code></td><td><code>bg-*-subtle</code>, <code>text-*-emphasis</code>, <code>border-*-subtle</code></td></tr>
+          <tr><td><code>$spacers</code></td><td><code>m-*</code>, <code>p-*</code>, <code>gap-*</code> y variantes</td></tr>
+          <tr><td><code>$grid-breakpoints</code>, <code>$container-max-widths</code></td><td>Los breakpoints de todas las clases responsive y los anchos de <code>.container</code></td></tr>
+          <tr><td><code>$font-sizes</code></td><td><code>fs-1</code>…<code>fs-6</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 9. Selectiva -->
+    <section id="selectiva" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">9. Importación selectiva</h2>
+      <p>En lugar de <code>bootstrap.scss</code> entero, se importan solo las partes que usa la web, en el mismo orden:</p>
+      <div class="row g-4">
+        <div class="col-lg-6">
+<pre><code>// Configuración: siempre (no genera CSS por sí sola)
+@import "bootstrap/scss/functions";
+// ...nuestras variables...
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+// Base
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/type";
+
+// Maquetación y componentes que se usan
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+@import "bootstrap/scss/buttons";
+@import "bootstrap/scss/card";
+
+// Utilidades
+@import "bootstrap/scss/utilities/api";</code></pre>
+        </div>
+        <div class="col-lg-6">
+          <table class="table table-sm mb-3">
+            <thead><tr><th>CSS</th><th>Minimizado</th><th>Con gzip</th></tr></thead>
+            <tbody>
+              <tr><td>Bootstrap completo</td><td>223 KB</td><td>30 KB</td></tr>
+              <tr><td><code>selectivo.scss</code></td><td>105 KB</td><td>15 KB</td></tr>
+              <tr><td><code>selectivo.scss</code> sin <code>utilities/api</code></td><td>38 KB</td><td>7 KB</td></tr>
+            </tbody>
+          </table>
+          <div class="alert alert-info mb-3" role="alert">
+            Lo que más pesa son las <strong>utilidades</strong>: cada familia con sus seis versiones responsive.
+            Se recortan con la API de utilidades (sesión 4) o con los <code>$enable-*</code>.
+          </div>
+          <div class="alert alert-warning mb-0" role="alert">
+            Lo que no se importa no existe: un <code>class="table"</code> o un <code>class="alert"</code> se quedan sin estilo.
+            Algunas partes dependen de otras (los grupos de botones necesitan <code>buttons</code> y <code>button-group</code>; la navbar, <code>nav</code>).
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Práctica -->
+    <section id="practica" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">10. Práctica</h2>
+      <div class="card border-success mb-4">
+        <div class="card-body">
+          <h3 class="h5 card-title">Tema de la tienda</h3>
+          <ol class="mb-0">
+            <li>En la carpeta <code>sass/</code>, <code>npm install</code> y <code>npm run vigilar</code>.</li>
+            <li>Crear <code>scss/mi-tema.scss</code> con la paleta de la marca (<code>$primary</code>, <code>$secondary</code>), una fuente de Google Fonts y esquinas propias.</li>
+            <li>Añadir el color <code>"oferta"</code> a <code>$theme-colors</code> y usar <code>btn-oferta</code> y <code>text-bg-oferta</code> en las cards de productos.</li>
+            <li>Enlazar <code>sass/css/mi-tema.css</code> en la landing en lugar de <code>bootstrap.min.css</code>.</li>
+            <li>Comprobar el modo oscuro: los tonos <code>-subtle</code> y <code>-emphasis</code> también deben verse bien.</li>
+            <li><em>Opcional:</em> una versión selectiva con solo lo que usa la landing, y comparar el tamaño con <code>npm run css:min</code>.</li>
+          </ol>
+        </div>
+      </div>
+      <p class="etiqueta">Resultado</p>
+      <div class="demo tema">
+        <div class="row g-4 align-items-center">
+          <div class="col-md-7">
+            <h3 class="display-6 fw-bold">Periféricos para trabajar a gusto</h3>
+            <p class="lead">Teclados, ratones y monitores con envío en 24 horas.</p>
+            <div class="d-flex flex-wrap gap-2">
+              <a href="#practica" class="btn btn-primary btn-lg">Ver catálogo</a>
+              <a href="#practica" class="btn btn-outline-primary btn-lg">Ofertas</a>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title h5">Teclado mecánico <span class="badge text-bg-oferta">−20 %</span></h4>
+                <p class="card-text">Interruptores marrones y retroiluminación.</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-oferta">31,92 €</span>
+                  <button type="button" class="btn btn-oferta btn-sm">Añadir</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-top py-4 text-center text-body-secondary small">
+    Curso de Bootstrap 5 · Personalización con CSS y Sass ·
+    Referencia: <a href="https://getbootstrap.com/docs/5.3/customize/overview/">Customize</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/customize/sass/">Sass</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/customize/options/">Options</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/customize/color/">Color</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/customize/css-variables/">CSS variables</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/customize/optimize/">Optimize</a> ·
+    <a href="https://sass-lang.com/documentation/">Sass</a>
+  </footer>
+
+</body>
+</html>

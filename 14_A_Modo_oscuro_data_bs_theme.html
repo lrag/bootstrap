@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>14 A · Modo oscuro: data-bs-theme a fondo</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <script>
+    window.onload = () => {
+      document.getElementById('btn-claro').onclick = () => {
+        document.documentElement.setAttribute('data-bs-theme', 'light')
+      }
+
+      document.getElementById('btn-oscuro').onclick = () => {
+        document.documentElement.setAttribute('data-bs-theme', 'dark')
+      }
+    }
+  </script>
+
+  <style>
+    .logo-para-oscuro {
+      display: none;
+    }
+
+    [data-bs-theme=dark] .logo-para-claro {
+      display: none;
+    }
+
+    [data-bs-theme=dark] .logo-para-oscuro {
+      display: inline;
+    }
+  </style>
+</head>
+<body>
+
+  <!--
+    MODO OSCURO: DATA-BS-THEME A FONDO
+    En 04_Data_bs_theme.html vimos lo básico:
+      data-bs-theme="dark" en <html>   → toda la página en oscuro
+      data-bs-theme="dark" en un card  → solo esa card
+    y en 08_C_Colores.html, qué colores cambian con el modo y cuáles no.
+
+    Aquí vamos un paso más allá: qué pasa al poner el atributo en una zona de la página,
+    qué componentes tenían clases propias para el oscuro (ahora obsoletas),
+    qué utilidades conviene usar para que todo se adapte y qué hacer con logos e imágenes.
+
+    Además de las variables, data-bs-theme="dark" pone color-scheme: dark. Eso le dice
+    al navegador que también pinte en oscuro lo que es suyo: las barras de desplazamiento,
+    el calendario de un input de fecha, la lista de un select...
+
+    Con los botones de arriba pasamos toda la página de un modo a otro.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Modo oscuro: data-bs-theme a fondo</h1>
+
+    <div class="text-center my-4">
+      <div class="btn-group" role="group" aria-label="Modo de color">
+        <button type="button" class="btn btn-outline-primary" id="btn-claro">
+          <i class="bi bi-sun"></i> Claro
+        </button>
+        <button type="button" class="btn btn-outline-primary" id="btn-oscuro">
+          <i class="bi bi-moon-stars"></i> Oscuro
+        </button>
+      </div>
+    </div>
+
+    <!--
+      UNA ZONA CON OTRO MODO: EL ATRIBUTO SOLO NO PINTA NADA
+      data-bs-theme solo REDEFINE VARIABLES para ese elemento y sus descendientes.
+      Un <div> normal no usa esas variables, así que no cambia:
+        - su fondo sigue transparente (se ve el de la página)
+        - su texto sigue con el color que hereda de <body>
+      Lo que sí cambia es lo que hay dentro y usa las variables: el input se pone oscuro.
+
+      Para que la zona entera se vea oscura, le decimos que use las variables:
+        bg-body   → background-color: var(--bs-body-bg)   (ya en su versión oscura)
+        text-body → color: var(--bs-body-color)
+      Las cards, los dropdowns o los modales no lo necesitan: ya usan esas variables.
+    -->
+    <h2 class="h4 mt-5">Una zona con otro modo: <code>bg-body</code> y <code>text-body</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="border p-3 h-100" data-bs-theme="dark">
+            <p class="fw-semibold">Solo data-bs-theme="dark"</p>
+            <p>El bloque no cambia; el input sí.</p>
+            <input type="text" class="form-control" placeholder="Buscar teclados...">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="border p-3 h-100 bg-body text-body" data-bs-theme="dark">
+            <p class="fw-semibold">data-bs-theme="dark" + bg-body text-body</p>
+            <p>Ahora toda la zona es oscura.</p>
+            <input type="text" class="form-control" placeholder="Buscar teclados...">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      USO TÍPICO: CABECERA O PIE SIEMPRE OSCUROS
+      La navbar y el pie de la tienda son oscuros sea cual sea el modo de la página.
+      En la navbar, data-bs-theme="dark" ajusta el color de los enlaces y del botón
+      de menú; el fondo lo ponemos nosotros con bg-dark.
+      Antes se usaba la clase navbar-dark: sigue funcionando, pero está obsoleta desde la 5.3.
+    -->
+    <h2 class="h4 mt-5">Cabecera y pie siempre oscuros</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <nav class="navbar navbar-expand bg-dark" data-bs-theme="dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <i class="bi bi-keyboard"></i> Periféricos
+          </a>
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Teclados</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Ratones</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Monitores</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="p-4">
+        <p class="mb-0">Contenido de la página: sigue el modo de &lt;html&gt;.</p>
+      </div>
+
+      <footer class="bg-body text-body p-3 small" data-bs-theme="dark">
+        Periféricos S. L. · Envío gratis a partir de 50 €
+      </footer>
+    </div>
+
+    <!--
+      COMPONENTES QUE TENÍAN SU CLASE "-dark"
+      Hasta la 5.2, algunos componentes tenían una clase para su versión oscura.
+      Desde la 5.3 están obsoletas: se sustituyen por data-bs-theme="dark" en el componente.
+        navbar-dark         → <nav class="navbar" data-bs-theme="dark">
+        dropdown-menu-dark  → <div class="dropdown" data-bs-theme="dark">
+        btn-close-white     → <button class="btn-close" data-bs-theme="dark">
+        carousel-dark       → <div class="carousel" data-bs-theme="dark">
+      La ventaja: con data-bs-theme, el componente usa los colores oscuros de TODAS
+      las variables, no solo los que preparó la clase antigua.
+    -->
+    <h2 class="h4 mt-5">Componentes oscuros sin clases <code>-dark</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap align-items-center gap-3">
+        <div class="dropdown" data-bs-theme="dark">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Menú siempre oscuro
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item active" href="#">Teclados</a></li>
+            <li><a class="dropdown-item" href="#">Ratones</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Ofertas</a></li>
+          </ul>
+        </div>
+
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Menú que sigue a la página
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item active" href="#">Teclados</a></li>
+            <li><a class="dropdown-item" href="#">Ratones</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Ofertas</a></li>
+          </ul>
+        </div>
+
+        <div class="bg-dark p-2 rounded d-flex align-items-center gap-2">
+          <span class="text-white small">Aviso sobre fondo oscuro</span>
+          <button type="button" class="btn-close" data-bs-theme="dark" aria-label="Cerrar"></button>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      UTILIDADES QUE SE ADAPTAN Y UTILIDADES FIJAS
+      Las de la izquierda tienen siempre el mismo color: bg-white es blanco también en oscuro.
+      Las de la derecha leen las variables del modo y cambian con él.
+        Fija               Se adapta                Variable que usa
+        bg-white        →  bg-body                  --bs-body-bg
+        bg-light        →  bg-body-tertiary         --bs-tertiary-bg
+        text-dark       →  text-body-emphasis       --bs-emphasis-color
+        text-black-50   →  text-body-secondary      --bs-secondary-color
+        border-dark     →  border (sin color)       --bs-border-color
+        bg-primary      →  bg-primary-subtle        --bs-primary-bg-subtle
+      bg-primary y compañía no son un error: un botón azul puede ser azul en los dos modos.
+      El problema es bg-white, bg-light o text-dark, que en oscuro dejan "islas" claras
+      o textos que no se leen.
+    -->
+    <h2 class="h4 mt-5">Utilidades fijas y utilidades que se adaptan</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="row g-2">
+        <div class="col-6"><div class="bg-white border p-2">bg-white</div></div>
+        <div class="col-6"><div class="bg-body border p-2">bg-body</div></div>
+
+        <div class="col-6"><div class="bg-light border p-2">bg-light</div></div>
+        <div class="col-6"><div class="bg-body-tertiary border p-2">bg-body-tertiary</div></div>
+
+        <div class="col-6"><div class="text-dark fw-semibold border p-2">text-dark</div></div>
+        <div class="col-6"><div class="text-body-emphasis fw-semibold border p-2">text-body-emphasis</div></div>
+
+        <div class="col-6"><div class="text-black-50 border p-2">text-black-50</div></div>
+        <div class="col-6"><div class="text-body-secondary border p-2">text-body-secondary</div></div>
+
+        <div class="col-6"><div class="border border-dark p-2">border-dark</div></div>
+        <div class="col-6"><div class="border p-2">border</div></div>
+
+        <div class="col-6"><div class="bg-primary text-white p-2">bg-primary</div></div>
+        <div class="col-6"><div class="bg-primary-subtle text-primary-emphasis border border-primary-subtle p-2">bg-primary-subtle</div></div>
+      </div>
+    </div>
+
+    <!--
+      LO MISMO EN UN COMPONENTE: UNA CARD DE PRODUCTO
+      Card con clases fijas (bg-light, text-dark): en oscuro queda como un recuadro blanco.
+      Card con clases que se adaptan: se integra en los dos modos.
+      Al revisar una página para el modo oscuro, lo primero es buscar
+      bg-white, bg-light, text-dark, text-black y colores escritos a mano en style="".
+    -->
+    <h2 class="h4 mt-5">Una card de producto con clases fijas y adaptables</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card bg-light text-dark h-100">
+            <div class="card-body">
+              <h3 class="h5 card-title">Teclado mecánico</h3>
+              <p class="card-text text-black-50">bg-light, text-dark, text-black-50</p>
+              <p class="fs-4 fw-bold mb-0">59,90 €</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card bg-body-tertiary h-100">
+            <div class="card-body">
+              <h3 class="h5 card-title text-body-emphasis">Teclado mecánico</h3>
+              <p class="card-text text-body-secondary">bg-body-tertiary, text-body-emphasis, text-body-secondary</p>
+              <p class="fs-4 fw-bold text-body-emphasis mb-0">59,90 €</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      LOGOS E IMÁGENES
+      Un logo con el texto en un color fijo (#212529, casi negro) desaparece sobre fondo oscuro.
+      Dos soluciones:
+        - SVG con fill="currentColor": el dibujo toma el color del texto,
+          que ya cambia con el modo. Sirve también para los iconos de Bootstrap Icons,
+          que son una fuente y siempre siguen el color del texto.
+        - Dos versiones del logo (una para fondo claro y otra para fondo oscuro)
+          y CSS que muestra una u otra según data-bs-theme. Es lo que se hace
+          con un logo en PNG que no podemos recolorear.
+      Las fotos de producto no hace falta cambiarlas; como mucho, se baja un poco
+      su brillo en oscuro: [data-bs-theme=dark] img { filter: brightness(.85); }
+    -->
+    <h2 class="h4 mt-5">Logos e imágenes</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <div class="row g-3 text-center">
+        <div class="col-md-4">
+          <div class="bg-body border p-3 h-100">
+            <svg width="180" height="40" viewBox="0 0 180 40" role="img" aria-label="Logo con color fijo">
+              <rect x="2" y="8" width="36" height="24" rx="4" fill="none" stroke="#212529" stroke-width="3"/>
+              <text x="48" y="27" font-family="sans-serif" font-size="18" font-weight="bold" fill="#212529">Periféricos</text>
+            </svg>
+            <p class="small mb-0 mt-2">fill="#212529": desaparece en oscuro</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="bg-body border p-3 h-100">
+            <svg width="180" height="40" viewBox="0 0 180 40" role="img" aria-label="Logo con currentColor">
+              <rect x="2" y="8" width="36" height="24" rx="4" fill="none" stroke="currentColor" stroke-width="3"/>
+              <text x="48" y="27" font-family="sans-serif" font-size="18" font-weight="bold" fill="currentColor">Periféricos</text>
+            </svg>
+            <p class="small mb-0 mt-2">fill="currentColor": sigue al texto</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="bg-body border p-3 h-100">
+            <svg class="logo-para-claro" width="180" height="40" viewBox="0 0 180 40" role="img" aria-label="Logo para fondo claro">
+              <rect x="2" y="8" width="36" height="24" rx="4" fill="#0d6efd"/>
+              <text x="48" y="27" font-family="sans-serif" font-size="18" font-weight="bold" fill="#052c65">Periféricos</text>
+            </svg>
+            <svg class="logo-para-oscuro" width="180" height="40" viewBox="0 0 180 40" role="img" aria-label="Logo para fondo oscuro">
+              <rect x="2" y="8" width="36" height="24" rx="4" fill="#6ea8fe"/>
+              <text x="48" y="27" font-family="sans-serif" font-size="18" font-weight="bold" fill="#cfe2ff">Periféricos</text>
+            </svg>
+            <p class="small mb-0 mt-2">Dos versiones y CSS que elige una</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>14 C · Selector de tema con JavaScript</title>
+
+  <!--
+    EL SCRIPT QUE VA ANTES DE TODO: EVITAR EL PARPADEO
+    En el curso, el JavaScript va dentro de window.onload, que se ejecuta cuando
+    la página ya está cargada... y pintada. Si pusiéramos ahí el tema guardado,
+    con el modo oscuro elegido la página se vería primero en claro y un instante
+    después en oscuro: un fogonazo blanco en cada carga.
+
+    Por eso este script es la excepción: va arriba del todo, sin defer y sin window.onload.
+    El navegador lo ejecuta en cuanto lo lee, antes de pintar el <body>, y deja puesto
+    data-bs-theme en <html> desde el primer momento.
+    Ya existe document.documentElement (estamos dentro de <html>), así que puede cambiarle
+    el atributo aunque el resto de la página aún no exista.
+
+    Lo dejamos lo más corto posible: solo pone el atributo. Los botones, el menú
+    y todo lo demás siguen en el script de siempre, dentro de window.onload.
+    Es lo mismo que recomienda la documentación de Bootstrap para su selector de tema.
+  -->
+  <script>
+    const temaInicial = localStorage.getItem('tema') || 'auto'
+    if (temaInicial === 'auto') {
+      document.documentElement.setAttribute('data-bs-theme', window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    } else {
+      document.documentElement.setAttribute('data-bs-theme', temaInicial)
+    }
+  </script>
+
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <script>
+    window.onload = () => {
+      const consultaOscuro = window.matchMedia('(prefers-color-scheme: dark)')
+      const iconos = {
+        light: 'bi bi-sun-fill',
+        dark: 'bi bi-moon-stars-fill',
+        auto: 'bi bi-circle-half'
+      }
+
+      const aplicarTema = () => {
+        const elegido = localStorage.getItem('tema') || 'auto'
+        let aplicado = elegido
+        if (elegido === 'auto') {
+          aplicado = consultaOscuro.matches ? 'dark' : 'light'
+        }
+        document.documentElement.setAttribute('data-bs-theme', aplicado)
+
+        document.getElementById('texto-guardado').textContent = localStorage.getItem('tema') || '(nada)'
+        document.getElementById('texto-elegido').textContent = elegido
+        document.getElementById('texto-sistema').textContent = consultaOscuro.matches ? 'oscuro' : 'claro'
+        document.getElementById('texto-aplicado').textContent = aplicado
+
+        document.getElementById('btn-claro').classList.toggle('active', elegido === 'light')
+        document.getElementById('btn-oscuro').classList.toggle('active', elegido === 'dark')
+        document.getElementById('btn-auto').classList.toggle('active', elegido === 'auto')
+
+        document.getElementById('menu-claro').classList.toggle('active', elegido === 'light')
+        document.getElementById('menu-oscuro').classList.toggle('active', elegido === 'dark')
+        document.getElementById('menu-auto').classList.toggle('active', elegido === 'auto')
+        document.getElementById('icono-tema').className = iconos[elegido]
+      }
+
+      const elegirTema = (tema) => {
+        localStorage.setItem('tema', tema)
+        aplicarTema()
+      }
+
+      document.getElementById('btn-claro').onclick = () => {
+        elegirTema('light')
+      }
+
+      document.getElementById('btn-oscuro').onclick = () => {
+        elegirTema('dark')
+      }
+
+      document.getElementById('btn-auto').onclick = () => {
+        elegirTema('auto')
+      }
+
+      document.getElementById('menu-claro').onclick = () => {
+        elegirTema('light')
+      }
+
+      document.getElementById('menu-oscuro').onclick = () => {
+        elegirTema('dark')
+      }
+
+      document.getElementById('menu-auto').onclick = () => {
+        elegirTema('auto')
+      }
+
+      document.getElementById('btn-olvidar').onclick = () => {
+        localStorage.removeItem('tema')
+        aplicarTema()
+      }
+
+      consultaOscuro.onchange = () => {
+        aplicarTema()
+      }
+
+      aplicarTema()
+    }
+  </script>
+</head>
+<body>
+
+  <!--
+    SELECTOR DE TEMA CON JAVASCRIPT
+    Ya sabemos cambiar el modo con setAttribute('data-bs-theme', ...).
+    Un selector de tema completo, como el de la documentación de Bootstrap, añade tres cosas:
+      - una tercera opción, Automático: el modo que tenga el sistema operativo
+      - recordar la elección: al volver a la página, sigue en el modo elegido
+      - aplicarla antes de pintar la página, para que no haya parpadeo
+
+    Distinguimos dos valores:
+      tema elegido   → lo que pulsa el usuario: light, dark o auto (es lo que se guarda)
+      tema aplicado  → lo que acaba en data-bs-theme: solo light o dark
+    auto no es un valor de data-bs-theme: se traduce a light o dark según el sistema.
+
+    Toda la lógica está en una función, aplicarTema(), que lee la elección guardada,
+    la traduce, pone el atributo y actualiza los botones. Los botones solo guardan
+    su opción y la llaman.
+  -->
+  <nav class="navbar navbar-expand bg-body-tertiary border-bottom">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <i class="bi bi-keyboard"></i> Periféricos
+      </a>
+
+      <!--
+        LA VERSIÓN EN MENÚ DESPLEGABLE, COMO EN LA DOCUMENTACIÓN DE BOOTSTRAP
+        Un dropdown en la navbar con tres opciones y un icono de Bootstrap Icons para cada una:
+          bi-sun-fill         → Claro
+          bi-moon-stars-fill  → Oscuro
+          bi-circle-half      → Automático
+        El icono del botón cambia según la opción elegida (le cambiamos la clase con className).
+        La opción activa lleva la clase active, igual que en los botones de abajo.
+        dropdown-menu-end alinea el menú por la derecha, para que no se salga de la pantalla.
+        El aria-label del botón es para los lectores de pantalla: el botón solo tiene un icono.
+      -->
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item dropdown">
+          <button class="btn btn-link nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Cambiar el tema">
+            <i class="bi bi-circle-half" id="icono-tema"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <button type="button" class="dropdown-item" id="menu-claro">
+                <i class="bi bi-sun-fill me-2"></i>Claro
+              </button>
+            </li>
+            <li>
+              <button type="button" class="dropdown-item" id="menu-oscuro">
+                <i class="bi bi-moon-stars-fill me-2"></i>Oscuro
+              </button>
+            </li>
+            <li>
+              <button type="button" class="dropdown-item" id="menu-auto">
+                <i class="bi bi-circle-half me-2"></i>Automático
+              </button>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Selector de tema con JavaScript</h1>
+
+    <!--
+      TRES BOTONES: CLARO, OSCURO Y AUTOMÁTICO
+      Cada botón tiene su id y su onclick, que llama a elegirTema() con su opción.
+      Están sincronizados con el menú de la navbar: los dos usan aplicarTema(),
+      así que da igual por dónde se cambie.
+      El estado de abajo muestra los cuatro datos que intervienen.
+    -->
+    <h2 class="h4 mt-5">Tres botones: Claro, Oscuro y Automático</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="btn-group mb-3" role="group" aria-label="Tema">
+        <button type="button" class="btn btn-outline-primary" id="btn-claro">
+          <i class="bi bi-sun-fill"></i> Claro
+        </button>
+        <button type="button" class="btn btn-outline-primary" id="btn-oscuro">
+          <i class="bi bi-moon-stars-fill"></i> Oscuro
+        </button>
+        <button type="button" class="btn btn-outline-primary" id="btn-auto">
+          <i class="bi bi-circle-half"></i> Automático
+        </button>
+      </div>
+
+      <table class="table table-sm mb-0">
+        <tbody>
+          <tr>
+            <th scope="row">Guardado en localStorage</th>
+            <td><code id="texto-guardado"></code></td>
+          </tr>
+          <tr>
+            <th scope="row">Tema elegido</th>
+            <td><code id="texto-elegido"></code></td>
+          </tr>
+          <tr>
+            <th scope="row">Preferencia del sistema</th>
+            <td><code id="texto-sistema"></code></td>
+          </tr>
+          <tr>
+            <th scope="row">data-bs-theme (tema aplicado)</th>
+            <td><code id="texto-aplicado"></code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!--
+      AUTOMÁTICO: LA PREFERENCIA DEL SISTEMA CON prefers-color-scheme
+      prefers-color-scheme es una media query, como las de los breakpoints, que dice
+      si el sistema operativo está en modo claro u oscuro. En CSS sería:
+        @media (prefers-color-scheme: dark) { ... }
+      Desde JavaScript la consultamos con window.matchMedia:
+        const consultaOscuro = window.matchMedia('(prefers-color-scheme: dark)')
+        consultaOscuro.matches   → true si el sistema está en oscuro
+        consultaOscuro.onchange  → se ejecuta cuando el sistema cambia de modo
+      Con onchange, si está elegido Automático y el sistema pasa a oscuro (por ejemplo,
+      al anochecer), la página cambia sola sin recargar.
+
+      Para probarlo sin tocar Windows, lo simulamos en las herramientas del navegador:
+      F12 → menú ⋮ → More tools → Rendering → "Emulate CSS media feature prefers-color-scheme".
+    -->
+    <h2 class="h4 mt-5">Automático: <code>prefers-color-scheme</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="h5 card-title">
+            <i class="bi bi-circle-half"></i> Modo automático
+          </h3>
+          <p class="card-text mb-0">
+            Con Automático elegido, esta card y toda la página siguen al sistema operativo.
+            La fila "Preferencia del sistema" de la tabla de arriba cambia en cuanto cambia el sistema.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      RECORDAR LA ELECCIÓN: localStorage
+      localStorage guarda texto en el navegador, asociado a la página, y no se borra al cerrarla:
+        localStorage.setItem('tema', 'dark')   → guarda
+        localStorage.getItem('tema')           → lee ('dark', o null si no hay nada)
+        localStorage.removeItem('tema')        → borra
+      Si no hay nada guardado (primera visita), usamos 'auto': la página respeta
+      el modo del sistema hasta que el usuario elija otra cosa.
+
+      Se ve en F12 → Aplicación (Application) → Almacenamiento local.
+      Al recargar la página (F5) con Oscuro elegido, la página aparece directamente en oscuro:
+      es el script del <head> el que lo pone antes de pintar.
+    -->
+    <h2 class="h4 mt-5">Recordar la elección: <code>localStorage</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <button type="button" class="btn btn-outline-danger" id="btn-olvidar">
+        <i class="bi bi-trash"></i> Olvidar la elección
+      </button>
+      <span class="ms-2">Borra la clave <code>tema</code> y vuelve al modo automático.</span>
+    </div>
+
+    <!--
+      EL PARPADEO Y EL SCRIPT DEL <head>
+      Resumen de lo que explicamos junto al script del principio:
+        Script en window.onload        → la página se pinta en claro y luego cambia: parpadeo
+        Script al principio del <head> → data-bs-theme está puesto antes de pintar: sin parpadeo
+      Por eso el tema se aplica en dos sitios:
+        - el script del <head>, mínimo, solo pone el atributo al cargar
+        - aplicarTema(), en window.onload, lo vuelve a poner al pulsar y actualiza los botones
+      Para verlo, se puede mover el script del <head> dentro de window.onload,
+      elegir Oscuro y recargar varias veces.
+    -->
+    <h2 class="h4 mt-5">Sin parpadeo: el script del <code>&lt;head&gt;</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card h-100 border-danger-subtle">
+            <div class="card-body">
+              <h3 class="h6 card-title text-danger-emphasis">
+                <i class="bi bi-x-circle"></i> Solo en window.onload
+              </h3>
+              <p class="card-text small mb-0">La página se pinta con el tema por defecto y cambia al terminar de cargar.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card h-100 border-success-subtle">
+            <div class="card-body">
+              <h3 class="h6 card-title text-success-emphasis">
+                <i class="bi bi-check-circle"></i> Script mínimo en el &lt;head&gt;
+              </h3>
+              <p class="card-text small mb-0">data-bs-theme ya está puesto cuando el navegador empieza a pintar.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

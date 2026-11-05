@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>15 D · Sass: mapas</title>
+
+  <!-- El CSS compilado desde sass/scss/tema-mapas.scss -->
+  <link href="sass/css/tema-mapas.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    LOS MAPAS DE BOOTSTRAP
+    Muchas familias de clases salen de un mapa de Sass recorrido con @each (como en 15_B):
+      $theme-colors      → btn-*, btn-outline-*, bg-*, text-*, border-*, text-bg-*, alert-*, list-group-item-*...
+      $spacers           → m-*, p-*, gap-* y todas sus variantes (mt-, px-, -md-...)
+      $grid-breakpoints  → sm, md, lg, xl, xxl en todas las clases responsive
+      $font-sizes        → fs-1 ... fs-6
+    Cambiar el mapa cambia las clases que se generan.
+
+    EL PROBLEMA: un mapa no se puede modificar antes de que exista.
+    Con una variable suelta basta con darle valor antes de Bootstrap (15_C), pero si
+    definimos $theme-colors antes, sustituye al de Bootstrap entero: perderíamos
+    primary, success, danger... salvo que los escribiéramos todos.
+    Para AÑADIR una entrada, importamos Bootstrap por partes y metemos el cambio en medio.
+    Es lo que hace sass/scss/tema-mapas.scss:
+
+      @import "bootstrap/scss/functions";        → 1. funciones
+      $primary: #c2410c;  $oferta: #7e22ce; ...  → 2. nuestras variables
+      @import "bootstrap/scss/variables";        → 3. aquí nacen los mapas
+      @import "bootstrap/scss/variables-dark";
+      $theme-colors: map-merge($theme-colors, ("oferta": $oferta));   → 4. añadimos al mapa
+      $spacers:      map-merge($spacers, (6: $spacer * 5));
+      @import "bootstrap/scss/maps";             → 5. mapas calculados a partir de los anteriores
+      ...                                        → 6. el resto de mapas del color
+      @import "bootstrap/scss/mixins";           → 7. todo lo demás, en el orden de bootstrap.scss
+      @import "bootstrap/scss/utilities";
+      @import "bootstrap/scss/root";
+      ...
+
+    map-merge(mapa, (clave: valor)) devuelve el mapa con la pareja añadida
+    (o cambiada, si la clave ya existía). map-remove(mapa, "clave") la quita.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Sass: mapas</h1>
+
+    <!--
+      UN COLOR NUEVO: "oferta" EN $theme-colors
+      Con una línea en Sass aparecen todas las clases del color, como si fuera de Bootstrap:
+        btn-oferta, btn-outline-oferta, bg-oferta, text-oferta, border-oferta,
+        text-bg-oferta, link-oferta, y la variable CSS --bs-oferta (y --bs-oferta-rgb).
+      Compárese con 15_A, donde un solo botón nuevo eran trece variables escritas a mano.
+    -->
+    <h2 class="h4 mt-5">Un color nuevo en <code>$theme-colors</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        <button type="button" class="btn btn-oferta">btn-oferta</button>
+        <button type="button" class="btn btn-outline-oferta">btn-outline-oferta</button>
+        <button type="button" class="btn btn-primary">btn-primary</button>
+      </div>
+      <p class="mb-0">
+        <span class="text-oferta fw-bold">text-oferta</span> ·
+        <span class="badge text-bg-oferta">text-bg-oferta</span> ·
+        <span class="border border-2 border-oferta rounded px-2">border-oferta</span> ·
+        <a href="#" class="link-oferta">link-oferta</a> ·
+        <span class="bg-oferta text-white px-2 rounded">bg-oferta</span>
+      </p>
+    </div>
+
+    <!--
+      LOS MAPAS DE LOS TONOS SUBTLE Y EMPHASIS
+      Las alertas, los list groups y las clases bg-*-subtle, text-*-emphasis y border-*-subtle
+      no leen $theme-colors, sino tres mapas más (y sus tres versiones para el modo oscuro):
+        $theme-colors-text            → el tono oscuro para el texto (-emphasis)
+        $theme-colors-bg-subtle       → el fondo claro (-subtle)
+        $theme-colors-border-subtle   → el borde (-subtle)
+      En tema-mapas.scss los añadimos después de importar maps (paso 6), calculando los tonos
+      con las funciones de Bootstrap: shade-color($oferta, 60%), tint-color($oferta, 80%)...
+      Sin este paso, btn-oferta funcionaría, pero alert-oferta saldría sin colores.
+
+      Y las utilidades sueltas (bg-oferta-subtle, text-oferta-emphasis, border-oferta-subtle)
+      salen de otros tres mapas: $utilities-bg-subtle, $utilities-text-emphasis-colors
+      y $utilities-border-subtle. También los ampliamos en el paso 6.
+      Es el punto flojo de Bootstrap 5.3: un color completo está repartido en muchos mapas.
+    -->
+    <h2 class="h4 mt-5">Tonos <code>-subtle</code> y <code>-emphasis</code>: alert-oferta</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="alert alert-oferta" role="alert">alert-oferta: −20 % en teclados hasta el domingo.</div>
+      <ul class="list-group mb-3">
+        <li class="list-group-item list-group-item-oferta">list-group-item-oferta</li>
+        <li class="list-group-item">list-group-item</li>
+      </ul>
+      <p class="mb-0">
+        <span class="bg-oferta-subtle text-oferta-emphasis border border-oferta-subtle rounded px-2">bg-oferta-subtle text-oferta-emphasis border-oferta-subtle</span>
+      </p>
+    </div>
+
+    <!--
+      UN TAMAÑO MÁS EN $spacers
+      $spacers va de 0 a 5 (5 = 3rem). Añadimos el 6 = 5rem ($spacer * 5):
+        $spacers: map-merge($spacers, (6: $spacer * 5));
+      Aparecen m-6, p-6, mt-6, px-6, gap-6... y las responsive: mt-md-6, py-lg-6...
+    -->
+    <h2 class="h4 mt-5">Un tamaño más en <code>$spacers</code>: <code>p-6</code>, <code>mt-6</code>…</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <div class="d-flex flex-wrap align-items-start gap-3">
+        <div class="bg-body border p-5">p-5 (3rem)</div>
+        <div class="bg-body border p-6">p-6 (5rem)</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

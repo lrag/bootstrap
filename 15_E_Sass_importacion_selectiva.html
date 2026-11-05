@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>15 E · Sass: importación selectiva</title>
+
+  <!-- El CSS compilado desde sass/scss/selectivo.scss: solo algunas partes de Bootstrap -->
+  <link href="sass/css/selectivo.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+  <!--
+    Esta página no usa componentes con JavaScript (ni modales, ni dropdowns...):
+    no cargamos bootstrap.bundle.min.js.
+  -->
+</head>
+<body>
+
+  <!--
+    IMPORTACIÓN SELECTIVA: SOLO LO QUE SE USA
+    bootstrap.scss importa unas cuarenta partes. Si una web no usa carruseles, modales
+    ni tablas, su CSS viaja igualmente en cada visita. Con Sass importamos solo lo necesario.
+    sass/scss/selectivo.scss:
+
+      CONFIGURACIÓN (obligatoria siempre; por sí sola no genera CSS)
+        functions, variables, variables-dark, maps, mixins, utilities
+      BASE
+        root     → las variables --bs-* (sin ella, casi nada funciona)
+        reboot   → los estilos de base de las etiquetas
+        type     → encabezados, display-*, lead...
+      MAQUETACIÓN
+        containers, grid
+      COMPONENTES QUE USAMOS
+        buttons, card
+      UTILIDADES
+        utilities/api → genera m-*, p-*, d-*, text-*... a partir del mapa $utilities
+
+    El orden importa: es el mismo que en bootstrap.scss. Algunas partes dependen de otras:
+    los botones de un grupo necesitan buttons y button-group; la navbar necesita nav;
+    los dropdowns, además, el JavaScript. Cada componente lo indica en la documentación.
+
+    El contenido va en verde si lo resuelve Bootstrap y en azul si queda sin estilo
+    porque no lo hemos importado.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Sass: importación selectiva</h1>
+
+    <!--
+      LO QUE SÍ ESTÁ: REJILLA, TIPOGRAFÍA, BOTONES, CARDS Y UTILIDADES
+    -->
+    <h2 class="h4 mt-5">Lo que sí está</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="card-title h5">Teclado mecánico</h3>
+              <p class="card-text">Interruptores marrones y retroiluminación.</p>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+              <span class="fw-bold">39,90 €</span>
+              <button type="button" class="btn btn-primary btn-sm">Añadir</button>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="card-title h5">Ratón inalámbrico</h3>
+              <p class="card-text">Seis botones y 4000 ppp.</p>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+              <span class="fw-bold">19,50 €</span>
+              <button type="button" class="btn btn-primary btn-sm">Añadir</button>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="card-title h5">Monitor 27"</h3>
+              <p class="card-text">IPS, 2560 × 1440, 144 Hz.</p>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+              <span class="fw-bold">249,00 €</span>
+              <button type="button" class="btn btn-primary btn-sm">Añadir</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      LO QUE NO ESTÁ: TABLAS, FORMULARIOS, ALERTS
+      Las clases siguen en el HTML, pero en el CSS no existen: el navegador las ignora.
+      La tabla solo tiene lo que le da Reboot; el campo y la alerta, nada.
+    -->
+    <h2 class="h4 mt-5">Lo que no está</h2>
+
+    <div class="bg-primary-subtle border border-primary-subtle p-3">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Producto</th>
+            <th scope="col">Precio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>table table-striped</td>
+            <td>39,90 €</td>
+          </tr>
+          <tr>
+            <td>Sin estilo de Bootstrap</td>
+            <td>19,50 €</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="mt-3">
+        <label for="campo-correo">form-label</label>
+        <input type="email" class="form-control" id="campo-correo" placeholder="form-control sin estilo">
+      </p>
+      <div class="alert alert-warning mb-0" role="alert">alert alert-warning: sin estilo.</div>
+    </div>
+
+    <!--
+      CUÁNTO PESA
+      Medido con npm run css:min (sin espacios ni comentarios) y comprimido con gzip,
+      que es como lo envía un servidor web:
+
+                                      minimizado   gzip
+        Bootstrap completo             223 KB      30 KB
+        selectivo.scss                 105 KB      15 KB
+        selectivo.scss sin utilidades   38 KB       7 KB
+
+      Lo que más pesa del CSS selectivo son las utilidades: cada familia con sus seis
+      versiones responsive (miles de clases, como vimos en XX_listas.html).
+      También se pueden recortar, quitando entradas del mapa $utilities con la API de
+      utilidades (sesión 4), o con $enable-* (por ejemplo, $enable-dark-mode: false).
+    -->
+    <h2 class="h4 mt-5">Cuánto pesa</h2>
+
+    <!-- Sin el módulo de tablas no hay .table: lo presentamos con cards, que sí están -->
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+          <div class="card h-100 text-center">
+            <div class="card-header">Bootstrap completo</div>
+            <div class="card-body">
+              <p class="display-6 mb-0">223 KB</p>
+              <p class="mb-0">30 KB con gzip</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 text-center border-primary">
+            <div class="card-header">selectivo.scss</div>
+            <div class="card-body">
+              <p class="display-6 mb-0">105 KB</p>
+              <p class="mb-0">15 KB con gzip</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100 text-center">
+            <div class="card-header">selectivo.scss sin <code>utilities/api</code></div>
+            <div class="card-body">
+              <p class="display-6 mb-0">38 KB</p>
+              <p class="mb-0">7 KB con gzip</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

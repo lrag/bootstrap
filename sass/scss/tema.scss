@@ -1,0 +1,26 @@
+// TEMA PROPIO CAMBIANDO VARIABLES
+// Nuestras variables van ANTES de importar Bootstrap.
+// En Bootstrap todas las variables llevan !default: "este valor, solo si no tiene ya otro".
+// Como las nuestras ya tienen valor, Bootstrap respeta las nuestras.
+
+// Colores de la marca
+$primary:   #c2410c;
+$secondary: #334155;
+
+// Tipografía (la fuente se carga en el HTML desde Google Fonts)
+$font-family-sans-serif: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+$headings-font-weight:   700;
+
+// Esquinas más redondeadas
+$border-radius:    .75rem;
+$border-radius-sm: .5rem;
+$border-radius-lg: 1rem;
+
+// Enlaces sin subrayar
+$link-decoration: none;
+
+// Interruptores $enable-*
+$enable-shadows:   true;
+$enable-gradients: true;
+
+@import "bootstrap/scss/bootstrap";

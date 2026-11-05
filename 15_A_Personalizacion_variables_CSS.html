@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>15 A · Personalización con variables CSS</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- La fuente de la marca, desde Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <!--
+    Nuestro CSS va DESPUÉS del <link> de Bootstrap: a igual especificidad, gana el último.
+
+    .marca redefine variables globales de Bootstrap solo dentro de esa caja
+    (las variables CSS se heredan). En una web real irían en :root, para toda la página.
+
+    .btn-marca es un botón nuevo: le damos valor a las variables --bs-btn-* que lee .btn.
+  -->
+  <style>
+    .marca {
+      --bs-primary-rgb: 194, 65, 12;
+      --bs-link-color-rgb: 194, 65, 12;
+      --bs-link-hover-color-rgb: 154, 52, 18;
+      --bs-border-radius: .75rem;
+      --bs-body-font-family: "Nunito", system-ui, sans-serif;
+      font-family: var(--bs-body-font-family);
+    }
+
+    .btn-marca {
+      --bs-btn-color: #fff;
+      --bs-btn-bg: #c2410c;
+      --bs-btn-border-color: #c2410c;
+      --bs-btn-hover-color: #fff;
+      --bs-btn-hover-bg: #9a3412;
+      --bs-btn-hover-border-color: #9a3412;
+      --bs-btn-active-color: #fff;
+      --bs-btn-active-bg: #7c2d12;
+      --bs-btn-active-border-color: #7c2d12;
+      --bs-btn-focus-shadow-rgb: 194, 65, 12;
+      --bs-btn-disabled-color: #fff;
+      --bs-btn-disabled-bg: #c2410c;
+      --bs-btn-disabled-border-color: #c2410c;
+    }
+
+    .card-oferta {
+      --bs-card-border-color: #c2410c;
+      --bs-card-cap-bg: #c2410c;
+      --bs-card-cap-color: #fff;
+      --bs-card-border-width: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!--
+    PERSONALIZAR BOOTSTRAP SIN SASS: LAS VARIABLES CSS
+    Bootstrap 5.3 guarda muchos de sus valores en variables CSS (--bs-*).
+    Para cambiar el aspecto basta con darles otro valor en nuestro CSS:
+    no hace falta instalar nada ni compilar.
+    Hay dos niveles:
+      variables globales     → en :root (--bs-border-radius, --bs-body-font-family, --bs-primary-rgb...)
+      variables de componente → en la clase del componente (--bs-btn-bg en .btn, --bs-card-cap-bg en .card...)
+    Las variables de cada componente están en la documentación, apartado "CSS" → "Variables".
+    Se ven también en el inspector, en los estilos de :root o del elemento.
+
+    El contenido va en verde si lo resuelve Bootstrap y en azul si lo resuelve CSS propio.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Personalización con variables CSS</h1>
+
+    <!--
+      VARIABLES GLOBALES
+      Las mismas clases en las dos cajas. La de la derecha está dentro de .marca, que redefine:
+        --bs-primary-rgb       → el color primary en formato "r, g, b"
+        --bs-link-color-rgb    → el color de los enlaces
+        --bs-border-radius     → las esquinas de botones, cards, campos...
+        --bs-body-font-family  → la fuente
+      ¿Por qué -rgb? bg-primary y text-primary no usan --bs-primary, sino
+      rgba(var(--bs-primary-rgb), opacidad): así funcionan bg-opacity-* y text-opacity-*.
+
+      LO QUE NO CAMBIA (y es lo importante):
+        - btn-primary sigue azul: sus colores están escritos en la clase (--bs-btn-bg: #0d6efd),
+          no leen --bs-primary-rgb
+        - el foco del campo sigue azul: el color del resplandor también está escrito
+        - el hover del botón es un azul más oscuro calculado por Sass al compilar
+      Con variables CSS se cambia lo que Bootstrap dejó en variables. Para cambiar el
+      color primary de verdad, en todos los sitios, hay que compilar con Sass (15_C).
+    -->
+    <h2 class="h4 mt-5">Variables globales: <code>--bs-primary-rgb</code>, <code>--bs-border-radius</code>…</h2>
+
+    <div class="row g-4">
+      <div class="col-md-6">
+        <p class="mb-1">Bootstrap sin cambios</p>
+        <div class="bg-success-subtle border border-success-subtle p-3 h-100">
+          <p class="text-primary fw-bold">text-primary</p>
+          <p><a href="#">Un enlace</a></p>
+          <span class="badge bg-primary mb-3">bg-primary</span>
+          <div class="card mb-3">
+            <div class="card-body">Una card</div>
+          </div>
+          <button type="button" class="btn btn-primary mb-3">btn-primary</button>
+          <input type="text" class="form-control" placeholder="Foco en el campo">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <p class="mb-1">Dentro de <code>.marca</code></p>
+        <div class="marca bg-primary-subtle border border-primary-subtle p-3 h-100">
+          <p class="text-primary fw-bold">text-primary</p>
+          <p><a href="#">Un enlace</a></p>
+          <span class="badge bg-primary mb-3">bg-primary</span>
+          <div class="card mb-3">
+            <div class="card-body">Una card</div>
+          </div>
+          <button type="button" class="btn btn-primary mb-3">btn-primary (sigue azul)</button>
+          <input type="text" class="form-control" placeholder="Foco en el campo (sigue azul)">
+        </div>
+      </div>
+    </div>
+
+    <!--
+      VARIABLES DE COMPONENTE: UN BOTÓN NUEVO
+      .btn dibuja el botón leyendo sus variables: --bs-btn-bg, --bs-btn-color, --bs-btn-hover-bg...
+      btn-primary, btn-success... solo les dan valor. Hacemos lo mismo con una clase propia,
+      btn-marca, y se usa igual que las de Bootstrap: class="btn btn-marca".
+      Los tonos de hover y active los elegimos a mano: Sass los calcularía solo.
+    -->
+    <h2 class="h4 mt-5">Variables de componente: un botón <code>btn-marca</code></h2>
+
+    <div class="bg-primary-subtle border border-primary-subtle p-3">
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-marca">btn btn-marca</button>
+        <button type="button" class="btn btn-marca btn-lg">btn-lg</button>
+        <button type="button" class="btn btn-marca btn-sm">btn-sm</button>
+        <button type="button" class="btn btn-marca" disabled>disabled</button>
+      </div>
+    </div>
+
+    <!--
+      VARIABLES DE COMPONENTE: UNA CARD DESTACADA
+      Igual con la card: --bs-card-border-color, --bs-card-cap-bg (fondo de cabecera y pie),
+      --bs-card-cap-color, --bs-card-border-width.
+    -->
+    <h2 class="h4 mt-5">Variables de componente: una card <code>card-oferta</code></h2>
+
+    <div class="bg-primary-subtle border border-primary-subtle p-3">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">card</div>
+            <div class="card-body">Teclado mecánico · 39,90 €</div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card card-oferta">
+            <div class="card-header">card card-oferta</div>
+            <div class="card-body">Teclado mecánico · 29,90 €</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      CAMBIAR UN COMPONENTE SOLO EN UN SITIO: style
+      Como son variables, también se pueden dar en el atributo style de un elemento concreto.
+      Útil para un caso suelto; si se repite, mejor una clase.
+    -->
+    <h2 class="h4 mt-5">Solo en un elemento: <code>style="--bs-…"</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-primary">btn-primary</button>
+        <button type="button" class="btn btn-primary" style="--bs-btn-border-radius: 2rem; --bs-btn-padding-x: 1.5rem">
+          style="--bs-btn-border-radius: 2rem"
+        </button>
+      </div>
+    </div>
+
+    <!--
+      ¿VARIABLES CSS O SASS?
+        Variables CSS → sin instalar nada, se cambian en el navegador (incluso con JavaScript,
+                        como hace el modo oscuro). Solo llegan a lo que Bootstrap dejó en variables.
+        Sass          → cambia el valor de origen: todos los colores derivados (hover, foco,
+                        subtle, emphasis, modo oscuro) se recalculan. Necesita compilar.
+      En la práctica se combinan: Sass para la marca (colores, fuentes, esquinas)
+      y variables CSS para ajustes concretos.
+    -->
+    <h2 class="h4 mt-5">¿Variables CSS o Sass?</h2>
+
+    <div class="table-responsive mb-5">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Variables CSS</th>
+            <th scope="col">Sass</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Instalar</td>
+            <td>Nada</td>
+            <td>Node.js, <code>bootstrap</code> y <code>sass</code> con npm</td>
+          </tr>
+          <tr>
+            <td>Cuándo se aplica</td>
+            <td>En el navegador, al cargar (se puede cambiar con JavaScript)</td>
+            <td>Al compilar: el resultado es un CSS nuevo</td>
+          </tr>
+          <tr>
+            <td>Alcance</td>
+            <td>Solo lo que Bootstrap dejó en variables</td>
+            <td>Todo, incluidos los colores derivados (hover, foco, subtle, modo oscuro)</td>
+          </tr>
+          <tr>
+            <td>Colores nuevos (<code>btn-oferta</code>, <code>bg-oferta</code>…)</td>
+            <td>A mano, clase a clase</td>
+            <td>Se generan solos al añadir el color a un mapa (15_D)</td>
+          </tr>
+          <tr>
+            <td>Quitar lo que no se usa</td>
+            <td>No</td>
+            <td>Sí, importando solo algunas partes (15_E)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</body>
+</html>
