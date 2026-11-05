@@ -15,13 +15,13 @@
   <!--
     Nuestro CSS va DESPUÉS del <link> de Bootstrap: a igual especificidad, gana el último.
 
-    .marca redefine variables globales de Bootstrap solo dentro de esa caja
+    .custom redefine variables globales de Bootstrap solo dentro de esa caja
     (las variables CSS se heredan). En una web real irían en :root, para toda la página.
 
-    .btn-marca es un botón nuevo: le damos valor a las variables --bs-btn-* que lee .btn.
+    .btn-custom es un botón nuevo: le damos valor a las variables --bs-btn-* que lee .btn.
   -->
   <style>
-    .marca {
+    .custom {
       --bs-primary-rgb: 194, 65, 12;
       --bs-link-color-rgb: 194, 65, 12;
       --bs-link-hover-color-rgb: 154, 52, 18;
@@ -30,7 +30,7 @@
       font-family: var(--bs-body-font-family);
     }
 
-    .btn-marca {
+    .btn-custom {
       --bs-btn-color: #fff;
       --bs-btn-bg: #c2410c;
       --bs-btn-border-color: #c2410c;
@@ -74,7 +74,7 @@
 
     <!--
       VARIABLES GLOBALES
-      Las mismas clases en las dos cajas. La de la derecha está dentro de .marca, que redefine:
+      Las mismas clases en las dos cajas. La de la derecha está dentro de .custom, que redefine:
         --bs-primary-rgb       → el color primary en formato "r, g, b"
         --bs-link-color-rgb    → el color de los enlaces
         --bs-border-radius     → las esquinas de botones, cards, campos...
@@ -89,7 +89,6 @@
         - el hover del botón es un azul más oscuro calculado por Sass al compilar
       Con variables CSS se cambia lo que Bootstrap dejó en variables. Para cambiar el
       color primary de verdad, en todos los sitios, hay que compilar con Sass (15_D).
-      Otra salida sin Sass, redefinir las clases de Bootstrap, en 15_B.
     -->
     <h2 class="h4 mt-5">Variables globales: <code>--bs-primary-rgb</code>, <code>--bs-border-radius</code>…</h2>
 
@@ -109,8 +108,8 @@
       </div>
       
       <div class="col-md-6">
-        <p class="mb-1">Dentro de <code>.marca</code></p>
-        <div class="marca bg-primary-subtle border border-primary-subtle p-3 h-100">
+        <p class="mb-1">Dentro de <code>.custom</code></p>
+        <div class="custom bg-primary-subtle border border-primary-subtle p-3 h-100">
           <p class="text-primary fw-bold">text-primary</p>
           <p><a href="#">Un enlace</a></p>
           <span class="badge bg-primary mb-3">bg-primary</span>
@@ -127,17 +126,17 @@
       VARIABLES DE COMPONENTE: UN BOTÓN NUEVO
       .btn dibuja el botón leyendo sus variables: --bs-btn-bg, --bs-btn-color, --bs-btn-hover-bg...
       btn-primary, btn-success... solo les dan valor. Hacemos lo mismo con una clase propia,
-      btn-marca, y se usa igual que las de Bootstrap: class="btn btn-marca".
+      btn-custom, y se usa igual que las de Bootstrap: class="btn btn-custom".
       Los tonos de hover y active los elegimos a mano: Sass los calcularía solo.
     -->
-    <h2 class="h4 mt-5">Variables de componente: un botón <code>btn-marca</code></h2>
+    <h2 class="h4 mt-5">Variables de componente: un botón <code>btn-custom</code></h2>
 
     <div class="bg-primary-subtle border border-primary-subtle p-3">
       <div class="d-flex flex-wrap gap-2">
-        <button type="button" class="btn btn-marca">btn btn-marca</button>
-        <button type="button" class="btn btn-marca btn-lg">btn-lg</button>
-        <button type="button" class="btn btn-marca btn-sm">btn-sm</button>
-        <button type="button" class="btn btn-marca" disabled>disabled</button>
+        <button type="button" class="btn btn-custom">btn btn-custom</button>
+        <button type="button" class="btn btn-custom btn-lg">btn-lg</button>
+        <button type="button" class="btn btn-custom btn-sm">btn-sm</button>
+        <button type="button" class="btn btn-custom" disabled>disabled</button>
       </div>
     </div>
 
