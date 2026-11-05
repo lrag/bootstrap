@@ -363,7 +363,7 @@ $link-decoration:        none;
       <h2 class="border-bottom pb-2 mb-4">8. Mapas: <code>$theme-colors</code> y <code>$spacers</code></h2>
       <p>
         Definir <code>$theme-colors</code> antes de Bootstrap lo <strong>sustituye entero</strong>. Para <strong>añadir</strong> una entrada,
-        se importa Bootstrap por partes y el cambio va en medio, cuando el mapa ya existe:
+        se importa primero solo la configuración (crea los mapas sin generar CSS), se modifican, y al final se importa Bootstrap entero:
       </p>
       <div class="row g-4 mb-3">
         <div class="col-lg-7">
@@ -388,11 +388,9 @@ $theme-colors-text: map-merge($theme-colors-text,
 // ... y $utilities-bg-subtle, $utilities-text-emphasis-colors,
 //     $utilities-border-subtle para las utilidades
 
-@import "bootstrap/scss/mixins";
-@import "bootstrap/scss/utilities";
-@import "bootstrap/scss/root";
-// ... el resto, en el orden de bootstrap.scss
-@import "bootstrap/scss/utilities/api";</code></pre>
+// Bootstrap entero: vuelve a importar variables y maps,
+// pero con !default respeta lo que ya tiene valor
+@import "bootstrap/scss/bootstrap";</code></pre>
         </div>
         <div class="col-lg-5">
           <p class="etiqueta">Resultado</p>

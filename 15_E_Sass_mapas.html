@@ -27,8 +27,9 @@
     Con una variable suelta basta con darle valor antes de Bootstrap (15_D), pero si
     definimos $theme-colors antes, sustituye al de Bootstrap entero: perderíamos
     primary, success, danger... salvo que los escribiéramos todos.
-    Para AÑADIR una entrada, importamos Bootstrap por partes y metemos el cambio en medio.
-    Es lo que hace sass/scss/tema-mapas.scss:
+    Para AÑADIR una entrada, primero importamos solo la configuración de Bootstrap
+    (crea los mapas, pero no genera CSS), luego los modificamos, y al final importamos
+    Bootstrap entero. Es lo que hace sass/scss/tema-mapas.scss:
 
       @import "bootstrap/scss/functions";        → 1. funciones
       $primary: #c2410c;  $oferta: #7e22ce; ...  → 2. nuestras variables
@@ -38,10 +39,10 @@
       $spacers:      map-merge($spacers, (6: $spacer * 5));
       @import "bootstrap/scss/maps";             → 5. mapas calculados a partir de los anteriores
       ...                                        → 6. el resto de mapas del color
-      @import "bootstrap/scss/mixins";           → 7. todo lo demás, en el orden de bootstrap.scss
-      @import "bootstrap/scss/utilities";
-      @import "bootstrap/scss/root";
-      ...
+      @import "bootstrap/scss/bootstrap";        → 7. Bootstrap entero
+
+    En el paso 7 Bootstrap vuelve a importar functions, variables y maps, pero no pasa nada:
+    todo lleva !default, así que respeta lo que ya tiene valor, incluidos nuestros mapas.
 
     map-merge(mapa, (clave: valor)) devuelve el mapa con la pareja añadida
     (o cambiada, si la clave ya existía). map-remove(mapa, "clave") la quita.
