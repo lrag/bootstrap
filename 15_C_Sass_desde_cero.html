@@ -51,6 +51,13 @@
       npm run css      → compila todos los .scss de scss/ en css/
       npm run vigilar  → igual, y se queda esperando: recompila cada vez que se guarda un .scss
       npm run css:min  → versión minimizada, en css/min/
+
+    UN SOLO FICHERO (npx ejecuta el sass instalado en node_modules):
+      npx sass scss/ejemplo-sass.scss css/ejemplo-sass.css           → entrada y salida
+      npx sass --watch scss/ejemplo-sass.scss css/ejemplo-sass.css   → y recompila al guardar
+      npx sass scss/ejemplo-sass.scss                                → sin salida: el CSS sale en la terminal
+    ejemplo-sass.scss no importa Bootstrap, así que no necesita --load-path ni --quiet-deps.
+
     Los ficheros que empiezan por _ (_variables.scss) son parciales: no generan CSS propio,
     solo se importan desde otros.
   -->
