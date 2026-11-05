@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>13 E · Tabs, pills y accordion</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    TABS, PILLS Y ACCORDION
+    Tres formas de enseñar mucho contenido en poco espacio, viendo solo una parte cada vez:
+      tabs (pestañas)  → una fila de pestañas; cada una muestra su panel
+      pills            → lo mismo, con botones redondeados en lugar de pestañas
+      accordion        → bloques apilados que se abren y se cierran (el collapse de 12_A)
+    No escribimos JavaScript en este fichero: todo funciona con atributos data-bs-*.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Tabs, pills y accordion</h1>
+
+    <!--
+      LA BASE: nav Y nav-link
+      Una lista de enlaces de navegación. Es solo CSS: el aspecto, sin comportamiento.
+        nav      → en el ul (o en un <nav>); lo pone en fila con flexbox
+        nav-item → cada li
+        nav-link → cada enlace (con active y aria-current="page" en el actual)
+      Tres estilos, añadiendo una clase al ul:
+        nav-tabs      → pestañas, como las de las carpetas de un archivador
+        nav-pills     → el activo es un botón relleno con las esquinas redondeadas
+        nav-underline → el activo va subrayado (nuevo en Bootstrap 5.3)
+    -->
+    <h2 class="h4 mt-5">La base: <code>nav</code>, <code>nav-tabs</code>, <code>nav-pills</code>, <code>nav-underline</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <ul class="nav mb-3">
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">nav</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Teclados</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Ratones</a></li>
+        <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Ofertas</a></li>
+      </ul>
+      <ul class="nav nav-tabs mb-3">
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">nav-tabs</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Teclados</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Ratones</a></li>
+        <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Ofertas</a></li>
+      </ul>
+      <ul class="nav nav-pills mb-3">
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">nav-pills</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Teclados</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Ratones</a></li>
+        <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Ofertas</a></li>
+      </ul>
+      <ul class="nav nav-underline">
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">nav-underline</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Teclados</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Ratones</a></li>
+        <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Ofertas</a></li>
+      </ul>
+    </div>
+
+    <!--
+      OCUPAR TODO EL ANCHO: nav-fill Y nav-justified
+        nav-fill      → los enlaces se reparten todo el ancho; cada uno según su texto
+        nav-justified → todos del mismo ancho
+      Como nav es flex, también se puede alinear con justify-content-center o -end,
+      o ponerlo en columna con flex-column.
+    -->
+    <h2 class="h4 mt-5">Ocupar todo el ancho: <code>nav-fill</code> y <code>nav-justified</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <ul class="nav nav-pills nav-fill mb-3">
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">nav-fill</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Un enlace con mucho texto</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Ratones</a></li>
+      </ul>
+      <ul class="nav nav-pills nav-justified mb-3">
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">nav-justified</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Un enlace con mucho texto</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Ratones</a></li>
+      </ul>
+      <ul class="nav nav-tabs justify-content-center">
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">justify-content-center</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Ratones</a></li>
+      </ul>
+    </div>
+
+    <!--
+      PESTAÑAS QUE FUNCIONAN: data-bs-toggle="tab"
+      Hasta aquí, los nav-link eran enlaces a otras páginas. Con el JavaScript de Bootstrap,
+      cada pestaña muestra un panel de la misma página y oculta los demás:
+        button.nav-link con data-bs-toggle="tab" y data-bs-target="#panel" → la pestaña
+        div.tab-content            → el contenedor de los paneles
+        div.tab-pane               → cada panel (solo se ve el que tiene active)
+        fade / fade show active    → aparecen con un fundido; el primero, ya visible
+      Las pestañas son <button>, no enlaces: no llevan a otra página.
+
+      Accesibilidad (roles ARIA: le dicen al lector de pantalla qué es cada cosa):
+        role="tablist" en el ul             → es una lista de pestañas
+        role="presentation" en cada li      → el li no cuenta: lo importante es el botón
+        role="tab" en cada botón            → es una pestaña
+        aria-selected="true" / "false"      → cuál está elegida; Bootstrap lo cambia al pulsar
+        aria-controls="..."                 → qué panel muestra la pestaña
+        role="tabpanel" en cada panel       → es el panel de una pestaña
+        aria-labelledby="..."               → el id de su pestaña, que hace de título
+        tabindex="0" en el panel            → se puede llegar a él con el tabulador
+      Con el foco en una pestaña, las flechas izquierda y derecha pasan a la siguiente.
+    -->
+    <h2 class="h4 mt-5">Pestañas que funcionan: <code>data-bs-toggle="tab"</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <ul class="nav nav-tabs" id="pestanas-producto" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="descripcion-tab" data-bs-toggle="tab" data-bs-target="#descripcion" type="button" role="tab" aria-controls="descripcion" aria-selected="true">
+            Descripción
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="caracteristicas-tab" data-bs-toggle="tab" data-bs-target="#caracteristicas" type="button" role="tab" aria-controls="caracteristicas" aria-selected="false">
+            Características
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="opiniones-tab" data-bs-toggle="tab" data-bs-target="#opiniones" type="button" role="tab" aria-controls="opiniones" aria-selected="false">
+            Opiniones
+          </button>
+        </li>
+      </ul>
+      <div class="tab-content bg-body border border-top-0 p-3" id="pestanas-producto-contenido">
+        <div class="tab-pane fade show active" id="descripcion" role="tabpanel" aria-labelledby="descripcion-tab" tabindex="0">
+          Teclado mecánico con interruptores rojos, silenciosos y rápidos. Ideal para escribir y para jugar.
+        </div>
+        <div class="tab-pane fade" id="caracteristicas" role="tabpanel" aria-labelledby="caracteristicas-tab" tabindex="0">
+          <ul class="mb-0">
+            <li>Distribución española</li>
+            <li>Retroiluminación RGB</li>
+            <li>Conexión USB-C</li>
+          </ul>
+        </div>
+        <div class="tab-pane fade" id="opiniones" role="tabpanel" aria-labelledby="opiniones-tab" tabindex="0">
+          4,6 de 5 estrellas, con 128 opiniones.
+        </div>
+      </div>
+    </div>
+
+    <!--
+      PILLS VERTICALES: data-bs-toggle="pill"
+      Lo mismo con nav-pills y data-bs-toggle="pill".
+      Las pills van en columna (flex-column) a la izquierda y los paneles a la derecha,
+      en un d-flex. Aquí el tablist es un div y los botones van sin li: también vale.
+        aria-orientation="vertical" → avisa al lector de pantalla de que las pestañas van en columna
+                                      (y entonces se pasa de una a otra con flechas arriba y abajo)
+    -->
+    <h2 class="h4 mt-5">Pills verticales: <code>data-bs-toggle="pill"</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex align-items-start">
+        <div class="nav flex-column nav-pills me-3" id="pills-cuenta" role="tablist" aria-orientation="vertical">
+          <button class="nav-link active" id="pedidos-tab" data-bs-toggle="pill" data-bs-target="#pedidos" type="button" role="tab" aria-controls="pedidos" aria-selected="true">
+            Mis pedidos
+          </button>
+          <button class="nav-link" id="direcciones-tab" data-bs-toggle="pill" data-bs-target="#direcciones" type="button" role="tab" aria-controls="direcciones" aria-selected="false">
+            Direcciones
+          </button>
+          <button class="nav-link" id="favoritos-tab" data-bs-toggle="pill" data-bs-target="#favoritos" type="button" role="tab" aria-controls="favoritos" aria-selected="false">
+            Favoritos
+          </button>
+        </div>
+        <div class="tab-content" id="pills-cuenta-contenido">
+          <div class="tab-pane fade show active" id="pedidos" role="tabpanel" aria-labelledby="pedidos-tab" tabindex="0">
+            Pedido 1024: enviado. Pedido 1019: entregado.
+          </div>
+          <div class="tab-pane fade" id="direcciones" role="tabpanel" aria-labelledby="direcciones-tab" tabindex="0">
+            Calle Mayor 12, 28013 Madrid.
+          </div>
+          <div class="tab-pane fade" id="favoritos" role="tabpanel" aria-labelledby="favoritos-tab" tabindex="0">
+            Monitor de 27 pulgadas y ratón vertical.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      ACCORDION: BLOQUES QUE SE ABREN Y SE CIERRAN
+      Varios collapse (12_A) apilados, con un aspecto ya preparado:
+        div.accordion                 → el conjunto
+          div.accordion-item          → cada bloque
+            h3.accordion-header       → el encabezado (un h2, h3... según la página)
+              button.accordion-button → el botón con la flecha; con collapsed si está cerrado
+            div.accordion-collapse.collapse → lo que se abre (con show si empieza abierto)
+              div.accordion-body      → el contenido
+      El botón es el de siempre: data-bs-toggle="collapse", data-bs-target,
+      aria-expanded y aria-controls.
+
+      data-bs-parent="#preguntas" en cada accordion-collapse: al abrir un bloque,
+      se cierran los demás del mismo accordion. Solo hay uno abierto a la vez.
+    -->
+    <h2 class="h4 mt-5">Accordion: <code>accordion</code> y <code>data-bs-parent</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="accordion" id="preguntas">
+        <div class="accordion-item">
+          <h3 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#pregunta-1" aria-expanded="true" aria-controls="pregunta-1">
+              ¿Cuánto tarda el envío?
+            </button>
+          </h3>
+          <div id="pregunta-1" class="accordion-collapse collapse show" data-bs-parent="#preguntas">
+            <div class="accordion-body">
+              24 horas en la península; de 48 a 72 horas en las islas.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pregunta-2" aria-expanded="false" aria-controls="pregunta-2">
+              ¿Puedo devolver un producto?
+            </button>
+          </h3>
+          <div id="pregunta-2" class="accordion-collapse collapse" data-bs-parent="#preguntas">
+            <div class="accordion-body">
+              Sí, gratis durante 30 días desde la entrega.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pregunta-3" aria-expanded="false" aria-controls="pregunta-3">
+              ¿Qué formas de pago aceptáis?
+            </button>
+          </h3>
+          <div id="pregunta-3" class="accordion-collapse collapse" data-bs-parent="#preguntas">
+            <div class="accordion-body">
+              Tarjeta, transferencia y Bizum.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      VARIOS ABIERTOS A LA VEZ Y SIN BORDES: accordion-flush
+        sin data-bs-parent → cada bloque va por su cuenta: se pueden abrir varios a la vez
+        accordion-flush    → sin bordes exteriores ni esquinas redondeadas,
+                             para meterlo dentro de una card o pegado a los bordes
+    -->
+    <h2 class="h4 mt-5">Varios abiertos y sin bordes: <code>accordion-flush</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <div class="accordion accordion-flush" id="ficha">
+        <div class="accordion-item">
+          <h3 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ficha-envio" aria-expanded="false" aria-controls="ficha-envio">
+              Envío
+            </button>
+          </h3>
+          <div id="ficha-envio" class="accordion-collapse collapse">
+            <div class="accordion-body">Gratis a partir de 50 €.</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ficha-garantia" aria-expanded="false" aria-controls="ficha-garantia">
+              Garantía
+            </button>
+          </h3>
+          <div id="ficha-garantia" class="accordion-collapse collapse">
+            <div class="accordion-body">3 años en todos los productos.</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ficha-caja" aria-expanded="false" aria-controls="ficha-caja">
+              Contenido de la caja
+            </button>
+          </h3>
+          <div id="ficha-caja" class="accordion-collapse collapse">
+            <div class="accordion-body">Teclado, cable USB-C, extractor de teclas y manual.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

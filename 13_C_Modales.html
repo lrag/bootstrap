@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>13 C · Modales</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <script>
+    window.onload = () => {
+      document.getElementById('modal-resena').addEventListener('shown.bs.modal', () => {
+        document.getElementById('resena-nombre').focus()
+      })
+
+      document.getElementById('form-resena').onsubmit = (evento) => {
+        evento.preventDefault()
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('modal-resena')).hide()
+        document.getElementById('resena-gracias').classList.remove('d-none')
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!--
+    MODALES: UNA VENTANA ENCIMA DE LA PÁGINA
+    Un cuadro que aparece en el centro, con la página oscurecida detrás (el "backdrop").
+    Mientras está abierto, no se puede usar lo de detrás: para confirmar una acción,
+    rellenar un formulario corto o ver un detalle sin salir de la página.
+
+    Se abre con un botón con data-bs-toggle="modal" y data-bs-target="#id-del-modal".
+    Se cierra con un botón con data-bs-dismiss="modal", con Esc o pulsando en el fondo.
+    Al abrirse, Bootstrap quita el scroll del body y mueve el foco del teclado al modal.
+
+    El HTML del modal puede ir en cualquier sitio, pero la documentación recomienda dejarlo
+    "arriba" en el documento (no dentro de elementos con position o transform),
+    para que nada le afecte. Aquí cada modal va justo después de su caja verde.
+    Solo se puede tener un modal abierto a la vez.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Modales</h1>
+
+    <!--
+      LA ESTRUCTURA DE UN MODAL
+        div.modal.fade         → la capa que ocupa toda la ventana (fade: aparece con animación)
+          div.modal-dialog     → la caja centrada horizontalmente; las clases de tamaño van aquí
+            div.modal-content  → el fondo blanco con borde y esquinas redondeadas
+              div.modal-header → título (modal-title) y X de cerrar
+              div.modal-body   → el contenido
+              div.modal-footer → los botones, alineados a la derecha
+
+      Atributos de accesibilidad en div.modal:
+        tabindex="-1"            → el modal puede recibir el foco (y Esc funciona)
+        aria-labelledby="..."    → el id del título: el lector de pantalla lo anuncia al abrir
+        aria-hidden="true"       → mientras está cerrado, el lector de pantalla lo ignora
+                                   (Bootstrap lo quita al abrir y añade aria-modal y role="dialog")
+      El título es un h1 con fs-5: es el encabezado principal de la ventana, con letra pequeña.
+    -->
+    <h2 class="h4 mt-5">La estructura: <code>modal</code>, <code>modal-dialog</code>, <code>modal-content</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-basico">
+        Vaciar el carrito
+      </button>
+    </div>
+
+    <div class="modal fade" id="modal-basico" tabindex="-1" aria-labelledby="modal-basico-titulo" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modal-basico-titulo">¿Vaciar el carrito?</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            Se quitarán los 3 productos del carrito. Esta acción no se puede deshacer.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Vaciar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      FONDO ESTÁTICO: data-bs-backdrop="static"
+      Para que no se cierre por accidente (un formulario a medio rellenar, una aceptación obligatoria):
+        data-bs-backdrop="static" → pulsar en el fondo no lo cierra (el modal "rebota" un poco)
+        data-bs-keyboard="false"  → Esc tampoco lo cierra
+      Solo se cierra con sus propios botones.
+    -->
+    <h2 class="h4 mt-5">Fondo estático: <code>data-bs-backdrop="static"</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-estatico">
+        Condiciones de compra
+      </button>
+    </div>
+
+    <div class="modal fade" id="modal-estatico" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal-estatico-titulo" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modal-estatico-titulo">Condiciones de compra</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            Pulsar fuera o la tecla Esc no cierra esta ventana: hay que aceptar o rechazar.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Rechazar</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      TAMAÑOS: modal-sm, modal-lg Y modal-xl
+      La clase va en modal-dialog:
+        modal-sm  → 300px de ancho máximo
+        (ninguna) → 500px
+        modal-lg  → 800px
+        modal-xl  → 1140px
+      En pantallas estrechas todos ocupan casi todo el ancho.
+    -->
+    <h2 class="h4 mt-5">Tamaños: <code>modal-sm</code>, <code>modal-lg</code>, <code>modal-xl</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-sm">modal-sm</button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-lg">modal-lg</button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-xl">modal-xl</button>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-sm" tabindex="-1" aria-labelledby="modal-sm-titulo" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modal-sm-titulo">modal-sm</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">Producto añadido al carrito.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-lg" tabindex="-1" aria-labelledby="modal-lg-titulo" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modal-lg-titulo">modal-lg</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">Ficha del teclado mecánico: interruptores, distribución, conexión y garantía.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-xl" tabindex="-1" aria-labelledby="modal-xl-titulo" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modal-xl-titulo">modal-xl</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">Comparativa de los tres monitores: tamaño, resolución, frecuencia y precio.</div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      CENTRADO Y CON SCROLL
+      También en modal-dialog:
+        modal-dialog-centered   → centrado en vertical (por defecto sale arriba)
+        modal-dialog-scrollable → si el contenido es largo, el scroll va dentro de modal-body
+                                  y la cabecera y el pie se quedan siempre a la vista
+      Sin modal-dialog-scrollable, un modal largo hace scroll entero, con la página.
+    -->
+    <h2 class="h4 mt-5">Centrado y con scroll: <code>modal-dialog-centered</code>, <code>modal-dialog-scrollable</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-centrado">modal-dialog-centered</button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-scroll">modal-dialog-scrollable</button>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-centrado" tabindex="-1" aria-labelledby="modal-centrado-titulo" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modal-centrado-titulo">Pedido enviado</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">El pedido 1024 sale hoy del almacén.</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Entendido</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-scroll" tabindex="-1" aria-labelledby="modal-scroll-titulo" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modal-scroll-titulo">Política de devoluciones</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <h2 class="h6">Plazo</h2>
+            <p>Hay 30 días desde la entrega para devolver cualquier producto.</p>
+            <h2 class="h6">Estado del producto</h2>
+            <p>El producto tiene que estar completo, con su caja y todos sus accesorios.</p>
+            <h2 class="h6">Gastos de envío</h2>
+            <p>La devolución es gratis si se hace desde una oficina de correos.</p>
+            <h2 class="h6">Reembolso</h2>
+            <p>Devolvemos el dinero en la misma forma de pago en un máximo de 14 días.</p>
+            <h2 class="h6">Productos abiertos</h2>
+            <p>Los auriculares y las webcams solo se aceptan precintados, por higiene.</p>
+            <h2 class="h6">Productos defectuosos</h2>
+            <p>Si el producto llega roto, lo cambiamos por uno nuevo sin coste.</p>
+            <h2 class="h6">Garantía</h2>
+            <p>Todos los productos tienen 3 años de garantía.</p>
+            <h2 class="h6">Contacto</h2>
+            <p class="mb-0">Para cualquier duda, ayuda@tecladoshop.es.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      PANTALLA COMPLETA: modal-fullscreen Y modal-fullscreen-{breakpoint}-down
+        modal-fullscreen         → siempre ocupa toda la ventana, sin bordes
+        modal-fullscreen-md-down → a pantalla completa por debajo de md (en el móvil)
+                                   y como un modal normal desde md
+      Aquí el sufijo es -down porque va "hacia abajo": lo contrario de las clases responsive
+      habituales, que valen del breakpoint hacia arriba.
+    -->
+    <h2 class="h4 mt-5">Pantalla completa: <code>modal-fullscreen-{breakpoint}-down</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-completo">modal-fullscreen</button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-completo-md">modal-fullscreen-md-down</button>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-completo" tabindex="-1" aria-labelledby="modal-completo-titulo" aria-hidden="true">
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modal-completo-titulo">modal-fullscreen</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">Ocupa toda la ventana, sea cual sea su ancho.</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-completo-md" tabindex="-1" aria-labelledby="modal-completo-md-titulo" aria-hidden="true">
+      <div class="modal-dialog modal-fullscreen-md-down">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modal-completo-md-titulo">modal-fullscreen-md-down</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">A pantalla completa por debajo de 768px; por encima, un modal normal.</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      UN FORMULARIO EN UN MODAL Y EL EVENTO shown.bs.modal
+      El formulario va en modal-body y el botón de enviar en modal-footer, fuera del <form>.
+      Para que ese botón envíe el formulario usamos el atributo form="form-resena" de HTML:
+      un botón puede pertenecer a un formulario aunque no esté dentro de él.
+
+      El foco en el primer campo:
+        el atributo autofocus de HTML no funciona dentro de un modal (el campo no existe
+        a la vista cuando se carga la página). Lo hacemos en el evento shown.bs.modal,
+        cuando el modal ya ha terminado de aparecer (12_C): con show.bs.modal
+        el campo todavía no se ve y focus() no hace nada.
+
+      Al enviar, cancelamos el envío real (no hay servidor), cerramos el modal con
+      el método hide() de su instancia (12_B) y mostramos un mensaje.
+    -->
+    <h2 class="h4 mt-5">Un formulario y el evento <code>shown.bs.modal</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal-resena">
+        Escribir una opinión
+      </button>
+      <p class="mt-3 mb-0 d-none" id="resena-gracias">Gracias por la opinión: la publicaremos después de revisarla.</p>
+    </div>
+
+    <div class="modal fade" id="modal-resena" tabindex="-1" aria-labelledby="modal-resena-titulo" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modal-resena-titulo">Opinión sobre el teclado mecánico</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="form-resena">
+              <div class="mb-3">
+                <label for="resena-nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="resena-nombre" required>
+              </div>
+              <div class="mb-3">
+                <label for="resena-nota" class="form-label">Puntuación</label>
+                <select class="form-select" id="resena-nota">
+                  <option value="5">5 estrellas</option>
+                  <option value="4">4 estrellas</option>
+                  <option value="3">3 estrellas</option>
+                  <option value="2">2 estrellas</option>
+                  <option value="1">1 estrella</option>
+                </select>
+              </div>
+              <div>
+                <label for="resena-texto" class="form-label">Comentario</label>
+                <textarea class="form-control" id="resena-texto" rows="3"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success" form="form-resena">Publicar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

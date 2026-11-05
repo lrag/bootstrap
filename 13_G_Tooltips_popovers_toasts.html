@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>13 G · Tooltips, popovers y toasts</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <script>
+    window.onload = () => {
+      new bootstrap.Tooltip(document.getElementById('tooltip-arriba'))
+      new bootstrap.Tooltip(document.getElementById('tooltip-derecha'))
+      new bootstrap.Tooltip(document.getElementById('tooltip-abajo'))
+      new bootstrap.Tooltip(document.getElementById('tooltip-izquierda'))
+      new bootstrap.Tooltip(document.getElementById('tooltip-enlace'))
+      new bootstrap.Tooltip(document.getElementById('tooltip-html'))
+      new bootstrap.Tooltip(document.getElementById('tooltip-desactivado'))
+
+      new bootstrap.Popover(document.getElementById('popover-basico'))
+      new bootstrap.Popover(document.getElementById('popover-derecha'))
+      new bootstrap.Popover(document.getElementById('popover-foco'))
+
+      document.getElementById('boton-carrito').onclick = () => {
+        bootstrap.Toast.getOrCreateInstance(document.getElementById('toast-carrito')).show()
+      }
+
+      document.getElementById('boton-guardar').onclick = () => {
+        bootstrap.Toast.getOrCreateInstance(document.getElementById('toast-guardado')).show()
+      }
+
+      document.getElementById('boton-error').onclick = () => {
+        bootstrap.Toast.getOrCreateInstance(document.getElementById('toast-error')).show()
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!--
+    TOOLTIPS, POPOVERS Y TOASTS
+    Tres componentes que muestran un mensaje flotando encima de la página:
+      tooltip → un texto corto al pasar el ratón (o el foco) por encima de un elemento
+      popover → un globo más grande, con título y contenido, que se abre al pulsar
+      toast   → una notificación que aparece en una esquina y se va sola ("producto añadido")
+
+    Tooltips y popovers usan Popper para colocarse, y no funcionan solo con atributos:
+    como vimos en 12_B, hay que crear la instancia de cada uno con JavaScript.
+    Los toasts tampoco se muestran solos: los enseñamos con el método show().
+
+    En la documentación oficial los tooltips llevan data-bs-toggle="tooltip": lo usan
+    como selector para crearlos todos de golpe con un bucle. Nosotros creamos
+    cada uno por su id, así que no hace falta.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Tooltips, popovers y toasts</h1>
+
+    <!--
+      TOOLTIPS: new bootstrap.Tooltip(elemento)
+      El texto va en data-bs-title y la posición en data-bs-placement:
+        top (por defecto), right, bottom, left
+      Si no cabe en esa posición (al borde de la ventana), Popper le da la vuelta.
+      Aparece al pasar el ratón y también al llegar con el tabulador (foco):
+      así funciona con teclado.
+      Al mostrarse, Bootstrap pone aria-describedby en el botón con el id del tooltip:
+      el lector de pantalla lee el tooltip como descripción del botón.
+    -->
+    <h2 class="h4 mt-5">Tooltips: <code>new bootstrap.Tooltip()</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-secondary" id="tooltip-arriba" data-bs-title="Tooltip arriba" data-bs-placement="top">
+          top
+        </button>
+        <button type="button" class="btn btn-secondary" id="tooltip-derecha" data-bs-title="Tooltip a la derecha" data-bs-placement="right">
+          right
+        </button>
+        <button type="button" class="btn btn-secondary" id="tooltip-abajo" data-bs-title="Tooltip abajo" data-bs-placement="bottom">
+          bottom
+        </button>
+        <button type="button" class="btn btn-secondary" id="tooltip-izquierda" data-bs-title="Tooltip a la izquierda" data-bs-placement="left">
+          left
+        </button>
+      </div>
+    </div>
+
+    <!--
+      MÁS USOS DEL TOOLTIP
+        en un enlace dentro de un texto   → para explicar una palabra
+        data-bs-html="true"               → el título puede llevar etiquetas HTML (<strong>, <em>...).
+                                            Solo con textos nuestros, nunca con lo que escribe el usuario:
+                                            Bootstrap limpia el HTML peligroso, pero mejor no arriesgar.
+        en un botón disabled              → un elemento desactivado no recibe el ratón ni el foco,
+                                            así que no saca tooltip. Lo envolvemos en un span
+                                            d-inline-block con tabindex="0" y el tooltip va en el span.
+    -->
+    <h2 class="h4 mt-5">Más usos: en un enlace, con <code>data-bs-html</code> y en un botón desactivado</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <p>
+        Todos los teclados tienen interruptores
+        <a href="#" id="tooltip-enlace" data-bs-title="Lineales, sin clic: rápidos y silenciosos">rojos</a>
+        y distribución española.
+      </p>
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-info" id="tooltip-html" data-bs-html="true" data-bs-title="Envío <strong>gratis</strong> desde <em>50 €</em>">
+          data-bs-html="true"
+        </button>
+        <span class="d-inline-block" tabindex="0" id="tooltip-desactivado" data-bs-title="Sin stock: vuelve en 5 días">
+          <button type="button" class="btn btn-primary" disabled>Añadir al carrito</button>
+        </span>
+      </div>
+    </div>
+
+    <!--
+      POPOVERS: new bootstrap.Popover(elemento)
+      Como un tooltip, pero con título y contenido, y se abre y cierra al pulsar
+      (no al pasar el ratón):
+        data-bs-title     → el título del globo (en negrita, con fondo)
+        data-bs-content   → el contenido
+        data-bs-placement → la posición (right por defecto)
+      Para un contenido largo o con formato, mejor un modal.
+    -->
+    <h2 class="h4 mt-5">Popovers: <code>new bootstrap.Popover()</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-danger" id="popover-basico" data-bs-title="Envío urgente" data-bs-content="Si se pide antes de las 14:00, llega mañana. Cuesta 4,95 €." data-bs-placement="top">
+          ¿Cuándo llega?
+        </button>
+        <button type="button" class="btn btn-outline-danger" id="popover-derecha" data-bs-title="Garantía" data-bs-content="3 años en todos los productos." data-bs-placement="right">
+          Garantía
+        </button>
+      </div>
+    </div>
+
+    <!--
+      UN POPOVER QUE SE CIERRA AL PULSAR FUERA: data-bs-trigger="focus"
+      Por defecto, el popover solo se cierra al volver a pulsar su botón.
+      Con data-bs-trigger="focus" se abre al recibir el foco y se cierra al perderlo,
+      es decir, al pulsar en cualquier otro sitio.
+      La documentación pide un <a> con tabindex="0" y role="button" (no un <button>):
+      en algunos navegadores un <button> no recibe el foco al pulsarlo.
+    -->
+    <h2 class="h4 mt-5">Que se cierre al pulsar fuera: <code>data-bs-trigger="focus"</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <a tabindex="0" class="btn btn-success" role="button" id="popover-foco" data-bs-trigger="focus" data-bs-title="Pago seguro" data-bs-content="Tarjeta, transferencia y Bizum. El pago va cifrado.">
+        Formas de pago
+      </a>
+    </div>
+
+    <!--
+      TOASTS: LA ESTRUCTURA
+      Una notificación pequeña, como las del móvil:
+        div.toast         → la caja (oculta por defecto; con show, visible desde el principio)
+          div.toast-header → icono, título (me-auto lo empuja a la izquierda), hora y X
+          div.toast-body   → el mensaje
+      La X lleva data-bs-dismiss="toast".
+      Atributos ARIA para que el lector de pantalla lo lea en cuanto aparece:
+        role="alert" aria-live="assertive" → importante: interrumpe lo que esté leyendo
+        role="status" aria-live="polite"   → no tan importante: espera a que termine
+        aria-atomic="true"                 → lee el toast entero, no solo lo que ha cambiado
+      Este toast tiene show: se ve al cargar la página y no se va solo hasta que se cierra.
+    -->
+    <h2 class="h4 mt-5">Toasts: la estructura</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="toast show" role="status" aria-live="polite" aria-atomic="true">
+        <div class="toast-header">
+          <i class="bi bi-truck text-primary me-2" aria-hidden="true"></i>
+          <strong class="me-auto">TecladoShop</strong>
+          <small>hace 5 min</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+        </div>
+        <div class="toast-body">
+          El pedido 1024 ha salido del almacén.
+        </div>
+      </div>
+    </div>
+
+    <!--
+      MOSTRAR UN TOAST: show() Y toast-container
+      Lo normal es que el toast aparezca como respuesta a algo: al añadir un producto,
+      al guardar... Lo mostramos con el método show() de su instancia.
+        autohide → se va solo (true por defecto)
+        delay    → a los cuántos milisegundos (5000 por defecto); data-bs-delay="3000"
+      Los toasts van en un div.toast-container con position-fixed bottom-0 end-0 p-3:
+      abajo a la derecha de la ventana, encima de todo. Si se muestran varios,
+      toast-container los apila uno encima de otro con un hueco entre ellos.
+    -->
+    <h2 class="h4 mt-5">Mostrar un toast: <code>show()</code> y <code>toast-container</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <button type="button" class="btn btn-primary" id="boton-carrito">
+        <i class="bi bi-cart-plus" aria-hidden="true"></i>
+        Añadir al carrito
+      </button>
+    </div>
+
+    <!--
+      TOASTS DE COLORES Y QUE NO SE VAN SOLOS
+        text-bg-success / text-bg-danger → fondo y texto del color (sin toast-header)
+        border-0                         → sin el borde gris
+        d-flex con toast-body y btn-close → la X a la derecha del mensaje, m-auto la centra
+        data-bs-theme="dark" en el d-flex → X blanca sobre fondo de color
+                                            (btn-close-white está obsoleta en 5.3)
+        data-bs-autohide="false"          → no se va solo: hay que cerrarlo con la X.
+                                            Para errores que no deben pasar desapercibidos.
+    -->
+    <h2 class="h4 mt-5">De colores y que no se van solos: <code>text-bg-*</code>, <code>data-bs-autohide="false"</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-success" id="boton-guardar">Guardar la dirección</button>
+        <button type="button" class="btn btn-danger" id="boton-error">Pagar (con error)</button>
+      </div>
+    </div>
+  </div>
+
+  <!--
+    EL CONTENEDOR DE LOS TOASTS
+    Fuera del container, al final del body: con position-fixed se coloca respecto a la ventana.
+  -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div class="toast" id="toast-carrito" role="status" aria-live="polite" aria-atomic="true" data-bs-delay="3000">
+      <div class="toast-header">
+        <i class="bi bi-cart-check text-success me-2" aria-hidden="true"></i>
+        <strong class="me-auto">Carrito</strong>
+        <small>ahora</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+      </div>
+      <div class="toast-body">
+        Teclado mecánico añadido al carrito.
+      </div>
+    </div>
+
+    <div class="toast align-items-center text-bg-success border-0" id="toast-guardado" role="status" aria-live="polite" aria-atomic="true">
+      <div class="d-flex" data-bs-theme="dark">
+        <div class="toast-body">
+          Dirección guardada.
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+      </div>
+    </div>
+
+    <div class="toast align-items-center text-bg-danger border-0" id="toast-error" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+      <div class="d-flex" data-bs-theme="dark">
+        <div class="toast-body">
+          No se ha podido cobrar: la tarjeta está caducada.
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

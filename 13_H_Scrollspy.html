@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>13 H · Scrollspy</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <script>
+    window.onload = () => {
+      document.getElementById('contenido-ayuda').addEventListener('activate.bs.scrollspy', (evento) => {
+        document.getElementById('seccion-actual').textContent = evento.relatedTarget.textContent
+      })
+    }
+  </script>
+</head>
+<body>
+
+  <!--
+    SCROLLSPY: EL MENÚ QUE SIGUE AL SCROLL
+    En una página larga con un menú de secciones (la ficha de un producto, una página de ayuda),
+    scrollspy marca en el menú, con la clase active, la sección que se está viendo.
+    Al hacer scroll, el resaltado va cambiando de enlace.
+
+    Necesita tres cosas:
+      - un menú (nav, list-group...) con enlaces a #id de cada sección
+      - las secciones con esos id, y visibles (una sección con display: none no cuenta)
+      - en el elemento que hace scroll:
+          data-bs-spy="scroll"          → activa scrollspy
+          data-bs-target="#menu"        → el id del menú que tiene que actualizar
+          tabindex="0"                  → si no tiene nada que reciba el foco, para poder
+                                          hacer scroll con el teclado
+      El elemento que hace scroll puede ser un div con altura fija y overflow-y-auto
+      (como aquí) o la página entera: entonces los atributos van en el <body>.
+
+    Por dentro usa IntersectionObserver, una API del navegador que avisa
+    cuando un elemento entra o sale de la zona visible.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Scrollspy</h1>
+
+    <!--
+      SCROLLSPY CON UNA NAVBAR
+      La navbar va encima del div que hace scroll; el div tiene altura fija
+      (style="height: 220px") y overflow-y-auto (utilidad de Bootstrap 5.3: overflow-y: auto).
+      Opciones:
+        data-bs-smooth-scroll="true"         → al pulsar un enlace, baja suavemente a la sección
+                                               en lugar de saltar (por defecto, false)
+        data-bs-root-margin="0px 0px -40%"   → qué parte del div cuenta como "a la vista".
+                                               Es un margen como el de CSS (arriba, derecha, abajo, izquierda):
+                                               -40% abajo recorta la zona visible al 60 % de arriba.
+                                               Por defecto, "0px 0px -25%".
+      La navbar no tiene botón hamburguesa ni collapse: el menú es un ul.nav.nav-pills
+      que siempre se ve (el enlace activo sale como un botón relleno).
+    -->
+    <h2 class="h4 mt-5">Con una navbar: <code>data-bs-spy="scroll"</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <nav id="menu-ficha" class="navbar bg-body-tertiary px-3 mb-3">
+        <a class="navbar-brand" href="#">Teclado mecánico</a>
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a class="nav-link" href="#ficha-descripcion">Descripción</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#ficha-caracteristicas">Características</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#ficha-opiniones">Opiniones</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="bg-body p-3 rounded overflow-y-auto" style="height: 220px" data-bs-spy="scroll" data-bs-target="#menu-ficha" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" tabindex="0">
+        <h4 id="ficha-descripcion">Descripción</h4>
+        <p>Teclado mecánico con interruptores rojos: lineales, sin clic, rápidos y silenciosos.</p>
+        <p>Cuerpo de aluminio, teclas de PBT que no brillan con el uso y cable USB-C desmontable.</p>
+        <p>Retroiluminación RGB con veinte efectos que se cambian desde el propio teclado.</p>
+        <h4 id="ficha-caracteristicas">Características</h4>
+        <p>Distribución española completa, con teclado numérico.</p>
+        <p>Antighosting en todas las teclas y frecuencia de sondeo de 1000 Hz.</p>
+        <p>Peso: 1,1 kg. Medidas: 44 × 13 × 4 cm.</p>
+        <h4 id="ficha-opiniones">Opiniones</h4>
+        <p>«Escribo todo el día con él y no me canso.» Ana, 5 estrellas.</p>
+        <p>«Se oye poco, perfecto para la oficina.» Jorge, 4 estrellas.</p>
+        <p>«El reposamuñecas podría ser más blando.» Marta, 4 estrellas.</p>
+        <p>«Llegó al día siguiente y muy bien embalado.» Luis, 5 estrellas.</p>
+      </div>
+    </div>
+
+    <!--
+      SCROLLSPY CON UN LIST GROUP Y EL EVENTO activate.bs.scrollspy
+      El menú puede ser cualquier lista de enlaces: aquí un list-group (11_C)
+      con list-group-item-action, en una columna a la izquierda. El div que hace scroll,
+      en la columna de la derecha.
+
+      Cada vez que scrollspy cambia el enlace activo, lanza activate.bs.scrollspy
+      sobre el elemento que hace scroll. evento.relatedTarget es el enlace que se acaba de activar:
+      con su texto escribimos debajo en qué sección estamos.
+    -->
+    <h2 class="h4 mt-5">Con un list group y el evento <code>activate.bs.scrollspy</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <div class="row">
+        <div class="col-4">
+          <div id="menu-ayuda" class="list-group">
+            <a class="list-group-item list-group-item-action" href="#ayuda-pedidos">Pedidos</a>
+            <a class="list-group-item list-group-item-action" href="#ayuda-envios">Envíos</a>
+            <a class="list-group-item list-group-item-action" href="#ayuda-devoluciones">Devoluciones</a>
+            <a class="list-group-item list-group-item-action" href="#ayuda-pagos">Pagos</a>
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="bg-body p-3 rounded overflow-y-auto" style="height: 220px" id="contenido-ayuda" data-bs-spy="scroll" data-bs-target="#menu-ayuda" data-bs-smooth-scroll="true" tabindex="0">
+            <h4 id="ayuda-pedidos">Pedidos</h4>
+            <p>Los pedidos se pueden modificar hasta que salen del almacén.</p>
+            <p>El estado de cada pedido se consulta en Mis pedidos.</p>
+            <h4 id="ayuda-envios">Envíos</h4>
+            <p>24 horas en la península; de 48 a 72 horas en las islas.</p>
+            <p>El envío es gratis a partir de 50 €.</p>
+            <h4 id="ayuda-devoluciones">Devoluciones</h4>
+            <p>Hay 30 días desde la entrega para devolver cualquier producto.</p>
+            <p>La devolución es gratis desde una oficina de correos.</p>
+            <h4 id="ayuda-pagos">Pagos</h4>
+            <p>Tarjeta, transferencia y Bizum.</p>
+            <p>El pago va cifrado y no guardamos los datos de la tarjeta.</p>
+          </div>
+          <p class="mt-2 mb-0">Sección actual: <strong id="seccion-actual">ninguna</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

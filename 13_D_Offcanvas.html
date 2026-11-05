@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>13 D · Offcanvas</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    OFFCANVAS: UN PANEL QUE ENTRA DESDE UN LADO
+    Un panel escondido fuera de la pantalla que entra deslizándose desde un borde:
+    el carrito de la compra, los filtros del catálogo o el menú en el móvil.
+    Funciona como un modal (13_C): fondo oscuro detrás, se cierra con Esc o pulsando fuera,
+    quita el scroll del body y mueve el foco al panel.
+
+    Se abre con data-bs-toggle="offcanvas" y data-bs-target (o href en un enlace).
+    Se cierra con data-bs-dismiss="offcanvas".
+    No escribimos JavaScript en este fichero.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Offcanvas</h1>
+
+    <!--
+      LA ESTRUCTURA DE UN OFFCANVAS
+        div.offcanvas.offcanvas-end → el panel; offcanvas-end lo pone a la derecha
+                                      (no hay posición por defecto: hay que poner una)
+          div.offcanvas-header      → título (offcanvas-title) y X de cerrar
+          div.offcanvas-body        → el contenido, con scroll propio si no cabe
+      En div.offcanvas, como en el modal:
+        tabindex="-1"         → puede recibir el foco
+        aria-labelledby="..." → el id del título, para el lector de pantalla
+      role="dialog" no hace falta: lo añade Bootstrap al abrir.
+
+      El botón lleva aria-controls con el id del panel. El enlace hace lo mismo con href.
+    -->
+    <h2 class="h4 mt-5">La estructura: <code>offcanvas offcanvas-end</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap gap-2">
+        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" aria-controls="carrito">
+          <i class="bi bi-cart" aria-hidden="true"></i>
+          Ver el carrito
+        </button>
+        <a class="btn btn-outline-primary" data-bs-toggle="offcanvas" href="#carrito" role="button" aria-controls="carrito">
+          Enlace con href
+        </a>
+      </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="carrito" aria-labelledby="carrito-titulo">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="carrito-titulo">Carrito</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="list-group mb-3">
+          <li class="list-group-item d-flex justify-content-between">
+            Teclado mecánico
+            <span>89,90 €</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            Ratón inalámbrico
+            <span>39,90 €</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between fw-bold">
+            Total
+            <span>129,80 €</span>
+          </li>
+        </ul>
+        <div class="d-grid gap-2">
+          <button type="button" class="btn btn-success">Tramitar el pedido</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Seguir comprando</button>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      DESDE QUÉ LADO ENTRA
+        offcanvas-start  → desde la izquierda
+        offcanvas-end    → desde la derecha
+        offcanvas-top    → desde arriba (ocupa todo el ancho y un tercio del alto)
+        offcanvas-bottom → desde abajo
+    -->
+    <h2 class="h4 mt-5">Desde qué lado: <code>offcanvas-start</code>, <code>-end</code>, <code>-top</code>, <code>-bottom</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap gap-2">
+        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#panel-start" aria-controls="panel-start">offcanvas-start</button>
+        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#panel-top" aria-controls="panel-top">offcanvas-top</button>
+        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#panel-bottom" aria-controls="panel-bottom">offcanvas-bottom</button>
+      </div>
+    </div>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="panel-start" aria-labelledby="panel-start-titulo">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="panel-start-titulo">offcanvas-start</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+      </div>
+      <div class="offcanvas-body">Entra desde la izquierda.</div>
+    </div>
+
+    <div class="offcanvas offcanvas-top" tabindex="-1" id="panel-top" aria-labelledby="panel-top-titulo">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="panel-top-titulo">offcanvas-top</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+      </div>
+      <div class="offcanvas-body">Entra desde arriba: buen sitio para un buscador grande.</div>
+    </div>
+
+    <div class="offcanvas offcanvas-bottom" tabindex="-1" id="panel-bottom" aria-labelledby="panel-bottom-titulo">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="panel-bottom-titulo">offcanvas-bottom</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+      </div>
+      <div class="offcanvas-body">Entra desde abajo: buen sitio para el aviso de cookies.</div>
+    </div>
+
+    <!--
+      EL FONDO Y EL SCROLL: data-bs-backdrop Y data-bs-scroll
+      Opciones en el div.offcanvas:
+        data-bs-scroll="true"     → la página de detrás se puede seguir moviendo (por defecto, no)
+        data-bs-backdrop="false"  → sin fondo oscuro: lo de detrás se puede usar
+        data-bs-backdrop="static" → con fondo, pero pulsar en él no cierra el panel
+      Las dos primeras juntas dejan un panel "flotante" mientras se usa la página.
+    -->
+    <h2 class="h4 mt-5">El fondo y el scroll: <code>data-bs-backdrop</code> y <code>data-bs-scroll</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap gap-2">
+        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#panel-scroll" aria-controls="panel-scroll">Con scroll y sin fondo</button>
+        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#panel-estatico" aria-controls="panel-estatico">Fondo estático</button>
+      </div>
+    </div>
+
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="panel-scroll" aria-labelledby="panel-scroll-titulo">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="panel-scroll-titulo">Con scroll y sin fondo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+      </div>
+      <div class="offcanvas-body">La página de detrás se puede mover y pulsar con el panel abierto.</div>
+    </div>
+
+    <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="panel-estatico" aria-labelledby="panel-estatico-titulo">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="panel-estatico-titulo">Fondo estático</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+      </div>
+      <div class="offcanvas-body">Pulsar en el fondo no lo cierra: solo la X (o Esc).</div>
+    </div>
+
+    <!--
+      OFFCANVAS RESPONSIVE: offcanvas-lg
+      Los filtros de un catálogo: en el móvil, escondidos en un panel; en pantalla ancha,
+      siempre a la vista en una columna.
+        offcanvas-lg en lugar de offcanvas → panel por debajo de lg; desde lg, contenido normal
+        (también offcanvas-sm, -md, -xl y -xxl)
+        d-lg-none en el botón y en la cabecera → desde lg no hacen falta
+      La X necesita data-bs-target="#filtros" explícito: es una exigencia del offcanvas responsive.
+      Con la ventana ancha, los filtros se ven a la izquierda; al estrecharla, aparece el botón.
+    -->
+    <h2 class="h4 mt-5">Responsive: <code>offcanvas-lg</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <button class="btn btn-primary d-lg-none mb-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtros" aria-controls="filtros">
+        <i class="bi bi-funnel" aria-hidden="true"></i>
+        Filtros
+      </button>
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="filtros" aria-labelledby="filtros-titulo">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="filtros-titulo">Filtros</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#filtros" aria-label="Cerrar"></button>
+            </div>
+            <div class="offcanvas-body flex-column">
+              <p class="fw-bold mb-2">Categoría</p>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="filtro-teclados" checked>
+                <label class="form-check-label" for="filtro-teclados">Teclados</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="filtro-ratones">
+                <label class="form-check-label" for="filtro-ratones">Ratones</label>
+              </div>
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="filtro-monitores">
+                <label class="form-check-label" for="filtro-monitores">Monitores</label>
+              </div>
+              <label for="filtro-precio" class="form-label fw-bold">Precio máximo</label>
+              <input type="range" class="form-range" id="filtro-precio" min="0" max="500">
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-9">
+          <div class="card card-body">Aquí van los productos del catálogo.</div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      UNA NAVBAR CON OFFCANVAS
+      En lugar de desplegar el menú hacia abajo (collapse, 13_A), el botón hamburguesa
+      abre un panel lateral:
+        navbar-toggler con data-bs-toggle="offcanvas" en vez de "collapse"
+        div.offcanvas en lugar de div.collapse.navbar-collapse
+      Con navbar-expand-lg, desde lg el offcanvas se convierte en el menú normal de la barra.
+        flex-grow-1 justify-content-end en el ul → los enlaces se van a la derecha
+    -->
+    <h2 class="h4 mt-5">Una navbar con offcanvas</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">TecladoShop</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu-lateral" aria-controls="menu-lateral" aria-label="Mostrar el menú">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="menu-lateral" aria-labelledby="menu-lateral-titulo">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="menu-lateral-titulo">TecladoShop</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav flex-grow-1 justify-content-end">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Teclados</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Ratones</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Monitores</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+</body>
+</html>

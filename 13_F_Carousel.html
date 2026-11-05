@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>13 F · Carousel</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <script>
+    window.onload = () => {
+      const carruselOfertas = document.getElementById('carrusel-ofertas')
+
+      carruselOfertas.addEventListener('slid.bs.carousel', (evento) => {
+        document.getElementById('numero-diapositiva').textContent = evento.to + 1
+      })
+
+      document.getElementById('boton-anterior').onclick = () => {
+        bootstrap.Carousel.getOrCreateInstance(carruselOfertas).prev()
+      }
+
+      document.getElementById('boton-siguiente').onclick = () => {
+        bootstrap.Carousel.getOrCreateInstance(carruselOfertas).next()
+      }
+
+      document.getElementById('boton-ultima').onclick = () => {
+        bootstrap.Carousel.getOrCreateInstance(carruselOfertas).to(2)
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!--
+    CAROUSEL: DIAPOSITIVAS QUE PASAN UNA TRAS OTRA
+    Un pase de imágenes (o de cualquier contenido): las ofertas de la portada,
+    las fotos de un producto... Se pasa con unas flechas, con unos indicadores
+    o solo, cada pocos segundos.
+
+    Las imágenes de este fichero son SVG escritos dentro del propio src (data:image/svg+xml),
+    como en 11_B: un rectángulo de color con un texto, para no depender de ficheros.
+
+    Accesibilidad: un carrusel que pasa solo es difícil de seguir (y de leer) para mucha gente.
+    La documentación de Bootstrap recomienda no usarlos con contenido importante.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Carousel</h1>
+
+    <!--
+      LA ESTRUCTURA DE UN CAROUSEL
+        div.carousel.slide       → el carrusel (slide: las diapositivas se deslizan); necesita un id
+          div.carousel-inner     → la "ventana" donde se ven las diapositivas
+            div.carousel-item    → cada diapositiva; una, y solo una, con active
+              img.d-block.w-100  → la imagen ocupa todo el ancho
+          button.carousel-control-prev / -next → las flechas, a izquierda y derecha
+      En las flechas:
+        data-bs-target="#carrusel-basico" → a qué carrusel afectan
+        data-bs-slide="prev" / "next"     → anterior o siguiente
+        carousel-control-prev-icon con aria-hidden="true" → el dibujo de la flecha,
+                                                            que el lector de pantalla se salta
+        span.visually-hidden "Anterior"   → el texto que sí lee el lector de pantalla
+      Al llegar a la última, vuelve a la primera (opción wrap, true por defecto).
+      Todas las imágenes deberían tener el mismo tamaño: si no, el carrusel cambia de alto.
+    -->
+    <h2 class="h4 mt-5">La estructura: <code>carousel</code>, <code>carousel-inner</code>, <code>carousel-item</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div id="carrusel-basico" class="carousel slide">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23a3cfbb'/%3E%3Ctext x='50%25' y='45%25' font-family='sans-serif' font-size='48' text-anchor='middle' dominant-baseline='middle' fill='%23212529'%3ETeclados%3C/text%3E%3C/svg%3E" class="d-block w-100" alt="Teclados">
+          </div>
+          <div class="carousel-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23ffe69c'/%3E%3Ctext x='50%25' y='45%25' font-family='sans-serif' font-size='48' text-anchor='middle' dominant-baseline='middle' fill='%23212529'%3ERatones%3C/text%3E%3C/svg%3E" class="d-block w-100" alt="Ratones">
+          </div>
+          <div class="carousel-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300'%3E%3Crect width='100%25' height='100%25' fill='%239ec5fe'/%3E%3Ctext x='50%25' y='45%25' font-family='sans-serif' font-size='48' text-anchor='middle' dominant-baseline='middle' fill='%23212529'%3EMonitores%3C/text%3E%3C/svg%3E" class="d-block w-100" alt="Monitores">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carrusel-basico" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carrusel-basico" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Siguiente</span>
+        </button>
+      </div>
+    </div>
+
+    <!--
+      INDICADORES Y TEXTOS: carousel-indicators Y carousel-caption
+        div.carousel-indicators → las rayitas de abajo, una por diapositiva
+          button con data-bs-slide-to="0", "1", "2" → a qué diapositiva salta (empieza en 0)
+          active y aria-current="true" en la primera → la que se ve ahora
+          aria-label="Diapositiva 1"                 → el botón no tiene texto
+        div.carousel-caption    → un texto encima de la imagen, abajo y centrado
+          d-none d-md-block     → solo desde md: en el móvil taparía la imagen
+      El texto del caption es blanco: las imágenes tienen que ser oscuras para que se lea.
+    -->
+    <h2 class="h4 mt-5">Indicadores y textos: <code>carousel-indicators</code>, <code>carousel-caption</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div id="carrusel-textos" class="carousel slide">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carrusel-textos" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Diapositiva 1"></button>
+          <button type="button" data-bs-target="#carrusel-textos" data-bs-slide-to="1" aria-label="Diapositiva 2"></button>
+          <button type="button" data-bs-target="#carrusel-textos" data-bs-slide-to="2" aria-label="Diapositiva 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300'%3E%3Crect width='100%25' height='100%25' fill='%230f5132'/%3E%3Ctext x='50%25' y='45%25' font-family='sans-serif' font-size='48' text-anchor='middle' dominant-baseline='middle' fill='%23ffffff'%3ETeclados%3C/text%3E%3C/svg%3E" class="d-block w-100" alt="Teclados mecánicos">
+            <div class="carousel-caption d-none d-md-block">
+              <h5>Teclados mecánicos</h5>
+              <p>Un 20 % de descuento toda la semana.</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23664d03'/%3E%3Ctext x='50%25' y='45%25' font-family='sans-serif' font-size='48' text-anchor='middle' dominant-baseline='middle' fill='%23ffffff'%3ERatones%3C/text%3E%3C/svg%3E" class="d-block w-100" alt="Ratones inalámbricos">
+            <div class="carousel-caption d-none d-md-block">
+              <h5>Ratones inalámbricos</h5>
+              <p>Hasta 70 horas de batería.</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23052c65'/%3E%3Ctext x='50%25' y='45%25' font-family='sans-serif' font-size='48' text-anchor='middle' dominant-baseline='middle' fill='%23ffffff'%3EMonitores%3C/text%3E%3C/svg%3E" class="d-block w-100" alt="Monitores de 27 pulgadas">
+            <div class="carousel-caption d-none d-md-block">
+              <h5>Monitores de 27 pulgadas</h5>
+              <p>Envío gratis y 3 años de garantía.</p>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carrusel-textos" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carrusel-textos" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Siguiente</span>
+        </button>
+      </div>
+    </div>
+
+    <!--
+      QUE PASE SOLO: data-bs-ride="carousel" Y data-bs-interval
+        data-bs-ride="carousel" en div.carousel → empieza a pasar solo al cargar la página
+        data-bs-ride="true"                     → empieza a pasar solo cuando se pulsa una flecha
+        (sin data-bs-ride)                      → solo pasa con las flechas o los indicadores
+        data-bs-interval="2000" en un carousel-item → esa diapositiva dura 2 segundos
+                                                      (por defecto, 5 segundos)
+      Se para mientras el ratón está encima (opción pause, "hover" por defecto)
+      y cuando la pestaña del navegador no está a la vista.
+      En pantallas táctiles se pasa deslizando el dedo; data-bs-touch="false" lo desactiva.
+      Este carrusel no tiene flechas ni indicadores: solo pasa solo.
+    -->
+    <h2 class="h4 mt-5">Que pase solo: <code>data-bs-ride="carousel"</code> y <code>data-bs-interval</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div id="carrusel-automatico" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active" data-bs-interval="2000">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23a3cfbb'/%3E%3Ctext x='50%25' y='45%25' font-family='sans-serif' font-size='48' text-anchor='middle' dominant-baseline='middle' fill='%23212529'%3ETeclados%3C/text%3E%3C/svg%3E" class="d-block w-100" alt="Teclados: 2 segundos">
+          </div>
+          <div class="carousel-item" data-bs-interval="2000">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23ffe69c'/%3E%3Ctext x='50%25' y='45%25' font-family='sans-serif' font-size='48' text-anchor='middle' dominant-baseline='middle' fill='%23212529'%3ERatones%3C/text%3E%3C/svg%3E" class="d-block w-100" alt="Ratones: 2 segundos">
+          </div>
+          <div class="carousel-item" data-bs-interval="4000">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300'%3E%3Crect width='100%25' height='100%25' fill='%239ec5fe'/%3E%3Ctext x='50%25' y='45%25' font-family='sans-serif' font-size='48' text-anchor='middle' dominant-baseline='middle' fill='%23212529'%3EMonitores%3C/text%3E%3C/svg%3E" class="d-block w-100" alt="Monitores: 4 segundos">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      FUNDIDO Y CONTROLES OSCUROS: carousel-fade Y data-bs-theme="dark"
+        carousel-fade             → las diapositivas aparecen con un fundido en lugar de deslizarse
+                                    (se añade a carousel slide, no lo sustituye)
+        data-bs-theme="dark"      → flechas, indicadores y textos en negro: para imágenes claras
+      La clase carousel-dark está obsoleta en 5.3, como navbar-dark y dropdown-menu-dark.
+    -->
+    <h2 class="h4 mt-5">Fundido y controles oscuros: <code>carousel-fade</code>, <code>data-bs-theme="dark"</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div id="carrusel-fundido" class="carousel slide carousel-fade" data-bs-theme="dark">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carrusel-fundido" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Diapositiva 1"></button>
+          <button type="button" data-bs-target="#carrusel-fundido" data-bs-slide-to="1" aria-label="Diapositiva 2"></button>
+          <button type="button" data-bs-target="#carrusel-fundido" data-bs-slide-to="2" aria-label="Diapositiva 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23a3cfbb'/%3E%3Ctext x='50%25' y='45%25' font-family='sans-serif' font-size='48' text-anchor='middle' dominant-baseline='middle' fill='%23212529'%3ETeclados%3C/text%3E%3C/svg%3E" class="d-block w-100" alt="Teclados">
+          </div>
+          <div class="carousel-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23ffe69c'/%3E%3Ctext x='50%25' y='45%25' font-family='sans-serif' font-size='48' text-anchor='middle' dominant-baseline='middle' fill='%23212529'%3ERatones%3C/text%3E%3C/svg%3E" class="d-block w-100" alt="Ratones">
+          </div>
+          <div class="carousel-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300'%3E%3Crect width='100%25' height='100%25' fill='%239ec5fe'/%3E%3Ctext x='50%25' y='45%25' font-family='sans-serif' font-size='48' text-anchor='middle' dominant-baseline='middle' fill='%23212529'%3EMonitores%3C/text%3E%3C/svg%3E" class="d-block w-100" alt="Monitores">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carrusel-fundido" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carrusel-fundido" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Siguiente</span>
+        </button>
+      </div>
+    </div>
+
+    <!--
+      MANEJARLO DESDE JAVASCRIPT: prev(), next(), to() Y slid.bs.carousel
+      Métodos propios de la instancia de Carousel (12_B):
+        prev() / next() → anterior y siguiente
+        to(2)           → salta a la diapositiva 2 (la tercera: se cuenta desde 0)
+        pause() / cycle() → parar y reanudar el pase automático
+      Eventos: slide.bs.carousel cuando empieza a pasar y slid.bs.carousel cuando termina.
+      El objeto del evento trae evento.from y evento.to: de qué diapositiva viene y a cuál va.
+      Con slid escribimos "Diapositiva N de 3" debajo del carrusel.
+    -->
+    <h2 class="h4 mt-5">Desde JavaScript: <code>prev()</code>, <code>next()</code>, <code>to()</code> y <code>slid.bs.carousel</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <div id="carrusel-ofertas" class="carousel slide mb-3">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23a3cfbb'/%3E%3Ctext x='50%25' y='45%25' font-family='sans-serif' font-size='48' text-anchor='middle' dominant-baseline='middle' fill='%23212529'%3ETeclados%3C/text%3E%3C/svg%3E" class="d-block w-100" alt="Teclados">
+          </div>
+          <div class="carousel-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23ffe69c'/%3E%3Ctext x='50%25' y='45%25' font-family='sans-serif' font-size='48' text-anchor='middle' dominant-baseline='middle' fill='%23212529'%3ERatones%3C/text%3E%3C/svg%3E" class="d-block w-100" alt="Ratones">
+          </div>
+          <div class="carousel-item">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300'%3E%3Crect width='100%25' height='100%25' fill='%239ec5fe'/%3E%3Ctext x='50%25' y='45%25' font-family='sans-serif' font-size='48' text-anchor='middle' dominant-baseline='middle' fill='%23212529'%3EMonitores%3C/text%3E%3C/svg%3E" class="d-block w-100" alt="Monitores">
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-wrap align-items-center gap-2">
+        <button type="button" class="btn btn-primary" id="boton-anterior">prev()</button>
+        <button type="button" class="btn btn-primary" id="boton-siguiente">next()</button>
+        <button type="button" class="btn btn-primary" id="boton-ultima">to(2)</button>
+        <span class="ms-auto">Diapositiva <strong id="numero-diapositiva">1</strong> de 3</span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

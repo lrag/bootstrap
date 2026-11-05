@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>13 B · Dropdowns</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    DROPDOWNS: MENÚS DESPLEGABLES
+    Un botón que, al pulsarlo, muestra una lista de opciones flotando encima del resto.
+    En 12_A vimos lo básico: data-bs-toggle="dropdown" en el botón, el menú (dropdown-menu)
+    justo detrás y Popper colocándolo. También la opción autoClose.
+    Aquí vemos lo que se puede meter en el menú, hacia dónde se abre y cómo se alinea.
+
+    No escribimos JavaScript en este fichero: todo funciona con atributos data-bs-*.
+    Teclado: con el menú abierto, las flechas arriba y abajo pasan de una opción a otra
+    y Esc lo cierra. Eso también lo pone Bootstrap.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Dropdowns</h1>
+
+    <!--
+      EL CONTENIDO DEL MENÚ
+        dropdown-item        → cada opción; puede ser <a> o <button>
+        active               → la opción elegida (con aria-current="true")
+        disabled             → una opción que no se puede pulsar (con aria-disabled="true" en un <a>)
+        dropdown-header      → un título para un grupo de opciones (no se puede pulsar)
+        dropdown-divider     → una línea de separación (un <hr>)
+        dropdown-item-text   → un texto suelto, con el mismo relleno que las opciones
+      El disparador también puede ser un enlace (a.btn) con role="button".
+    -->
+    <h2 class="h4 mt-5">El contenido del menú</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap gap-2">
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Botón
+          </button>
+          <ul class="dropdown-menu">
+            <li><h6 class="dropdown-header">Ordenar por</h6></li>
+            <li><a class="dropdown-item active" href="#" aria-current="true">Precio</a></li>
+            <li><a class="dropdown-item" href="#">Novedades</a></li>
+            <li><a class="dropdown-item disabled" aria-disabled="true">Más vendidos</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><span class="dropdown-item-text">125 productos</span></li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Enlace
+          </a>
+          <ul class="dropdown-menu">
+            <li><button class="dropdown-item" type="button">Añadir al carrito</button></li>
+            <li><button class="dropdown-item" type="button">Añadir a favoritos</button></li>
+            <li><button class="dropdown-item" type="button">Comparar</button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      BOTÓN PARTIDO: dropdown-toggle-split
+      Dos botones pegados en un btn-group (11_A): el de la izquierda hace la acción
+      principal y el de la flecha abre el menú con el resto de acciones.
+        dropdown-toggle-split → ajusta el relleno del botón de la flecha
+      Ese botón no tiene texto: un span visually-hidden le da algo que leer al lector de pantalla.
+    -->
+    <h2 class="h4 mt-5">Botón partido: <code>dropdown-toggle-split</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="btn-group">
+        <button type="button" class="btn btn-success">Comprar ahora</button>
+        <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="visually-hidden">Más opciones de compra</span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Comprar con envío urgente</a></li>
+          <li><a class="dropdown-item" href="#">Recoger en tienda</a></li>
+          <li><a class="dropdown-item" href="#">Regalar</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!--
+      HACIA DÓNDE SE ABRE
+      La clase va en el elemento que envuelve botón y menú (en lugar de dropdown):
+        dropdown        → hacia abajo (por defecto)
+        dropup          → hacia arriba
+        dropend         → hacia la derecha
+        dropstart       → hacia la izquierda
+        dropdown-center → hacia abajo, centrado con el botón
+        dropup-center dropup → hacia arriba, centrado
+      La flecha del botón cambia de dirección sola.
+      Si no cabe (al borde de la ventana), Popper le da la vuelta.
+    -->
+    <h2 class="h4 mt-5">Hacia dónde se abre: <code>dropup</code>, <code>dropend</code>, <code>dropstart</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap justify-content-center gap-2 py-5">
+        <div class="btn-group dropup">
+          <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            dropup
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Teclados</a></li>
+            <li><a class="dropdown-item" href="#">Ratones</a></li>
+          </ul>
+        </div>
+        <div class="btn-group dropend">
+          <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            dropend
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Teclados</a></li>
+            <li><a class="dropdown-item" href="#">Ratones</a></li>
+          </ul>
+        </div>
+        <div class="btn-group dropstart">
+          <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            dropstart
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Teclados</a></li>
+            <li><a class="dropdown-item" href="#">Ratones</a></li>
+          </ul>
+        </div>
+        <div class="dropdown-center">
+          <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            dropdown-center
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Teclados</a></li>
+            <li><a class="dropdown-item" href="#">Ratones</a></li>
+          </ul>
+        </div>
+        <div class="dropup-center dropup">
+          <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            dropup-center
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Teclados</a></li>
+            <li><a class="dropdown-item" href="#">Ratones</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      ALINEACIÓN DEL MENÚ: dropdown-menu-end
+      Por defecto el menú empieza en el borde izquierdo del botón.
+        dropdown-menu-end → alineado con el borde derecho (útil en un botón pegado a la derecha,
+                            como el de "Mi cuenta" de una navbar)
+      Responsive: dropdown-menu-lg-end → a la derecha solo desde lg.
+      Para las clases responsive hay que quitar el posicionamiento de Popper
+      con data-bs-display="static"; si no, Popper decide y no hace caso a la clase.
+    -->
+    <h2 class="h4 mt-5">Alineación: <code>dropdown-menu-end</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap justify-content-end gap-2">
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+            dropdown-menu-lg-end
+          </button>
+          <ul class="dropdown-menu dropdown-menu-lg-end">
+            <li><a class="dropdown-item" href="#">A la izquierda en pantallas pequeñas</a></li>
+            <li><a class="dropdown-item" href="#">A la derecha desde lg</a></li>
+          </ul>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Mi cuenta
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">Mis pedidos</a></li>
+            <li><a class="dropdown-item" href="#">Mis direcciones</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Cerrar sesión</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      MENÚ OSCURO: data-bs-theme="dark"
+      Igual que la navbar oscura de 13_A: el modo de color oscuro solo en el menú.
+      La clase dropdown-menu-dark está obsoleta en 5.3.
+    -->
+    <h2 class="h4 mt-5">Menú oscuro: <code>data-bs-theme="dark"</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="dropdown">
+        <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Monitores
+        </button>
+        <ul class="dropdown-menu" data-bs-theme="dark">
+          <li><a class="dropdown-item active" href="#" aria-current="true">24 pulgadas</a></li>
+          <li><a class="dropdown-item" href="#">27 pulgadas</a></li>
+          <li><a class="dropdown-item" href="#">32 pulgadas</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Todos los monitores</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!--
+      UN FORMULARIO DENTRO DEL MENÚ
+      En dropdown-menu cabe cualquier cosa: aquí, un formulario de acceso con p-4.
+      data-bs-auto-close="outside" (12_A): sin esta opción, el menú se cerraría
+      al pulsar en un campo para escribir.
+    -->
+    <h2 class="h4 mt-5">Un formulario dentro del menú</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+          Iniciar sesión
+        </button>
+        <div class="dropdown-menu">
+          <form class="p-4" style="min-width: 18rem">
+            <div class="mb-3">
+              <label for="acceso-correo" class="form-label">Correo</label>
+              <input type="email" class="form-control" id="acceso-correo" placeholder="nombre@ejemplo.com">
+            </div>
+            <div class="mb-3">
+              <label for="acceso-clave" class="form-label">Contraseña</label>
+              <input type="password" class="form-control" id="acceso-clave">
+            </div>
+            <div class="form-check mb-3">
+              <input type="checkbox" class="form-check-input" id="acceso-recordar">
+              <label class="form-check-label" for="acceso-recordar">Recordarme</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Entrar</button>
+          </form>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">¿Nuevo cliente? Crear una cuenta</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

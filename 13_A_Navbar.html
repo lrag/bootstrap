@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>13 A · Navbar responsive con collapse</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    NAVBAR: LA BARRA DE NAVEGACIÓN
+    La barra de arriba de casi cualquier web: el logo, el menú y, a veces, un buscador.
+    En pantallas anchas se ve entera; en el móvil el menú se recoge detrás de un botón
+    (el "botón hamburguesa", con tres rayas) y se despliega al pulsarlo.
+    Ese desplegar y recoger es el componente collapse que vimos en 12_A:
+    el JavaScript de Bootstrap lo hace todo con atributos data-bs-*.
+
+    No escribimos JavaScript en este fichero.
+    Para ver el efecto, estrechamos la ventana por debajo de 992px (breakpoint lg).
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Navbar responsive con <code>collapse</code></h1>
+
+    <!--
+      LA ESTRUCTURA DE UNA NAVBAR
+        nav.navbar.navbar-expand-lg → la barra; navbar-expand-lg dice a partir de qué breakpoint
+                                      se ve el menú desplegado (por debajo, se recoge)
+          div.container-fluid       → un contenedor dentro: alinea el contenido y lo separa del borde
+            a.navbar-brand          → el nombre o el logo de la tienda
+            button.navbar-toggler   → el botón hamburguesa (solo se ve con el menú recogido)
+            div.collapse.navbar-collapse → lo que se recoge: el menú y el buscador
+              ul.navbar-nav         → la lista de enlaces (nav-item / nav-link)
+              form.d-flex           → el buscador
+
+      El botón hamburguesa es un collapse normal:
+        data-bs-toggle="collapse" data-bs-target="#menu-principal" → abre y cierra el bloque
+        aria-controls="menu-principal" → qué bloque controla (para el lector de pantalla)
+        aria-expanded="false"          → si está abierto o no; Bootstrap lo cambia al pulsar
+        aria-label="Mostrar el menú"   → el botón no tiene texto, solo un dibujo: el lector de pantalla
+                                         necesita algo que decir
+      navbar-toggler-icon dibuja las tres rayas (es una imagen SVG en el CSS de Bootstrap).
+
+      En los enlaces:
+        active + aria-current="page" → la página en la que estamos
+        disabled + aria-disabled="true" → un enlace que no se puede pulsar
+      me-auto en el ul: margen derecho automático (la navbar es flex). Empuja el buscador al final.
+      mb-2 mb-lg-0: un poco de separación debajo de la lista solo con el menú recogido.
+
+      bg-body-tertiary: el fondo gris claro (y oscuro en modo oscuro).
+      Sin clase de fondo, la navbar es transparente.
+    -->
+    <h2 class="h4 mt-5">La estructura: <code>navbar navbar-expand-lg</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">TecladoShop</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu-principal" aria-controls="menu-principal" aria-expanded="false" aria-label="Mostrar el menú">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="menu-principal">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Teclados</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Ratones</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">Ofertas</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
+              <button class="btn btn-outline-success" type="submit">Buscar</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <!--
+      UN DROPDOWN DENTRO DE LA NAVBAR
+      Un nav-item con la clase dropdown, y dentro:
+        a.nav-link.dropdown-toggle → con role="button" (es un enlace que se comporta como botón)
+                                     y data-bs-toggle="dropdown"
+        ul.dropdown-menu           → el menú, igual que el que vimos en 12_A
+      Con el menú recogido (móvil), el dropdown se abre dentro de la lista, empujando
+      lo de abajo. Con la barra desplegada, flota debajo del enlace.
+      Los dropdowns se ven a fondo en 13_B.
+
+      Además:
+        navbar-brand con un icono → el logo puede ser un <img> o un icono (aquí Bootstrap Icons)
+        navbar-text               → un texto suelto, alineado verticalmente con los enlaces
+    -->
+    <h2 class="h4 mt-5">Un dropdown dentro de la navbar</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <i class="bi bi-keyboard" aria-hidden="true"></i>
+            TecladoShop
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu-dropdown" aria-controls="menu-dropdown" aria-expanded="false" aria-label="Mostrar el menú">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="menu-dropdown">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Productos
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Teclados</a></li>
+                  <li><a class="dropdown-item" href="#">Ratones</a></li>
+                  <li><a class="dropdown-item" href="#">Monitores</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Todo el catálogo</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Contacto</a>
+              </li>
+            </ul>
+            <span class="navbar-text">
+              Envío gratis desde 50 €
+            </span>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <!--
+      NAVBAR OSCURA: data-bs-theme="dark"
+      Con un fondo oscuro, el texto de los enlaces tiene que ser claro.
+      En Bootstrap 5.3 se consigue con el modo de color que vimos en 04_Data_bs_theme:
+        data-bs-theme="dark" en el nav → la navbar (y su dropdown y su botón hamburguesa)
+                                         usan los colores del modo oscuro
+        bg-dark / bg-primary           → el color de fondo lo ponemos nosotros
+      La clase navbar-dark de Bootstrap 5.0 sigue funcionando, pero en 5.3 está obsoleta
+      (deprecated): mejor data-bs-theme.
+    -->
+    <h2 class="h4 mt-5">Navbar oscura: <code>data-bs-theme="dark"</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <nav class="navbar navbar-expand-lg bg-dark mb-3" data-bs-theme="dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">TecladoShop</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu-oscuro" aria-controls="menu-oscuro" aria-expanded="false" aria-label="Mostrar el menú">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="menu-oscuro">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Teclados</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Más
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Ratones</a></li>
+                  <li><a class="dropdown-item" href="#">Monitores</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">bg-primary</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu-azul" aria-controls="menu-azul" aria-expanded="false" aria-label="Mostrar el menú">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="menu-azul">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Ofertas</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <!--
+      CUÁNDO SE RECOGE EL MENÚ: navbar-expand-{breakpoint}
+        navbar-expand-sm / -md / -lg / -xl / -xxl → desplegado desde ese breakpoint hacia arriba
+        navbar-expand                             → siempre desplegado (no hace falta botón)
+        sin clase navbar-expand                   → siempre recogido, en cualquier pantalla
+      Es el enfoque mobile-first de siempre: por defecto recogido y, desde el breakpoint, desplegado.
+      Las tres barras de abajo, con la ventana a 800px: la primera se ve desplegada,
+      la segunda también y la tercera, recogida.
+    -->
+    <h2 class="h4 mt-5">Cuándo se recoge: <code>navbar-expand-{breakpoint}</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <nav class="navbar navbar-expand-md bg-body-tertiary mb-3">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">navbar-expand-md</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu-md" aria-controls="menu-md" aria-expanded="false" aria-label="Mostrar el menú">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="menu-md">
+            <ul class="navbar-nav">
+              <li class="nav-item"><a class="nav-link" href="#">Teclados</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Ratones</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <nav class="navbar navbar-expand bg-body-tertiary mb-3">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">navbar-expand</a>
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="#">Teclados</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Ratones</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Sin navbar-expand</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu-siempre" aria-controls="menu-siempre" aria-expanded="false" aria-label="Mostrar el menú">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="menu-siempre">
+            <ul class="navbar-nav">
+              <li class="nav-item"><a class="nav-link" href="#">Teclados</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Ratones</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <!--
+      DÓNDE SE QUEDA AL HACER SCROLL: sticky-top Y fixed-top
+        sticky-top   → la barra está en su sitio y, al bajar, se queda pegada arriba
+                       (position: sticky). Solo mientras su contenedor siga a la vista.
+        fixed-top    → siempre pegada arriba de la ventana (position: fixed). Sale del flujo:
+                       el contenido de debajo sube y queda tapado, así que hay que darle
+                       al body un padding-top del alto de la barra.
+        fixed-bottom → lo mismo, pegada abajo.
+      En una web real la navbar va al principio del body, fuera del container,
+      normalmente con sticky-top o fixed-top.
+      Aquí la barra con sticky-top está dentro de la caja verde: al bajar, se queda arriba
+      hasta que la caja termina.
+    -->
+    <h2 class="h4 mt-5">Al hacer scroll: <code>sticky-top</code> y <code>fixed-top</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <nav class="navbar navbar-expand-lg bg-dark sticky-top" data-bs-theme="dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">sticky-top</a>
+          <span class="navbar-text">
+            <i class="bi bi-cart" aria-hidden="true"></i>
+            3 productos
+          </span>
+        </div>
+      </nav>
+      <p class="mt-3">Teclado mecánico con interruptores rojos, retroiluminación RGB y reposamuñecas.</p>
+      <p>Ratón inalámbrico de 26.000 DPI con batería para 70 horas.</p>
+      <p>Monitor de 27 pulgadas, 2560 × 1440, 165 Hz y panel IPS.</p>
+      <p>Alfombrilla XXL de tela con base de goma antideslizante.</p>
+      <p>Auriculares con micrófono desmontable y sonido envolvente.</p>
+      <p>Webcam Full HD con micrófono estéreo y tapa de privacidad.</p>
+      <p>Soporte de brazo para monitor con muelle de gas.</p>
+      <p>Hub USB-C con siete puertos y lector de tarjetas.</p>
+      <p>Teclado compacto al 65 % con conexión Bluetooth.</p>
+      <p class="mb-0">Ratón vertical ergonómico para trabajar muchas horas.</p>
+    </div>
+  </div>
+
+</body>
+</html>
