@@ -15,6 +15,7 @@ const GUIA_04 = guia('04_rejilla.html')
 const GUIA_05 = guia('05_tipografia_color.html')
 const GUIA_06 = guia('06_tablas.html')
 const GUIA_07 = guia('07_formularios.html')
+const GUIA_08 = guia('08_componentes_contenido.html')
 
 // Capturas de las demos: [fichero, selector de la demo, anchos de ventana]
 // Si hay varios anchos, el fichero lleva el sufijo del breakpoint (04_responsive_xs.png...)
@@ -125,6 +126,27 @@ const CAPTURAS_07 = [
   ['07_practica',           '#practica .demo >> nth=0',    ['xs', 'lg']],
 ]
 
+const CAPTURAS_08 = [
+  // '#botones .row' no: con g-4 su margen negativo recoge el párrafo de encima
+  ['08_botones',              '#botones .demo >> nth=0',       ['lg']],
+  ['08_botones_d_grid',       '#botones .demo >> nth=1',       ['lg']],
+  ['08_botones_d_grid_md',    '#botones .demo >> nth=2',       ['xs', 'lg']],
+  ['08_grupos',               '#grupos .demo >> nth=0',        ['lg']],
+  ['08_cards',                '#cards .demo >> nth=0',         ['lg']],
+  ['08_cards_colores',        '#cards .demo >> nth=1',         ['lg']],
+  ['08_rejilla_cards',        '#rejilla-cards .demo >> nth=0', ['sm', 'lg']],
+  ['08_rejilla_cards_sin_h100', '#rejilla-cards .demo >> nth=1', ['lg']],
+  ['08_card_group',           '#rejilla-cards .demo >> nth=2', ['lg']],
+  ['08_alerts',               '#alerts .demo >> nth=0',        ['lg']],
+  ['08_badges',               '#badges .demo >> nth=0',        ['lg']],
+  ['08_list_group',           '#list-group .demo >> nth=0',    ['lg']],
+  ['08_breadcrumb',           '#breadcrumb .demo >> nth=0',    ['lg']],
+  ['08_paginacion',           '#paginacion .demo >> nth=0',    ['lg']],
+  ['08_progress',             '#progress .demo >> nth=0',      ['lg']],
+  ['08_spinners',             '#spinners .demo >> nth=0',      ['lg']],
+  ['08_practica',             '#practica .demo >> nth=0',      ['xs', 'lg']],
+]
+
 async function capturarElemento(page, selector, fichero) {
   await page.locator(selector).first().screenshot({ path: path.join(DESTINO, fichero) })
   console.log('✔', fichero)
@@ -186,8 +208,8 @@ async function capturarElemento(page, selector, fichero) {
     await page.close()
   }
 
-  // 02 a 07 · Demos de las guías, una página por ancho de ventana
-  for (const [url, capturas] of [[GUIA_02, CAPTURAS_02], [GUIA_03, CAPTURAS_03], [GUIA_04, CAPTURAS_04], [GUIA_05, CAPTURAS_05], [GUIA_06, CAPTURAS_06], [GUIA_07, CAPTURAS_07]]) {
+  // 02 a 08 · Demos de las guías, una página por ancho de ventana
+  for (const [url, capturas] of [[GUIA_02, CAPTURAS_02], [GUIA_03, CAPTURAS_03], [GUIA_04, CAPTURAS_04], [GUIA_05, CAPTURAS_05], [GUIA_06, CAPTURAS_06], [GUIA_07, CAPTURAS_07], [GUIA_08, CAPTURAS_08]]) {
     for (const [bp, ancho] of Object.entries(ANCHOS)) {
       const pendientes = capturas.filter(([, , bps]) => bps.includes(bp))
       if (!pendientes.length) continue
@@ -195,6 +217,8 @@ async function capturarElemento(page, selector, fichero) {
       await page.goto(url, { waitUntil: 'networkidle' })
       // El indicador fijo de breakpoint taparía parte de las demos
       await page.addStyleTag({ content: '.indicador { display: none !important; }' })
+      // spinner-grow se anima desde invisible (scale(0)): lo dejamos quieto como en la mitad de la animación, cuando se ve entero
+      await page.addStyleTag({ content: '.spinner-grow { animation: none !important; opacity: 1 !important; transform: none !important; }' })
       for (const [nombre, selector, bps] of pendientes) {
         const fichero = bps.length > 1 ? `${nombre}_${bp}.png` : `${nombre}.png`
         await capturarElemento(page, selector, fichero)

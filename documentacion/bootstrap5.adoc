@@ -2883,6 +2883,453 @@ image::07_practica_lg.png[Práctica de formulario de contacto en pantalla ancha]
 
 image::07_practica_xs.png[Práctica de formulario de contacto en el móvil]
 
+== Componentes de contenido
+
+Botones y grupos, cards, alerts, badges, list groups, breadcrumbs, paginación, barras de progreso y spinners: todo lo que se pinta solo con HTML y clases.
+Ejemplos de clase: `11_A_Botones.html`, `11_B_Cards.html`, `11_C_Alerts_badges_list_group.html` y `11_D_Navegacion_progreso.html`.
+
+=== Botones
+
+`btn` da la forma (relleno, borde, esquinas, cursor) y `btn-{color}` el color: siempre van juntas.
+`btn-outline-{color}` deja solo el borde, para acciones secundarias.
+`btn-link` tiene el aspecto de un enlace con el tamaño de un botón.
+
+[cols="1,3",options="header"]
+|===
+|Clase |Efecto
+|`btn` |La forma del botón, sin color
+|`btn-primary`, `btn-secondary`, `btn-success`, `btn-danger`, `btn-warning`, `btn-info`, `btn-light`, `btn-dark` |Fondo y borde del color del tema
+|`btn-outline-{color}` |Solo el borde y el texto; se rellena al pasar el ratón
+|`btn-link` |Aspecto de enlace
+|`btn-lg`, `btn-sm` |Más grande o más pequeño
+|===
+
+[source,html]
+----
+<button type="button" class="btn btn-primary">Guardar</button>
+<button type="button" class="btn btn-outline-secondary">Cancelar</button>
+<button type="button" class="btn btn-primary btn-lg">Grande</button>
+<button type="button" class="btn btn-primary" disabled>Deshabilitado</button>
+<button type="button" class="btn btn-success">
+  <i class="bi bi-cart-plus" aria-hidden="true"></i> Con icono
+</button>
+<button type="button" class="btn btn-outline-secondary" aria-label="Editar">
+  <i class="bi bi-pencil" aria-hidden="true"></i>
+</button>
+----
+
+.Un botón sin clase, los colores, los `btn-outline-*`, tamaños, deshabilitado y con iconos
+image::08_botones.png[Botones]
+
+==== La etiqueta: `button`, `a` o `input`
+
+Las clases `btn` sirven en las tres etiquetas; se elige por lo que hace el botón, no por su aspecto.
+
+[cols="2m,3",options="header"]
+|===
+|Etiqueta |Cuándo
+|<button type="button"> |Una acción en la página (guardar, abrir, borrar)
+|<a href="…" role="button"> |Ir a otra página, con aspecto de botón
+|<input type="submit"> |Enviar un formulario (no admite iconos dentro)
+|===
+
+WARNING: Dentro de un `<form>`, un `<button>` sin `type` es `type="submit"`: envía el formulario.
+Por eso los botones que no envían llevan siempre `type="button"`.
+
+Un `<a>` no tiene atributo `disabled`: se le pone la clase `disabled` (quita los clics con `pointer-events: none`), `aria-disabled="true"` y se le quita el `href`.
+
+[source,html]
+----
+<a class="btn btn-primary disabled" role="button" aria-disabled="true">Ver catálogo</a>
+----
+
+==== A todo el ancho: `d-grid`
+
+`btn-block` de Bootstrap 4 ya no existe.
+Un contenedor `d-grid gap-2` estira cada botón a todo el ancho; con `d-md-block`, desde `md` vuelven a su tamaño.
+
+[source,html]
+----
+<div class="d-grid gap-2 d-md-block">
+  <button type="button" class="btn btn-primary">Comprar ahora</button>
+  <button type="button" class="btn btn-outline-secondary">Seguir comprando</button>
+</div>
+----
+
+.`d-grid gap-2`: los botones a todo el ancho
+image::08_botones_d_grid.png[Botones a todo el ancho con d-grid]
+
+.`d-grid gap-2 d-md-block`, en el móvil y desde `md`
+image::08_botones_d_grid_md_xs.png[d-grid d-md-block en el móvil]
+
+image::08_botones_d_grid_md_lg.png[d-grid d-md-block en pantalla ancha]
+
+=== Grupos de botones y `btn-close`
+
+`btn-group` pega los botones en una sola pieza (como `input-group` con los campos), con `role="group"` y un `aria-label`.
+
+[cols="1,3",options="header"]
+|===
+|Clase |Efecto
+|`btn-group` |Los botones, pegados en fila
+|`btn-group-vertical` |Pegados en columna
+|`btn-group-sm`, `btn-group-lg` |Cambian el tamaño de todos los botones del grupo
+|`btn-toolbar` |Varios grupos en fila (con `role="toolbar"`)
+|===
+
+[source,html]
+----
+<div class="btn-group" role="group" aria-label="Alineación">
+  <button type="button" class="btn btn-outline-primary">Izquierda</button>
+  <button type="button" class="btn btn-outline-primary">Centro</button>
+  <button type="button" class="btn btn-outline-primary">Derecha</button>
+</div>
+
+<div class="btn-toolbar" role="toolbar" aria-label="Barra del editor">
+  <div class="btn-group me-2" role="group" aria-label="Formato">…</div>
+  <div class="btn-group" role="group" aria-label="Alineación del texto">…</div>
+</div>
+
+<button type="button" class="btn-close" aria-label="Cerrar"></button>
+----
+
+.`btn-group`, `btn-group-vertical`, `btn-toolbar` y `btn-close` sobre fondo claro y oscuro
+image::08_grupos.png[Grupos de botones y botón de cerrar]
+
+`btn-close` es la X de alertas, modales y toasts: sin texto, así que necesita `aria-label`.
+
+NOTE: Para fondos oscuros, `btn-close-white` está obsoleta desde la 5.3: se usa `data-bs-theme="dark"` en el botón o en un elemento que lo contenga.
+
+=== Cards
+
+Una caja con borde y esquinas que agrupa contenido relacionado.
+Es un contenedor flex en columna con piezas opcionales:
+
+[cols="2,3",options="header"]
+|===
+|Clase |Pieza
+|`card` |La caja (sin ancho propio: ocupa el de su contenedor)
+|`card-img-top` |Imagen arriba, con las esquinas superiores redondeadas
+|`card-header` / `card-footer` |Cabecera y pie con fondo gris y una línea
+|`card-body` |El contenido, con relleno (`flex: 1 1 auto`: crece)
+|`card-title`, `card-subtitle`, `card-text`, `card-link` |Título, subtítulo, párrafo y enlaces del cuerpo
+|`list-group-flush` |Una lista dentro de la card, sin bordes exteriores (ver <<_list_groups>>)
+|===
+
+[source,html]
+----
+<div class="card">
+  <img src="…" class="card-img-top" alt="…">
+  <div class="card-body">
+    <h5 class="card-title">Teclado mecánico</h5>
+    <p class="card-text">Interruptores marrones.</p>
+    <a href="#" class="btn btn-primary">Comprar</a>
+  </div>
+</div>
+----
+
+.Una card con título, subtítulo y enlaces; otra con imagen y botón; y otra con cabecera, lista y pie
+image::08_cards.png[Cards]
+
+==== Colores y card horizontal
+
+`text-bg-{color}` colorea fondo y texto; `border-{color}` solo el borde.
+Para una card horizontal, una `row g-0` dentro: imagen en `col-md-4` con `rounded-start` y cuerpo en `col-md-8`.
+
+[source,html]
+----
+<div class="card text-bg-success">…</div>
+
+<div class="card border-danger">
+  <div class="card-header border-danger">Aviso</div>
+  <div class="card-body text-danger">…</div>
+</div>
+
+<div class="card">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="…" class="img-fluid rounded-start" alt="…">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">…</div>
+    </div>
+  </div>
+</div>
+----
+
+.`text-bg-success`, `border-danger` y una card horizontal
+image::08_cards_colores.png[Cards de colores y card horizontal]
+
+=== Rejillas de cards y `card-group`
+
+En un catálogo, cada card va en una columna: `row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4`.
+Con `h-100` en cada card, todas miden lo que la más alta de su fila; y como `card-body` crece, los `card-footer` quedan alineados abajo.
+
+[source,html]
+----
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+  <div class="col">
+    <div class="card h-100">
+      <div class="card-body">…</div>
+      <div class="card-footer">39,90 €</div>
+    </div>
+  </div>
+  …
+</div>
+----
+
+.Rejilla de cards con `h-100`, en `sm` (dos por fila) y en `lg` (cuatro por fila)
+image::08_rejilla_cards_sm.png[Rejilla de cards en sm]
+
+image::08_rejilla_cards_lg.png[Rejilla de cards en lg]
+
+.Lo mismo sin `h-100`: los pies no se alinean
+image::08_rejilla_cards_sin_h100.png[Rejilla de cards sin h-100]
+
+TIP: La columna (`col`) ya mide lo que la más alta de la fila, porque la fila es flex; lo que no se estira es la card que va dentro.
+`h-100` hace que la card ocupe toda la altura de su columna.
+
+`card-group` pega las cards sin hueco, en una sola fila y con la misma altura (por debajo de `sm` se apilan).
+
+[source,html]
+----
+<div class="card-group">
+  <div class="card">…</div>
+  <div class="card">…</div>
+  <div class="card">…</div>
+</div>
+----
+
+.`card-group`
+image::08_card_group.png[Cards pegadas con card-group]
+
+=== Alerts
+
+`alert alert-{color}`: fondo suave, borde y texto del mismo color (se adaptan al modo oscuro).
+`role="alert"` hace que el lector de pantalla lo lea en cuanto aparece; en un aviso fijo desde el principio no hace falta.
+`alert-heading` da título y `alert-link` un enlace con el color de la alerta.
+
+[source,html]
+----
+<div class="alert alert-success" role="alert">
+  <h4 class="alert-heading">¡Pedido confirmado!</h4>
+  <p>Hemos recibido el pago y preparamos el envío.</p>
+  <hr>
+  <p class="mb-0">Seguimiento en <a href="#" class="alert-link">Mis pedidos</a>.</p>
+</div>
+
+<div class="alert alert-warning d-flex align-items-center" role="alert">
+  <i class="bi bi-exclamation-triangle-fill fs-4 me-2" aria-hidden="true"></i>
+  <div>Quedan solo 2 unidades.</div>
+</div>
+----
+
+==== Alerts que se cierran: `alert-dismissible`
+
+[source,html]
+----
+<div class="alert alert-info alert-dismissible fade show" role="alert">
+  Usamos cookies para recordar el carrito.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+</div>
+----
+
+`alert-dismissible` deja sitio a la derecha para la X.
+`data-bs-dismiss="alert"` hace que el JavaScript de Bootstrap quite la alerta al pulsar la X, sin escribir código (se ve en la sesión 3).
+`fade show` la desvanece en lugar de quitarla de golpe.
+
+.Colores, con icono, con título y enlace, y que se cierra
+image::08_alerts.png[Alerts]
+
+=== Badges
+
+`badge text-bg-{color}`: etiqueta pequeña en negrita.
+Su tamaño es relativo al del padre (`.75em`): dentro de un `h3` es más grande que dentro de un párrafo.
+`rounded-pill` la redondea del todo.
+
+[source,html]
+----
+<h3>Monitor 27" <span class="badge text-bg-success">Nuevo</span></h3>
+
+<button type="button" class="btn btn-primary">
+  Carrito <span class="badge text-bg-light">3</span><span class="visually-hidden"> productos</span>
+</button>
+
+<button type="button" class="btn btn-outline-secondary position-relative">
+  <i class="bi bi-bell" aria-hidden="true"></i> Avisos
+  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-danger">
+    12<span class="visually-hidden"> avisos sin leer</span>
+  </span>
+</button>
+----
+
+Como contador en una esquina: el botón con `position-relative` y el badge con `position-absolute top-0 start-100 translate-middle` (su centro, en la esquina superior derecha del botón).
+
+.Badges en un título, en un párrafo y como contadores
+image::08_badges.png[Badges]
+
+IMPORTANT: Un contador suelto («3») no dice nada al lector de pantalla: se completa con un texto `visually-hidden` («3 productos»).
+
+=== List groups
+
+[cols="2,3",options="header"]
+|===
+|Clase |Efecto
+|`list-group` + `list-group-item` |Lista con borde y una línea entre elementos (en `ul`/`ol`, o en un `div` con enlaces o botones)
+|`active` / `disabled` |Seleccionado (`aria-current="true"`) / apagado (`aria-disabled="true"`)
+|`list-group-item-action` |En `a` o `button`: gris al pasar el ratón y cursor de mano
+|`list-group-flush` |Sin bordes exteriores: para meterla en una card
+|`list-group-numbered` |Numerada (en un `ol`)
+|`list-group-horizontal-{bp}` |En fila desde ese breakpoint
+|`list-group-item-{color}` |Un elemento de color
+|===
+
+[source,html]
+----
+<div class="list-group">
+  <a href="#" class="list-group-item list-group-item-action active" aria-current="true">Mis pedidos</a>
+  <a href="#" class="list-group-item list-group-item-action">Mis direcciones</a>
+  <button type="button" class="list-group-item list-group-item-action">Cerrar sesión</button>
+</div>
+
+<ul class="list-group">
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    Periféricos <span class="badge text-bg-primary rounded-pill">14</span>
+  </li>
+  …
+</ul>
+----
+
+Cada elemento es un bloque normal: con `d-flex justify-content-between` se pone el texto a un lado y un badge al otro.
+
+.`active` y `disabled`, `list-group-item-action`, numerada y de colores, con badges y horizontal
+image::08_list_group.png[List groups]
+
+=== Breadcrumbs
+
+El camino desde la portada hasta la página actual: un `ol.breadcrumb` dentro de un `nav` con `aria-label`.
+La página actual lleva `active` y `aria-current="page"`, sin enlace.
+El separador lo pone el CSS (`/` por defecto) y se cambia con la variable `--bs-breadcrumb-divider`.
+
+[source,html]
+----
+<nav style="--bs-breadcrumb-divider: '›'" aria-label="Migas de pan">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+    <li class="breadcrumb-item"><a href="#">Periféricos</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Teclados</li>
+  </ol>
+</nav>
+----
+
+.Con el separador por defecto y con `--bs-breadcrumb-divider: '›'`
+image::08_breadcrumb.png[Breadcrumbs]
+
+=== Paginación
+
+`ul.pagination` en un `nav`; cada `li.page-item` con un `a.page-link`.
+`active` marca la página actual y `disabled` lo que no se puede pulsar.
+Es flex: se alinea con `justify-content-*`, y `pagination-lg`/`-sm` cambian el tamaño.
+
+[source,html]
+----
+<nav aria-label="Páginas del catálogo">
+  <ul class="pagination justify-content-center">
+    <li class="page-item disabled"><a class="page-link">Anterior</a></li>
+    <li class="page-item active"><a class="page-link" href="#" aria-current="page">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Siguiente"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+  </ul>
+</nav>
+----
+
+.Paginación normal, grande y centrada con flechas, y pequeña a la derecha
+image::08_paginacion.png[Paginación]
+
+NOTE: Bootstrap solo da el aspecto: qué página se ve lo decide el servidor o el JavaScript.
+
+=== Barras de progreso
+
+Dos divs: `progress` es el carril (con `role="progressbar"` y los `aria-value*`) y `progress-bar` la parte llena, con su ancho en `style="width: …"` (normalmente lo cambia JavaScript).
+
+[source,html]
+----
+<div class="progress" role="progressbar" aria-label="Pedido"
+     aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+  <div class="progress-bar" style="width: 60%">60 %</div>
+</div>
+----
+
+[cols="1,3",options="header"]
+|===
+|Clase |Efecto
+|`bg-*` o `text-bg-*` en `progress-bar` |Color de la barra (`text-bg-*` ajusta también el color del texto)
+|`style="height: …"` en `progress` |Grosor de la barra
+|`progress-bar-striped` |Rayas
+|`progress-bar-animated` |Las rayas se mueven
+|`progress-stacked` |Varias barras seguidas; el ancho va en cada `progress`
+|===
+
+[source,html]
+----
+<div class="progress-stacked">
+  <div class="progress" role="progressbar" aria-label="Fotos"
+       aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%">
+    <div class="progress-bar">Fotos</div>
+  </div>
+  <div class="progress" role="progressbar" aria-label="Vídeos"
+       aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+    <div class="progress-bar bg-success">Vídeos</div>
+  </div>
+</div>
+----
+
+.Normal, de color, fina, con rayas animadas y `progress-stacked`
+image::08_progress.png[Barras de progreso]
+
+=== Spinners
+
+Indican que algo se está cargando cuando no se sabe cuánto falta (si se sabe, mejor una barra).
+`spinner-border` es un aro que gira y `spinner-grow` un punto que crece.
+El color sale de `text-*`; `spinner-border-sm` y `spinner-grow-sm` los reducen para meterlos en un botón.
+Llevan `role="status"` y un texto `visually-hidden`; dentro de un botón que ya tiene texto, `aria-hidden="true"`.
+
+[source,html]
+----
+<div class="spinner-border text-primary" role="status">
+  <span class="visually-hidden">Cargando...</span>
+</div>
+
+<button class="btn btn-primary" type="button" disabled>
+  <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+  Guardando...
+</button>
+----
+
+.`spinner-border`, de color, `spinner-grow`, más grande y dentro de botones
+image::08_spinners.png[Spinners]
+
+TIP: El tamaño se cambia con `width` y `height` (`style="width: 3rem; height: 3rem"`).
+
+=== Práctica
+
+Catálogo de productos de la tienda (la segunda mitad de la práctica guiada de la sesión):
+
+* Breadcrumb arriba: Inicio / Catálogo / Periféricos.
+* Una alerta descartable con el aviso de envío gratis.
+* Rejilla de al menos seis cards (1 por fila en el móvil, 2 en `sm`, 3 en `lg`) con imagen, título, descripción, badge de estado y pie con el precio y un botón «Añadir»; todas igual de altas.
+* Un producto agotado: badge `text-bg-secondary` y botón deshabilitado.
+* Un menú lateral de categorías con `list-group-item-action` y badges con el número de productos (en el móvil, encima del catálogo).
+* Paginación centrada debajo.
+* Botón del carrito con contador.
+
+.Un resultado posible, en pantalla ancha y en el móvil
+image::08_practica_lg.png[Práctica de catálogo en pantalla ancha]
+
+image::08_practica_xs.png[Práctica de catálogo en el móvil]
+
 == Referencias
 
 * https://getbootstrap.com/docs/5.3/getting-started/introduction/[Documentación oficial de Bootstrap 5.3]
@@ -2922,5 +3369,17 @@ image::07_practica_xs.png[Práctica de formulario de contacto en el móvil]
 * https://getbootstrap.com/docs/5.3/forms/floating-labels/[Floating labels]
 * https://getbootstrap.com/docs/5.3/forms/layout/[Layout]
 * https://getbootstrap.com/docs/5.3/forms/validation/[Validation]
+* https://getbootstrap.com/docs/5.3/components/buttons/[Buttons]
+* https://getbootstrap.com/docs/5.3/components/button-group/[Button group]
+* https://getbootstrap.com/docs/5.3/components/close-button/[Close button]
+* https://getbootstrap.com/docs/5.3/components/card/[Cards]
+* https://getbootstrap.com/docs/5.3/components/alerts/[Alerts]
+* https://getbootstrap.com/docs/5.3/components/badge/[Badges]
+* https://getbootstrap.com/docs/5.3/components/list-group/[List group]
+* https://getbootstrap.com/docs/5.3/components/breadcrumb/[Breadcrumb]
+* https://getbootstrap.com/docs/5.3/components/pagination/[Pagination]
+* https://getbootstrap.com/docs/5.3/components/progress/[Progress]
+* https://getbootstrap.com/docs/5.3/components/spinners/[Spinners]
+* https://getbootstrap.com/docs/5.3/utilities/position/[Position]
 * https://developer.mozilla.org/es/docs/Web/HTML/Element/table[El elemento <table> (MDN)]
 * https://icons.getbootstrap.com/[Bootstrap Icons]

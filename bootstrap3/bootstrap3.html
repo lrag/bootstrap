@@ -261,17 +261,47 @@
       </table>
     </div>
 
-    <!-- COMPONENTES -->
-    <h2 class="h4 mt-5">Componentes que han salido de pasada</h2>
+    <!-- COMPONENTES DE CONTENIDO -->
+    <h2 class="h4 mt-5">Componentes de contenido</h2>
     <div class="table-responsive">
       <table class="table table-striped align-middle">
         <thead>
           <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>badge text-bg-success</code></td><td><code>.label .label-success</code> (<code>.badge</code> era un contador de elementos nuevos o sin leer, como «Bandeja 42»)</td></tr>
-          <tr><td><code>btn-outline-primary</code></td><td>No existe (sí <code>btn-primary</code>, <code>btn-default</code>…)</td></tr>
-          <tr><td><code>card</code></td><td>No existe: <code>.panel</code>, <code>.well</code>, <code>.thumbnail</code></td></tr>
+          <tr><td><code>btn</code> + <code>btn-primary</code>, <code>btn-secondary</code>, <code>btn-success</code>, <code>btn-danger</code>, <code>btn-warning</code>, <code>btn-info</code>, <code>btn-light</code>, <code>btn-dark</code>, <code>btn-link</code></td><td><code>.btn</code> + <code>.btn-default</code> (blanco con borde gris <code>#ccc</code>), <code>.btn-primary</code>, <code>.btn-success</code>, <code>.btn-info</code>, <code>.btn-warning</code>, <code>.btn-danger</code>, <code>.btn-link</code>; sin secondary, light ni dark</td></tr>
+          <tr><td><code>btn-outline-primary</code>…</td><td>No existen</td></tr>
+          <tr><td><code>btn-lg</code>, <code>btn-sm</code></td><td><span class="badge text-bg-success">Sí existen</span>, y además <code>.btn-xs</code> (<code>padding: 1px 5px</code>, 12 px)</td></tr>
+          <tr><td><code>a.btn.disabled</code> (<code>pointer-events: none</code>)</td><td><span class="badge text-bg-success">Igual</span></td></tr>
+          <tr><td>Botones a todo el ancho: <code>d-grid gap-2</code> en el contenedor</td><td><code>.btn-block</code> en cada botón (<code>display: block; width: 100%</code>; varios seguidos, separados 5 px)</td></tr>
+          <tr><td><code>btn-group</code>, <code>btn-group-vertical</code>, <code>btn-toolbar</code>, <code>btn-group-sm</code>, <code>btn-group-lg</code></td><td><span class="badge text-bg-success">Sí existen</span>, con <code>float</code> (también <code>.btn-group-xs</code>); además <code>.btn-group-justified</code> reparte el ancho a partes iguales (<code>display: table</code>)</td></tr>
+          <tr><td><code>btn-close</code>: la X es una imagen SVG de fondo; en fondos oscuros, <code>data-bs-theme="dark"</code></td><td><code>.close</code>: la X es texto (<code>&amp;times;</code>) dentro del botón; flota a la derecha con opacidad 0.2</td></tr>
+          <tr><td><code>card</code> con <code>card-header</code>, <code>card-body</code>, <code>card-footer</code>, <code>card-title</code></td><td>No existe: <code>.panel</code> con <code>.panel-heading</code>, <code>.panel-body</code>, <code>.panel-footer</code> y <code>.panel-title</code>; color con <code>.panel-default</code>, <code>.panel-primary</code>, <code>.panel-success</code>, <code>.panel-info</code>, <code>.panel-warning</code>, <code>.panel-danger</code></td></tr>
+          <tr><td><code>card-img-top</code> + <code>card-body</code></td><td><code>.thumbnail</code> con la imagen y un <code>.caption</code> debajo para el texto</td></tr>
+          <tr><td>Una <code>card</code> sola como caja para destacar algo</td><td><code>.well</code>: caja gris (<code>#f5f5f5</code>) con sombra interior</td></tr>
+          <tr><td><code>list-group-flush</code> dentro de la card</td><td>Un <code>.list-group</code> directamente dentro del <code>.panel</code> pierde los bordes laterales</td></tr>
+          <tr><td><code>text-bg-*</code> y <code>border-*</code> en la card, card horizontal con <code>row g-0</code></td><td>No existen (el color, con las clases <code>.panel-*</code>)</td></tr>
+          <tr><td>Rejilla de cards con <code>row-cols-*</code> y <code>h-100</code>; <code>card-group</code></td><td>No existen: en una rejilla con <code>float</code>, cada panel mide lo que su contenido</td></tr>
+          <tr><td><code>alert alert-{color}</code> (los 8 colores del tema)</td><td><code>.alert</code> con <code>.alert-success</code>, <code>.alert-info</code>, <code>.alert-warning</code> o <code>.alert-danger</code></td></tr>
+          <tr><td><code>alert-heading</code></td><td>No existe: un <code>h4</code> dentro de <code>.alert</code> ya pierde el margen superior y toma el color de la alerta</td></tr>
+          <tr><td><code>alert-dismissible</code> + <code>btn-close</code> con <code>data-bs-dismiss="alert"</code></td><td><code>.alert-dismissible</code> + <code>.close</code> con <code>data-dismiss="alert"</code></td></tr>
+          <tr><td><code>alert-link</code></td><td><span class="badge text-bg-success">Sí existe</span> (en negrita)</td></tr>
+          <tr><td><code>badge text-bg-success</code></td><td><code>.label .label-success</code> (también <code>-default</code>, <code>-primary</code>, <code>-info</code>, <code>-warning</code>, <code>-danger</code>)</td></tr>
+          <tr><td><code>badge rounded-pill</code> como contador, de cualquier color</td><td><code>.badge</code>: siempre gris (<code>#777</code>) y en forma de píldora, para contadores de elementos nuevos o sin leer («Bandeja 42»); dentro de un <code>.list-group-item</code> flota a la derecha sola</td></tr>
+          <tr><td>Contador en la esquina: <code>position-absolute top-0 start-100 translate-middle</code></td><td>No existen esas utilidades: CSS propio</td></tr>
+          <tr><td><code>list-group</code>, <code>list-group-item</code>, <code>active</code>, <code>disabled</code></td><td><span class="badge text-bg-success">Sí existen</span></td></tr>
+          <tr><td><code>list-group-item-action</code> en <code>a</code> o <code>button</code></td><td>No existe: <code>a.list-group-item</code> y <code>button.list-group-item</code> ya cambian de fondo al pasar el ratón</td></tr>
+          <tr><td><code>list-group-item-{color}</code> (los 8 colores)</td><td>Solo <code>-success</code>, <code>-info</code>, <code>-warning</code> y <code>-danger</code>; además <code>.list-group-item-heading</code> y <code>.list-group-item-text</code></td></tr>
+          <tr><td><code>list-group-flush</code>, <code>list-group-numbered</code>, <code>list-group-horizontal-*</code></td><td>No existen</td></tr>
+          <tr><td><code>ol.breadcrumb</code> con <code>li.breadcrumb-item</code>; sin fondo; separador en <code>--bs-breadcrumb-divider</code></td><td><code>.breadcrumb</code> con <code>li</code> sin clase; fondo gris (<code>#f5f5f5</code>) con relleno; el separador «/» va fijo en el CSS (<code>content</code>)</td></tr>
+          <tr><td><code>ul.pagination</code> con <code>li.page-item</code> y <code>a.page-link</code>; flex, se alinea con <code>justify-content-*</code></td><td><code>.pagination</code> con <code>li</code> y <code>a</code> sin clase (<code>.active</code> y <code>.disabled</code> en el <code>li</code>); es <code>inline-block</code>: se centra con <code>.text-center</code> en el contenedor</td></tr>
+          <tr><td><code>pagination-lg</code>, <code>pagination-sm</code></td><td><span class="badge text-bg-success">Sí existen</span></td></tr>
+          <tr><td>No existe</td><td><code>.pager</code>: enlaces «Anterior» y «Siguiente» (con <code>.previous</code> y <code>.next</code>, a los lados)</td></tr>
+          <tr><td><code>progress</code> + <code>progress-bar</code></td><td><span class="badge text-bg-success">Sí existen</span> (20 px de alto, la barra con <code>float: left</code>)</td></tr>
+          <tr><td><code>bg-success</code>… en la <code>progress-bar</code></td><td><code>.progress-bar-success</code>, <code>-info</code>, <code>-warning</code>, <code>-danger</code></td></tr>
+          <tr><td><code>progress-bar-striped</code>, <code>progress-bar-animated</code></td><td><code>.progress-bar-striped</code> (o <code>.progress-striped</code> en el carril); la animación, con <code>.active</code></td></tr>
+          <tr><td><code>progress-stacked</code></td><td>Varias <code>.progress-bar</code> dentro del mismo <code>.progress</code></td></tr>
+          <tr><td><code>spinner-border</code>, <code>spinner-grow</code></td><td>No existen</td></tr>
         </tbody>
       </table>
     </div>
@@ -279,8 +309,8 @@
     <!-- LO QUE SÍ FUNCIONA -->
     <h2 class="h4 mt-5">Lo que sí funciona igual</h2>
     <div class="alert alert-success mb-5">
-      <code>.container</code>, <code>.container-fluid</code>, <code>.row</code>, <code>.btn</code>, <code>.btn-group</code>,
-      <code>.alert</code>, <code>.table</code>, <code>.table-striped</code>, <code>.table-hover</code>, <code>.table-bordered</code>, <code>.table-responsive</code>, <code>.form-control</code>, <code>.input-group</code>, <code>.input-group-lg</code>, <code>.input-group-sm</code>, <code>&lt;fieldset disabled&gt;</code>,
+      <code>.container</code>, <code>.container-fluid</code>, <code>.row</code>, <code>.btn</code>, <code>.btn-lg</code>, <code>.btn-sm</code>, <code>.btn-link</code>, <code>.btn-group</code>, <code>.btn-group-vertical</code>, <code>.btn-toolbar</code>,
+      <code>.alert</code>, <code>.alert-dismissible</code>, <code>.alert-link</code>, <code>.list-group</code>, <code>.list-group-item</code>, <code>.progress</code>, <code>.progress-bar</code>, <code>.progress-bar-striped</code>, <code>.table</code>, <code>.table-striped</code>, <code>.table-hover</code>, <code>.table-bordered</code>, <code>.table-responsive</code>, <code>.form-control</code>, <code>.input-group</code>, <code>.input-group-lg</code>, <code>.input-group-sm</code>, <code>&lt;fieldset disabled&gt;</code>,
       <code>.h1</code>… <code>.h6</code>, <code>.lead</code>, <code>.small</code>, <code>.mark</code>,
       <code>.list-unstyled</code>, <code>.list-inline</code> (sin <code>-item</code>),
       <code>text-center</code>, <code>text-uppercase</code>, <code>text-lowercase</code>, <code>text-capitalize</code>, <code>text-nowrap</code>,
