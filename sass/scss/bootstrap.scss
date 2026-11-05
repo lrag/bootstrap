@@ -1,4 +1,9 @@
 // Bootstrap completo, sin cambios: el mismo CSS que se descarga de la web.
-// Sirve para comprobar que la compilación funciona.
+// Sirve para comprobar que la compilación funciona y para comparar con tema.css.
+//
+// Este NO es el bootstrap.scss de Bootstrap: solo lo importa. El real está en
+//   sass/node_modules/bootstrap/scss/bootstrap.scss
+// La ruta de abajo se encuentra porque el script de compilación lleva --load-path=node_modules
+// (el editor no lo sabe, y por eso Ctrl+clic no lleva a ninguna parte).
 
 @import "bootstrap/scss/bootstrap";
