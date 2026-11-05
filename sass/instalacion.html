@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Instalación de Sass y Bootstrap con npm</title>
+  <link href="../recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    pre { background: var(--bs-tertiary-bg); padding: 1rem; border-radius: var(--bs-border-radius); }
+  </style>
+</head>
+<body>
+
+  <header class="bg-primary text-white py-5 mb-4">
+    <div class="container">
+      <p class="text-uppercase small mb-1">Curso de Bootstrap 5 · Sesión 3 · Punto 4</p>
+      <h1 class="display-5 fw-bold">Instalación de Sass y Bootstrap con npm</h1>
+      <p class="lead mb-0">Lo necesario para compilar Bootstrap desde Sass con un tema propio: Node.js, npm, los paquetes y los comandos.</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <nav class="mb-5" aria-label="Índice">
+      <ol class="list-group list-group-numbered">
+        <li class="list-group-item"><a href="#requisitos">Requisitos: Node.js y npm</a></li>
+        <li class="list-group-item"><a href="#existente">Usar este proyecto (ya montado)</a></li>
+        <li class="list-group-item"><a href="#cero">Montar un proyecto desde cero</a></li>
+        <li class="list-group-item"><a href="#scripts">Los scripts de <code>package.json</code></a></li>
+        <li class="list-group-item"><a href="#compilar">Compilar</a></li>
+        <li class="list-group-item"><a href="#html">Enlazar el CSS en el HTML</a></li>
+        <li class="list-group-item"><a href="#problemas">Problemas habituales</a></li>
+      </ol>
+    </nav>
+
+    <!-- 1. Requisitos -->
+    <section id="requisitos" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">1. Requisitos: Node.js y npm</h2>
+      <p>
+        <strong>Node.js</strong> ejecuta JavaScript fuera del navegador, y trae <strong>npm</strong>, el gestor de paquetes:
+        descarga librerías (Bootstrap, el compilador de Sass…) y las deja en la carpeta <code>node_modules</code>.
+        Se instala la versión <strong>LTS</strong> desde <a href="https://nodejs.org/">nodejs.org</a>.
+      </p>
+      <p>Para comprobar que están instalados, en una terminal:</p>
+<pre><code>node -v
+npm -v</code></pre>
+      <p class="mb-0">Cada comando muestra un número de versión (por ejemplo, <code>v20.11.1</code> y <code>10.2.4</code>). Si dice que no reconoce el comando, Node.js no está instalado o hay que cerrar y volver a abrir la terminal.</p>
+    </section>
+
+    <!-- 2. Proyecto existente -->
+    <section id="existente" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">2. Usar este proyecto (ya montado)</h2>
+      <p>
+        La carpeta <code>sass/</code> ya tiene su <code>package.json</code>, que dice qué paquetes necesita. La carpeta <code>node_modules</code>
+        no se guarda en Git (pesa mucho y se regenera), así que la primera vez hay que instalarla:
+      </p>
+<pre><code>cd sass
+npm install</code></pre>
+      <p class="mb-0">
+        <code>npm install</code>, sin nada más, lee <code>package.json</code> (y <code>package-lock.json</code>, con las versiones exactas)
+        e instala todo lo que pone. Al terminar, ya se puede <a href="#compilar">compilar</a>.
+      </p>
+    </section>
+
+    <!-- 3. Desde cero -->
+    <section id="cero" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">3. Montar un proyecto desde cero</h2>
+      <p>Para un proyecto nuevo, en una carpeta vacía:</p>
+<pre><code>npm init -y
+npm install bootstrap@5.3.8
+npm install --save-dev sass@1.77.8</code></pre>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Comando</th><th>Qué hace</th></tr></thead>
+        <tbody>
+          <tr><td><code>npm init -y</code></td><td>Crea <code>package.json</code> con valores por defecto (<code>-y</code>: sin hacer preguntas)</td></tr>
+          <tr><td><code>npm install bootstrap@5.3.8</code></td><td>Descarga Bootstrap: las fuentes <code>.scss</code>, el CSS y el JavaScript compilados. Lo anota en <code>dependencies</code></td></tr>
+          <tr><td><code>npm install --save-dev sass@1.77.8</code></td><td>Descarga el compilador de Sass. <code>--save-dev</code> lo anota en <code>devDependencies</code>: solo hace falta para desarrollar, no para que la web funcione</td></tr>
+        </tbody>
+      </table>
+      <p>Después, crear la carpeta <code>scss/</code> con los ficheros propios y añadir los <a href="#scripts">scripts</a> a <code>package.json</code>. La estructura queda así:</p>
+<pre><code>sass/
+├── package.json        → dependencias y scripts
+├── package-lock.json   → versiones exactas instaladas (lo crea npm)
+├── node_modules/       → lo que instala npm (no se edita ni se sube a Git)
+│   ├── bootstrap/
+│   │   ├── scss/       → las fuentes de Bootstrap
+│   │   └── dist/       → el CSS y el JS ya compilados
+│   └── sass/           → el compilador
+├── scss/               → nuestros ficheros .scss
+└── css/                → el CSS que genera el compilador</code></pre>
+      <div class="alert alert-warning mb-0" role="alert">
+        <strong>¿Por qué <code>sass@1.77.8</code> y no la última?</strong> Las versiones recientes de Sass necesitan un Node.js más nuevo
+        que el 20.11 del aula (fallan con <code>ERR_REQUIRE_ESM</code>) y avisan de que <code>@import</code> se va a retirar. Bootstrap 5.3 usa
+        <code>@import</code> en todas sus fuentes, así que saldrían cientos de avisos. Con la 1.77.8 compila limpio.
+      </div>
+    </section>
+
+    <!-- 4. Scripts -->
+    <section id="scripts" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">4. Los scripts de <code>package.json</code></h2>
+      <p>Los comandos largos se guardan con un nombre corto en la sección <code>scripts</code>:</p>
+<pre><code>"scripts": {
+  "css":     "sass --load-path=node_modules --quiet-deps scss:css",
+  "css:min": "sass --load-path=node_modules --quiet-deps --style=compressed --no-source-map scss:css/min",
+  "vigilar": "sass --load-path=node_modules --quiet-deps --watch scss:css"
+}</code></pre>
+      <table class="table table-sm mb-0">
+        <thead><tr><th>Opción</th><th>Para qué</th></tr></thead>
+        <tbody>
+          <tr><td><code>scss:css</code></td><td>Compila cada <code>.scss</code> de <code>scss/</code> en un <code>.css</code> de <code>css/</code>. Los parciales (<code>_nombre.scss</code>) no generan fichero</td></tr>
+          <tr><td><code>--load-path=node_modules</code></td><td>Busca también en <code>node_modules</code>: así funciona <code>@import "bootstrap/scss/bootstrap"</code></td></tr>
+          <tr><td><code>--quiet-deps</code></td><td>Calla los avisos del código de Bootstrap (no es nuestro)</td></tr>
+          <tr><td><code>--watch</code></td><td>Se queda esperando y recompila cada vez que se guarda un <code>.scss</code> (se para con Ctrl+C)</td></tr>
+          <tr><td><code>--style=compressed</code></td><td>CSS minimizado: sin espacios ni comentarios</td></tr>
+          <tr><td><code>--no-source-map</code></td><td>Sin el fichero <code>.map</code> (en producción no hace falta)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 5. Compilar -->
+    <section id="compilar" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">5. Compilar</h2>
+      <p>Siempre desde la carpeta <code>sass/</code>:</p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Comando</th><th>Resultado</th></tr></thead>
+        <tbody>
+          <tr><td><code>npm run css</code></td><td>Compila todos los <code>.scss</code> en <code>css/</code>, con su <code>.map</code></td></tr>
+          <tr><td><code>npm run vigilar</code></td><td>Lo mismo, y recompila al guardar. Lo cómodo mientras se trabaja</td></tr>
+          <tr><td><code>npm run css:min</code></td><td>Versión minimizada, en <code>css/min/</code>, para publicar</td></tr>
+        </tbody>
+      </table>
+      <p>Para compilar un solo fichero, se llama a Sass directamente con <code>npx</code> (ejecuta el <code>sass</code> de <code>node_modules</code>):</p>
+<pre><code>npx sass scss/ejemplo-sass.scss css/ejemplo-sass.css            → entrada y salida
+npx sass --watch scss/ejemplo-sass.scss css/ejemplo-sass.css    → y recompila al guardar
+npx sass scss/ejemplo-sass.scss                                 → sin salida: el CSS sale en la terminal
+npx sass --load-path=node_modules --quiet-deps scss/tema.scss css/tema.css   → uno que importa Bootstrap</code></pre>
+    </section>
+
+    <!-- 6. HTML -->
+    <section id="html" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">6. Enlazar el CSS en el HTML</h2>
+      <p>El navegador nunca ve los <code>.scss</code>: se enlaza el CSS compilado <strong>en lugar de</strong> <code>bootstrap.min.css</code>. El JavaScript de Bootstrap no cambia.</p>
+<pre><code>&lt;link href="sass/css/tema.css" rel="stylesheet"&gt;
+&lt;script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer&gt;&lt;/script&gt;</code></pre>
+      <p class="mb-0">También sirve el JavaScript que trae el paquete: <code>sass/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js</code>.</p>
+    </section>
+
+    <!-- 7. Problemas -->
+    <section id="problemas" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">7. Problemas habituales</h2>
+      <table class="table table-sm mb-0">
+        <thead><tr><th>Mensaje</th><th>Causa y solución</th></tr></thead>
+        <tbody>
+          <tr><td><code>'npm' no se reconoce como un comando</code></td><td>Node.js no está instalado, o la terminal se abrió antes de instalarlo: cerrarla y abrir otra</td></tr>
+          <tr><td><code>Can't find stylesheet to import</code></td><td>Falta <code>--load-path=node_modules</code>, o no se ha hecho <code>npm install</code>, o el comando no se lanza desde <code>sass/</code></td></tr>
+          <tr><td><code>Error [ERR_REQUIRE_ESM]</code> al ejecutar sass</td><td>Versión de Sass demasiado nueva para el Node.js instalado: <code>npm install --save-dev sass@1.77.8</code></td></tr>
+          <tr><td>Muchos <code>Deprecation Warning</code> sobre <code>@import</code> o funciones de color</td><td>Versión de Sass reciente con el código de Bootstrap 5.3: añadir <code>--quiet-deps</code>, o usar <code>sass@1.77.8</code></td></tr>
+          <tr><td><code>Undefined function</code> o <code>Undefined variable</code></td><td>Orden de los <code>@import</code>: <code>functions</code> antes que <code>variables</code>, y <code>variables</code> antes de usar sus mapas</td></tr>
+          <tr><td>Los cambios del <code>.scss</code> no se ven</td><td>No se ha recompilado (o <code>vigilar</code> no está en marcha), o el HTML enlaza otro CSS, o la caché del navegador: Ctrl+F5</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <footer class="border-top py-4 text-center text-body-secondary small">
+    Curso de Bootstrap 5 · Instalación de Sass y Bootstrap con npm ·
+    Referencia: <a href="https://getbootstrap.com/docs/5.3/customize/sass/">Bootstrap: Sass</a> ·
+    <a href="https://sass-lang.com/install/">Instalar Sass</a> ·
+    <a href="https://docs.npmjs.com/cli/commands/npm-install">npm install</a> ·
+    <a href="https://nodejs.org/">Node.js</a>
+  </footer>
+
+</body>
+</html>
