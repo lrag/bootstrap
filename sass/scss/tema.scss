@@ -23,4 +23,15 @@ $link-decoration: none;
 $enable-shadows:   true;
 $enable-gradients: true;
 
+// Los interruptores encienden el efecto; la intensidad la dan estas variables.
+// Los valores de Bootstrap son muy suaves: los subimos para que se note.
+//   $gradient              → por defecto, del 15 % de blanco arriba a nada abajo
+//   $btn-box-shadow        → por defecto, una línea clara arriba y una sombra de 1px
+//   $btn-active-box-shadow → la sombra interior al pulsar el botón
+//   $box-shadow-inset      → la sombra interior de los campos (--bs-box-shadow-inset)
+$gradient:              linear-gradient(180deg, rgba(#fff, .45), rgba(#fff, 0));
+$btn-box-shadow:        inset 0 1px 0 rgba(#fff, .35), 0 .25rem .5rem rgba(#000, .3);
+$btn-active-box-shadow: inset 0 3px 8px rgba(#000, .35);
+$box-shadow-inset:      inset 0 2px 4px rgba(#000, .2);
+
 @import "bootstrap/scss/bootstrap";

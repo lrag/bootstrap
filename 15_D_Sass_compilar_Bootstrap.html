@@ -141,6 +141,13 @@
                             y el elemento activo de un dropdown llevan un degradado suave
                             (las utilidades bg-* no: para ellas existe siempre la clase bg-gradient)
         $enable-shadows   → los botones llevan una sombra suave, y los campos una sombra interior
+
+      El interruptor solo enciende el efecto; la intensidad la dan otras variables.
+      Las de Bootstrap son tan suaves que apenas se notan, así que en tema.scss las subimos:
+        $gradient              → del 45 % de blanco arriba a nada abajo (Bootstrap: 15 %)
+        $btn-box-shadow        → sombra de .25rem al 30 % de negro (Bootstrap: 1px al 7,5 %)
+        $btn-active-box-shadow → sombra interior más marcada al pulsar
+        $box-shadow-inset      → sombra interior de los campos al 20 % (Bootstrap: 7,5 %)
     -->
     <h2 class="h4 mt-5">Los interruptores <code>$enable-*</code></h2>
 
