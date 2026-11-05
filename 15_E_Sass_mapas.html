@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>15 D · Sass: mapas</title>
+  <title>15 E · Sass: mapas</title>
 
   <!-- El CSS compilado desde sass/scss/tema-mapas.scss -->
   <link href="sass/css/tema-mapas.css" rel="stylesheet">
@@ -16,7 +16,7 @@
 
   <!--
     LOS MAPAS DE BOOTSTRAP
-    Muchas familias de clases salen de un mapa de Sass recorrido con @each (como en 15_B):
+    Muchas familias de clases salen de un mapa de Sass recorrido con @each (como en 15_C):
       $theme-colors      → btn-*, btn-outline-*, bg-*, text-*, border-*, text-bg-*, alert-*, list-group-item-*...
       $spacers           → m-*, p-*, gap-* y todas sus variantes (mt-, px-, -md-...)
       $grid-breakpoints  → sm, md, lg, xl, xxl en todas las clases responsive
@@ -24,7 +24,7 @@
     Cambiar el mapa cambia las clases que se generan.
 
     EL PROBLEMA: un mapa no se puede modificar antes de que exista.
-    Con una variable suelta basta con darle valor antes de Bootstrap (15_C), pero si
+    Con una variable suelta basta con darle valor antes de Bootstrap (15_D), pero si
     definimos $theme-colors antes, sustituye al de Bootstrap entero: perderíamos
     primary, success, danger... salvo que los escribiéramos todos.
     Para AÑADIR una entrada, importamos Bootstrap por partes y metemos el cambio en medio.

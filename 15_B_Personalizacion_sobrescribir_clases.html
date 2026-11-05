@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>15 B · Personalización redefiniendo las clases de Bootstrap</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <!--
+    Cambiamos "primary" de azul a naranja (#c2410c) redefiniendo lo que Bootstrap ya tiene,
+    sin clases nuevas. Va DESPUÉS del <link> de Bootstrap: con la misma especificidad, gana el último.
+
+    Los tonos derivados (hover, active, foco, subtle, emphasis) no son inventados: son los que
+    calcula Sass con $primary: #c2410c (copiados del CSS compilado). En 15_D los calcula Sass solo.
+  -->
+  <style>
+    :root {
+      --bs-primary: #c2410c;
+      --bs-primary-rgb: 194, 65, 12;
+      --bs-primary-text-emphasis: #4e1a05;
+      --bs-primary-bg-subtle: #f3d9ce;
+      --bs-primary-border-subtle: #e7b39e;
+      --bs-link-color: #c2410c;
+      --bs-link-color-rgb: 194, 65, 12;
+      --bs-link-hover-color: #9b340a;
+      --bs-link-hover-color-rgb: 155, 52, 10;
+    }
+
+    .btn-primary {
+      --bs-btn-bg: #c2410c;
+      --bs-btn-border-color: #c2410c;
+      --bs-btn-hover-bg: #a5370a;
+      --bs-btn-hover-border-color: #9b340a;
+      --bs-btn-focus-shadow-rgb: 203, 94, 48;
+      --bs-btn-active-bg: #9b340a;
+      --bs-btn-active-border-color: #923109;
+      --bs-btn-disabled-bg: #c2410c;
+      --bs-btn-disabled-border-color: #c2410c;
+    }
+
+    .btn-outline-primary {
+      --bs-btn-color: #c2410c;
+      --bs-btn-border-color: #c2410c;
+      --bs-btn-hover-bg: #c2410c;
+      --bs-btn-hover-border-color: #c2410c;
+      --bs-btn-focus-shadow-rgb: 194, 65, 12;
+      --bs-btn-active-bg: #c2410c;
+      --bs-btn-active-border-color: #c2410c;
+      --bs-btn-disabled-color: #c2410c;
+      --bs-btn-disabled-border-color: #c2410c;
+    }
+
+    .form-control:focus,
+    .form-select:focus,
+    .form-check-input:focus {
+      border-color: #e1a086;
+      box-shadow: 0 0 0 .25rem rgba(194, 65, 12, .25);
+    }
+
+    .form-check-input:checked {
+      background-color: #c2410c;
+      border-color: #c2410c;
+    }
+
+    .pagination {
+      --bs-pagination-active-bg: #c2410c;
+      --bs-pagination-active-border-color: #c2410c;
+      --bs-pagination-focus-box-shadow: 0 0 0 .25rem rgba(194, 65, 12, .25);
+    }
+
+    .list-group {
+      --bs-list-group-active-bg: #c2410c;
+      --bs-list-group-active-border-color: #c2410c;
+    }
+
+    .nav-pills {
+      --bs-nav-pills-link-active-bg: #c2410c;
+    }
+
+    .dropdown-menu {
+      --bs-dropdown-link-active-bg: #c2410c;
+    }
+  </style>
+</head>
+<body>
+
+  <!--
+    PERSONALIZAR SIN SASS Y SIN CLASES NUEVAS: REDEFINIR LAS DE BOOTSTRAP
+    En 15_A creamos clases propias (btn-marca, card-oferta): el HTML deja de ser solo Bootstrap.
+    La otra salida es dar otro valor a las clases que ya existen (.btn-primary, .pagination...).
+    El HTML de esta página es Bootstrap puro: class="btn btn-primary", class="pagination"...
+
+    El precio: Bootstrap usa el azul de primary en muchos sitios, y en la mayoría
+    está escrito tal cual en el CSS compilado (#0d6efd, o rgba(13, 110, 253, .25) en los focos).
+    Hay que buscarlos y redefinirlos uno a uno:
+      :root                → --bs-primary, --bs-primary-rgb, -text-emphasis, -bg-subtle, -border-subtle,
+                             --bs-link-color, --bs-link-hover-color (y sus -rgb)
+      .btn-primary         → --bs-btn-bg, --bs-btn-hover-bg, --bs-btn-active-bg... (tonos de hover y active)
+      .btn-outline-primary → igual
+      .form-control:focus, .form-select:focus, .form-check-input:focus → borde y resplandor
+      .form-check-input:checked → el check y el radio marcados
+      .pagination, .list-group, .nav-pills, .dropdown-menu → su variable del elemento activo
+    Son más de 60 líneas de CSS... y aún se escapan cosas (última sección).
+
+    Para encontrarlos: buscar #0d6efd y 13,110,253 en bootstrap.css.
+    Y al actualizar Bootstrap hay que repasarlos: si cambia una variable, nuestra regla se queda huérfana.
+
+    El contenido va en azul cuando lo resuelve nuestro CSS (las clases redefinidas)
+    y en verde cuando se ve el Bootstrap original, sin tocar.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Personalización redefiniendo las clases de Bootstrap</h1>
+
+    <!--
+      BOTONES
+      btn-primary y btn-outline-primary con sus estados: hover, active (al pulsar), foco y disabled.
+      Cada estado es una variable: si se olvida una, ese estado sale azul.
+    -->
+    <h2 class="h4 mt-5">Botones: <code>.btn-primary</code> y <code>.btn-outline-primary</code></h2>
+
+    <div class="bg-primary-subtle border border-primary-subtle p-3">
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-primary">btn-primary</button>
+        <button type="button" class="btn btn-primary" disabled>disabled</button>
+        <button type="button" class="btn btn-outline-primary">btn-outline-primary</button>
+      </div>
+    </div>
+
+    <!--
+      TEXTO, FONDOS, ENLACES Y ALERTAS
+      Estos leen variables de :root, así que con redefinirlas basta:
+        text-primary, bg-primary, text-bg-primary → --bs-primary-rgb
+        enlaces                                   → --bs-link-color-rgb y --bs-link-hover-color-rgb
+        alert-primary, bg-primary-subtle...       → --bs-primary-text-emphasis, -bg-subtle, -border-subtle
+      Por cierto: la caja azul de fondo es bg-primary-subtle, así que también ha cambiado de color.
+    -->
+    <h2 class="h4 mt-5">Texto, fondos, enlaces y alertas</h2>
+
+    <div class="bg-primary-subtle border border-primary-subtle p-3">
+      <p>
+        <span class="text-primary fw-bold">text-primary</span> ·
+        <a href="#">un enlace</a> ·
+        <span class="badge text-bg-primary">text-bg-primary</span> ·
+        <span class="bg-primary text-white px-2 rounded">bg-primary</span>
+      </p>
+      <div class="alert alert-primary mb-0" role="alert">alert-primary: −20 % en teclados hasta el domingo.</div>
+    </div>
+
+    <!--
+      FORMULARIOS
+      El foco (borde y resplandor) y el check marcado tienen el azul escrito en cada selector.
+    -->
+    <h2 class="h4 mt-5">Formularios: foco y checks</h2>
+
+    <div class="bg-primary-subtle border border-primary-subtle p-3">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-4">
+          <label for="buscar" class="visually-hidden">Buscar</label>
+          <input type="search" class="form-control" id="buscar" placeholder="Foco en el campo">
+        </div>
+        <div class="col-md-4">
+          <label for="orden" class="visually-hidden">Ordenar</label>
+          <select class="form-select" id="orden">
+            <option selected>Foco en la lista</option>
+            <option>Precio</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="check-envio" checked>
+            <label class="form-check-label" for="check-envio">Envío urgente</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="pago" id="pago-tarjeta" checked>
+            <label class="form-check-label" for="pago-tarjeta">Tarjeta</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      NAVEGACIÓN: EL ELEMENTO ACTIVO
+      Paginación, list group, nav-pills y dropdown tienen cada uno su variable para el activo.
+    -->
+    <h2 class="h4 mt-5">Navegación: el elemento activo</h2>
+
+    <div class="bg-primary-subtle border border-primary-subtle p-3">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <nav aria-label="Páginas del catálogo">
+            <ul class="pagination">
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item active"><a class="page-link" href="#" aria-current="page">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+            </ul>
+          </nav>
+          <ul class="nav nav-pills mb-3">
+            <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Teclados</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Ratones</a></li>
+          </ul>
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Ordenar por</button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item active" href="#" aria-current="true">Precio (activo)</a></li>
+              <li><a class="dropdown-item" href="#">Novedades</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <ul class="list-group">
+            <li class="list-group-item active" aria-current="true">Periféricos</li>
+            <li class="list-group-item">Pantallas</li>
+            <li class="list-group-item">Audio</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      LO QUE SE NOS HA ESCAPADO
+      Sin buscar a fondo en bootstrap.css, quedan restos azules:
+        progress-bar          → --bs-progress-bar-bg (en .progress)
+        form-range            → el botón del deslizador (::-webkit-slider-thumb, ::-moz-range-thumb)
+        form-switch con foco  → el círculo es una imagen SVG con el azul dentro (%2386b7fe)
+        accordion             → el resplandor del botón con foco
+        modo oscuro           → [data-bs-theme=dark] redefine --bs-primary-text-emphasis,
+                                -bg-subtle y -border-subtle con sus propios azules: nuestras
+                                variables de :root no llegan dentro de un bloque oscuro
+        table-primary, btn-close con foco, nav-link con foco...
+      Cada uno es otra regla más. Con Sass ($primary: #c2410c) no se escapa ninguno (15_D).
+    -->
+    <h2 class="h4 mt-5">Lo que se nos ha escapado</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <div class="row g-4 align-items-center">
+        <div class="col-md-6">
+          <div class="progress mb-3" role="progressbar" aria-label="Pedido" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar" style="width: 60%">60 % (progress-bar)</div>
+          </div>
+          <label for="presupuesto" class="form-label">Presupuesto (form-range)</label>
+          <input type="range" class="form-range" id="presupuesto">
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="aviso-switch">
+            <label class="form-check-label" for="aviso-switch">form-switch: el círculo con foco, antes de marcarlo</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div data-bs-theme="dark" class="bg-body text-body p-3 rounded">
+            <p class="mb-2">Dentro de data-bs-theme="dark":</p>
+            <div class="alert alert-primary mb-0" role="alert">alert-primary sigue azul</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
