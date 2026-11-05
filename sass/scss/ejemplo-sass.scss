@@ -33,6 +33,7 @@ $estados: (
   }
 
   // & es el propio selector: aquí, .ficha:hover
+  // si pusieramos ficha:hover el selector quedaría ".ficha .ficha:hover"
   &:hover {
     // FUNCIÓN: mix() mezcla dos colores; aquí, 90 % blanco y 10 % del color de la marca
     background-color: mix(#fff, $color-marca, 90%);
