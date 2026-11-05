@@ -74,8 +74,8 @@
           <select class="form-select" id="g-provincia">
             <option selected disabled>Elige...</option>
             <option>Madrid</option>
-            <option>Valencia</option>
-            <option>Sevilla</option>
+            <option>Salamanca</option>
+            <option>Alicante</option>
           </select>
         </div>
         <div class="col-md-2">
@@ -191,7 +191,23 @@
       el campo de búsqueda crece y el botón se queda a su tamaño.
     -->
     <h2 class="h4 mt-5">Campo que crece y botón a su tamaño: <code>col</code> + <code>col-auto</code></h2>
-
+    <!--
+    ┌──────────────────────────────────────────────────────────────────┐
+    │                                                                  │
+    │  form.row.g-2   (contenedor flex: las columnas van en fila)      │
+    │  ┌──────────────────────────────────────────────┐ ┌────────────┐ │
+    │  │ div.col                                      │ │div.col-auto│ │
+    │  │  label.visually-hidden "Buscar" (no se ve)   │ │            │ │
+    │  │ ┌──────────────────────────────────────────┐ │ │┌──────────┐│ │
+    │  │ │ Buscar productos                         │ │ ││ Buscar   ││ │
+    │  │ └──────────────────────────────────────────┘ │ │└──────────┘│ │
+    │  │  input.form-control (width: 100% del col)    │ │  button    │ │
+    │  └──────────────────────────────────────────────┘ └────────────┘ │
+    │   ◄──────── col: todo lo que sobra ───────────► ◄─ col-auto: ──► │
+    │                                          g-2 ►◄  lo que mide     │
+    │                                                                  │
+    └──────────────────────────────────────────────────────────────────┘  
+    -->
     <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
       <form class="row g-2">
         <div class="col">
