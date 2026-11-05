@@ -94,7 +94,7 @@
       --bs-link-hover-color-rgb: 251, 191, 36;
     }
 
-    .btn-marca {
+    .btn-custom {
       --bs-btn-color: #fff;
       --bs-btn-bg: #6f42c1;
       --bs-btn-border-color: #6f42c1;
@@ -107,7 +107,7 @@
       --bs-btn-focus-shadow-rgb: 111, 66, 193;
     }
 
-    [data-bs-theme=dark] .btn-marca {
+    [data-bs-theme=dark] .btn-custom {
       --bs-btn-color: #000;
       --bs-btn-bg: #a98eda;
       --bs-btn-border-color: #a98eda;
@@ -327,9 +327,9 @@
       Las lista la documentación de cada componente, en su apartado "CSS → Variables".
 
       Para un botón con el color de la marca, creamos una clase que solo da valores
-      a esas variables (.btn-marca), y otra regla con los valores para el modo oscuro:
-        .btn-marca                       { --bs-btn-bg: #6f42c1; ... }
-        [data-bs-theme=dark] .btn-marca  { --bs-btn-bg: #a98eda; ... }
+      a esas variables (.btn-custom), y otra regla con los valores para el modo oscuro:
+        .btn-custom                       { --bs-btn-bg: #6f42c1; ... }
+        [data-bs-theme=dark] .btn-custom  { --bs-btn-bg: #a98eda; ... }
       Para un caso suelto, también vale en style="":
         style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: 1.5rem"
       Y una card puede cambiar su fondo con --bs-card-bg, sin tocar las demás.
@@ -338,7 +338,7 @@
 
     <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
       <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
-        <button type="button" class="btn btn-marca">
+        <button type="button" class="btn btn-custom">
           <i class="bi bi-cart-plus"></i> Añadir al carrito
         </button>
         <button type="button" class="btn btn-outline-secondary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: 1.5rem; --bs-btn-font-size: .875rem">

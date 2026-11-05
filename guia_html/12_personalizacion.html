@@ -11,8 +11,8 @@
     .demo { background: var(--bs-tertiary-bg); border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius); padding: 1rem; margin-bottom: 1rem; }
     .etiqueta { font-family: var(--bs-font-monospace); font-size: .8rem; margin-bottom: .25rem; }
 
-    /* Demo de variables CSS globales, solo dentro de .marca */
-    .marca {
+    /* Demo de variables CSS globales, solo dentro de .custom */
+    .custom {
       --bs-primary-rgb: 194, 65, 12;
       --bs-link-color-rgb: 194, 65, 12;
       --bs-border-radius: .75rem;
@@ -20,7 +20,7 @@
     }
 
     /* Demo de variables de componente: un botón propio */
-    .btn-marca {
+    .btn-custom {
       --bs-btn-color: #fff; --bs-btn-bg: #c2410c; --bs-btn-border-color: #c2410c;
       --bs-btn-hover-color: #fff; --bs-btn-hover-bg: #9a3412; --bs-btn-hover-border-color: #9a3412;
       --bs-btn-active-color: #fff; --bs-btn-active-bg: #7c2d12; --bs-btn-active-border-color: #7c2d12;
@@ -148,7 +148,7 @@
         </div>
         <div class="col-md-6">
           <p class="etiqueta">Con las variables redefinidas</p>
-          <div class="demo marca h-100 mb-0">
+          <div class="demo custom h-100 mb-0">
             <p class="text-primary fw-bold">text-primary · <a href="#css-globales">enlace</a></p>
             <span class="badge bg-primary mb-3">bg-primary</span>
             <div class="card mb-3"><div class="card-body">card</div></div>
@@ -176,13 +176,13 @@
         <div class="col-lg-5">
           <div class="demo mb-0">
             <div class="d-flex flex-wrap gap-2">
-              <button type="button" class="btn btn-marca">btn btn-marca</button>
+              <button type="button" class="btn btn-custom">btn btn-custom</button>
               <button type="button" class="btn btn-primary" style="--bs-btn-border-radius: 2rem; --bs-btn-padding-x: 1.5rem">style="--bs-btn-…"</button>
             </div>
           </div>
         </div>
         <div class="col-lg-7">
-<pre><code>.btn-marca {
+<pre><code>.btn-custom {
   --bs-btn-color: #fff;
   --bs-btn-bg: #c2410c;
   --bs-btn-border-color: #c2410c;
