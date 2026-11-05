@@ -20,7 +20,7 @@
     <div class="container">
       <p class="text-uppercase small mb-1">Curso de Bootstrap 5 · Sesión 2 · Punto 1</p>
       <h1 class="display-5 fw-bold">Tipografía y color</h1>
-      <p class="lead mb-0">Los estilos de base de Bootstrap, las clases de texto, la paleta de colores del tema, las imágenes responsive y los iconos.</p>
+      <p class="lead mb-0">Los encabezados y las clases de texto, la paleta de colores del tema, las imágenes responsive y los iconos.</p>
     </div>
   </header>
 
@@ -28,7 +28,6 @@
 
     <nav class="mb-5" aria-label="Índice">
       <ol class="list-group list-group-numbered">
-        <li class="list-group-item"><a href="#reboot">Reboot: el punto de partida</a></li>
         <li class="list-group-item"><a href="#encabezados">Encabezados</a></li>
         <li class="list-group-item"><a href="#display">Titulares grandes: <code>display-*</code></a></li>
         <li class="list-group-item"><a href="#texto">Párrafos y utilidades de texto</a></li>
@@ -42,55 +41,15 @@
       </ol>
     </nav>
 
-    <!-- 1. Reboot -->
-    <section id="reboot" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">1. Reboot: el punto de partida</h2>
-      <p>
-        Cada navegador trae sus propios estilos por defecto, y no son iguales entre sí.
-        <strong>Reboot</strong> es la primera parte de <code>bootstrap.css</code>: corrige esas diferencias y fija una base común
-        para las etiquetas HTML <strong>sin necesidad de poner ninguna clase</strong>.
-      </p>
-      <table class="table table-sm mb-4">
-        <thead><tr><th>Elemento</th><th>Lo que hace Reboot</th></tr></thead>
-        <tbody>
-          <tr><td><code>*</code></td><td><code>box-sizing: border-box</code>: el ancho incluye relleno y borde</td></tr>
-          <tr><td><code>body</code></td><td><code>margin: 0</code>; fuente del sistema; <code>font-size: 1rem</code>; <code>line-height: 1.5</code>; color y fondo desde <code>--bs-body-color</code> y <code>--bs-body-bg</code></td></tr>
-          <tr><td><code>h1</code>…<code>h6</code></td><td><code>margin-top: 0</code>, <code>margin-bottom: .5rem</code>, <code>font-weight: 500</code>, <code>line-height: 1.2</code></td></tr>
-          <tr><td><code>p</code></td><td><code>margin-top: 0</code>, <code>margin-bottom: 1rem</code></td></tr>
-          <tr><td><code>ul</code>, <code>ol</code></td><td><code>padding-left: 2rem</code>, <code>margin-bottom: 1rem</code></td></tr>
-          <tr><td><code>a</code></td><td>Color desde <code>--bs-link-color</code>, subrayado</td></tr>
-        </tbody>
-      </table>
-      <p>
-        La idea: <strong>los márgenes van solo hacia abajo</strong>. Así los bloques se apilan de forma predecible
-        y no se suman márgenes de arriba y de abajo.
-      </p>
-      <p class="etiqueta">HTML sin ninguna clase</p>
-      <div class="demo">
-        <h3>Un encabezado h3</h3>
-        <p>Un párrafo con un <a href="#reboot">enlace</a>, texto en <strong>negrita</strong> y en <em>cursiva</em>.</p>
-        <ul class="mb-0">
-          <li>Un elemento de lista</li>
-          <li>Otro elemento</li>
-        </ul>
-      </div>
-      <div class="alert alert-info" role="alert">
-        La fuente es la del sistema operativo (<code>system-ui</code>: Segoe UI en Windows, San Francisco en macOS…).
-        Carga rápido porque no se descarga nada, y cada usuario ve la letra a la que está acostumbrado.
-      </div>
-      <div class="alert alert-secondary mb-0" role="alert">
-        <strong>Truco:</strong> para ver lo que hace Reboot, comentamos el <code>&lt;link&gt;</code> de Bootstrap y recargamos.
-        Vuelven la fuente con remates (<em>serif</em>), el margen del <code>body</code> y los márgenes de arriba de títulos y párrafos.
-      </div>
-    </section>
-
-    <!-- 2. Encabezados -->
+    <!-- 1. Encabezados -->
     <section id="encabezados" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">2. Encabezados</h2>
+      <h2 class="border-bottom pb-2 mb-4">1. Encabezados</h2>
       <p>
         <code>h1</code> a <code>h6</code> tienen tamaños fijados por Bootstrap. Las clases <code>.h1</code> a <code>.h6</code>
         dan el <strong>mismo aspecto</strong> a cualquier elemento: separan el <strong>significado</strong> (qué nivel de título es)
         del <strong>tamaño</strong> (cómo se ve).
+        El margen inferior, el peso y el interlineado los pone Reboot (visto en la
+        <a href="01_introducción.html#reboot">introducción</a>).
       </p>
       <div class="row g-4 mb-3">
         <div class="col-lg-5">
@@ -151,9 +110,9 @@
       </div>
     </section>
 
-    <!-- 3. display -->
+    <!-- 2. display -->
     <section id="display" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">3. Titulares grandes: <code>display-*</code></h2>
+      <h2 class="border-bottom pb-2 mb-4">2. Titulares grandes: <code>display-*</code></h2>
       <p>
         Para portadas y cabeceras destacadas, más grandes que un <code>h1</code> y con letra más fina
         (<code>font-weight: 300</code>). También se reducen en pantallas pequeñas.
@@ -174,9 +133,9 @@
       </table>
     </section>
 
-    <!-- 4. Párrafos y utilidades de texto -->
+    <!-- 3. Párrafos y utilidades de texto -->
     <section id="texto" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">4. Párrafos y utilidades de texto</h2>
+      <h2 class="border-bottom pb-2 mb-4">3. Párrafos y utilidades de texto</h2>
       <p>
         <code>lead</code> destaca un párrafo de entrada (1.25rem, letra fina). Las utilidades de texto, como las de espaciado,
         aplican <strong>una sola propiedad CSS</strong> cada una.
@@ -231,9 +190,9 @@
       </div>
     </section>
 
-    <!-- 5. Listas -->
+    <!-- 4. Listas -->
     <section id="listas" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">5. Listas</h2>
+      <h2 class="border-bottom pb-2 mb-4">4. Listas</h2>
       <p>
         Dos clases para las listas: <code>list-unstyled</code> quita viñetas y sangría (solo del primer nivel),
         y <code>list-inline</code> + <code>list-inline-item</code> pone los elementos en línea.
@@ -271,9 +230,9 @@
 &lt;/ul&gt;</code></pre>
     </section>
 
-    <!-- 6. Citas -->
+    <!-- 5. Citas -->
     <section id="citas" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">6. Citas</h2>
+      <h2 class="border-bottom pb-2 mb-4">5. Citas</h2>
       <p>
         <code>.blockquote</code> agranda la cita (1.25rem). La autoría va en un <code>&lt;figcaption class="blockquote-footer"&gt;</code>,
         que añade el guion delante. Todo dentro de un <code>&lt;figure&gt;</code>, que es lo que une la cita con su fuente.
@@ -304,9 +263,9 @@
       </div>
     </section>
 
-    <!-- 7. Colores del tema -->
+    <!-- 6. Colores del tema -->
     <section id="colores" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">7. Los colores del tema</h2>
+      <h2 class="border-bottom pb-2 mb-4">6. Los colores del tema</h2>
       <p>
         Bootstrap tiene ocho colores con <strong>nombre de función</strong>, no de color: <code>primary</code> no significa «azul»,
         sino «el color principal de la marca». Si la marca es verde, se cambia <code>primary</code> y todo se adapta.
@@ -378,9 +337,9 @@
       </div>
     </section>
 
-    <!-- 8. subtle y emphasis -->
+    <!-- 7. subtle y emphasis -->
     <section id="subtle" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">8. Variantes <code>*-subtle</code> y <code>*-emphasis</code></h2>
+      <h2 class="border-bottom pb-2 mb-4">7. Variantes <code>*-subtle</code> y <code>*-emphasis</code></h2>
       <p>
         Bootstrap 5.3 añade dos variantes de cada color, pensadas para usarse juntas y para <strong>adaptarse al modo oscuro</strong>:
       </p>
@@ -424,9 +383,9 @@
       </div>
     </section>
 
-    <!-- 9. text-bg -->
+    <!-- 8. text-bg -->
     <section id="text-bg" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">9. Fondo y texto a la vez: <code>text-bg-*</code></h2>
+      <h2 class="border-bottom pb-2 mb-4">8. Fondo y texto a la vez: <code>text-bg-*</code></h2>
       <p>
         Con <code>bg-warning</code> el texto sigue siendo el de la página, y hay que elegir a mano <code>text-dark</code>
         o <code>text-white</code>. <code>text-bg-{color}</code> pone el fondo <strong>y</strong> un color de texto que contrasta con él.
@@ -448,9 +407,9 @@
       </p>
     </section>
 
-    <!-- 10. Imágenes -->
+    <!-- 9. Imágenes -->
     <section id="imagenes" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">10. Imágenes responsive</h2>
+      <h2 class="border-bottom pb-2 mb-4">9. Imágenes responsive</h2>
       <p>
         Una imagen se muestra a su tamaño real aunque no quepa. <code>img-fluid</code> aplica
         <code>max-width: 100%</code> y <code>height: auto</code>: nunca es más ancha que su contenedor y no se deforma.
@@ -515,9 +474,9 @@
       </div>
     </section>
 
-    <!-- 11. Iconos -->
+    <!-- 10. Iconos -->
     <section id="iconos" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">11. Bootstrap Icons</h2>
+      <h2 class="border-bottom pb-2 mb-4">10. Bootstrap Icons</h2>
       <p>
         Una biblioteca de iconos del mismo equipo, <strong>aparte de Bootstrap</strong>: hay que cargarla por separado.
         Tiene unos 2000 iconos. La forma más cómoda es como fuente: una hoja de estilos y una etiqueta <code>&lt;i&gt;</code> por icono.
@@ -570,8 +529,7 @@
 
   <footer class="border-top py-4 text-center text-body-secondary small">
     Curso de Bootstrap 5 · Tipografía y color ·
-    Referencia: <a href="https://getbootstrap.com/docs/5.3/content/reboot/">Reboot</a> ·
-    <a href="https://getbootstrap.com/docs/5.3/content/typography/">Typography</a> ·
+    Referencia: <a href="https://getbootstrap.com/docs/5.3/content/typography/">Typography</a> ·
     <a href="https://getbootstrap.com/docs/5.3/customize/color/">Color</a> ·
     <a href="https://getbootstrap.com/docs/5.3/content/images/">Images</a> ·
     <a href="https://icons.getbootstrap.com/">Bootstrap Icons</a>

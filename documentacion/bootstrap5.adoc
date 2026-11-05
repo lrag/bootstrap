@@ -187,6 +187,47 @@ Funciona sin conexión y no depende de un servidor externo, pero las actualizaci
 NOTE: `bootstrap.bundle.min.js` incluye *Popper*, necesario para dropdowns, tooltips y popovers.
 `bootstrap.min.js` no lo incluye y habría que cargarlo aparte.
 
+=== Reboot: el punto de partida
+
+Cada navegador trae sus propios estilos por defecto, y no son iguales entre sí.
+*Reboot* es la primera parte de `bootstrap.css`: corrige esas diferencias y fija una base común para las etiquetas HTML, *sin necesidad de poner ninguna clase*.
+Parte de `normalize.css` y le añade decisiones propias.
+
+Por eso, nada más enlazar `bootstrap.css`, la página cambia de aspecto aunque no tenga ni una clase.
+
+[cols="1m,3",options="header"]
+|===
+|Elemento |Lo que hace Reboot
+|* |`box-sizing: border-box`: el ancho incluye relleno y borde
+|html |No le pone `font-size`: `1rem` sigue siendo lo que configura el usuario (ver «La unidad rem»)
+|body |`margin: 0`; fuente del sistema; `font-size: 1rem`; `line-height: 1.5`; color y fondo desde `--bs-body-color` y `--bs-body-bg`
+|h1 … h6 |`margin-top: 0`, `margin-bottom: .5rem`, `font-weight: 500`, `line-height: 1.2`
+|p |`margin-top: 0`, `margin-bottom: 1rem`
+|ul, ol |`padding-left: 2rem`, `margin-bottom: 1rem`
+|a |Color desde `--bs-link-color`, subrayado
+|===
+
+La idea: *los márgenes van solo hacia abajo*.
+Así los bloques se apilan de forma predecible y no se suman márgenes de arriba y de abajo.
+
+.Un encabezado, un párrafo y una lista sin ninguna clase
+image::01_reboot.png[HTML sin clases con los estilos de Reboot]
+
+NOTE: La fuente es la del sistema operativo (`system-ui`: Segoe UI en Windows, San Francisco en macOS…).
+Carga rápido porque no se descarga nada, y cada usuario ve la letra a la que está acostumbrado.
+
+==== `box-sizing: border-box`
+
+En CSS, por defecto (`content-box`), `width` es solo el contenido: el relleno y el borde se suman.
+Con `border-box`, `width` es la caja entera.
+Reboot lo pone en todos los elementos, y es lo que permite que una columna de la rejilla mida su porcentaje exacto aunque lleve relleno.
+
+.Dos cajas con `width: 300px; padding: 20px; border: 10px`
+image::01_reboot_box_sizing.png[La caja border-box mide 300 px y la content-box 360 px]
+
+TIP: Para ver lo que hace Reboot, comentamos el `<link>` de Bootstrap y recargamos (en `02_B_Reboot.html` lo hace un botón).
+Vuelven la fuente con remates (_serif_), el margen del `body` y los márgenes de arriba de títulos y párrafos.
+
 === Estructura de una plantilla base
 
 [source,html,subs="attributes+"]
@@ -403,6 +444,7 @@ Como las variables CSS se heredan, un `data-bs-theme` en un elemento concreto re
 . Crear una carpeta de proyecto y abrirla en VS Code.
 . Crear un fichero `index.html` con la plantilla base.
 . Abrirlo en el navegador y comprobar en F12 → Red que se cargan el CSS y el JS de Bootstrap.
+. Comentar el `<link>` del CSS, recargar y comparar: lo que cambia es Reboot.
 . Añadir un párrafo con la clase `lead` y un botón con `class="btn btn-primary"`.
 . Cambiar `data-bs-theme` a `dark` y observar qué cambia.
 . _Opcional:_ instalar Bootstrap con npm, o descargar la copia local, y enlazar esos ficheros en lugar del CDN.
@@ -1702,35 +1744,7 @@ NOTE: El enunciado y la solución de este ejercicio están en link:../ejercicios
 
 == Tipografía y color
 
-Los estilos de base que Bootstrap aplica sin clases, las utilidades de texto, la paleta de colores del tema, las imágenes responsive y los iconos.
-
-=== Reboot: el punto de partida
-
-Cada navegador trae sus propios estilos por defecto, y no son iguales entre sí.
-*Reboot* es la primera parte de `bootstrap.css`: corrige esas diferencias y fija una base común para las etiquetas HTML, *sin necesidad de poner ninguna clase*.
-
-[cols="1m,3",options="header"]
-|===
-|Elemento |Lo que hace Reboot
-|* |`box-sizing: border-box`: el ancho incluye relleno y borde
-|body |`margin: 0`; fuente del sistema; `font-size: 1rem`; `line-height: 1.5`; color y fondo desde `--bs-body-color` y `--bs-body-bg`
-|h1 … h6 |`margin-top: 0`, `margin-bottom: .5rem`, `font-weight: 500`, `line-height: 1.2`
-|p |`margin-top: 0`, `margin-bottom: 1rem`
-|ul, ol |`padding-left: 2rem`, `margin-bottom: 1rem`
-|a |Color desde `--bs-link-color`, subrayado
-|===
-
-La idea: *los márgenes van solo hacia abajo*.
-Así los bloques se apilan de forma predecible y no se suman márgenes de arriba y de abajo.
-
-.Un encabezado, un párrafo y una lista sin ninguna clase
-image::05_reboot.png[HTML sin clases con los estilos de Reboot]
-
-NOTE: La fuente es la del sistema operativo (`system-ui`: Segoe UI en Windows, San Francisco en macOS…).
-Carga rápido porque no se descarga nada, y cada usuario ve la letra a la que está acostumbrado.
-
-TIP: Para ver lo que hace Reboot, comentamos el `<link>` de Bootstrap y recargamos.
-Vuelven la fuente con remates (_serif_), el margen del `body` y los márgenes de arriba de títulos y párrafos.
+Los encabezados, las utilidades de texto, la paleta de colores del tema, las imágenes responsive y los iconos.
 
 === Encabezados
 

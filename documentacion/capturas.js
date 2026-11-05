@@ -77,7 +77,6 @@ const CAPTURAS_04 = [
   ['04_layout_panel',    '#practica .demo >> nth=2',    ['xs', 'lg']],
 ]
 const CAPTURAS_05 = [
-  ['05_reboot',        '#reboot .demo >> nth=0',      ['lg']],
   ['05_encabezados',   '#encabezados .demo >> nth=0', ['lg']],
   ['05_display',       '#display .demo >> nth=0',     ['lg']],
   ['05_lead',          '#texto .demo >> nth=0',       ['lg']],
@@ -134,7 +133,7 @@ async function capturarElemento(page, selector, fichero) {
 (async () => {
   const browser = await chromium.launch()
 
-  // 01 · La unidad rem (con la base de 16 px y de 24 px) y modos de color con data-bs-theme
+  // 01 · La unidad rem (con la base de 16 px y de 24 px), Reboot y modos de color con data-bs-theme
   {
     const page = await browser.newPage({ viewport: { width: 1200, height: 900 } })
     await page.goto(GUIA_01, { waitUntil: 'networkidle' })
@@ -144,6 +143,8 @@ async function capturarElemento(page, selector, fichero) {
     await page.click('[data-base="24"]')
     await capturarElemento(page, '#rem .demo >> nth=0', '01_rem_base24.png')
     await page.click('[data-base="16"]')
+    await capturarElemento(page, '#reboot .demo >> nth=0', '01_reboot.png')
+    await capturarElemento(page, '#reboot .demo >> nth=1', '01_reboot_box_sizing.png')
     await capturarElemento(page, '#tema .demo >> nth=0', '01_tema_modo.png')
     await capturarElemento(page, '#tema .row >> nth=0', '01_tema_claro.png')
     await page.click('[data-tema="dark"]')

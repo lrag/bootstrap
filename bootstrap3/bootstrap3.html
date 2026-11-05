@@ -36,6 +36,7 @@
           <tr><td>Sin jQuery</td><td><strong>jQuery obligatorio</strong> para el JavaScript</td></tr>
           <tr><td><code>bootstrap.bundle.min.js</code> (incluye Popper), en el <code>&lt;head&gt;</code> con <code>defer</code></td><td>Sin bundle ni Popper: jQuery y después <code>bootstrap.min.js</code>, al final del <code>&lt;body&gt;</code></td></tr>
           <tr><td>Sin soporte para Internet Explorer</td><td>Internet Explorer 8 a 11; IE8 necesita html5shiv y Respond.js</td></tr>
+          <tr><td>Reboot</td><td>normalize.css más unos estilos base propios</td></tr>
           <tr><td><code>font-size</code> de <code>&lt;html&gt;</code> sin tocar (16 px); <code>body</code> a <code>1rem</code>, <code>line-height: 1.5</code></td><td><code>html { font-size: 10px }</code>; <code>body</code> a 14 px, <code>line-height: 1.428</code>, color <code>#333</code>, Helvetica Neue. Al estar todo en <code>px</code>, la preferencia de tamaño de fuente del navegador no escala el diseño</td></tr>
           <tr><td><code>data-bs-theme</code> (modo claro y oscuro)</td><td>No existe: solo tema claro</td></tr>
           <tr><td>Variables CSS <code>--bs-*</code></td><td>No existen: valores fijos en el CSS compilado</td></tr>
@@ -154,7 +155,6 @@
           <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
         </thead>
         <tbody>
-          <tr><td>Reboot</td><td>normalize.css más unos estilos base propios</td></tr>
           <tr><td>Encabezados con margen solo abajo (<code>0.5rem</code>), tamaños en <code>rem</code> que se ajustan en pantallas pequeñas (RFS), <code>line-height: 1.2</code></td><td>Margen arriba y abajo (h1-h3: 20 / 10 px; h4-h6: 10 / 10 px), tamaños fijos en <code>px</code> (36, 30, 24, 18, 14 y 12), <code>line-height: 1.1</code></td></tr>
           <tr><td><code>.h1</code>… <code>.h6</code></td><td><span class="badge text-bg-success">Sí existen</span></td></tr>
           <tr><td>Enlaces subrayados</td><td>Sin subrayar salvo al pasar el ratón o con el foco; color <code>#337ab7</code></td></tr>

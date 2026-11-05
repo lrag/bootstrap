@@ -23,21 +23,6 @@
     <h1 class="text-center mt-5 text-success">Rejilla: más allá de las 12 columnas</h1>
 
     <!--
-      INDICADOR DE BREAKPOINT
-      Solo se ve una etiqueta en cada ancho (lo vimos en 06 D).
-      Nos sirve para saber qué clases están actuando al redimensionar la ventana.
-    -->
-    <p class="text-center fs-5">
-      Breakpoint actual:
-      <span class="badge text-bg-success d-inline d-sm-none">xs</span>
-      <span class="badge text-bg-success d-none d-sm-inline d-md-none">sm</span>
-      <span class="badge text-bg-success d-none d-md-inline d-lg-none">md</span>
-      <span class="badge text-bg-success d-none d-lg-inline d-xl-none">lg</span>
-      <span class="badge text-bg-success d-none d-xl-inline d-xxl-none">xl</span>
-      <span class="badge text-bg-success d-none d-xxl-inline">xxl</span>
-    </p>
-
-    <!--
       COLUMNAS AUTOMÁTICAS: .col
       .col sin número reparte a partes iguales el espacio que queda libre.
       Da igual cuántas haya: 2 columnas → mitad y mitad; 5 columnas → un quinto cada una
@@ -66,6 +51,13 @@
       <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
     </div>
 
+    <p class="mb-1"><code>col</code> + <code>col-6</code> + <code>col</code></p>
+    <div class="row mb-3">
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
+      <div class="col-6"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-6</div></div>
+      <div class="col"><div class="bg-success-subtle border border-success-subtle text-center py-2">col</div></div>
+    </div>
+
     <!--
       COLUMNAS DEL ANCHO DE SU CONTENIDO: .col-auto
       .col-auto mide lo que mide lo que tiene dentro, ni más ni menos.
@@ -88,6 +80,21 @@
       <div class="col-8"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-8</div></div>
       <div class="col-6"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-6</div></div>
     </div>
+
+    <!--
+      INDICADOR DE BREAKPOINT
+      Solo se ve una etiqueta en cada ancho (lo vimos en 06 D).
+      Nos sirve para saber qué clases están actuando al redimensionar la ventana.
+    -->
+    <p class="text-center fs-5">
+      Breakpoint actual:
+      <span class="badge text-bg-success d-inline d-sm-none">xs</span>
+      <span class="badge text-bg-success d-none d-sm-inline d-md-none">sm</span>
+      <span class="badge text-bg-success d-none d-md-inline d-lg-none">md</span>
+      <span class="badge text-bg-success d-none d-lg-inline d-xl-none">lg</span>
+      <span class="badge text-bg-success d-none d-xl-inline d-xxl-none">xl</span>
+      <span class="badge text-bg-success d-none d-xxl-inline">xxl</span>
+    </p>
 
     <!--
       CLASES RESPONSIVE: col-{breakpoint}-{n}
@@ -146,6 +153,24 @@
         <div class="col-6 offset-3"><div class="bg-success-subtle border border-success-subtle text-center py-2">col-6 offset-3</div></div>
       </div>
     </div>
+
+    <!--    
+    <div class="d-(xs)-none d-md-block">
+       <a>Clientes</a>
+       <a>Productos</a>
+       <a>Pitos</a>
+       <a>Flautas</a>
+       <a>Salir</a>
+    </div>
+    <div class="d-md-none">
+      <select></select>
+    </div>
+    
+
+    col-(xs)-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-4
+    col-(xs)-12           col-md-6                   col-xxl-4
+                          col-md-6                   col-xxl-4
+    -->
 
     <p class="mb-1"><code>col-md-6 offset-md-3</code>: ancho completo en móvil, centrada desde md</p>
     <div class="bg-secondary-subtle py-2 mb-3">

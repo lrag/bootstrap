@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>08 A · Reboot y encabezados</title>
+  <title>08 A · Encabezados</title>
   <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
+  
   <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
   <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
-
+  
   <!--
-    Equivalente en CSS normal de .h4 y de .lead, para comparar con las clases de Bootstrap.
+  Equivalente en CSS normal de .h4 y de .lead, para comparar con las clases de Bootstrap.
   -->
   <style>
     .titulo-mediano {
@@ -28,47 +28,16 @@
 <body>
 
   <!--
-    TIPOGRAFÍA: REBOOT Y ENCABEZADOS
-    Cada navegador trae sus propios estilos por defecto (márgenes, tamaños de los títulos,
-    fuente...) y no son iguales entre sí. Reboot es la primera parte de bootstrap.css:
-    iguala esas diferencias y fija una base común para las etiquetas HTML, sin poner ninguna clase.
+    TIPOGRAFÍA: ENCABEZADOS
+    Los márgenes, la fuente y el tamaño de base de las etiquetas los pone Reboot
+    (lo vimos en 02_B_Reboot.html). Aquí vemos los tamaños de los encabezados
+    y las clases para dar a un texto el aspecto de un título.
 
     El contenido va en verde si lo resuelve una clase
     de Bootstrap y en azul si lo resuelve CSS normal.
   -->
   <div class="container">
-    <h1 class="text-center mt-5 text-success">Reboot y encabezados</h1>
-
-    <!--
-      REBOOT: HTML SIN NINGUNA CLASE
-      Lo que vemos en este bloque lo pone Reboot, sin clases:
-        *         → box-sizing: border-box (el ancho incluye relleno y borde)
-        body      → margin: 0; fuente del sistema; font-size: 1rem; line-height: 1.5
-        h1...h6   → margin-top: 0; margin-bottom: .5rem; font-weight: 500; line-height: 1.2
-        p         → margin-top: 0; margin-bottom: 1rem
-        ul, ol    → padding-left: 2rem; margin-bottom: 1rem
-        a         → color de --bs-link-color, subrayado
-
-      La idea: los márgenes van solo hacia abajo. Los bloques se apilan siempre igual
-      y no se juntan márgenes de arriba y de abajo.
-
-      La fuente es la del sistema operativo (system-ui): Segoe UI en Windows,
-      San Francisco en macOS, Roboto en Android. No se descarga nada.
-
-      Para ver lo que hace Reboot, comentamos el <link> de Bootstrap y recargamos:
-      vuelven la fuente con remates (serif), el margen del body y los márgenes de arriba.
-    -->
-    <h2 class="h4 mt-5">Reboot: HTML sin ninguna clase</h2>
-
-    <div class="bg-secondary-subtle border p-3 mb-4">
-      <h3>Un encabezado h3</h3>
-      <p>Un párrafo con un <a href="#">enlace</a>, texto en <strong>negrita</strong> y en <em>cursiva</em>.</p>
-      <ul>
-        <li>Un elemento de lista</li>
-        <li>Otro elemento</li>
-      </ul>
-      <p>El último párrafo también tiene margen inferior: por eso queda hueco abajo.</p>
-    </div>
+    <h1 class="text-center mt-5 text-success">Encabezados</h1>
 
     <!--
       LOS SEIS ENCABEZADOS

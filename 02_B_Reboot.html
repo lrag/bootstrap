@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>02 B · Reboot</title>
+
+  <!-- Le damos un id al <link> para poder desactivar la hoja de estilos desde JavaScript -->
+  <link id="css-bootstrap" href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <script>
+    window.onload = () => {
+      const cssBootstrap = document.getElementById('css-bootstrap')
+      const botonBootstrap = document.getElementById('boton-bootstrap')
+
+      botonBootstrap.onclick = () => {
+        cssBootstrap.disabled = !cssBootstrap.disabled
+        botonBootstrap.textContent = cssBootstrap.disabled ? 'Poner Bootstrap' : 'Quitar Bootstrap'
+      }
+    }
+  </script>
+
+  <!--
+    Dos cajas iguales: 300px de ancho, 20px de relleno y 10px de borde.
+    La segunda vuelve al box-sizing de CSS por defecto (content-box).
+  -->
+  <style>
+    .caja {
+      width: 300px;
+      padding: 20px;
+      border: 10px solid steelblue;
+      background-color: white;
+      margin-bottom: 1rem;
+    }
+
+    .caja-content-box {
+      box-sizing: content-box;
+    }
+  </style>
+</head>
+<body>
+
+  <!--
+    REBOOT: LOS ESTILOS DE BASE
+    Cada navegador trae sus propios estilos por defecto (márgenes, tamaños de los títulos,
+    fuente...) y no son iguales entre sí. Reboot es la primera parte de bootstrap.css:
+    iguala esas diferencias y fija una base común para las etiquetas HTML, sin poner ninguna clase.
+    Parte de normalize.css y le añade decisiones propias de Bootstrap.
+
+    Por eso, en cuanto enlazamos bootstrap.css, la página cambia de aspecto
+    aunque no hayamos puesto ni una clase.
+
+    El contenido va en verde si lo resuelve una clase
+    de Bootstrap y en azul si lo resuelve CSS normal.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">Reboot</h1>
+
+    <!--
+      HTML SIN NINGUNA CLASE
+      Lo que vemos en este bloque lo pone Reboot, sin clases:
+        *         → box-sizing: border-box (el ancho incluye relleno y borde)
+        html      → no le pone font-size: 1rem sigue siendo lo que configura el usuario (00_rem.html)
+        body      → margin: 0; fuente del sistema; font-size: 1rem; line-height: 1.5
+        h1...h6   → margin-top: 0; margin-bottom: .5rem; font-weight: 500; line-height: 1.2
+        p         → margin-top: 0; margin-bottom: 1rem
+        ul, ol    → padding-left: 2rem; margin-bottom: 1rem
+        a         → color de --bs-link-color, subrayado
+        ...
+
+      La idea: los márgenes van solo hacia abajo. Los bloques se apilan siempre igual
+      y no se juntan márgenes de arriba y de abajo.
+
+      La fuente es la del sistema operativo (system-ui): Segoe UI en Windows,
+      San Francisco en macOS, Roboto en Android. No se descarga nada.
+
+      El botón desactiva el <link> de Bootstrap (es lo mismo que comentarlo y recargar):
+      vuelven la fuente con remates (serif), el margen del body y los márgenes de arriba.
+      Con Bootstrap quitado, el resto de la página también pierde sus clases.
+    -->
+    <h2 class="h4 mt-5">HTML sin ninguna clase</h2>
+
+    <button type="button" class="btn btn-primary mb-3" id="boton-bootstrap">Quitar Bootstrap</button>
+
+    <div class="bg-secondary-subtle border p-3 mb-4">
+      <h3>Un encabezado h3</h3>
+      <p>Un párrafo con un <a href="#">enlace</a>, texto en <strong>negrita</strong> y en <em>cursiva</em>.</p>
+      <ul>
+        <li>Un elemento de lista</li>
+        <li>Otro elemento</li>
+      </ul>
+      <p>El último párrafo también tiene margen inferior: por eso queda hueco abajo.</p>
+    </div>
+
+    <!--
+      box-sizing: border-box
+      En CSS, por defecto (content-box), width es solo el contenido: el relleno y el borde se suman.
+        content-box → 300 + 20 + 20 + 10 + 10 = 360px en pantalla
+        border-box  → 300px en pantalla; el contenido se queda con 300 - 60 = 240px
+      Reboot pone border-box en todos los elementos. Es lo que permite que una columna
+      de la rejilla mida su porcentaje exacto aunque lleve relleno, o que un w-100
+      con borde no se salga de su contenedor.
+    -->
+    <h2 class="h4 mt-5"><code>box-sizing: border-box</code></h2>
+
+    <div class="bg-primary-subtle border border-primary-subtle p-3 mb-5">
+      <div class="caja">border-box (Reboot): 300px en total</div>
+      <div class="caja caja-content-box mb-0">content-box: 360px en total</div>
+    </div>
+  </div>
+
+</body>
+</html>

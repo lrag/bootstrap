@@ -48,12 +48,12 @@
 
     <!--
       UNA FILA CON TRES COLUMNAS
-      .col sin número: las columnas se reparten el ancho a partes iguales.
+      .col sin número: las columnas se reparten el ancho a partes iguales, sintener en cuanta que son 12 columnas.
     -->
     <h2 class="h4 mt-5">Una fila con tres columnas</h2>
     <div class="row">
-      <div class="col"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">col</div></div>
-      <div class="col"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">col</div></div>
+      <div class="col-1"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">caracol</div></div>
+      <div class="col-1"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">col</div></div>
       <div class="col"><div class="bg-primary-subtle border border-primary-subtle text-center py-2">col</div></div>
     </div>
 
@@ -80,9 +80,15 @@
 
     <p class="mb-1">Fondo en un <code>div</code> dentro de cada <code>.col</code>:</p>
     <div class="row">
-      <div class="col"><div class="bg-success-subtle border border-success-subtle py-2">div dentro de col</div></div>
-      <div class="col"><div class="bg-success-subtle border border-success-subtle py-2">div dentro de col</div></div>
-      <div class="col"><div class="bg-success-subtle border border-success-subtle py-2">div dentro de col</div></div>
+      <div class="col">
+        <div class="bg-success-subtle border border-success-subtle py-2">div dentro de col</div>
+      </div>
+      <div class="col">
+        <div class="bg-success-subtle border border-success-subtle py-2">div dentro de col</div>
+      </div>
+      <div class="col">
+        <div class="bg-success-subtle border border-success-subtle py-2">div dentro de col</div>
+      </div>
     </div>
 
     <!--

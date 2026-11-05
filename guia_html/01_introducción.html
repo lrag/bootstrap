@@ -76,6 +76,7 @@
         <li class="list-group-item"><a href="#novedades">Novedades frente a v4</a></li>
         <li class="list-group-item"><a href="#rem">La unidad rem</a></li>
         <li class="list-group-item"><a href="#instalacion">Instalación</a></li>
+        <li class="list-group-item"><a href="#reboot">Reboot</a></li>
         <li class="list-group-item"><a href="#plantilla">Plantilla base</a></li>
         <li class="list-group-item"><a href="#tema">data-bs-theme</a></li>
         <li class="list-group-item"><a href="#practica">Práctica</a></li>
@@ -353,9 +354,70 @@ npm install bootstrap@5.3</code></pre>
       </div>
     </section>
 
-    <!-- 5. Plantilla base -->
+    <!-- 5. Reboot -->
+    <section id="reboot" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">5. Reboot: el punto de partida</h2>
+      <p>
+        Cada navegador trae sus propios estilos por defecto, y no son iguales entre sí.
+        <strong>Reboot</strong> es la primera parte de <code>bootstrap.css</code>: corrige esas diferencias y fija una base común
+        para las etiquetas HTML <strong>sin necesidad de poner ninguna clase</strong>. Parte de <code>normalize.css</code>
+        y le añade decisiones propias.
+      </p>
+      <p>
+        Por eso, nada más enlazar <code>bootstrap.css</code>, la página cambia de aspecto aunque no tenga ni una clase.
+      </p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Elemento</th><th>Lo que hace Reboot</th></tr></thead>
+        <tbody>
+          <tr><td><code>*</code></td><td><code>box-sizing: border-box</code>: el ancho incluye relleno y borde</td></tr>
+          <tr><td><code>html</code></td><td>No le pone <code>font-size</code>: <code>1rem</code> sigue siendo lo que configura el usuario (apartado 3)</td></tr>
+          <tr><td><code>body</code></td><td><code>margin: 0</code>; fuente del sistema; <code>font-size: 1rem</code>; <code>line-height: 1.5</code>; color y fondo desde <code>--bs-body-color</code> y <code>--bs-body-bg</code></td></tr>
+          <tr><td><code>h1</code>…<code>h6</code></td><td><code>margin-top: 0</code>, <code>margin-bottom: .5rem</code>, <code>font-weight: 500</code>, <code>line-height: 1.2</code></td></tr>
+          <tr><td><code>p</code></td><td><code>margin-top: 0</code>, <code>margin-bottom: 1rem</code></td></tr>
+          <tr><td><code>ul</code>, <code>ol</code></td><td><code>padding-left: 2rem</code>, <code>margin-bottom: 1rem</code></td></tr>
+          <tr><td><code>a</code></td><td>Color desde <code>--bs-link-color</code>, subrayado</td></tr>
+        </tbody>
+      </table>
+      <p>
+        La idea: <strong>los márgenes van solo hacia abajo</strong>. Así los bloques se apilan de forma predecible
+        y no se suman márgenes de arriba y de abajo.
+      </p>
+      <p class="etiqueta">HTML sin ninguna clase</p>
+      <div class="demo">
+        <h3>Un encabezado h3</h3>
+        <p>Un párrafo con un <a href="#reboot">enlace</a>, texto en <strong>negrita</strong> y en <em>cursiva</em>.</p>
+        <ul class="mb-0">
+          <li>Un elemento de lista</li>
+          <li>Otro elemento</li>
+        </ul>
+      </div>
+      <div class="alert alert-info" role="alert">
+        La fuente es la del sistema operativo (<code>system-ui</code>: Segoe UI en Windows, San Francisco en macOS…).
+        Carga rápido porque no se descarga nada, y cada usuario ve la letra a la que está acostumbrado.
+      </div>
+
+      <h3 class="h5 mt-4"><code>box-sizing: border-box</code></h3>
+      <p>
+        En CSS, por defecto (<code>content-box</code>), <code>width</code> es solo el contenido: el relleno y el borde se suman.
+        Con <code>border-box</code>, <code>width</code> es la caja entera. Reboot lo pone en todos los elementos, y es lo que permite
+        que una columna de la rejilla mida su porcentaje exacto aunque lleve relleno.
+      </p>
+      <p class="etiqueta">width: 300px; padding: 20px; border: 10px</p>
+      <div class="demo">
+        <div style="width: 300px; padding: 20px; border: 10px solid var(--bs-primary); background: var(--bs-body-bg)" class="mb-3">border-box: 300 px en total</div>
+        <div style="width: 300px; padding: 20px; border: 10px solid var(--bs-secondary); background: var(--bs-body-bg); box-sizing: content-box">content-box: 360 px en total</div>
+      </div>
+
+      <div class="alert alert-secondary mb-0" role="alert">
+        <strong>Truco:</strong> para ver lo que hace Reboot, comentamos el <code>&lt;link&gt;</code> de Bootstrap y recargamos
+        (en <code>02_B_Reboot.html</code> lo hace un botón). Vuelven la fuente con remates (<em>serif</em>), el margen del
+        <code>body</code> y los márgenes de arriba de títulos y párrafos.
+      </div>
+    </section>
+
+    <!-- 6. Plantilla base -->
     <section id="plantilla" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">5. Estructura de una plantilla base</h2>
+      <h2 class="border-bottom pb-2 mb-4">6. Estructura de una plantilla base</h2>
       <div class="row g-4">
         <div class="col-lg-7">
 <pre><code>&lt;!doctype html&gt;
@@ -452,9 +514,9 @@ npm install bootstrap@5.3</code></pre>
       </div>
     </section>
 
-    <!-- 6. data-bs-theme -->
+    <!-- 7. data-bs-theme -->
     <section id="tema" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">6. Modos de color con <code>data-bs-theme</code></h2>
+      <h2 class="border-bottom pb-2 mb-4">7. Modos de color con <code>data-bs-theme</code></h2>
       <p>
         Desde la versión 5.3, el atributo <code>data-bs-theme</code> cambia los colores de todos los componentes.
         Se puede poner en <code>&lt;html&gt;</code> para toda la página o en un elemento concreto para solo esa zona.
@@ -575,16 +637,17 @@ body {
       </p>
     </section>
 
-    <!-- 7. Práctica -->
+    <!-- 8. Práctica -->
     <section id="practica" class="mb-5">
-      <h2 class="border-bottom pb-2 mb-4">7. Práctica</h2>
+      <h2 class="border-bottom pb-2 mb-4">8. Práctica</h2>
       <div class="card border-success">
         <div class="card-body">
           <h3 class="h5 card-title">Primera plantilla</h3>
           <ol class="mb-0">
             <li>Crear una carpeta de proyecto y abrirla en VS Code.</li>
-            <li>Crear un fichero <code>index.html</code> con la plantilla base del apartado 5.</li>
+            <li>Crear un fichero <code>index.html</code> con la plantilla base del apartado 6.</li>
             <li>Abrirlo en el navegador y comprobar en F12 → Red que se cargan el CSS y el JS de Bootstrap.</li>
+            <li>Comentar el <code>&lt;link&gt;</code> del CSS, recargar y comparar: lo que cambia es Reboot.</li>
             <li>Añadir un párrafo con la clase <code>lead</code> y un botón con <code>class="btn btn-primary"</code>.</li>
             <li>Cambiar <code>data-bs-theme</code> a <code>dark</code> y observar qué cambia.</li>
             <li><em>Opcional:</em> instalar Bootstrap con npm, o descargar la copia local, y enlazar esos ficheros en lugar del CDN.</li>
@@ -597,7 +660,8 @@ body {
 
   <footer class="border-top py-4 text-center text-body-secondary small">
     Curso de Bootstrap 5 · Introducción y entorno ·
-    Referencia: <a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/">documentación oficial</a>
+    Referencia: <a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/">documentación oficial</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/content/reboot/">Reboot</a>
   </footer>
 
 </body>
