@@ -12,9 +12,6 @@
   <!--
     Cambiamos "primary" de azul a naranja (#c2410c) redefiniendo lo que Bootstrap ya tiene,
     sin clases nuevas. Va DESPUÉS del <link> de Bootstrap: con la misma especificidad, gana el último.
-
-    Los tonos derivados (hover, active, foco, subtle, emphasis) no son inventados: son los que
-    calcula Sass con $primary: #c2410c (copiados del CSS compilado). En 15_D los calcula Sass solo.
   -->
   <style>
     :root {
@@ -219,19 +216,6 @@
       </div>
     </div>
 
-    <!--
-      LO QUE SE NOS HA ESCAPADO
-      Sin buscar a fondo en bootstrap.css, quedan restos azules:
-        progress-bar          → --bs-progress-bar-bg (en .progress)
-        form-range            → el botón del deslizador (::-webkit-slider-thumb, ::-moz-range-thumb)
-        form-switch con foco  → el círculo es una imagen SVG con el azul dentro (%2386b7fe)
-        accordion             → el resplandor del botón con foco
-        modo oscuro           → [data-bs-theme=dark] redefine --bs-primary-text-emphasis,
-                                -bg-subtle y -border-subtle con sus propios azules: nuestras
-                                variables de :root no llegan dentro de un bloque oscuro
-        table-primary, btn-close con foco, nav-link con foco...
-      Cada uno es otra regla más. Con Sass ($primary: #c2410c) no se escapa ninguno (15_D).
-    -->
     <h2 class="h4 mt-5">Lo que se nos ha escapado</h2>
 
     <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
