@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JavaScript de Bootstrap</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    pre { background: var(--bs-tertiary-bg); padding: 1rem; border-radius: var(--bs-border-radius); margin-bottom: 0; }
+    .demo { background: var(--bs-tertiary-bg); border: 1px dashed var(--bs-border-color); border-radius: var(--bs-border-radius); padding: 1rem; margin-bottom: 1rem; }
+    .etiqueta { font-family: var(--bs-font-monospace); font-size: .8rem; margin-bottom: .25rem; }
+    #registro { background: var(--bs-body-bg); border: 1px solid var(--bs-border-color); min-height: 6rem; padding: .5rem; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script>
+    window.addEventListener('load', () => {
+      // API programática: un collapse manejado por tres botones
+      const panel = bootstrap.Collapse.getOrCreateInstance('#panel-api', { toggle: false })
+      document.getElementById('api-show').addEventListener('click', () => panel.show())
+      document.getElementById('api-hide').addEventListener('click', () => panel.hide())
+      document.getElementById('api-toggle').addEventListener('click', () => panel.toggle())
+
+      // Tooltips: hay que crearlos uno a uno
+      document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el))
+
+      // Registro de eventos
+      const registro = document.getElementById('registro')
+      const bloque = document.getElementById('bloque-eventos')
+      for (const tipo of ['show', 'shown', 'hide', 'hidden']) {
+        bloque.addEventListener(`${tipo}.bs.collapse`, evento => {
+          if (tipo === 'show' && document.getElementById('bloquear').checked) {
+            evento.preventDefault()
+            registro.textContent += 'show.bs.collapse → cancelado con preventDefault()\n'
+            return
+          }
+          registro.textContent += `${tipo}.bs.collapse\n`
+        })
+      }
+      document.getElementById('vaciar').addEventListener('click', () => { registro.textContent = '' })
+
+      // Práctica: preguntas frecuentes
+      const preguntas = [...document.querySelectorAll('#faq .collapse')]
+      const contador = document.getElementById('faq-contador')
+      const actualizar = () => { contador.textContent = preguntas.filter(p => p.classList.contains('show')).length }
+      preguntas.forEach(p => {
+        p.addEventListener('shown.bs.collapse', actualizar)
+        p.addEventListener('hidden.bs.collapse', actualizar)
+      })
+      document.getElementById('faq-abrir').addEventListener('click', () => {
+        preguntas.forEach(p => bootstrap.Collapse.getOrCreateInstance(p, { toggle: false }).show())
+      })
+      document.getElementById('faq-cerrar').addEventListener('click', () => {
+        preguntas.forEach(p => bootstrap.Collapse.getOrCreateInstance(p, { toggle: false }).hide())
+      })
+    })
+  </script>
+</head>
+<body>
+
+  <header class="bg-primary text-white py-5 mb-4">
+    <div class="container">
+      <p class="text-uppercase small mb-1">Curso de Bootstrap 5 · Sesión 3 · Punto 1</p>
+      <h1 class="display-5 fw-bold">JavaScript de Bootstrap</h1>
+      <p class="lead mb-0">El bundle con Popper, los atributos <code class="text-white">data-bs-*</code> frente a la API programática, y los métodos y eventos de las instancias.</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <nav class="mb-5" aria-label="Índice">
+      <ol class="list-group list-group-numbered">
+        <li class="list-group-item"><a href="#que-hace">Qué hace el JavaScript de Bootstrap</a></li>
+        <li class="list-group-item"><a href="#bundle">El bundle y Popper</a></li>
+        <li class="list-group-item"><a href="#data-bs">Sin escribir JavaScript: atributos <code>data-bs-*</code></a></li>
+        <li class="list-group-item"><a href="#opciones">Opciones</a></li>
+        <li class="list-group-item"><a href="#api">La API programática</a></li>
+        <li class="list-group-item"><a href="#tooltips">Componentes que hay que activar: tooltips y popovers</a></li>
+        <li class="list-group-item"><a href="#eventos">Eventos</a></li>
+        <li class="list-group-item"><a href="#practica">Práctica</a></li>
+      </ol>
+    </nav>
+
+    <!-- 1. Qué hace -->
+    <section id="que-hace" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">1. Qué hace el JavaScript de Bootstrap</h2>
+      <p>
+        Casi todo Bootstrap es CSS: la rejilla, las utilidades, las cards o los formularios funcionan sin JavaScript.
+        El JavaScript solo hace falta para los componentes que <strong>reaccionan</strong> a lo que hace el usuario.
+        Desde la versión 5 es JavaScript normal: <strong>no necesita jQuery</strong>.
+      </p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Componente</th><th>Qué hace con JavaScript</th><th>¿Necesita Popper?</th></tr></thead>
+        <tbody>
+          <tr><td><code>Alert</code></td><td>Cerrar la alerta</td><td>No</td></tr>
+          <tr><td><code>Button</code></td><td>Estado pulsado / no pulsado</td><td>No</td></tr>
+          <tr><td><code>Carousel</code></td><td>Pasar las diapositivas</td><td>No</td></tr>
+          <tr><td><code>Collapse</code></td><td>Mostrar y ocultar un bloque (acordeón, menú de la navbar)</td><td>No</td></tr>
+          <tr><td><code>Dropdown</code></td><td>Abrir el menú desplegable</td><td><strong>Sí</strong></td></tr>
+          <tr><td><code>Modal</code></td><td>Ventana modal</td><td>No</td></tr>
+          <tr><td><code>Offcanvas</code></td><td>Panel lateral</td><td>No</td></tr>
+          <tr><td><code>Popover</code></td><td>Globo con título y contenido</td><td><strong>Sí</strong></td></tr>
+          <tr><td><code>ScrollSpy</code></td><td>Marcar en el menú la sección visible</td><td>No</td></tr>
+          <tr><td><code>Tab</code></td><td>Pestañas</td><td>No</td></tr>
+          <tr><td><code>Toast</code></td><td>Notificaciones</td><td>No</td></tr>
+          <tr><td><code>Tooltip</code></td><td>Texto flotante al pasar el ratón</td><td><strong>Sí</strong></td></tr>
+        </tbody>
+      </table>
+      <p class="mb-0">Hay dos formas de usarlo: con <strong>atributos <code>data-bs-*</code></strong> en el HTML, sin escribir nada de JavaScript, o con la <strong>API programática</strong> desde nuestro código.</p>
+    </section>
+
+    <!-- 2. Bundle y Popper -->
+    <section id="bundle" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">2. El bundle y Popper</h2>
+      <p>
+        <strong>Popper</strong> es una librería que calcula dónde colocar un elemento flotante respecto a otro: que no se salga de la
+        pantalla, que se dé la vuelta si no cabe debajo… La usan los dropdowns, los tooltips y los popovers.
+      </p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Fichero</th><th>Contiene</th><th>Cuándo</th></tr></thead>
+        <tbody>
+          <tr><td><code>bootstrap.bundle.min.js</code></td><td>Bootstrap + Popper</td><td>Lo normal: un solo fichero y funciona todo</td></tr>
+          <tr><td><code>bootstrap.min.js</code></td><td>Solo Bootstrap</td><td>Si Popper ya se carga por otro lado (o no se usan dropdowns, tooltips ni popovers)</td></tr>
+        </tbody>
+      </table>
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <p class="etiqueta">Con el bundle</p>
+<pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" defer&gt;&lt;/script&gt;</code></pre>
+        </div>
+        <div class="col-lg-6">
+          <p class="etiqueta">Sin el bundle: Popper primero</p>
+<pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" defer&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" defer&gt;&lt;/script&gt;</code></pre>
+        </div>
+      </div>
+      <div class="alert alert-info mt-4 mb-0" role="alert">
+        El bundle crea un objeto global, <code>bootstrap</code>, con una clase por componente: <code>bootstrap.Collapse</code>,
+        <code>bootstrap.Modal</code>, <code>bootstrap.Tooltip</code>… Es lo que usa la API programática.
+      </div>
+    </section>
+
+    <!-- 3. data-bs -->
+    <section id="data-bs" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">3. Sin escribir JavaScript: atributos <code>data-bs-*</code></h2>
+      <p>
+        Al cargar, Bootstrap se queda escuchando los clics de toda la página. Cuando se pulsa un elemento con
+        <code>data-bs-toggle</code>, mira qué componente indica y sobre qué elemento actuar (<code>data-bs-target</code>,
+        o el <code>href</code> en un enlace).
+      </p>
+      <div class="row g-4 mb-3">
+        <div class="col-lg-6">
+          <p class="etiqueta">data-bs-toggle="collapse" data-bs-target="#detalles"</p>
+          <div class="demo mb-0">
+            <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#detalles" aria-expanded="false" aria-controls="detalles">Condiciones de envío</button>
+            <div class="collapse" id="detalles">
+              <div class="card card-body">Envío en 24 horas. Devoluciones gratis durante 30 días.</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+<pre><code>&lt;button class="btn btn-primary" type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#detalles"
+        aria-expanded="false" aria-controls="detalles"&gt;
+  Condiciones de envío
+&lt;/button&gt;
+&lt;div class="collapse" id="detalles"&gt;…&lt;/div&gt;</code></pre>
+        </div>
+      </div>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Atributo</th><th>Para qué</th></tr></thead>
+        <tbody>
+          <tr><td><code>data-bs-toggle</code></td><td>El componente que se activa: <code>collapse</code>, <code>dropdown</code>, <code>modal</code>, <code>offcanvas</code>, <code>tab</code>, <code>button</code>…</td></tr>
+          <tr><td><code>data-bs-target</code></td><td>El elemento sobre el que actúa (selector CSS). En un enlace, vale el <code>href</code></td></tr>
+          <tr><td><code>data-bs-dismiss</code></td><td>Cierra el componente que contiene al botón: <code>alert</code>, <code>modal</code>, <code>offcanvas</code>, <code>toast</code></td></tr>
+          <tr><td><code>data-bs-{opción}</code></td><td>Una opción del componente (apartado siguiente)</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-secondary mb-0" role="alert">
+        <strong>En el inspector:</strong> al pulsar, Bootstrap pone o quita la clase <code>show</code> del bloque (con <code>collapsing</code>
+        durante la animación) y cambia <code>aria-expanded</code> del botón entre <code>false</code> y <code>true</code>, para los lectores de pantalla.
+      </div>
+    </section>
+
+    <!-- 4. Opciones -->
+    <section id="opciones" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">4. Opciones</h2>
+      <p>
+        Cada componente tiene opciones (en la documentación, apartado <em>Options</em>). Se pueden dar de dos formas:
+        como atributo <code>data-bs-</code> más el nombre de la opción, o como objeto en el constructor de JavaScript.
+        Si el nombre tiene mayúsculas, en el atributo va con guiones: <code>autoClose</code> → <code>data-bs-auto-close</code>.
+      </p>
+      <p class="etiqueta">Opción autoClose del dropdown: cuándo se cierra el menú</p>
+      <div class="demo">
+        <div class="d-flex flex-wrap gap-2">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Por defecto (true)</button>
+            <ul class="dropdown-menu"><li><a class="dropdown-item" href="#opciones">Precio</a></li><li><a class="dropdown-item" href="#opciones">Novedades</a></li></ul>
+          </div>
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">outside</button>
+            <ul class="dropdown-menu"><li><a class="dropdown-item" href="#opciones">Precio</a></li><li><a class="dropdown-item" href="#opciones">Novedades</a></li></ul>
+          </div>
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">false</button>
+            <ul class="dropdown-menu"><li><a class="dropdown-item" href="#opciones">Precio</a></li><li><a class="dropdown-item" href="#opciones">Novedades</a></li></ul>
+          </div>
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-offset="0,20" aria-expanded="false">offset "0,20"</button>
+            <ul class="dropdown-menu"><li><a class="dropdown-item" href="#opciones">Precio</a></li><li><a class="dropdown-item" href="#opciones">Novedades</a></li></ul>
+          </div>
+        </div>
+      </div>
+      <table class="table table-sm mb-4">
+        <thead><tr><th><code>data-bs-auto-close</code></th><th>El menú se cierra…</th></tr></thead>
+        <tbody>
+          <tr><td><code>true</code> (por defecto)</td><td>Al pulsar dentro o fuera del menú</td></tr>
+          <tr><td><code>"outside"</code></td><td>Solo al pulsar fuera</td></tr>
+          <tr><td><code>"inside"</code></td><td>Solo al pulsar dentro</td></tr>
+          <tr><td><code>false</code></td><td>Solo al volver a pulsar el botón (o con Esc)</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-info mb-0" role="alert">
+        Si una opción está en un atributo y también en el constructor, <strong>gana la de JavaScript</strong>.
+      </div>
+    </section>
+
+    <!-- 5. API -->
+    <section id="api" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">5. La API programática</h2>
+      <p>
+        Una <strong>instancia</strong> es el componente «vivo» de un elemento del HTML: guarda su estado y tiene los métodos para manejarlo.
+        Se usa cuando la acción no sale de un clic en un botón: al terminar de guardar, al recibir datos del servidor, pasado un tiempo…
+      </p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Para conseguir la instancia</th><th>Qué hace</th></tr></thead>
+        <tbody>
+          <tr><td><code>new bootstrap.Collapse(elemento, opciones)</code></td><td>La crea</td></tr>
+          <tr><td><code>bootstrap.Collapse.getInstance(elemento)</code></td><td>Devuelve la que ya exista, o <code>null</code></td></tr>
+          <tr><td><code>bootstrap.Collapse.getOrCreateInstance(elemento, opciones)</code></td><td>La que exista o una nueva: la más cómoda</td></tr>
+        </tbody>
+      </table>
+      <p>
+        El elemento puede ser el nodo del DOM o un selector CSS (<code>'#panel'</code>). Con <code>data-bs-*</code>, Bootstrap no crea la instancia al cargar,
+        sino <strong>la primera vez que se usa</strong>: hasta entonces <code>getInstance</code> devuelve <code>null</code>.
+      </p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Método</th><th>Qué hace</th></tr></thead>
+        <tbody>
+          <tr><td><code>show()</code> / <code>hide()</code> / <code>toggle()</code></td><td>Mostrar, ocultar, alternar (en casi todos los componentes)</td></tr>
+          <tr><td><code>dispose()</code></td><td>Destruye la instancia y quita lo que Bootstrap había añadido al elemento</td></tr>
+          <tr><td>Propios de cada componente</td><td><code>close()</code> en Alert, <code>next()</code> y <code>prev()</code> en Carousel, <code>enable()</code> y <code>disable()</code> en Tooltip…</td></tr>
+        </tbody>
+      </table>
+      <div class="row g-4">
+        <div class="col-lg-5">
+          <p class="etiqueta">Tres botones sin data-bs-toggle</p>
+          <div class="demo mb-0">
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <button type="button" class="btn btn-primary" id="api-show">show()</button>
+              <button type="button" class="btn btn-primary" id="api-hide">hide()</button>
+              <button type="button" class="btn btn-primary" id="api-toggle">toggle()</button>
+            </div>
+            <div class="collapse" id="panel-api">
+              <div class="card card-body">Un bloque manejado desde JavaScript.</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7">
+<pre><code>const panel = bootstrap.Collapse.getOrCreateInstance(
+  document.getElementById('panel'), { toggle: false })
+
+document.getElementById('boton-mostrar').onclick = () =&gt; {
+  panel.show()
+}</code></pre>
+        </div>
+      </div>
+      <div class="alert alert-warning mt-4 mb-0" role="alert">
+        <strong><code>{ toggle: false }</code>:</strong> al crear la instancia de un collapse, por defecto se abre o se cierra en ese momento.
+        Con esta opción, la instancia se crea sin tocar el bloque.
+      </div>
+    </section>
+
+    <!-- 6. Tooltips -->
+    <section id="tooltips" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">6. Componentes que hay que activar: tooltips y popovers</h2>
+      <p>
+        Por rendimiento, Bootstrap no busca tooltips ni popovers en la página: aunque tengan <code>data-bs-toggle</code>,
+        <strong>no funcionan hasta que se crea su instancia</strong> con JavaScript.
+      </p>
+      <div class="row g-4">
+        <div class="col-lg-5">
+          <div class="demo mb-0">
+            <div class="d-flex flex-wrap gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Arriba" data-bs-placement="top">top</button>
+              <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Abajo" data-bs-placement="bottom">bottom</button>
+              <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Izquierda" data-bs-placement="left">left</button>
+              <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Derecha" data-bs-placement="right">right</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7">
+<pre><code>&lt;button type="button" class="btn btn-secondary" id="ayuda"
+        data-bs-title="Arriba" data-bs-placement="top"&gt;top&lt;/button&gt;
+
+new bootstrap.Tooltip(document.getElementById('ayuda'))
+new bootstrap.Tooltip(otroBoton, { title: 'Abajo', placement: 'bottom' })</code></pre>
+        </div>
+      </div>
+      <p class="mt-3 mb-0">Los tooltips y los popovers se ven a fondo en el punto siguiente, con el resto de componentes interactivos.</p>
+    </section>
+
+    <!-- 7. Eventos -->
+    <section id="eventos" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">7. Eventos</h2>
+      <p>
+        Los componentes lanzan eventos sobre su elemento con el nombre <code>acción.bs.componente</code>.
+        Se escuchan con <code>addEventListener</code> (no existe <code>onshow.bs.collapse</code>: con puntos en el nombre no puede haber propiedad).
+      </p>
+      <table class="table table-sm mb-4">
+        <thead><tr><th>Evento</th><th>Cuándo</th><th>¿Se puede cancelar?</th></tr></thead>
+        <tbody>
+          <tr><td><code>show.bs.collapse</code></td><td>Va a empezar a abrirse</td><td>Sí, con <code>preventDefault()</code></td></tr>
+          <tr><td><code>shown.bs.collapse</code></td><td>Ha terminado de abrirse (después de la animación)</td><td>No</td></tr>
+          <tr><td><code>hide.bs.collapse</code></td><td>Va a empezar a cerrarse</td><td>Sí</td></tr>
+          <tr><td><code>hidden.bs.collapse</code></td><td>Ha terminado de cerrarse</td><td>No</td></tr>
+        </tbody>
+      </table>
+      <p>
+        El mismo patrón sirve para dropdown, modal, offcanvas, tab, toast y tooltip. Alert usa <code>close</code> y <code>closed</code>;
+        carousel, <code>slide</code> y <code>slid</code>.
+      </p>
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <p class="etiqueta">Registro de eventos</p>
+          <div class="demo mb-0">
+            <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+              <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#bloque-eventos" aria-expanded="false" aria-controls="bloque-eventos">Abrir / cerrar</button>
+              <button type="button" class="btn btn-outline-secondary" id="vaciar">Vaciar</button>
+              <div class="form-check mb-0">
+                <input class="form-check-input" type="checkbox" id="bloquear">
+                <label class="form-check-label" for="bloquear">Impedir que se abra</label>
+              </div>
+            </div>
+            <div class="collapse" id="bloque-eventos"><div class="card card-body mb-3">Un bloque que lanza eventos.</div></div>
+            <pre id="registro"></pre>
+          </div>
+        </div>
+        <div class="col-lg-6">
+<pre><code>const bloque = document.getElementById('bloque')
+
+bloque.addEventListener('show.bs.collapse', (evento) =&gt; {
+  if (document.getElementById('bloquear').checked) {
+    evento.preventDefault()
+  }
+})
+
+bloque.addEventListener('shown.bs.collapse', () =&gt; {
+  console.log('ya está abierto')
+})</code></pre>
+        </div>
+      </div>
+      <div class="alert alert-info mt-4 mb-0" role="alert">
+        <strong>¿Por qué <code>shown</code>?</strong> Los métodos (<code>show()</code>, <code>hide()</code>…) vuelven enseguida, pero la animación sigue.
+        Lo que tenga que pasar cuando el componente ya se ve (poner el foco en un campo de un modal, por ejemplo) va en <code>shown</code>.
+      </div>
+    </section>
+
+    <!-- 8. Práctica -->
+    <section id="practica" class="mb-5">
+      <h2 class="border-bottom pb-2 mb-4">8. Práctica</h2>
+      <div class="card border-success mb-4">
+        <div class="card-body">
+          <h3 class="h5 card-title">Preguntas frecuentes</h3>
+          <ol class="mb-0">
+            <li>Tres preguntas; cada una es un botón con <code>data-bs-toggle="collapse"</code> que abre su respuesta.</li>
+            <li>Dos botones, «Abrir todas» y «Cerrar todas», que usan la API: <code>getOrCreateInstance(…, { toggle: false })</code> y <code>show()</code> / <code>hide()</code>.</li>
+            <li>Un contador «Respuestas abiertas: N» que se actualiza con los eventos <code>shown.bs.collapse</code> y <code>hidden.bs.collapse</code>.</li>
+            <li><em>Opcional:</em> un botón de ayuda con un tooltip creado con <code>new bootstrap.Tooltip()</code>.</li>
+          </ol>
+        </div>
+      </div>
+      <p class="etiqueta">Resultado</p>
+      <div class="demo" id="faq">
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+          <button type="button" class="btn btn-sm btn-outline-primary" id="faq-abrir">Abrir todas</button>
+          <button type="button" class="btn btn-sm btn-outline-primary" id="faq-cerrar">Cerrar todas</button>
+          <span class="ms-auto">Respuestas abiertas: <strong id="faq-contador">0</strong></span>
+          <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" data-bs-title="Escríbenos a ayuda@tienda.es">?</button>
+        </div>
+        <div class="list-group">
+          <button class="list-group-item list-group-item-action fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq-1" aria-expanded="false" aria-controls="faq-1">¿Cuánto tarda el envío?</button>
+          <div class="collapse" id="faq-1"><div class="list-group-item">24 horas en la península; 48 a 72 horas en las islas.</div></div>
+          <button class="list-group-item list-group-item-action fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq-2" aria-expanded="false" aria-controls="faq-2">¿Puedo devolver un producto?</button>
+          <div class="collapse" id="faq-2"><div class="list-group-item">Sí, gratis durante 30 días desde la entrega.</div></div>
+          <button class="list-group-item list-group-item-action fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq-3" aria-expanded="false" aria-controls="faq-3">¿Qué formas de pago aceptáis?</button>
+          <div class="collapse" id="faq-3"><div class="list-group-item">Tarjeta, transferencia y Bizum.</div></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-top py-4 text-center text-body-secondary small">
+    Curso de Bootstrap 5 · JavaScript de Bootstrap ·
+    Referencia: <a href="https://getbootstrap.com/docs/5.3/getting-started/javascript/">JavaScript</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/components/collapse/">Collapse</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/components/dropdowns/">Dropdowns</a> ·
+    <a href="https://getbootstrap.com/docs/5.3/components/tooltips/">Tooltips</a> ·
+    <a href="https://popper.js.org/docs/v2/">Popper</a>
+  </footer>
+
+</body>
+</html>

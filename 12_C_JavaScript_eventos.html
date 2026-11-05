@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>12 C · JavaScript: eventos</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <script>
+    window.onload = () => {
+      const registro = document.getElementById('registro')
+      const bloque = document.getElementById('bloque')
+
+      bloque.addEventListener('show.bs.collapse', () => {
+        registro.textContent += 'show.bs.collapse   → empieza a abrirse\n'
+      })
+
+      bloque.addEventListener('shown.bs.collapse', () => {
+        registro.textContent += 'shown.bs.collapse  → ya está abierto\n'
+      })
+
+      bloque.addEventListener('hide.bs.collapse', () => {
+        registro.textContent += 'hide.bs.collapse   → empieza a cerrarse\n'
+      })
+
+      bloque.addEventListener('hidden.bs.collapse', () => {
+        registro.textContent += 'hidden.bs.collapse → ya está cerrado\n'
+      })
+
+      document.getElementById('boton-vaciar').onclick = () => {
+        registro.textContent = ''
+      }
+
+      document.getElementById('bloque-bloqueable').addEventListener('show.bs.collapse', (evento) => {
+        if (document.getElementById('bloquear').checked) {
+          evento.preventDefault()
+        }
+      })
+
+      document.getElementById('cookies').addEventListener('closed.bs.alert', () => {
+        document.getElementById('mensaje-cookies').classList.remove('d-none')
+      })
+    }
+  </script>
+</head>
+<body>
+
+  <!--
+    EVENTOS DE BOOTSTRAP
+    Los componentes avisan de lo que les pasa lanzando eventos sobre su elemento.
+    El nombre es acción.bs.componente:
+      show.bs.collapse   → va a empezar a abrirse (todavía no se ve nada)
+      shown.bs.collapse  → ha terminado de abrirse (después de la animación)
+      hide.bs.collapse   → va a empezar a cerrarse
+      hidden.bs.collapse → ha terminado de cerrarse
+    El mismo patrón sirve para dropdown, modal, offcanvas, tab, toast y tooltip
+    (show.bs.modal, hidden.bs.dropdown...). Alert usa close y closed; carousel, slide y slid.
+    Cada componente tiene la lista en la documentación, apartado "Events".
+
+    Se escuchan con addEventListener sobre el elemento del componente.
+    No hay propiedad onshow.bs.collapse: con un punto en el nombre no puede existir.
+
+    ¿Para qué el evento de "terminado"? Los métodos (show, hide...) vuelven enseguida,
+    pero la animación sigue: si algo tiene que pasar cuando el bloque ya se ve
+    (poner el foco en un campo, por ejemplo), va en shown.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">JavaScript: eventos</h1>
+
+    <!--
+      EL ORDEN DE LOS EVENTOS
+      Cada evento escribe una línea en el registro. Al abrir sale show y,
+      cuando acaba la animación, shown. Al cerrar, hide y hidden.
+    -->
+    <h2 class="h4 mt-5">El orden de los eventos</h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#bloque" aria-expanded="false" aria-controls="bloque">
+          Abrir / cerrar
+        </button>
+        <button type="button" class="btn btn-outline-secondary" id="boton-vaciar">Vaciar el registro</button>
+      </div>
+      <div class="collapse" id="bloque">
+        <div class="card card-body mb-3">Un bloque que lanza eventos.</div>
+      </div>
+      <pre class="bg-body border rounded p-2 mb-0" id="registro" style="min-height: 6rem"></pre>
+    </div>
+
+    <!--
+      CANCELAR: preventDefault()
+      Los eventos de "antes" (show, hide, close...) se pueden cancelar:
+      con evento.preventDefault() el componente no se abre (o no se cierra).
+      Los de "después" (shown, hidden, closed) no: ya ha pasado.
+      Aquí, con la casilla marcada, el bloque no se abre.
+    -->
+    <h2 class="h4 mt-5">Cancelar: <code>preventDefault()</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#bloque-bloqueable" aria-expanded="false" aria-controls="bloque-bloqueable">
+          Abrir / cerrar
+        </button>
+        <div class="form-check mb-0">
+          <input class="form-check-input" type="checkbox" id="bloquear">
+          <label class="form-check-label" for="bloquear">Impedir que se abra</label>
+        </div>
+      </div>
+      <div class="collapse" id="bloque-bloqueable">
+        <div class="card card-body">Se ha abierto: la casilla no estaba marcada.</div>
+      </div>
+    </div>
+
+    <!--
+      UN CASO REAL: HACER ALGO CUANDO SE CIERRA UNA ALERTA
+      closed.bs.alert salta cuando la alerta ya ha desaparecido.
+      En una web real guardaríamos que el usuario ya ha visto el aviso (en el servidor
+      o en localStorage) para no volver a enseñárselo. Aquí mostramos un mensaje.
+    -->
+    <h2 class="h4 mt-5">Un caso real: <code>closed.bs.alert</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <div class="alert alert-info alert-dismissible fade show mb-0" role="alert" id="cookies">
+        Usamos cookies para recordar el carrito.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+      </div>
+      <p class="mb-0 d-none" id="mensaje-cookies">Aviso cerrado: aquí guardaríamos que ya lo ha visto.</p>
+    </div>
+  </div>
+
+</body>
+</html>

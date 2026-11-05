@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>12 A · JavaScript: el bundle y los atributos data-bs-*</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!--
+    EL FICHERO JAVASCRIPT DE BOOTSTRAP
+    Hay dos versiones:
+      bootstrap.bundle.min.js → Bootstrap + Popper, en un solo fichero (el que usamos siempre)
+      bootstrap.min.js        → solo Bootstrap
+    Popper es una librería que calcula dónde colocar un elemento flotante respecto a otro
+    (que no se salga de la pantalla, que se dé la vuelta si no cabe debajo...).
+    La necesitan los dropdowns, los tooltips y los popovers.
+    Con bootstrap.min.js habría que cargar Popper antes, por separado:
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"></script>
+    En recursos/bootstrap/js solo tenemos el bundle.
+
+    Desde Bootstrap 5 no hace falta jQuery: es JavaScript normal.
+
+    defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo
+  -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!--
+    EL JAVASCRIPT DE BOOTSTRAP
+    Casi todo Bootstrap es CSS. El JavaScript solo hace falta para los componentes
+    que hacen algo al pulsarlos:
+      alert (cerrar), button (pulsado/no pulsado), carousel, collapse, dropdown, modal,
+      offcanvas, popover, scrollspy, tab, toast y tooltip.
+    Hay dos formas de usarlo:
+      - con atributos data-bs-* en el HTML, sin escribir JavaScript (este fichero)
+      - con la API programática, desde nuestro JavaScript (12_B y 12_C)
+
+    El contenido va en verde si lo resuelve Bootstrap y en azul si lo resuelve HTML normal.
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">JavaScript: el bundle y los atributos <code>data-bs-*</code></h1>
+
+    <!--
+      SIN ESCRIBIR JAVASCRIPT: data-bs-toggle Y data-bs-target
+      Al cargar, el JavaScript de Bootstrap se queda escuchando los clics de toda la página.
+      Cuando pulsamos un elemento con data-bs-toggle, mira qué componente indica
+      y sobre qué elemento actuar:
+        data-bs-toggle="collapse" → el componente: mostrar y ocultar un bloque
+        data-bs-target="#detalles" → el elemento sobre el que actúa (un selector CSS)
+      En un enlace, el destino puede ir en el href en lugar de data-bs-target.
+
+      Lo que hace Bootstrap al pulsar (se ve en el inspector de elementos):
+        - al bloque le pone o le quita la clase show (collapse lo oculta, collapse show lo muestra)
+          y anima la altura mientras tanto (clase collapsing)
+        - al botón le cambia aria-expanded entre "false" y "true", para el lector de pantalla
+      aria-controls dice qué bloque controla el botón: también es para el lector de pantalla.
+    -->
+    <h2 class="h4 mt-5">Sin escribir JavaScript: <code>data-bs-toggle</code> y <code>data-bs-target</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#detalles" aria-expanded="false" aria-controls="detalles">
+          Botón con data-bs-target
+        </button>
+        <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#detalles" role="button" aria-expanded="false" aria-controls="detalles">
+          Enlace con href
+        </a>
+      </div>
+      <div class="collapse" id="detalles">
+        <div class="card card-body">
+          Envío en 24 horas a la península. Devoluciones gratis durante 30 días.
+        </div>
+      </div>
+    </div>
+
+    <!--
+      LO MISMO SIN BOOTSTRAP: <details> Y <summary>
+      HTML tiene un elemento que se abre y se cierra solo, sin JavaScript.
+      Es más sencillo, pero el botón tiene que ir pegado al contenido
+      y no se puede abrir el bloque desde otro sitio de la página.
+    -->
+    <h2 class="h4 mt-5">Lo mismo sin Bootstrap: <code>&lt;details&gt;</code></h2>
+
+    <div class="bg-primary-subtle border border-primary-subtle p-3">
+      <details>
+        <summary>Condiciones de envío</summary>
+        <p class="mt-2 mb-0">Envío en 24 horas a la península. Devoluciones gratis durante 30 días.</p>
+      </details>
+    </div>
+
+    <!--
+      OTROS ATRIBUTOS: data-bs-dismiss
+      data-bs-dismiss="alert" cierra el componente que contiene al botón: aquí no hace falta
+      data-bs-target, porque Bootstrap busca la alerta en la que está la X.
+      Ya lo usamos en 11_C. Lo mismo sirve con modal, offcanvas y toast.
+    -->
+    <h2 class="h4 mt-5">Cerrar: <code>data-bs-dismiss</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="alert alert-warning alert-dismissible fade show mb-0" role="alert">
+        Quedan 2 unidades del monitor.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+      </div>
+    </div>
+
+    <!--
+      UN COMPONENTE QUE NECESITA POPPER: dropdown
+      data-bs-toggle="dropdown" en el botón; el menú (dropdown-menu) va justo detrás.
+      Popper coloca el menú debajo del botón y, si no cabe (con el botón al final
+      de la ventana), lo pone encima. Sin Popper, el dropdown da un error en la consola.
+      Los dropdowns los vemos a fondo en el punto siguiente.
+    -->
+    <h2 class="h4 mt-5">Un componente que necesita Popper: <code>dropdown</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Ordenar por
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Precio</a></li>
+          <li><a class="dropdown-item" href="#">Novedades</a></li>
+          <li><a class="dropdown-item" href="#">Valoración</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!--
+      OPCIONES CON ATRIBUTOS: data-bs-{opción}
+      Cada componente tiene opciones (en la documentación, apartado "Options").
+      Se pueden poner como atributo: data-bs- y el nombre de la opción.
+      Si el nombre tiene mayúsculas, se escribe con guiones:
+        autoClose → data-bs-auto-close
+      Ejemplo con la opción autoClose del dropdown (cuándo se cierra el menú):
+        true      → al pulsar dentro o fuera del menú (por defecto)
+        "outside" → solo al pulsar fuera: se puede pulsar dentro sin que se cierre
+        false     → solo al volver a pulsar el botón (o con Esc)
+      Otra opción, offset: "0,20" separa el menú 20px del botón.
+    -->
+    <h2 class="h4 mt-5">Opciones con atributos: <code>data-bs-{opción}</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <div class="d-flex flex-wrap gap-2">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Por defecto
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Precio</a></li>
+            <li><a class="dropdown-item" href="#">Novedades</a></li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            data-bs-auto-close="outside"
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Precio</a></li>
+            <li><a class="dropdown-item" href="#">Novedades</a></li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
+            data-bs-auto-close="false"
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Precio</a></li>
+            <li><a class="dropdown-item" href="#">Novedades</a></li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-offset="0,20" aria-expanded="false">
+            data-bs-offset="0,20"
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Precio</a></li>
+            <li><a class="dropdown-item" href="#">Novedades</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

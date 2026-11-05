@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>12 B · JavaScript: la API programática</title>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- defer: se descarga en paralelo sin bloquear el HTML y se ejecuta cuando el DOM está completo -->
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+  <script>
+    window.onload = () => {
+      const panel = bootstrap.Collapse.getOrCreateInstance(document.getElementById('panel'), { toggle: false })
+
+      document.getElementById('boton-mostrar').onclick = () => {
+        panel.show()
+      }
+
+      document.getElementById('boton-ocultar').onclick = () => {
+        panel.hide()
+      }
+
+      document.getElementById('boton-alternar').onclick = () => {
+        panel.toggle()
+      }
+
+      document.getElementById('boton-cerrar-aviso').onclick = () => {
+        const elementoAviso = document.getElementById('aviso')
+        if (elementoAviso) {
+          bootstrap.Alert.getOrCreateInstance(elementoAviso).close()
+        }
+      }
+
+      new bootstrap.Tooltip(document.getElementById('tooltip-atributos'))
+
+      const tooltipOpciones = new bootstrap.Tooltip(document.getElementById('tooltip-opciones'), {
+        title: 'Opciones pasadas desde JavaScript',
+        placement: 'bottom'
+      })
+
+      document.getElementById('boton-desactivar').onclick = () => {
+        tooltipOpciones.disable()
+      }
+
+      document.getElementById('boton-activar').onclick = () => {
+        tooltipOpciones.enable()
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!--
+    LA API PROGRAMÁTICA
+    El bundle crea un objeto global, bootstrap, con una clase por componente:
+      bootstrap.Alert, bootstrap.Collapse, bootstrap.Dropdown, bootstrap.Modal,
+      bootstrap.Tooltip, bootstrap.Toast...
+    Una instancia es el componente "vivo" de UN elemento del HTML: guarda su estado
+    y tiene los métodos para manejarlo.
+
+    Tres formas de conseguir la instancia:
+      new bootstrap.Collapse(elemento, opciones)               → la crea
+      bootstrap.Collapse.getInstance(elemento)                 → la que ya exista, o null
+      bootstrap.Collapse.getOrCreateInstance(elemento, opciones) → la que exista o una nueva
+    getOrCreateInstance es la más cómoda: no falla si ya estaba creada.
+    El primer parámetro es el elemento (también vale un selector CSS como '#panel').
+
+    ¿Cuándo usar la API en lugar de data-bs-*? Cuando la acción no sale de un clic
+    en un botón: al terminar de guardar, al recibir datos del servidor, después de un tiempo...
+  -->
+  <div class="container">
+    <h1 class="text-center mt-5 text-success">JavaScript: la API programática</h1>
+
+    <!--
+      MÉTODOS DE UNA INSTANCIA: show(), hide(), toggle()
+      Los botones no tienen data-bs-toggle: cada uno tiene su id y su onclick,
+      que llama a un método de la instancia del collapse.
+      { toggle: false }: si no, al crear la instancia de un collapse se abre o cierra
+      en ese mismo momento (su opción toggle vale true por defecto).
+      Los métodos de casi todos los componentes son estos tres, más dispose(),
+      que destruye la instancia y quita lo que Bootstrap había añadido al elemento.
+    -->
+    <h2 class="h4 mt-5">Métodos: <code>show()</code>, <code>hide()</code> y <code>toggle()</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        <button type="button" class="btn btn-primary" id="boton-mostrar">show()</button>
+        <button type="button" class="btn btn-primary" id="boton-ocultar">hide()</button>
+        <button type="button" class="btn btn-primary" id="boton-alternar">toggle()</button>
+      </div>
+      <div class="collapse" id="panel">
+        <div class="card card-body">Un bloque manejado desde JavaScript.</div>
+      </div>
+    </div>
+
+    <!--
+      ACTUAR SOBRE UN COMPONENTE DESDE OTRO SITIO
+      La alerta tiene su X con data-bs-dismiss. Además, un botón de fuera la cierra
+      con el método close() de su instancia.
+      Usamos getOrCreateInstance y no getInstance: con data-bs-*, Bootstrap no crea la instancia
+      al cargar la página, sino la primera vez que se pulsa la X. Hasta entonces,
+      getInstance devolvería null.
+      Una alerta cerrada desaparece del HTML: por eso comprobamos que el elemento sigue existiendo.
+    -->
+    <h2 class="h4 mt-5">Actuar desde otro sitio: <code>close()</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3">
+      <button type="button" class="btn btn-outline-danger mb-3" id="boton-cerrar-aviso">Cerrar el aviso desde fuera</button>
+      <div class="alert alert-info alert-dismissible fade show mb-0" role="alert" id="aviso">
+        Pedido guardado.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+      </div>
+    </div>
+
+    <!--
+      COMPONENTES QUE HAY QUE ACTIVAR CON JAVASCRIPT: tooltip
+      Los tooltips y los popovers no funcionan solo con atributos: por rendimiento,
+      Bootstrap no los busca en la página. Hay que crear la instancia de cada uno.
+      Las opciones pueden ir:
+        - en atributos data-bs-* (data-bs-title, data-bs-placement)
+        - en el segundo parámetro del constructor: { title: '...', placement: 'bottom' }
+      Si una opción está en los dos sitios, gana la de JavaScript.
+      enable() y disable() activan y desactivan el tooltip sin destruirlo.
+    -->
+    <h2 class="h4 mt-5">Activar con JavaScript: <code>new bootstrap.Tooltip()</code></h2>
+
+    <div class="bg-success-subtle border border-success-subtle p-3 mb-5">
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-secondary" id="tooltip-atributos" data-bs-title="Opciones en atributos data-bs-*" data-bs-placement="top">
+          Opciones en atributos
+        </button>
+        <button type="button" class="btn btn-secondary" id="tooltip-opciones">
+          Opciones en JavaScript
+        </button>
+        <button type="button" class="btn btn-outline-secondary" id="boton-desactivar">disable()</button>
+        <button type="button" class="btn btn-outline-secondary" id="boton-activar">enable()</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
