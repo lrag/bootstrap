@@ -303,9 +303,10 @@
     <!--
       LO QUE NO SE CAMBIA CON VARIABLES: LOS COLORES DE TEMA EN LOS COMPONENTES
       En este bloque ponemos style="--bs-primary-rgb: 111, 66, 193" (morado).
-        bg-primary y text-primary → leen --bs-primary-rgb: se vuelven morados
-        btn-primary               → NO: su azul está escrito en el CSS ya compilado
-      Para cambiar primary en botones, alerts, badges... hay que recompilar Bootstrap
+        bg-primary, text-primary y text-bg-primary (badges) → leen --bs-primary-rgb: se vuelven morados
+        btn-primary   → NO: su azul está escrito en el CSS ya compilado (#0d6efd)
+        alert-primary → NO: usa otras variables (--bs-primary-bg-subtle, --bs-primary-text-emphasis)
+      Para cambiar primary en botones, alerts, checks, paginación... hay que recompilar Bootstrap
       desde Sass con $primary: lo vemos en el punto de personalización.
     -->
     <h2 class="h4 mt-5">Lo que no se cambia con variables: <code>--bs-primary-rgb</code></h2>

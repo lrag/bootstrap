@@ -3330,6 +3330,2346 @@ image::08_practica_lg.png[Práctica de catálogo en pantalla ancha]
 
 image::08_practica_xs.png[Práctica de catálogo en el móvil]
 
+== JavaScript de Bootstrap
+
+El fichero JavaScript de Bootstrap y Popper, los atributos `data-bs-*` frente a la API programática, y los métodos y eventos de las instancias.
+Ejemplos de clase: `12_A_JavaScript_data_atributos.html`, `12_B_JavaScript_API.html` y `12_C_JavaScript_eventos.html`.
+
+=== Qué hace el JavaScript de Bootstrap
+
+Casi todo Bootstrap es CSS: la rejilla, las utilidades, las cards o los formularios funcionan sin JavaScript.
+El JavaScript solo hace falta para los componentes que *reaccionan* a lo que hace el usuario.
+Desde la versión 5 es JavaScript normal: *no necesita jQuery*.
+
+[cols="1m,3,1",options="header"]
+|===
+|Componente |Qué hace con JavaScript |¿Necesita Popper?
+|Alert |Cerrar la alerta |No
+|Button |Estado pulsado / no pulsado |No
+|Carousel |Pasar las diapositivas |No
+|Collapse |Mostrar y ocultar un bloque (acordeón, menú de la navbar) |No
+|Dropdown |Abrir el menú desplegable |*Sí*
+|Modal |Ventana modal |No
+|Offcanvas |Panel lateral |No
+|Popover |Globo con título y contenido |*Sí*
+|ScrollSpy |Marcar en el menú la sección visible |No
+|Tab |Pestañas |No
+|Toast |Notificaciones |No
+|Tooltip |Texto flotante al pasar el ratón |*Sí*
+|===
+
+Hay dos formas de usarlo: con atributos `data-bs-*` en el HTML, sin escribir JavaScript, o con la *API programática* desde nuestro código.
+
+=== El bundle y Popper
+
+*Popper* es una librería que calcula dónde colocar un elemento flotante respecto a otro: que no se salga de la pantalla, que se dé la vuelta si no cabe debajo…
+La usan los dropdowns, los tooltips y los popovers.
+
+[cols="2m,2,3",options="header"]
+|===
+|Fichero |Contiene |Cuándo
+|bootstrap.bundle.min.js |Bootstrap + Popper |Lo normal: un solo fichero y funciona todo
+|bootstrap.min.js |Solo Bootstrap |Si Popper ya se carga por otro lado (o no se usan dropdowns, tooltips ni popovers)
+|===
+
+[source,html]
+----
+<!-- Con el bundle (lo que usamos en el curso) -->
+<script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+<!-- Sin el bundle: Popper primero -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" defer></script>
+----
+
+NOTE: El bundle crea un objeto global, `bootstrap`, con una clase por componente: `bootstrap.Collapse`, `bootstrap.Modal`, `bootstrap.Tooltip`…
+Es lo que usa la API programática (ver <<_la_api_programática>>).
+
+=== Sin escribir JavaScript: atributos `data-bs-*`
+
+Al cargar, Bootstrap se queda escuchando los clics de toda la página.
+Cuando se pulsa un elemento con `data-bs-toggle`, mira qué componente indica y sobre qué elemento actuar: `data-bs-target` o, en un enlace, el `href`.
+
+[source,html]
+----
+<button class="btn btn-primary" type="button"
+        data-bs-toggle="collapse" data-bs-target="#detalles"
+        aria-expanded="false" aria-controls="detalles">
+  Botón con data-bs-target
+</button>
+<a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#detalles"
+   role="button" aria-expanded="false" aria-controls="detalles">
+  Enlace con href
+</a>
+
+<div class="collapse" id="detalles">
+  <div class="card card-body">Envío en 24 horas a la península. Devoluciones gratis durante 30 días.</div>
+</div>
+----
+
+.Un collapse abierto con `data-bs-toggle="collapse"`
+image::09_data_bs_collapse.png[Bloque abierto con data-bs-toggle]
+
+[cols="1m,3",options="header"]
+|===
+|Atributo |Para qué
+|data-bs-toggle |El componente que se activa: `collapse`, `dropdown`, `modal`, `offcanvas`, `tab`, `button`…
+|data-bs-target |El elemento sobre el que actúa (selector CSS). En un enlace, vale el `href`
+|data-bs-dismiss |Cierra el componente que contiene al botón: `alert`, `modal`, `offcanvas`, `toast`
+|data-bs-{opción} |Una opción del componente (ver <<_opciones_data_bs_opción>>)
+|===
+
+Lo que hace Bootstrap al pulsar se ve en el inspector de elementos:
+
+* Al bloque le pone o le quita la clase `show` (`collapse` lo oculta, `collapse show` lo muestra) y, durante la animación de la altura, la clase `collapsing`.
+* Al botón le cambia `aria-expanded` entre `false` y `true`, para el lector de pantalla. `aria-controls` dice qué bloque controla el botón.
+
+`data-bs-dismiss` no necesita `data-bs-target`: Bootstrap busca el componente en el que está el botón.
+
+[source,html]
+----
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  Quedan 2 unidades del monitor.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+</div>
+----
+
+TIP: Para un bloque que se abre y se cierra, HTML ya tiene `<details>` y `<summary>`, sin JavaScript.
+Es más sencillo, pero el botón tiene que ir pegado al contenido y no se puede abrir el bloque desde otro sitio de la página.
+
+=== Opciones: `data-bs-{opción}`
+
+Cada componente tiene opciones (en la documentación, apartado _Options_). Se pueden dar de dos formas:
+
+* Como atributo: `data-bs-` y el nombre de la opción. Si el nombre tiene mayúsculas, se escribe con guiones: `autoClose` → `data-bs-auto-close`.
+* Como objeto en el segundo parámetro del constructor de JavaScript (ver <<_la_api_programática>>).
+
+Ejemplo con la opción `autoClose` del dropdown, que decide cuándo se cierra el menú:
+
+[cols="1m,3",options="header"]
+|===
+|data-bs-auto-close |El menú se cierra…
+|true (por defecto) |Al pulsar dentro o fuera del menú
+|"outside" |Solo al pulsar fuera: se puede pulsar dentro sin que se cierre
+|"inside" |Solo al pulsar dentro
+|false |Solo al volver a pulsar el botón (o con Esc)
+|===
+
+[source,html]
+----
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button"
+          data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+    data-bs-auto-close="outside"
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#">Precio</a></li>
+    <li><a class="dropdown-item" href="#">Novedades</a></li>
+  </ul>
+</div>
+----
+
+Otra opción del dropdown, `offset`: con `data-bs-offset="0,20"` el menú se separa 20 px del botón.
+
+.Dropdown abierto con `data-bs-offset="0,20"`: Popper lo coloca 20 px por debajo del botón
+image::09_dropdown_offset.png[Dropdown con offset]
+
+NOTE: El dropdown necesita Popper: con `bootstrap.min.js` y sin Popper, da un error en la consola.
+Popper coloca el menú debajo del botón y, si no cabe (con el botón al final de la ventana), lo pone encima.
+
+IMPORTANT: Si una opción está en un atributo y también en el constructor, *gana la de JavaScript*.
+
+=== La API programática
+
+Una *instancia* es el componente «vivo» de un elemento del HTML: guarda su estado y tiene los métodos para manejarlo.
+Se usa cuando la acción no sale de un clic en un botón: al terminar de guardar, al recibir datos del servidor, pasado un tiempo…
+
+[cols="3m,2",options="header"]
+|===
+|Para conseguir la instancia |Qué hace
+|new bootstrap.Collapse(elemento, opciones) |La crea
+|bootstrap.Collapse.getInstance(elemento) |Devuelve la que ya exista, o `null`
+|bootstrap.Collapse.getOrCreateInstance(elemento, opciones) |La que exista o una nueva: la más cómoda
+|===
+
+El elemento puede ser el nodo del DOM o un selector CSS (`'#panel'`).
+
+[cols="2,3",options="header"]
+|===
+|Método |Qué hace
+|`show()` / `hide()` / `toggle()` |Mostrar, ocultar, alternar (en casi todos los componentes)
+|`dispose()` |Destruye la instancia y quita lo que Bootstrap había añadido al elemento
+|Propios de cada componente |`close()` en Alert, `next()` y `prev()` en Carousel, `enable()` y `disable()` en Tooltip…
+|===
+
+==== Métodos: `show()`, `hide()` y `toggle()`
+
+Tres botones sin `data-bs-toggle`: cada uno con su `id` y su `onclick`, que llama a un método de la instancia del collapse.
+
+[source,html]
+----
+<button type="button" class="btn btn-primary" id="boton-mostrar">show()</button>
+<button type="button" class="btn btn-primary" id="boton-ocultar">hide()</button>
+<button type="button" class="btn btn-primary" id="boton-alternar">toggle()</button>
+
+<div class="collapse" id="panel">
+  <div class="card card-body">Un bloque manejado desde JavaScript.</div>
+</div>
+----
+
+[source,javascript]
+----
+window.onload = () => {
+  const panel = bootstrap.Collapse.getOrCreateInstance(document.getElementById('panel'), { toggle: false })
+
+  document.getElementById('boton-mostrar').onclick = () => {
+    panel.show()
+  }
+
+  document.getElementById('boton-ocultar').onclick = () => {
+    panel.hide()
+  }
+
+  document.getElementById('boton-alternar').onclick = () => {
+    panel.toggle()
+  }
+}
+----
+
+.Tras pulsar `show()`: el bloque se abre sin `data-bs-toggle`
+image::09_api_show.png[Collapse abierto desde la API]
+
+WARNING: `{ toggle: false }`: la opción `toggle` del collapse vale `true` por defecto, y entonces el bloque se abre o se cierra en el mismo momento de crear la instancia.
+Con `false`, la instancia se crea sin tocar el bloque.
+
+==== Actuar desde otro sitio: `close()`
+
+La alerta tiene su X con `data-bs-dismiss`, y además un botón de fuera la cierra con el método `close()` de su instancia.
+
+[source,html]
+----
+<button type="button" class="btn btn-outline-danger" id="boton-cerrar-aviso">Cerrar el aviso desde fuera</button>
+
+<div class="alert alert-info alert-dismissible fade show" role="alert" id="aviso">
+  Pedido guardado.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+</div>
+----
+
+[source,javascript]
+----
+document.getElementById('boton-cerrar-aviso').onclick = () => {
+  const elementoAviso = document.getElementById('aviso')
+  if (elementoAviso) {
+    bootstrap.Alert.getOrCreateInstance(elementoAviso).close()
+  }
+}
+----
+
+* `getOrCreateInstance` y no `getInstance`: con `data-bs-*`, Bootstrap no crea la instancia al cargar la página, sino *la primera vez que se usa* (al pulsar la X). Hasta entonces, `getInstance` devolvería `null`.
+* Una alerta cerrada desaparece del HTML: por eso se comprueba que el elemento sigue existiendo.
+
+=== Componentes que hay que activar: tooltips y popovers
+
+Por rendimiento, Bootstrap no busca tooltips ni popovers en la página: *no funcionan hasta que se crea su instancia* con JavaScript, uno a uno.
+Las opciones pueden ir en atributos `data-bs-*` o en el segundo parámetro del constructor.
+
+[source,html]
+----
+<button type="button" class="btn btn-secondary" id="tooltip-atributos"
+        data-bs-title="Opciones en atributos data-bs-*" data-bs-placement="top">
+  Opciones en atributos
+</button>
+<button type="button" class="btn btn-secondary" id="tooltip-opciones">Opciones en JavaScript</button>
+<button type="button" class="btn btn-outline-secondary" id="boton-desactivar">disable()</button>
+<button type="button" class="btn btn-outline-secondary" id="boton-activar">enable()</button>
+----
+
+[source,javascript]
+----
+window.onload = () => {
+  new bootstrap.Tooltip(document.getElementById('tooltip-atributos'))
+
+  const tooltipOpciones = new bootstrap.Tooltip(document.getElementById('tooltip-opciones'), {
+    title: 'Opciones pasadas desde JavaScript',
+    placement: 'bottom'
+  })
+
+  document.getElementById('boton-desactivar').onclick = () => {
+    tooltipOpciones.disable()
+  }
+
+  document.getElementById('boton-activar').onclick = () => {
+    tooltipOpciones.enable()
+  }
+}
+----
+
+`enable()` y `disable()` activan y desactivan el tooltip sin destruirlo.
+
+.Un tooltip con `data-bs-placement="right"` al pasar el ratón
+image::09_tooltip.png[Tooltip a la derecha de un botón]
+
+NOTE: Los tooltips y los popovers se ven a fondo en el capítulo siguiente, con el resto de componentes interactivos.
+
+=== Eventos
+
+Los componentes avisan de lo que les pasa lanzando eventos sobre su elemento, con el nombre `acción.bs.componente`.
+
+[cols="2m,3,2",options="header"]
+|===
+|Evento |Cuándo |¿Se puede cancelar?
+|show.bs.collapse |Va a empezar a abrirse (todavía no se ve nada) |Sí, con `preventDefault()`
+|shown.bs.collapse |Ha terminado de abrirse (después de la animación) |No
+|hide.bs.collapse |Va a empezar a cerrarse |Sí
+|hidden.bs.collapse |Ha terminado de cerrarse |No
+|===
+
+El mismo patrón sirve para dropdown, modal, offcanvas, tab, toast y tooltip (`show.bs.modal`, `hidden.bs.dropdown`…).
+Alert usa `close` y `closed`; carousel, `slide` y `slid`.
+Cada componente tiene la lista en la documentación, apartado _Events_.
+
+Se escuchan con `addEventListener` sobre el elemento del componente: no hay propiedad `onshow.bs.collapse`.
+
+[source,javascript]
+----
+window.onload = () => {
+  const registro = document.getElementById('registro')
+  const bloque = document.getElementById('bloque')
+
+  bloque.addEventListener('show.bs.collapse', () => {
+    registro.textContent += 'show.bs.collapse   → empieza a abrirse\n'
+  })
+
+  bloque.addEventListener('shown.bs.collapse', () => {
+    registro.textContent += 'shown.bs.collapse  → ya está abierto\n'
+  })
+
+  bloque.addEventListener('hide.bs.collapse', () => {
+    registro.textContent += 'hide.bs.collapse   → empieza a cerrarse\n'
+  })
+
+  bloque.addEventListener('hidden.bs.collapse', () => {
+    registro.textContent += 'hidden.bs.collapse → ya está cerrado\n'
+  })
+}
+----
+
+NOTE: *¿Para qué el evento de «terminado»?* Los métodos (`show()`, `hide()`…) vuelven enseguida, pero la animación sigue.
+Lo que tenga que pasar cuando el componente ya se ve (poner el foco en un campo de un modal, por ejemplo) va en `shown`.
+
+==== Cancelar: `preventDefault()`
+
+Los eventos de «antes» (`show`, `hide`, `close`…) se pueden cancelar: con `evento.preventDefault()` el componente no se abre (o no se cierra).
+Los de «después» (`shown`, `hidden`, `closed`) no: ya ha pasado.
+
+[source,javascript]
+----
+document.getElementById('bloque-bloqueable').addEventListener('show.bs.collapse', (evento) => {
+  if (document.getElementById('bloquear').checked) {
+    evento.preventDefault()
+  }
+})
+----
+
+.Registro de eventos al abrir, al cerrar y al intentar abrir con la casilla «Impedir que se abra» marcada
+image::09_eventos.png[Registro de eventos de un collapse]
+
+==== Un caso real: `closed.bs.alert`
+
+`closed.bs.alert` salta cuando la alerta ya ha desaparecido.
+En una web real guardaríamos que el usuario ya ha visto el aviso (en el servidor o en `localStorage`) para no volver a enseñárselo; en el ejemplo, mostramos un mensaje.
+
+[source,html]
+----
+<div class="alert alert-info alert-dismissible fade show" role="alert" id="cookies">
+  Usamos cookies para recordar el carrito.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+</div>
+<p class="d-none" id="mensaje-cookies">Aviso cerrado: aquí guardaríamos que ya lo ha visto.</p>
+----
+
+[source,javascript]
+----
+document.getElementById('cookies').addEventListener('closed.bs.alert', () => {
+  document.getElementById('mensaje-cookies').classList.remove('d-none')
+})
+----
+
+=== Práctica
+
+Preguntas frecuentes de la tienda:
+
+* Tres preguntas; cada una es un botón con `data-bs-toggle="collapse"` que abre su respuesta.
+* Dos botones, «Abrir todas» y «Cerrar todas», que usan la API: `getOrCreateInstance(…, { toggle: false })` y `show()` / `hide()`.
+* Un contador «Respuestas abiertas: N» que se actualiza con los eventos `shown.bs.collapse` y `hidden.bs.collapse`.
+* Opcional: un botón de ayuda con un tooltip creado con `new bootstrap.Tooltip()`.
+
+.Un resultado posible, tras pulsar «Abrir todas»
+image::09_practica.png[Práctica de preguntas frecuentes]
+
+== Componentes interactivos
+
+Navbar responsive con collapse, dropdowns, modales, offcanvas, tabs y pills, accordion, carousel, tooltips, popovers, toasts y scrollspy: los componentes que necesitan el JavaScript de Bootstrap.
+Ejemplos de clase: `13_A_Navbar.html`, `13_B_Dropdowns.html`, `13_C_Modales.html`, `13_D_Offcanvas.html`, `13_E_Tabs_pills_accordion.html`, `13_F_Carousel.html`, `13_G_Tooltips_popovers_toasts.html` y `13_H_Scrollspy.html`.
+
+Todos funcionan igual: se abren con `data-bs-toggle` y `data-bs-target`, se cierran con `data-bs-dismiss`, aceptan opciones `data-bs-{opción}` y lanzan eventos `acción.bs.componente`.
+Casi todos los ejemplos de clase funcionan sin escribir JavaScript.
+
+[cols="2,3",options="header"]
+|===
+|Componente |Cómo se activa
+|Navbar, dropdown, modal, offcanvas, tabs, accordion, carousel, scrollspy |Solo con atributos `data-bs-*`
+|Tooltip y popover |Hay que crear cada uno con JavaScript (`new bootstrap.Tooltip(…)`)
+|Toast |Se muestra con el método `show()` de su instancia
+|===
+
+NOTE: Todos necesitan `bootstrap.bundle.min.js`; dropdowns, tooltips y popovers usan además *Popper* (incluido en el bundle) para colocarse.
+
+=== Navbar responsive con collapse
+
+La barra de navegación de la web: marca, enlaces y, a veces, un buscador.
+Por encima de un breakpoint se ve desplegada; por debajo, el menú se recoge tras el *botón hamburguesa*, que es un `collapse` normal.
+
+[source,html]
+----
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">TecladoShop</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu-principal"
+            aria-controls="menu-principal" aria-expanded="false" aria-label="Mostrar el menú">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="menu-principal">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Teclados</a></li>
+        <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Ofertas</a></li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
+        <button class="btn btn-outline-success" type="submit">Buscar</button>
+      </form>
+    </div>
+  </div>
+</nav>
+----
+
+[cols="2,3",options="header"]
+|===
+|Clase |Para qué
+|`navbar` |La barra (flex); sin clase de fondo es transparente
+|`navbar-expand-{bp}` |Desplegada desde ese breakpoint; por debajo, recogida
+|`navbar-brand` |El nombre o el logo (texto, icono o `<img>`)
+|`navbar-toggler` + `navbar-toggler-icon` |El botón hamburguesa y sus tres rayas (un SVG del CSS)
+|`collapse navbar-collapse` |Lo que se recoge: el menú y el buscador
+|`navbar-nav` con `nav-item` y `nav-link` |La lista de enlaces; `active` + `aria-current="page"` en la página actual
+|`navbar-text` |Un texto suelto, alineado con los enlaces
+|===
+
+`me-auto` en el `ul` empuja el buscador al final (la navbar es flex) y `mb-2 mb-lg-0` separa la lista solo con el menú recogido.
+
+.La misma navbar en el móvil (recogida) y desde `lg` (desplegada)
+image::10_navbar_xs.png[Navbar recogida en el móvil]
+
+image::10_navbar_lg.png[Navbar desplegada en pantalla ancha]
+
+.El menú abierto con el botón hamburguesa
+image::10_navbar_abierta_xs.png[Navbar con el menú desplegado en el móvil]
+
+IMPORTANT: El botón hamburguesa no tiene texto: necesita `aria-label`.
+`aria-controls` dice qué bloque controla y `aria-expanded` si está abierto (Bootstrap lo cambia al pulsar).
+
+==== Cuándo se recoge: `navbar-expand-{bp}`
+
+[cols="1,2",options="header"]
+|===
+|Clase |Comportamiento
+|`navbar-expand-sm` … `navbar-expand-xxl` |Recogida por debajo del breakpoint, desplegada desde él
+|`navbar-expand` |Siempre desplegada (no hace falta botón)
+|Sin `navbar-expand-*` |Siempre recogida
+|===
+
+Es el enfoque mobile-first de siempre: por defecto recogida y, desde el breakpoint, desplegada.
+
+==== Un dropdown dentro de la navbar
+
+Un `nav-item dropdown` con un `a.nav-link.dropdown-toggle` (`role="button"`, `data-bs-toggle="dropdown"`) y su `ul.dropdown-menu`.
+Con el menú recogido, el dropdown se abre dentro de la lista, empujando lo de abajo; con la barra desplegada, flota.
+
+[source,html]
+----
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Productos
+  </a>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#">Teclados</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="#">Todo el catálogo</a></li>
+  </ul>
+</li>
+----
+
+==== Navbar oscura: `data-bs-theme="dark"`
+
+Con un fondo oscuro, los enlaces tienen que ser claros: `data-bs-theme="dark"` en el `nav` (la navbar, su dropdown y su botón hamburguesa pasan al modo oscuro) y el fondo con `bg-dark` o `bg-primary`.
+
+[source,html]
+----
+<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">…</nav>
+----
+
+.`data-bs-theme="dark"` con `bg-dark`
+image::10_navbar_oscura.png[Navbar oscura]
+
+WARNING: En la 5.3, `navbar-dark`, `dropdown-menu-dark`, `carousel-dark` y `btn-close-white` están obsoletas.
+En su lugar, `data-bs-theme="dark"` en el componente o en un padre.
+
+==== Al hacer scroll: `sticky-top` y `fixed-top`
+
+[cols="1,3",options="header"]
+|===
+|Clase |Efecto
+|`sticky-top` |En su sitio y, al bajar, pegada arriba (`position: sticky`) mientras su contenedor siga a la vista
+|`fixed-top` / `fixed-bottom` |Siempre pegada arriba / abajo de la ventana (`position: fixed`). Sale del flujo: el `body` necesita un `padding-top` del alto de la barra para que no tape el contenido
+|===
+
+En una web real la navbar va al principio del `body`, fuera del `container`.
+
+=== Dropdowns
+
+Un botón que muestra una lista de opciones flotando encima del resto.
+`data-bs-toggle="dropdown"` en el botón y el `dropdown-menu` justo detrás, dentro de un elemento con `dropdown` (o `btn-group`).
+Con el menú abierto, las flechas pasan de una opción a otra y Esc lo cierra.
+
+[source,html]
+----
+<div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Botón
+  </button>
+  <ul class="dropdown-menu">
+    <li><h6 class="dropdown-header">Ordenar por</h6></li>
+    <li><a class="dropdown-item active" href="#" aria-current="true">Precio</a></li>
+    <li><a class="dropdown-item" href="#">Novedades</a></li>
+    <li><a class="dropdown-item disabled" aria-disabled="true">Más vendidos</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><span class="dropdown-item-text">125 productos</span></li>
+  </ul>
+</div>
+----
+
+.Un dropdown abierto con cabecera, opción activa, opción deshabilitada, separador y texto
+image::10_dropdown_abierto.png[Dropdown abierto]
+
+[cols="2,3",options="header"]
+|===
+|Clase / atributo |Para qué
+|`dropdown-item` |Cada opción; en un `<a>` o en un `<button>`
+|`active` / `disabled` |Opción elegida (`aria-current="true"`) / no pulsable (`aria-disabled="true"`)
+|`dropdown-header`, `dropdown-divider`, `dropdown-item-text` |Título de grupo, separador (`<hr>`), texto suelto
+|`btn-group` + `dropdown-toggle-split` |Botón partido: acción principal y flecha aparte (con un `visually-hidden` en la flecha)
+|`dropup`, `dropend`, `dropstart`, `dropdown-center`, `dropup-center dropup` |Hacia dónde se abre; va en el elemento que envuelve botón y menú
+|`dropdown-menu-end` |Alineado con el borde derecho del botón
+|`dropdown-menu-lg-end` |A la derecha solo desde `lg`; necesita `data-bs-display="static"` en el botón
+|`data-bs-theme="dark"` en el `dropdown-menu` |Menú oscuro
+|`data-bs-auto-close="outside"` |No se cierra al pulsar dentro: imprescindible con un formulario en el menú
+|===
+
+[source,html]
+----
+<div class="btn-group">
+  <button type="button" class="btn btn-success">Comprar ahora</button>
+  <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split"
+          data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="visually-hidden">Más opciones de compra</span>
+  </button>
+  <ul class="dropdown-menu">…</ul>
+</div>
+----
+
+TIP: Si el menú no cabe hacia donde se abre (al borde de la ventana), Popper le da la vuelta.
+Por eso las clases responsive de alineación necesitan `data-bs-display="static"`: si no, decide Popper.
+
+=== Modales
+
+Una ventana encima de la página, con el fondo oscurecido (_backdrop_).
+Mientras está abierta no se puede usar lo de detrás: sirve para confirmar una acción, un formulario corto o un detalle sin salir de la página.
+Se abre con `data-bs-toggle="modal"` y se cierra con `data-bs-dismiss="modal"`, con Esc o pulsando en el fondo.
+
+[source,html]
+----
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal-basico">
+  Vaciar el carrito
+</button>
+
+<div class="modal fade" id="modal-basico" tabindex="-1" aria-labelledby="modal-basico-titulo" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modal-basico-titulo">¿Vaciar el carrito?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">Se quitarán los 3 productos del carrito.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Vaciar</button>
+      </div>
+    </div>
+  </div>
+</div>
+----
+
+[cols="1,3",options="header"]
+|===
+|Pieza |Qué es
+|`modal fade` |La capa que ocupa toda la ventana (`fade`: aparece con animación)
+|`modal-dialog` |La caja centrada en horizontal; aquí van las clases de tamaño y posición
+|`modal-content` |El fondo con borde y esquinas
+|`modal-header`, `modal-body`, `modal-footer` |Título y X, contenido y botones
+|===
+
+.Un modal abierto, con el fondo oscurecido
+image::10_modal.png[Modal abierto]
+
+IMPORTANT: `tabindex="-1"` para que el modal reciba el foco (y funcione Esc), `aria-labelledby` con el id del título y `aria-hidden="true"` mientras está cerrado.
+Bootstrap quita `aria-hidden` al abrir y añade `aria-modal` y `role="dialog"`.
+
+==== Opciones y tamaños
+
+[cols="1,2,3",options="header"]
+|===
+|Dónde |Clase / atributo |Efecto
+|`.modal` |`data-bs-backdrop="static"` |Pulsar en el fondo no lo cierra
+|`.modal` |`data-bs-keyboard="false"` |Esc no lo cierra
+|`.modal-dialog` |`modal-sm` / (ninguna) / `modal-lg` / `modal-xl` |300 / 500 / 800 / 1140 px de ancho máximo
+|`.modal-dialog` |`modal-dialog-centered` |Centrado en vertical (por defecto sale arriba)
+|`.modal-dialog` |`modal-dialog-scrollable` |El scroll va dentro de `modal-body`; cabecera y pie siempre a la vista
+|`.modal-dialog` |`modal-fullscreen` |Siempre a pantalla completa
+|`.modal-dialog` |`modal-fullscreen-{bp}-down` |A pantalla completa *por debajo* del breakpoint
+|===
+
+.`modal-dialog-centered modal-dialog-scrollable` con un texto largo
+image::10_modal_scroll.png[Modal centrado y con scroll interno]
+
+NOTE: `modal-fullscreen-md-down` lleva `-down` porque vale del breakpoint hacia abajo: al revés que el resto de clases responsive.
+
+==== Un formulario en un modal y `shown.bs.modal`
+
+El formulario va en `modal-body` y el botón de enviar en `modal-footer`, fuera del `<form>`: el atributo `form="form-resena"` de HTML lo asocia al formulario.
+
+[source,html]
+----
+<div class="modal-body">
+  <form id="form-resena">
+    <label for="resena-nombre" class="form-label">Nombre</label>
+    <input type="text" class="form-control" id="resena-nombre" required>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+  <button type="submit" class="btn btn-success" form="form-resena">Publicar</button>
+</div>
+----
+
+`autofocus` no funciona dentro de un modal: el foco se pone en el evento `shown.bs.modal`, cuando el modal ya se ve (con `show.bs.modal` el campo todavía no se ve y `focus()` no hace nada).
+Al enviar, cerramos el modal con el método `hide()` de su instancia.
+
+[source,js]
+----
+window.onload = () => {
+  document.getElementById('modal-resena').addEventListener('shown.bs.modal', () => {
+    document.getElementById('resena-nombre').focus()
+  })
+
+  document.getElementById('form-resena').onsubmit = (evento) => {
+    evento.preventDefault()
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('modal-resena')).hide()
+    document.getElementById('resena-gracias').classList.remove('d-none')
+  }
+}
+----
+
+WARNING: Solo puede haber un modal abierto a la vez.
+El HTML del modal conviene dejarlo «arriba» en el documento, fuera de elementos con `position` o `transform`.
+
+=== Offcanvas
+
+Un panel escondido fuera de la pantalla que entra deslizándose desde un borde: el carrito, los filtros del catálogo, el menú del móvil.
+Se comporta como un modal (fondo, Esc, foco, sin scroll en el `body`) y tiene la misma estructura: cabecera y cuerpo.
+
+[source,html]
+----
+<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" aria-controls="carrito">
+  Ver el carrito
+</button>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="carrito" aria-labelledby="carrito-titulo">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="carrito-titulo">Carrito</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+  </div>
+  <div class="offcanvas-body">…</div>
+</div>
+----
+
+.El carrito en un `offcanvas-end`
+image::10_offcanvas.png[Offcanvas abierto a la derecha]
+
+[cols="2,3",options="header"]
+|===
+|Clase / atributo |Para qué
+|`offcanvas-start` / `-end` / `-top` / `-bottom` |Desde qué lado entra (obligatorio: no hay valor por defecto)
+|`data-bs-scroll="true"` |La página de detrás se puede seguir moviendo
+|`data-bs-backdrop="false"` |Sin fondo oscuro: lo de detrás se puede usar
+|`data-bs-backdrop="static"` |Con fondo, pero pulsar en él no lo cierra
+|`offcanvas-lg` (y `-sm`, `-md`, `-xl`, `-xxl`) |Panel por debajo del breakpoint; contenido normal desde él
+|===
+
+Un enlace también lo abre, con `href="#carrito"` en lugar de `data-bs-target` (y `role="button"`).
+
+==== Offcanvas responsive: `offcanvas-lg`
+
+Los filtros de un catálogo: en el móvil, en un panel; en pantalla ancha, siempre a la vista en una columna.
+
+[source,html]
+----
+<button class="btn btn-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtros"
+        aria-controls="filtros">Filtros</button>
+<div class="row">
+  <div class="col-lg-3">
+    <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="filtros" aria-labelledby="filtros-titulo">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="filtros-titulo">Filtros</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#filtros"
+                aria-label="Cerrar"></button>
+      </div>
+      <div class="offcanvas-body flex-column">…</div>
+    </div>
+  </div>
+  <div class="col-lg-9">…</div>
+</div>
+----
+
+WARNING: En el offcanvas responsive la X necesita `data-bs-target` explícito.
+
+==== Una navbar con offcanvas
+
+El botón hamburguesa con `data-bs-toggle="offcanvas"` y un `div.offcanvas` en lugar de `div.collapse.navbar-collapse`.
+Con `navbar-expand-lg`, desde `lg` el panel se convierte en el menú normal de la barra.
+
+[source,html]
+----
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">TecladoShop</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu-lateral"
+            aria-controls="menu-lateral" aria-label="Mostrar el menú">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="menu-lateral" aria-labelledby="menu-lateral-titulo">
+      <div class="offcanvas-header">…</div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav flex-grow-1 justify-content-end">…</ul>
+      </div>
+    </div>
+  </div>
+</nav>
+----
+
+=== Navs, tabs y pills
+
+`nav` es una lista de enlaces en fila (flex); es solo CSS.
+Una clase más cambia el aspecto:
+
+[cols="1,3",options="header"]
+|===
+|Clase |Efecto
+|`nav-tabs` |Pestañas, como las de las carpetas de un archivador
+|`nav-pills` |El activo es un botón relleno con las esquinas redondeadas
+|`nav-underline` |El activo va subrayado (nuevo en la 5.3)
+|`nav-fill` |Los enlaces se reparten todo el ancho, cada uno según su texto
+|`nav-justified` |Todos del mismo ancho
+|`flex-column`, `justify-content-*` |En columna, centrados o a la derecha (es flex)
+|===
+
+.`nav-pills` y `nav-underline`
+image::10_tabs_estilos.png[Estilos de nav: pills y underline]
+
+==== Pestañas que funcionan: `data-bs-toggle="tab"`
+
+Cada pestaña es un `button.nav-link` con `data-bs-toggle="tab"` y `data-bs-target`; los paneles van en un `tab-content` y solo se ve el `tab-pane` con `active`.
+
+[source,html]
+----
+<ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc" type="button"
+            role="tab" aria-controls="desc" aria-selected="true">Descripción</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="carac-tab" data-bs-toggle="tab" data-bs-target="#carac" type="button"
+            role="tab" aria-controls="carac" aria-selected="false">Características</button>
+  </li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="desc" role="tabpanel" aria-labelledby="desc-tab" tabindex="0">…</div>
+  <div class="tab-pane fade" id="carac" role="tabpanel" aria-labelledby="carac-tab" tabindex="0">…</div>
+</div>
+----
+
+.Tabs con sus paneles
+image::10_tabs.png[Tabs con paneles]
+
+[cols="2,3",options="header"]
+|===
+|Atributo |Para qué
+|`role="tablist"` en el `ul` |Es una lista de pestañas
+|`role="presentation"` en cada `li` |El `li` no cuenta: lo importante es el botón
+|`role="tab"`, `aria-selected`, `aria-controls` |Es una pestaña, si está elegida (Bootstrap lo cambia) y qué panel muestra
+|`role="tabpanel"`, `aria-labelledby`, `tabindex="0"` |Es un panel, su pestaña hace de título y se llega a él con el tabulador
+|===
+
+Con el foco en una pestaña, las flechas pasan a la siguiente.
+`fade` en los paneles los hace aparecer con un fundido; el primero, `fade show active`.
+
+==== Pills verticales: `data-bs-toggle="pill"`
+
+Lo mismo con `nav-pills` y `data-bs-toggle="pill"`: las pills en columna (`nav flex-column nav-pills`, con `aria-orientation="vertical"`) a la izquierda y el `tab-content` a la derecha, dentro de un `d-flex`.
+
+[source,html]
+----
+<div class="d-flex align-items-start">
+  <div class="nav flex-column nav-pills me-3" role="tablist" aria-orientation="vertical">
+    <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#pedidos" type="button"
+            role="tab" aria-controls="pedidos" aria-selected="true">Pedidos</button>
+    …
+  </div>
+  <div class="tab-content">…</div>
+</div>
+----
+
+=== Accordion
+
+Varios `collapse` apilados con un aspecto ya preparado.
+
+[source,html]
+----
+<div class="accordion" id="preguntas">
+  <div class="accordion-item">
+    <h3 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#envio"
+              aria-expanded="true" aria-controls="envio">¿Cuánto tarda el envío?</button>
+    </h3>
+    <div id="envio" class="accordion-collapse collapse show" data-bs-parent="#preguntas">
+      <div class="accordion-body">24 horas en la península.</div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h3 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#devolver"
+              aria-expanded="false" aria-controls="devolver">¿Puedo devolverlo?</button>
+    </h3>
+    <div id="devolver" class="accordion-collapse collapse" data-bs-parent="#preguntas">
+      <div class="accordion-body">Sí, gratis durante 30 días.</div>
+    </div>
+  </div>
+</div>
+----
+
+.Un accordion con el primer bloque abierto
+image::10_accordion.png[Accordion]
+
+[cols="2,3",options="header"]
+|===
+|Clase / atributo |Para qué
+|`accordion` > `accordion-item` |El conjunto y cada bloque
+|`accordion-header` |El encabezado (`h2`, `h3`… según la página)
+|`accordion-button` |El botón con la flecha; con `collapsed` si está cerrado
+|`accordion-collapse collapse` (+ `show`) |Lo que se abre (con `show`, empieza abierto)
+|`data-bs-parent="#id"` |Al abrir un bloque se cierran los demás; sin él, se pueden abrir varios
+|`accordion-flush` |Sin bordes exteriores ni esquinas: para meterlo en una card
+|===
+
+WARNING: El bloque abierto lleva `show` en el collapse, el botón *sin* `collapsed` y `aria-expanded="true"`; los cerrados, al revés.
+Si no coinciden, la flecha apunta al lado contrario.
+
+=== Carousel
+
+Diapositivas que pasan una tras otra: las ofertas de la portada, las fotos de un producto.
+Se pasan con flechas, con indicadores o solas.
+
+[source,html]
+----
+<div id="carrusel-ofertas" class="carousel slide">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carrusel-ofertas" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Diapositiva 1"></button>
+    <button type="button" data-bs-target="#carrusel-ofertas" data-bs-slide-to="1" aria-label="Diapositiva 2"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="teclados.jpg" class="d-block w-100" alt="Teclados mecánicos">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Teclados</h5>
+        <p>20 % de descuento.</p>
+      </div>
+    </div>
+    <div class="carousel-item">…</div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carrusel-ofertas" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Anterior</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carrusel-ofertas" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Siguiente</span>
+  </button>
+</div>
+----
+
+[cols="2,3",options="header"]
+|===
+|Pieza |Qué es
+|`carousel slide` |El carrusel (necesita un `id`); `slide`: las diapositivas se deslizan
+|`carousel-inner` > `carousel-item` |La ventana y cada diapositiva; una, y solo una, con `active`
+|`carousel-control-prev` / `-next` |Las flechas, con `data-bs-slide="prev"` / `"next"`
+|`carousel-indicators` |Las rayitas de abajo, con `data-bs-slide-to` (desde 0)
+|`carousel-caption` |Texto encima de la imagen; con `d-none d-md-block`, solo desde `md`
+|`carousel-fade` |Fundido en lugar de deslizamiento (se añade a `carousel slide`)
+|`data-bs-theme="dark"` |Flechas, indicadores y textos en negro, para imágenes claras
+|===
+
+.Con indicadores, textos y flechas
+image::10_carousel.png[Carousel con indicadores y textos]
+
+.`carousel-fade` con `data-bs-theme="dark"`
+image::10_carousel_fade.png[Carousel con controles oscuros]
+
+==== Que pase solo
+
+[cols="2,3",options="header"]
+|===
+|Atributo |Efecto
+|`data-bs-ride="carousel"` |Empieza a pasar solo al cargar la página
+|`data-bs-ride="true"` |Empieza a pasar solo cuando se pulsa una flecha
+|(sin `data-bs-ride`) |Solo pasa con las flechas o los indicadores
+|`data-bs-interval="2000"` en un `carousel-item` |Esa diapositiva dura 2 segundos (por defecto, 5000 ms)
+|`data-bs-pause`, `data-bs-touch`, `data-bs-wrap` |Pausa con el ratón encima, deslizar con el dedo, volver al principio (todas activas por defecto)
+|===
+
+==== Desde JavaScript
+
+Métodos de la instancia: `prev()`, `next()`, `to(n)` (cuenta desde 0), `pause()` y `cycle()`.
+Eventos: `slide.bs.carousel` cuando empieza a pasar y `slid.bs.carousel` cuando termina; el evento trae `from` y `to`.
+
+[source,js]
+----
+window.onload = () => {
+  const carruselOfertas = document.getElementById('carrusel-ofertas')
+
+  carruselOfertas.addEventListener('slid.bs.carousel', (evento) => {
+    document.getElementById('numero-diapositiva').textContent = evento.to + 1
+  })
+
+  document.getElementById('boton-ultima').onclick = () => {
+    bootstrap.Carousel.getOrCreateInstance(carruselOfertas).to(2)
+  }
+}
+----
+
+IMPORTANT: Un carrusel que pasa solo es difícil de seguir y de leer: la documentación de Bootstrap recomienda no confiarle contenido importante.
+Todas las imágenes deberían tener el mismo tamaño; si no, el carrusel cambia de alto.
+
+=== Tooltips y popovers
+
+El *tooltip* es un texto corto al pasar el ratón o el foco; el *popover*, un globo con título y contenido que se abre al pulsar.
+Los dos usan Popper y *no funcionan solo con atributos*: hay que crear la instancia de cada uno con JavaScript.
+
+[source,html]
+----
+<button type="button" class="btn btn-secondary" id="tooltip-arriba"
+        data-bs-title="Tooltip arriba" data-bs-placement="top">top</button>
+
+<button type="button" class="btn btn-danger" id="popover-basico"
+        data-bs-title="Envío urgente" data-bs-content="Si se pide antes de las 14:00, llega mañana.">Envío urgente</button>
+----
+
+[source,js]
+----
+window.onload = () => {
+  new bootstrap.Tooltip(document.getElementById('tooltip-arriba'))
+  new bootstrap.Popover(document.getElementById('popover-basico'))
+}
+----
+
+.Un popover abierto y un tooltip
+image::10_tooltips_popovers.png[Tooltip y popover]
+
+[cols="2,3",options="header"]
+|===
+|Atributo |Para qué
+|`data-bs-title`, `data-bs-content` |Texto del tooltip; título y contenido del popover
+|`data-bs-placement` |`top` (por defecto en el tooltip), `right` (por defecto en el popover), `bottom`, `left`. Popper le da la vuelta si no cabe
+|`data-bs-html="true"` |Permite etiquetas en el texto (Bootstrap limpia lo peligroso); solo con textos propios
+|`data-bs-trigger="focus"` |Popover que se cierra al pulsar fuera; en un `<a tabindex="0" role="button">`
+|===
+
+NOTE: La documentación oficial pone `data-bs-toggle="tooltip"` en cada elemento y los crea todos con un bucle sobre ese selector.
+En clase creamos cada uno por su `id`, así que no hace falta.
+
+Un elemento `disabled` no recibe el ratón ni el foco, así que no saca tooltip: se envuelve en un `span.d-inline-block` con `tabindex="0"` y el tooltip va en el `span`.
+
+[source,html]
+----
+<span class="d-inline-block" tabindex="0" id="tooltip-desactivado" data-bs-title="Sin stock: vuelve en 5 días">
+  <button type="button" class="btn btn-primary" disabled>Añadir al carrito</button>
+</span>
+----
+
+TIP: El tooltip también aparece al llegar con el tabulador, y Bootstrap pone `aria-describedby` en el elemento: el lector de pantalla lo lee como su descripción.
+Para un contenido largo o con formato, mejor un modal que un popover.
+
+=== Toasts
+
+Notificaciones pequeñas que aparecen en una esquina y se van solas («producto añadido»).
+No se muestran con atributos: se llama a `show()` cuando pasa algo.
+
+[source,html]
+----
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div class="toast" id="toast-carrito" role="status" aria-live="polite" aria-atomic="true" data-bs-delay="3000">
+    <div class="toast-header">
+      <strong class="me-auto">Carrito</strong>
+      <small>ahora</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+    </div>
+    <div class="toast-body">Teclado mecánico añadido al carrito.</div>
+  </div>
+</div>
+----
+
+[source,js]
+----
+window.onload = () => {
+  document.getElementById('boton-carrito').onclick = () => {
+    bootstrap.Toast.getOrCreateInstance(document.getElementById('toast-carrito')).show()
+  }
+}
+----
+
+.Tres toasts apilados en el `toast-container`: normal, de color y de error
+image::10_toasts.png[Toasts]
+
+[cols="2,3",options="header"]
+|===
+|Clase / atributo |Para qué
+|`toast-container position-fixed bottom-0 end-0 p-3` |Abajo a la derecha de la ventana; apila varios toasts con hueco
+|`toast-header`, `toast-body` |Título (con `me-auto`), hora y X; el mensaje
+|`role="alert" aria-live="assertive"` |Mensaje importante: interrumpe al lector de pantalla
+|`role="status" aria-live="polite"` |Mensaje normal: espera a que termine. Los dos con `aria-atomic="true"`
+|`data-bs-delay="3000"` |Milisegundos hasta que se va (5000 por defecto)
+|`data-bs-autohide="false"` |No se va solo: para errores que no deben pasar desapercibidos
+|`text-bg-{color} border-0` |Toast de color; con `data-bs-theme="dark"` en un padre de la X para que salga blanca
+|`toast show` |Visible desde que carga la página
+|===
+
+[source,html]
+----
+<div class="toast align-items-center text-bg-danger border-0" id="toast-error"
+     role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+  <div class="d-flex" data-bs-theme="dark">
+    <div class="toast-body">No se ha podido cobrar: la tarjeta está caducada.</div>
+    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+  </div>
+</div>
+----
+
+=== Scrollspy
+
+Marca con `active`, en un menú, el enlace de la sección que se está viendo; al hacer scroll, el resaltado va cambiando.
+Necesita tres cosas:
+
+* Un menú (`nav`, `list-group`…) con enlaces a `#id` de cada sección.
+* Las secciones con esos `id`, y visibles (una sección con `display: none` no cuenta).
+* En el elemento que hace scroll: `data-bs-spy="scroll"`, `data-bs-target` con el id del menú y `tabindex="0"`.
+
+El elemento que hace scroll es un `div` con altura fija y `overflow-y-auto`, o la página entera (entonces los atributos van en el `<body>`).
+
+[source,html]
+----
+<div id="menu-ayuda" class="list-group">
+  <a class="list-group-item list-group-item-action" href="#pedidos">Pedidos</a>
+  <a class="list-group-item list-group-item-action" href="#envios">Envíos</a>
+  <a class="list-group-item list-group-item-action" href="#pagos">Pagos</a>
+</div>
+
+<div class="overflow-y-auto" style="height: 220px" id="contenido-ayuda"
+     data-bs-spy="scroll" data-bs-target="#menu-ayuda" data-bs-smooth-scroll="true" tabindex="0">
+  <h4 id="pedidos">Pedidos</h4>
+  …
+</div>
+----
+
+.Scrollspy con un list group: el enlace de la sección visible, activo
+image::10_scrollspy.png[Scrollspy con list group]
+
+[cols="2,1,3",options="header"]
+|===
+|Opción |Por defecto |Para qué
+|`data-bs-target` |— |El menú que se actualiza
+|`data-bs-smooth-scroll` |`false` |Desplazamiento suave al pulsar un enlace
+|`data-bs-root-margin` |`"0px 0px -25%"` |Qué parte del contenedor cuenta como visible (un margen como el de CSS: `-40%` abajo deja el 60 % de arriba)
+|`data-bs-threshold` |`[0.1, 0.5, 1]` |Qué fracción de la sección tiene que verse para contar
+|===
+
+Cada vez que cambia el enlace activo, scrollspy lanza `activate.bs.scrollspy` sobre el elemento que hace scroll; `evento.relatedTarget` es el enlace activado.
+
+[source,js]
+----
+window.onload = () => {
+  document.getElementById('contenido-ayuda').addEventListener('activate.bs.scrollspy', (evento) => {
+    document.getElementById('seccion-actual').textContent = evento.relatedTarget.textContent
+  })
+}
+----
+
+NOTE: Desde la 5.2, scrollspy usa *IntersectionObserver* (una API del navegador que avisa cuando un elemento entra o sale de la zona visible).
+La opción `offset` queda obsoleta y el contenedor ya no necesita `position: relative`, como en Bootstrap 4 y 5.0–5.1.
+
+=== Práctica
+
+Ficha de producto interactiva:
+
+* Una navbar oscura (`data-bs-theme="dark"`) con `navbar-expand-lg`, botón hamburguesa, un dropdown «Productos» y un botón con el número de unidades que abre el carrito en un *offcanvas*.
+* Un *carousel* con tres fotos del producto, indicadores y flechas.
+* Unas *tabs* Descripción / Características / Opiniones.
+* Un botón «Añadir al carrito» con un *tooltip* que, al pulsarlo, suma una unidad y muestra un *toast*.
+* Un botón «Escribir una opinión» que abre un *modal* con formulario; el foco va al primer campo con `shown.bs.modal` y, al enviar, el modal se cierra con `hide()`.
+* Opcional: un *accordion* de preguntas frecuentes y un *popover* «¿Cuándo llega?».
+
+.Un resultado posible, en pantalla ancha y en el móvil
+image::10_practica_lg.png[Práctica de ficha de producto en pantalla ancha]
+
+image::10_practica_xs.png[Práctica de ficha de producto en el móvil]
+
+== Modo claro y oscuro
+
+`data-bs-theme` a fondo: zonas con otro modo, utilidades que se adaptan, logos, las variables CSS `--bs-*` (usarlas y cambiarlas), un selector de tema con JavaScript que recuerda la elección y un modo de color propio.
+Lo básico del atributo está en <<_modos_de_color_con_data_bs_theme>>.
+Ejemplos de clase: `14_A_Modo_oscuro_data_bs_theme.html`, `14_B_Variables_CSS.html`, `14_C_Selector_tema.html` y `14_D_Modo_propio_sepia.html` (opcional).
+
+=== Una zona con otro modo: `bg-body` y `text-body`
+
+`data-bs-theme` solo *redefine variables* para el elemento y sus descendientes.
+Un `<div>` normal no usa esas variables, así que no cambia: su fondo sigue transparente y su texto conserva el color que hereda del `<body>`.
+Lo que sí cambia es lo que hay dentro y las usa: un input, una card, un dropdown…
+
+Para que la zona entera se pinte con el otro modo, se le dice que use las variables:
+
+[cols="1m,2m",options="header"]
+|===
+|Clase |Equivale a
+|bg-body |background-color: var(--bs-body-bg)
+|text-body |color: var(--bs-body-color)
+|===
+
+[source,html]
+----
+<div class="border p-3" data-bs-theme="dark">…</div>                       <!-- solo cambia el input -->
+<div class="border p-3 bg-body text-body" data-bs-theme="dark">…</div>     <!-- toda la zona oscura -->
+----
+
+.Con la página en claro: solo el atributo y el atributo con `bg-body text-body`
+image::11_zona_solo_atributo.png[Zona con data-bs-theme sin bg-body]
+
+image::11_zona_bg_body.png[Zona con data-bs-theme y bg-body text-body]
+
+Las cards, los dropdowns o los modales no lo necesitan: ya usan esas variables para su fondo y su texto.
+
+==== Cabecera y pie siempre oscuros
+
+Es el uso típico: la navbar y el pie de la tienda son oscuros sea cual sea el modo de la página.
+En la navbar, `data-bs-theme="dark"` ajusta el color de los enlaces y del botón de menú; el fondo lo ponemos nosotros con `bg-dark`.
+
+[source,html]
+----
+<nav class="navbar navbar-expand bg-dark" data-bs-theme="dark">…</nav>
+…
+<footer class="bg-body text-body p-3" data-bs-theme="dark">…</footer>
+----
+
+==== Componentes que tenían su clase `-dark`
+
+Hasta la 5.2, algunos componentes tenían una clase para su versión oscura.
+Desde la 5.3 siguen funcionando, pero están obsoletas: se sustituyen por el atributo en el componente.
+
+[cols="1m,2m",options="header"]
+|===
+|Hasta la 5.2 (obsoleta en 5.3) |Desde la 5.3
+|navbar-dark |<nav class="navbar bg-dark" data-bs-theme="dark">
+|dropdown-menu-dark |<div class="dropdown" data-bs-theme="dark">
+|btn-close-white |<button class="btn-close" data-bs-theme="dark">
+|carousel-dark |<div class="carousel" data-bs-theme="dark">
+|===
+
+La ventaja: con el atributo, el componente toma los valores oscuros de _todas_ las variables, no solo los que preparó la clase antigua.
+
+.Navbar, dropdown y botón de cerrar siempre oscuros, con la página en claro
+image::11_componentes_oscuros.png[Navbar, dropdown y btn-close con data-bs-theme dark]
+
+NOTE: Además de las variables, la regla `[data-bs-theme=dark]` de Bootstrap pone `color-scheme: dark`.
+Con eso el navegador pinta también en oscuro lo que es suyo: las barras de desplazamiento, el calendario de un `input type="date"`, la lista desplegable de un `select`…
+
+=== Utilidades fijas y utilidades que se adaptan
+
+Al preparar una página para el modo oscuro, lo primero es buscar las clases de color *fijo*, que dejan «islas» claras o textos que no se leen, y cambiarlas por su equivalente que lee las variables del modo.
+
+[cols="2,2,2",options="header"]
+|===
+|Fija |Se adapta |Variable que usa
+|`bg-white` |`bg-body` |`--bs-body-bg`
+|`bg-light` |`bg-body-tertiary` |`--bs-tertiary-bg`
+|`text-dark`, `text-black` |`text-body-emphasis` |`--bs-emphasis-color`
+|`text-black-50`, `text-muted` |`text-body-secondary` |`--bs-secondary-color`
+|`border-dark`, `border-light` |`border` (sin color) |`--bs-border-color`
+|`bg-primary` + `text-white` |`bg-primary-subtle` + `text-primary-emphasis` |`--bs-primary-bg-subtle`, `--bs-primary-text-emphasis`
+|===
+
+[source,html]
+----
+<div class="card bg-light text-dark">…</div>          <!-- en oscuro, un recuadro claro -->
+<div class="card bg-body-tertiary">
+  <h3 class="card-title text-body-emphasis">…</h3>
+  <p class="card-text text-body-secondary">…</p>
+</div>
+----
+
+.La card con clases fijas y la que se adapta, en claro y en oscuro
+image::11_utilidades_claro.png[Cards con clases fijas y adaptables en modo claro]
+
+image::11_utilidades_oscuro.png[Cards con clases fijas y adaptables en modo oscuro]
+
+TIP: `bg-primary` no es un error: un botón o una etiqueta pueden ser del color de la marca en los dos modos.
+El problema son los blancos, negros y grises fijos (`bg-white`, `bg-light`, `text-dark`, `text-black`…) y los colores escritos a mano en `style=""`.
+
+=== Logos e imágenes
+
+Un logo con el texto en un color fijo casi negro desaparece sobre fondo oscuro.
+Hay dos soluciones:
+
+SVG con `fill="currentColor"`:: El dibujo toma el color del texto, que ya cambia con el modo.
+Los iconos de Bootstrap Icons son una fuente y siguen siempre el color del texto.
+Dos versiones del logo:: Una para fondo claro y otra para fondo oscuro, y CSS que muestra una u otra según `data-bs-theme`.
+Es lo que se hace con un logo en PNG, que no se puede recolorear.
+
+[source,html]
+----
+<svg width="180" height="40" viewBox="0 0 180 40" role="img" aria-label="Periféricos">
+  <rect x="2" y="8" width="36" height="24" rx="4" fill="none" stroke="currentColor" stroke-width="3"/>
+  <text x="48" y="27" font-family="sans-serif" font-size="18" font-weight="bold" fill="currentColor">Periféricos</text>
+</svg>
+----
+
+[source,css]
+----
+.logo-para-oscuro { display: none; }
+[data-bs-theme=dark] .logo-para-claro { display: none; }
+[data-bs-theme=dark] .logo-para-oscuro { display: inline; }
+
+[data-bs-theme=dark] img.foto { filter: brightness(.85); }
+----
+
+.Color fijo, `currentColor` y dos versiones, en claro y en oscuro
+image::11_logos_claro.png[Logos en modo claro]
+
+image::11_logos_oscuro.png[Logos en modo oscuro]
+
+Las fotos de producto no hace falta cambiarlas; como mucho, se les baja un poco el brillo en oscuro (la última regla).
+
+NOTE: `<picture>` con `<source media="(prefers-color-scheme: dark)">` también elige imagen, pero según el *sistema operativo*, no según `data-bs-theme`: si el usuario elige Oscuro en la página con el sistema en claro, la imagen no cambia.
+
+=== Las variables `--bs-*`
+
+Todo el color de Bootstrap 5.3 sale de variables CSS declaradas en `:root`.
+El modo oscuro no cambia ninguna clase: la regla `[data-bs-theme=dark]` da otros valores a las mismas variables (ver <<_cómo_funciona_por_dentro>>).
+Las principales:
+
+[cols="2m,1m,1m,2",options="header"]
+|===
+|Variable |Claro |Oscuro |Para qué
+|--bs-body-bg |#fff |#212529 |Fondo de la página
+|--bs-body-color |#212529 |#dee2e6 |Texto normal
+|--bs-emphasis-color |#000 |#fff |Texto con más contraste
+|--bs-secondary-color
+2+|el color del texto al 75 %
+|Texto atenuado
+|--bs-secondary-bg |#e9ecef |#343a40 |Fondo un poco distinto
+|--bs-tertiary-bg |#f8f9fa |#2b3035 |Fondo aún más suave
+|--bs-border-color |#dee2e6 |#495057 |Bordes
+|--bs-link-color |#0d6efd |#6ea8fe |Enlaces
+|--bs-primary-bg-subtle |#cfe2ff |#031633 |`bg-primary-subtle`
+|--bs-primary-rgb
+2+|13, 110, 253 (igual en los dos)
+|`bg-primary`, `text-primary`
+|===
+
+Muchas tienen una *pareja `-rgb`* con los tres números sueltos (`--bs-body-bg-rgb: 255, 255, 255`).
+Las usan las utilidades para poder poner transparencia:
+
+[source,css]
+----
+.bg-body {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-body-bg-rgb), var(--bs-bg-opacity)) !important;
+}
+----
+
+`--bs-primary-rgb` no tiene versión oscura: por eso `bg-primary` es igual en los dos modos.
+Las que sí cambian son sus parejas `-subtle` y `-emphasis` (`--bs-primary-bg-subtle`, `--bs-primary-text-emphasis`…).
+
+TIP: En las herramientas del navegador (F12 → Elementos → `<html>` → Estilos) aparece la regla `:root, [data-bs-theme=light]` con todas las variables.
+En oscuro, la regla `[data-bs-theme=dark]` aparece encima y los valores de abajo salen tachados: es la cascada de siempre.
+El panel _Calculado_ (Computed) da el valor final de cada variable en cualquier elemento.
+
+=== Usarlas en nuestro CSS
+
+Un componente nuestro con los colores escritos a mano (`#f8f9fa`, `#212529`…) se queda claro aunque la página pase a oscuro.
+Si los toma de las variables de Bootstrap, se adapta solo, sin escribir nada para el modo oscuro.
+
+[source,css]
+----
+.ficha-producto {
+  background-color: var(--bs-tertiary-bg);
+  color: var(--bs-body-color);
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius-lg);
+  padding: 1rem;
+}
+.ficha-producto .precio {
+  color: var(--bs-emphasis-color);
+}
+.ficha-producto .oferta {
+  background-color: rgba(var(--bs-primary-rgb), .15);
+  color: var(--bs-primary-text-emphasis);
+  border-radius: var(--bs-border-radius-pill);
+}
+----
+
+La etiqueta de oferta usa la pareja `-rgb` para poner el azul con transparencia; `--bs-border-radius-lg` y `--bs-border-radius-pill` hacen que las esquinas sean las mismas que las de Bootstrap.
+
+.`.ficha-fija` (colores escritos a mano) y `.ficha-producto` (variables), en claro y en oscuro
+image::11_fichas_claro.png[Fichas de producto en modo claro]
+
+image::11_fichas_oscuro.png[Fichas de producto en modo oscuro]
+
+=== Cambiar los valores para los dos modos
+
+Para usar los colores de la marca, se redefinen las variables en un CSS propio cargado *después* de `bootstrap.min.css`, con el mismo selector que usa Bootstrap: a igual especificidad, gana el último.
+
+[source,css]
+----
+:root, [data-bs-theme=light] {
+  --bs-body-bg: #fbf8f3;
+  --bs-body-bg-rgb: 251, 248, 243;
+  --bs-link-color: #b45309;
+  --bs-link-color-rgb: 180, 83, 9;
+}
+[data-bs-theme=dark] {
+  --bs-body-bg: #1c1a17;
+  --bs-body-bg-rgb: 28, 26, 23;
+  --bs-link-color: #f59e0b;
+  --bs-link-color-rgb: 245, 158, 11;
+}
+----
+
+En el ejemplo de clase se limita a una clase, `.tienda`, para no cambiar el resto de la página: `.tienda` lleva los valores para claro y `[data-bs-theme=dark] .tienda`, más específico, los de oscuro.
+
+.Los colores de Bootstrap y los de `.tienda`, en claro y en oscuro
+image::11_tienda_claro.png[Variables redefinidas en modo claro]
+
+image::11_tienda_oscuro.png[Variables redefinidas en modo oscuro]
+
+WARNING: Hay que cambiar también las parejas `-rgb`: los enlaces usan `--bs-link-color-rgb` (`a { color: rgba(var(--bs-link-color-rgb), …) }`), `bg-body` usa `--bs-body-bg-rgb` y `text-body` usa `--bs-body-color-rgb`.
+Si solo se cambia `--bs-link-color`, los enlaces siguen azules.
+
+==== Lo que no se cambia con variables: `--bs-primary-rgb`
+
+`bg-primary`, `text-primary` y `text-bg-primary` (también en un badge) leen `--bs-primary-rgb`: con otro valor, cambian de color.
+Pero `.btn-primary`, el check marcado, la página activa de la paginación o la barra de progreso tienen el azul escrito en el CSS compilado, y las alerts usan otras variables (`--bs-primary-bg-subtle`…) que no dependen de `--bs-primary-rgb`.
+
+[source,html]
+----
+<div class="d-flex gap-3" style="--bs-primary-rgb: 111, 66, 193">
+  <div class="bg-primary text-white p-2">bg-primary</div>
+  <span class="text-primary">text-primary</span>
+  <button type="button" class="btn btn-primary">btn-primary (sigue azul)</button>
+</div>
+----
+
+.Con `--bs-primary-rgb` morado: las utilidades cambian y el botón no
+image::11_primary_rgb.png[Efecto de cambiar --bs-primary-rgb]
+
+Para cambiar `primary` en todo hay que recompilar Bootstrap desde Sass con `$primary`: se ve en el punto de personalización.
+
+=== Variables de cada componente
+
+Cada componente declara sus propias variables en su clase y las usa en sus propiedades:
+
+[source,css]
+----
+.btn {
+  --bs-btn-bg: transparent;
+  --bs-btn-color: var(--bs-body-color);
+  …
+  background-color: var(--bs-btn-bg);
+}
+.card {
+  --bs-card-bg: var(--bs-body-bg);
+  …
+}
+----
+
+La documentación de cada componente las lista en su apartado _CSS → Variables_.
+Para un botón con el color de la marca basta una clase que solo dé valores a esas variables, y otra regla con los valores para el oscuro:
+
+[source,css]
+----
+.btn-custom {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #6f42c1;
+  --bs-btn-border-color: #6f42c1;
+  --bs-btn-hover-bg: #59359a;
+  --bs-btn-hover-border-color: #59359a;
+  --bs-btn-active-bg: #4d2e85;
+  …
+}
+[data-bs-theme=dark] .btn-custom {
+  --bs-btn-color: #000;
+  --bs-btn-bg: #a98eda;
+  --bs-btn-border-color: #a98eda;
+  …
+}
+----
+
+Para un caso suelto también valen en `style=""`:
+
+[source,html]
+----
+<button type="button" class="btn btn-outline-secondary"
+        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: 1.5rem; --bs-btn-font-size: .875rem">…</button>
+<div class="card" style="--bs-card-bg: var(--bs-tertiary-bg); --bs-card-border-color: var(--bs-primary-border-subtle)">…</div>
+----
+
+.Botón de marca, botón con `style` y card con `--bs-card-bg` propio, en claro y en oscuro
+image::11_componente_claro.png[Variables de componente en modo claro]
+
+image::11_componente_oscuro.png[Variables de componente en modo oscuro]
+
+La card sigue adaptándose al modo porque su nuevo fondo también es una variable (`--bs-tertiary-bg`).
+
+=== Selector de tema con JavaScript
+
+Ya sabemos cambiar el modo con `setAttribute('data-bs-theme', …)`.
+Un selector completo, como el de la documentación de Bootstrap, añade tres cosas: una tercera opción, *Automático* (el modo del sistema operativo); *recordar* la elección; y aplicarla *antes de pintar*, para que no haya parpadeo.
+
+Hay que distinguir dos valores:
+
+[cols="1,2,2",options="header"]
+|===
+|Valor |Posibles |Dónde está
+|Tema *elegido* |`light`, `dark`, `auto` |`localStorage`
+|Tema *aplicado* |`light`, `dark` |`data-bs-theme` de `<html>`
+|===
+
+`auto` no es un valor de `data-bs-theme`: se traduce a `light` o `dark` según el sistema.
+
+==== Automático: `prefers-color-scheme`
+
+`prefers-color-scheme` es una media query, como las de los breakpoints, que dice si el sistema operativo está en claro u oscuro: `@media (prefers-color-scheme: dark) { … }`.
+Desde JavaScript se consulta con `window.matchMedia()`:
+
+[cols="2m,3",options="header"]
+|===
+|Código |Qué hace
+|window.matchMedia('(prefers-color-scheme: dark)') |Devuelve un objeto con el resultado de la media query
+|consultaOscuro.matches |`true` si el sistema está en oscuro
+|consultaOscuro.onchange |Se ejecuta cuando el sistema cambia de modo
+|===
+
+Con `onchange`, si está elegido Automático y el sistema pasa a oscuro (por ejemplo, al anochecer), la página cambia sola sin recargar.
+
+TIP: Para probarlo sin tocar el sistema: F12 → menú ⋮ → _More tools_ → _Rendering_ → _Emulate CSS media feature prefers-color-scheme_.
+
+==== Recordar la elección: `localStorage`
+
+`localStorage` guarda texto en el navegador, por sitio, y no se borra al cerrar la página:
+
+[source,javascript]
+----
+localStorage.setItem('tema', 'dark')
+localStorage.getItem('tema')
+localStorage.removeItem('tema')
+----
+
+`getItem` devuelve `'dark'`, o `null` si no hay nada guardado.
+En la primera visita no hay nada: usamos `'auto'`, y la página respeta el modo del sistema hasta que el usuario elija otra cosa.
+Se ve en F12 → _Aplicación_ (Application) → _Almacenamiento local_.
+
+==== El código
+
+Toda la lógica está en una función, `aplicarTema()`, que lee la elección guardada, la traduce, pone el atributo y marca el botón activo.
+Cada botón tiene su `id` y su `onclick`, que solo guarda su opción y llama a la función (resumido de `14_C_Selector_tema.html`):
+
+[source,javascript]
+----
+window.onload = () => {
+  const consultaOscuro = window.matchMedia('(prefers-color-scheme: dark)')
+
+  const aplicarTema = () => {
+    const elegido = localStorage.getItem('tema') || 'auto'
+    let aplicado = elegido
+    if (elegido === 'auto') {
+      aplicado = consultaOscuro.matches ? 'dark' : 'light'
+    }
+    document.documentElement.setAttribute('data-bs-theme', aplicado)
+
+    document.getElementById('btn-claro').classList.toggle('active', elegido === 'light')
+    document.getElementById('btn-oscuro').classList.toggle('active', elegido === 'dark')
+    document.getElementById('btn-auto').classList.toggle('active', elegido === 'auto')
+  }
+
+  const elegirTema = (tema) => {
+    localStorage.setItem('tema', tema)
+    aplicarTema()
+  }
+
+  document.getElementById('btn-claro').onclick = () => {
+    elegirTema('light')
+  }
+
+  document.getElementById('btn-oscuro').onclick = () => {
+    elegirTema('dark')
+  }
+
+  document.getElementById('btn-auto').onclick = () => {
+    elegirTema('auto')
+  }
+
+  consultaOscuro.onchange = () => {
+    aplicarTema()
+  }
+
+  aplicarTema()
+}
+----
+
+==== Versión en menú desplegable
+
+Como en la documentación de Bootstrap: un dropdown en la navbar con un icono de Bootstrap Icons para cada opción (`bi-sun-fill`, `bi-moon-stars-fill` y `bi-circle-half`).
+El icono del botón cambia según la opción elegida y la opción activa lleva `active`.
+
+[source,html]
+----
+<li class="nav-item dropdown">
+  <button class="btn btn-link nav-link dropdown-toggle" type="button"
+          data-bs-toggle="dropdown" aria-expanded="false" aria-label="Cambiar el tema">
+    <i class="bi bi-circle-half" id="icono-tema"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item" id="menu-claro"><i class="bi bi-sun-fill me-2"></i>Claro</button></li>
+    <li><button type="button" class="dropdown-item" id="menu-oscuro"><i class="bi bi-moon-stars-fill me-2"></i>Oscuro</button></li>
+    <li><button type="button" class="dropdown-item" id="menu-auto"><i class="bi bi-circle-half me-2"></i>Automático</button></li>
+  </ul>
+</li>
+----
+
+[source,javascript]
+----
+document.getElementById('icono-tema').className = iconos[elegido]
+----
+
+`iconos` es un objeto con la clase de cada opción (`light: 'bi bi-sun-fill'`…).
+`dropdown-menu-end` alinea el menú por la derecha para que no se salga de la pantalla, y el `aria-label` da nombre al botón, que solo tiene un icono.
+
+.El selector de tema de la guía, con el menú abierto
+image::11_selector_menu.png[Dropdown con Claro, Oscuro y Automático]
+
+=== Sin parpadeo: el script del `<head>`
+
+`window.onload` se ejecuta cuando la página ya está cargada... y pintada.
+Si el tema guardado se aplicara solo ahí, con Oscuro elegido la página se vería primero en claro y un instante después en oscuro: un fogonazo blanco en cada carga.
+
+La solución, la misma que usa la documentación de Bootstrap, es un script *mínimo* al principio del `<head>`, sin `defer` y fuera de `window.onload`.
+Se ejecuta en cuanto se lee, antes de pintar el `<body>`; ya existe `document.documentElement` (estamos dentro de `<html>`), así que puede ponerle el atributo.
+
+[source,html]
+----
+<head>
+  <meta charset="utf-8">
+  <title>…</title>
+  <script>
+    const temaInicial = localStorage.getItem('tema') || 'auto'
+    if (temaInicial === 'auto') {
+      document.documentElement.setAttribute('data-bs-theme',
+        window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    } else {
+      document.documentElement.setAttribute('data-bs-theme', temaInicial)
+    }
+  </script>
+  <link href="recursos/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+  <script>
+    window.onload = () => { … }
+  </script>
+</head>
+----
+
+Por eso el tema se aplica en dos sitios:
+
+[cols="1,2",options="header"]
+|===
+|Dónde |Qué hace
+|Script del `<head>` |Solo pone el atributo al cargar, antes de pintar
+|`aplicarTema()`, en `window.onload` |Lo vuelve a poner al pulsar un botón o al cambiar el sistema, y marca la opción activa
+|===
+
+IMPORTANT: Es la única excepción a la convención del curso de poner el JavaScript en `window.onload`.
+Se mantiene lo más corto posible (solo pone el atributo) y en el fichero se explica con un comentario HTML.
+Para ver el problema, se mueve dentro de `window.onload`, se elige Oscuro y se recarga varias veces.
+
+=== Un modo de color propio
+
+Bootstrap trae dos modos, pero `data-bs-theme` admite cualquier valor.
+Una regla `[data-bs-theme=sepia]` en nuestro CSS que dé valores a las variables `--bs-*` (con sus parejas `-rgb`) es un tercer modo:
+
+[source,css]
+----
+[data-bs-theme=sepia] {
+  color-scheme: light;
+  --bs-body-bg: #f4ecd8;
+  --bs-body-bg-rgb: 244, 236, 216;
+  --bs-body-color: #5b4636;
+  --bs-body-color-rgb: 91, 70, 54;
+  --bs-emphasis-color: #3b2a1e;
+  --bs-secondary-color: rgba(91, 70, 54, .75);
+  --bs-secondary-bg: #e8dcc0;
+  --bs-tertiary-bg: #efe4cc;
+  --bs-border-color: #d6c4a0;
+  --bs-link-color: #8b4513;
+  --bs-link-color-rgb: 139, 69, 19;
+  …
+}
+----
+
+`color-scheme: light` le dice al navegador que pinte en claro sus controles.
+Cards, formularios, tablas y list groups no llevan ninguna clase para sepia: leen las variables y toman los valores del modo activo.
+Como el selector es solo el atributo, funciona en `<html>` y en una zona concreta (con `bg-body text-body`, como en <<_una_zona_con_otro_modo_bg_body_y_text_body>>).
+
+.Una zona con `data-bs-theme="sepia"`
+image::11_sepia.png[Zona en modo sepia]
+
+NOTE: Las reglas que Bootstrap tiene solo para el oscuro (el icono del select, el filtro de la X de cerrar, el icono del interruptor…) no se aplican en sepia: se usan las de claro.
+Por eso un modo propio funciona bien si se parece al claro; uno oscuro (por ejemplo, azul noche) tendría que repetir también esas reglas.
+Ojo: una zona sepia dentro de una página en oscuro hereda los valores oscuros de las variables que no redefine.
+
+Con Sass hay otra forma: el mixin `color-mode()` y la variable `$color-mode-type` (atributo `data` o `media-query`).
+Se ve en el punto de personalización.
+
+=== Práctica
+
+Modo oscuro para la landing de la tienda (la de la práctica de la sesión 1: navbar, cabecera destacada y secciones en rejilla):
+
+* Repasar las clases de color fijo (`bg-white`, `bg-light`, `text-dark`, `text-muted`…) y cambiarlas por las que se adaptan.
+* Un selector de tema en la navbar: dropdown con Claro, Oscuro y Automático y sus iconos; el icono del botón muestra la opción elegida.
+* Guardar la elección en `localStorage` y aplicarla con un script mínimo en el `<head>`, sin parpadeo al recargar.
+* Automático sigue al sistema y cambia sin recargar (`matchMedia` y `onchange`).
+* El pie, siempre oscuro, con `data-bs-theme="dark"` y `bg-body text-body`.
+* El logo en SVG con `fill="currentColor"`.
+* Un color de marca para los enlaces, distinto en cada modo, redefiniendo `--bs-link-color` y `--bs-link-color-rgb`.
+* _Opcional:_ un componente propio (por ejemplo, una ficha de oferta) cuyo CSS use solo variables `--bs-*`.
+
+.Un resultado posible, en pantalla ancha (claro y oscuro) y en el móvil
+image::11_practica_lg.png[Práctica de modo oscuro en pantalla ancha, modo claro]
+
+image::11_practica_oscuro.png[Práctica de modo oscuro en pantalla ancha, modo oscuro]
+
+image::11_practica_xs.png[Práctica de modo oscuro en el móvil]
+
+== Personalización con CSS y Sass
+
+Adaptar Bootstrap a una marca: sin compilar, redefiniendo variables CSS y clases; y con Sass, cambiando las variables de origen, los mapas y los interruptores, y quitando lo que no se usa.
+Ejemplos de clase: `15_A_Personalizacion_variables_CSS.html`, `15_B_Personalizacion_sobrescribir_clases.html`, `15_C_Sass_desde_cero.html`, `15_D_Sass_compilar_Bootstrap.html`, `15_E_Sass_mapas.html` y `15_F_Sass_importacion_selectiva.html`.
+El proyecto de Sass está en la carpeta `sass/` (con `sass/instalacion.html`, los pasos de instalación).
+
+=== Dos caminos: variables CSS o Sass
+
+[cols="1,2,2",options="header"]
+|===
+| |Variables CSS (`--bs-*`) |Sass (`$primary`…)
+|Instalar |Nada |Node.js, y con npm `bootstrap` y `sass`
+|Cuándo actúa |En el navegador (se pueden cambiar con JavaScript) |Al compilar: genera un CSS nuevo
+|Alcance |Solo lo que Bootstrap dejó en variables |Todo, incluidos los tonos derivados (hover, foco, subtle, modo oscuro)
+|Colores nuevos (`btn-oferta`, `bg-oferta`…) |A mano, clase a clase |Una entrada en un mapa genera todas las clases
+|Quitar lo que no se usa |No |Sí, con la importación selectiva
+|===
+
+En la práctica se combinan: Sass para la marca (colores, fuentes, esquinas) y variables CSS para ajustes puntuales.
+
+=== Variables CSS globales
+
+Bootstrap 5.3 guarda muchos de sus valores en variables CSS.
+Se redefinen en `:root` (o en un contenedor, porque se heredan) en un CSS cargado *después* del de Bootstrap: con la misma especificidad, gana el último.
+
+[source,css]
+----
+:root {
+  --bs-primary-rgb: 194, 65, 12;
+  --bs-link-color-rgb: 194, 65, 12;
+  --bs-link-hover-color-rgb: 154, 52, 18;
+  --bs-border-radius: .75rem;
+  --bs-body-font-family: "Nunito", system-ui, sans-serif;
+}
+----
+
+¿Por qué `-rgb`?
+`bg-primary` y `text-primary` no usan `--bs-primary`, sino `rgba(var(--bs-primary-rgb), opacidad)`: así funcionan `bg-opacity-*` y `text-opacity-*`.
+
+.Las mismas clases sin cambios y dentro de un contenedor que redefine las variables
+image::12_css_globales_sin.png[Bootstrap sin cambios]
+
+image::12_css_globales_con.png[Con las variables globales redefinidas]
+
+WARNING: `btn-primary` sigue azul: sus colores están escritos en la clase (`--bs-btn-bg: #0d6efd`), no leen `--bs-primary-rgb`.
+Lo mismo el foco de los campos, y el hover del botón es un tono que Sass calculó al compilar.
+Con variables CSS se cambia solo lo que Bootstrap dejó en variables.
+
+Las variables de cada componente están en su página de la documentación, apartado _CSS → Variables_, y se ven en el inspector, en los estilos de `:root` o del elemento.
+
+=== Variables CSS de componente
+
+Cada componente dibuja leyendo sus variables: `.btn` usa `--bs-btn-bg`, `--bs-btn-color`, `--bs-btn-hover-bg`…, y `btn-primary`, `btn-success`… solo les dan valor.
+Una clase propia puede hacer lo mismo, y se usa igual que las de Bootstrap: `class="btn btn-custom"`.
+
+[source,css]
+----
+.btn-custom {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #c2410c;
+  --bs-btn-border-color: #c2410c;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #9a3412;
+  --bs-btn-hover-border-color: #9a3412;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #7c2d12;
+  --bs-btn-active-border-color: #7c2d12;
+  --bs-btn-focus-shadow-rgb: 194, 65, 12;
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #c2410c;
+  --bs-btn-disabled-border-color: #c2410c;
+}
+
+.card-oferta {
+  --bs-card-border-color: #c2410c;
+  --bs-card-cap-bg: #c2410c;
+  --bs-card-cap-color: #fff;
+  --bs-card-border-width: 2px;
+}
+----
+
+Los tonos de hover y active se eligen a mano: Sass los calcularía solo.
+Para un caso suelto, las variables también se dan en el atributo `style` de un elemento concreto:
+
+[source,html]
+----
+<button type="button" class="btn btn-primary" style="--bs-btn-border-radius: 2rem; --bs-btn-padding-x: 1.5rem">
+  Píldora
+</button>
+----
+
+.`btn btn-custom` y un `btn-primary` con `style="--bs-btn-…"`
+image::12_css_componente.png[Variables CSS de componente]
+
+TIP: Si el ajuste con `style` se repite, mejor una clase.
+
+=== Redefinir las clases de Bootstrap
+
+La otra salida sin Sass: en lugar de crear clases nuevas, se da otro valor a las que ya existen.
+El HTML sigue siendo Bootstrap puro (`class="btn btn-primary"`, `class="pagination"`…).
+El precio: Bootstrap usa el azul de primary en muchos sitios, y en la mayoría está escrito tal cual en el CSS compilado (`#0d6efd`, o `rgba(13, 110, 253, .25)` en los focos).
+Hay que redefinirlos uno a uno.
+
+[cols="2,3",options="header"]
+|===
+|Selector |Qué se redefine
+|`:root` |`--bs-primary`, `--bs-primary-rgb`, `--bs-primary-text-emphasis`, `--bs-primary-bg-subtle`, `--bs-primary-border-subtle`, `--bs-link-color`, `--bs-link-hover-color` (y sus `-rgb`)
+|`.btn-primary`, `.btn-outline-primary` |`--bs-btn-bg`, `--bs-btn-hover-bg`, `--bs-btn-active-bg`, `--bs-btn-focus-shadow-rgb`, `--bs-btn-disabled-bg`… (cada estado es una variable: si se olvida una, ese estado sale azul)
+|`.form-control:focus`, `.form-select:focus`, `.form-check-input:focus` |El borde y el resplandor del foco
+|`.form-check-input:checked` |El check, el radio y el switch marcados
+|`.pagination`, `.list-group`, `.nav-pills`, `.dropdown-menu` |Su variable del elemento activo
+|===
+
+[source,css]
+----
+:root {
+  --bs-primary: #c2410c;
+  --bs-primary-rgb: 194, 65, 12;
+  --bs-primary-text-emphasis: #4e1a05;
+  --bs-primary-bg-subtle: #f3d9ce;
+  --bs-primary-border-subtle: #e7b39e;
+  --bs-link-color: #c2410c;
+  --bs-link-color-rgb: 194, 65, 12;
+  --bs-link-hover-color: #9b340a;
+  --bs-link-hover-color-rgb: 155, 52, 10;
+}
+
+.btn-primary {
+  --bs-btn-bg: #c2410c;
+  --bs-btn-border-color: #c2410c;
+  --bs-btn-hover-bg: #a5370a;
+  --bs-btn-hover-border-color: #9b340a;
+  --bs-btn-focus-shadow-rgb: 203, 94, 48;
+  --bs-btn-active-bg: #9b340a;
+  --bs-btn-active-border-color: #923109;
+  --bs-btn-disabled-bg: #c2410c;
+  --bs-btn-disabled-border-color: #c2410c;
+}
+/* .btn-outline-primary, igual */
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+  border-color: #e1a086;
+  box-shadow: 0 0 0 .25rem rgba(194, 65, 12, .25);
+}
+
+.form-check-input:checked {
+  background-color: #c2410c;
+  border-color: #c2410c;
+}
+
+.pagination {
+  --bs-pagination-active-bg: #c2410c;
+  --bs-pagination-active-border-color: #c2410c;
+  --bs-pagination-focus-box-shadow: 0 0 0 .25rem rgba(194, 65, 12, .25);
+}
+.list-group {
+  --bs-list-group-active-bg: #c2410c;
+  --bs-list-group-active-border-color: #c2410c;
+}
+.nav-pills    { --bs-nav-pills-link-active-bg: #c2410c; }
+.dropdown-menu { --bs-dropdown-link-active-bg: #c2410c; }
+----
+
+.Botones, texto, enlaces, alerta, checks y elementos activos con las clases de Bootstrap redefinidas
+image::12_clases_redefinidas.png[Clases de Bootstrap redefinidas]
+
+Son más de 60 líneas de CSS, y aún se escapan cosas:
+
+* `progress-bar`: su color está en `--bs-progress-bar-bg`, en `.progress`.
+* El círculo de `form-range` (`::-webkit-slider-thumb` y `::-moz-range-thumb`).
+* El círculo de `form-switch` con foco, antes de marcarlo: es una imagen SVG con el azul dentro (`--bs-form-switch-bg`).
+* El foco del botón del `accordion` y su flecha cuando está abierto (`--bs-accordion-btn-focus-box-shadow`, `--bs-accordion-btn-active-icon`).
+* El modo oscuro: `[data-bs-theme=dark]` vuelve a definir `--bs-primary-text-emphasis`, `--bs-primary-bg-subtle`, `--bs-primary-border-subtle` y `--bs-link-color`, así que dentro de él `alert-primary` sigue azul.
+
+.Lo que se escapa: la barra de progreso, el rango y `alert-primary` en modo oscuro
+image::12_clases_escapa.png[Lo que se escapa al redefinir las clases]
+
+TIP: Para encontrar los azules: buscar `#0d6efd` y `13, 110, 253` en `bootstrap.css` (`13,110,253`, sin espacios, en `bootstrap.min.css`), y repasar el apartado _CSS → Variables_ de cada componente en la documentación.
+
+WARNING: Al actualizar Bootstrap hay que repasar estas reglas: si cambia una variable, nuestra regla se queda huérfana.
+Para cambiar primary *en todas partes*, Sass.
+
+=== Sass desde cero
+
+*Sass* es un preprocesador: escribimos en un lenguaje parecido a CSS, con extras, y el compilador lo convierte en CSS normal.
+Bootstrap está escrito en Sass: el `bootstrap.css` que usamos es el resultado de compilarlo.
+Hay dos sintaxis; usamos *SCSS* (ficheros `.scss`), en la que todo CSS válido es también SCSS válido.
+El navegador nunca ve el `.scss`: solo el CSS compilado.
+
+[cols="1,3,2",options="header"]
+|===
+|Herramienta |SCSS |Para qué
+|Variables |`$color-marca: #c2410c;` |Un valor con nombre; desaparece al compilar
+|Anidamiento |`.ficha { h3 { … } &:hover { … } }` |Genera `.ficha h3` y `.ficha:hover` (`&` es el propio selector)
+|Mixins |`@mixin caja-color($fondo) { … }` y `@include caja-color($color-marca);` |Bloques de declaraciones reutilizables, con parámetros
+|Funciones |`mix(#000, $color-marca, 20%)` |Calcular valores (Bootstrap: `tint-color()`, `shade-color()`, `color-contrast()`)
+|Mapas |`$estados: ("pendiente": #b45309, …);` |Parejas clave: valor
+|Bucles |`@each $nombre, $color in $estados { .estado-#{$nombre} { … } }` |Una clase por entrada del mapa
+|===
+
+[source,scss]
+----
+// Los comentarios con // no pasan al CSS; los de /* */ sí
+$color-marca: #c2410c;
+$radio:       .75rem;
+
+$estados: (
+  "pendiente": #b45309,
+  "enviado":   #1d4ed8,
+  "entregado": #15803d
+);
+
+@mixin caja-color($fondo) {
+  background-color: $fondo;
+  color: #fff;
+  border-radius: $radio;
+  padding: .5rem 1rem;
+}
+
+.ficha {
+  border: 2px solid $color-marca;
+  border-radius: $radio;
+  padding: 1rem;
+
+  h3 {
+    color: $color-marca;
+  }
+
+  &:hover {
+    background-color: mix(#fff, $color-marca, 90%);
+  }
+}
+
+.boton-marca {
+  @include caja-color($color-marca);
+  border: 0;
+
+  &:hover {
+    background-color: mix(#000, $color-marca, 20%);
+  }
+}
+
+@each $nombre, $color in $estados {
+  .estado-#{$nombre} {
+    @include caja-color($color);
+    display: inline-block;
+  }
+}
+----
+
+`sass/scss/ejemplo-sass.scss` compila en este CSS (resumido):
+
+[source,css]
+----
+.ficha { border: 2px solid #c2410c; border-radius: 0.75rem; padding: 1rem; }
+.ficha h3 { color: #c2410c; }
+.ficha:hover { background-color: #f9ece7; }
+.boton-marca { background-color: #c2410c; color: #fff; border-radius: 0.75rem; padding: 0.5rem 1rem; border: 0; }
+.boton-marca:hover { background-color: #9b340a; }
+.estado-pendiente { background-color: #b45309; color: #fff; … }
+.estado-enviado { background-color: #1d4ed8; color: #fff; … }
+.estado-entregado { background-color: #15803d; color: #fff; … }
+----
+
+.`.ficha`, `.boton-marca` y las tres clases `.estado-*` generadas por el bucle
+image::12_sass_resultado.png[Resultado del CSS compilado de ejemplo-sass.scss]
+
+NOTE: Las variables de Sass desaparecen al compilar (en el CSS, `$color-marca` ya es `#c2410c`); las variables CSS (`--bs-*`) llegan al navegador y se pueden cambiar en él.
+Así genera Bootstrap `btn-primary`, `btn-success`… a partir del mapa `$theme-colors`, y `m-0`…`m-5` a partir de `$spacers`.
+
+Los ficheros que empiezan por `_` (`_variables.scss`) son *parciales*: no generan CSS propio, solo se importan desde otros.
+
+=== El proyecto con npm
+
+Con Node.js LTS instalado (`node -v` y `npm -v` muestran la versión), el proyecto se monta así, en una carpeta vacía:
+
+[source,bash]
+----
+npm init -y
+npm install bootstrap@5.3.8
+npm install --save-dev sass@1.77.8
+----
+
+[cols="2,3",options="header"]
+|===
+|Comando |Qué hace
+|`npm init -y` |Crea `package.json` con valores por defecto (`-y`: sin preguntas)
+|`npm install bootstrap@5.3.8` |Descarga Bootstrap (las fuentes `.scss`, el CSS y el JavaScript compilados) y lo anota en `dependencies`
+|`npm install --save-dev sass@1.77.8` |Descarga el compilador y lo anota en `devDependencies`: solo hace falta para desarrollar
+|===
+
+En la carpeta `sass/` del curso ya está hecho: basta con `npm install`, que lee `package.json` (y `package-lock.json`, con las versiones exactas) y lo instala todo.
+`node_modules` no se guarda en Git: pesa mucho y se regenera.
+
+----
+sass/
+├── package.json        → dependencias y scripts
+├── package-lock.json   → versiones exactas instaladas
+├── node_modules/       → lo que instala npm (no se edita ni se sube a Git)
+│   ├── bootstrap/scss/ → las fuentes de Bootstrap
+│   └── sass/           → el compilador
+├── scss/               → lo que escribimos
+│   ├── ejemplo-sass.scss   (Sass sin Bootstrap)
+│   ├── bootstrap.scss      (Bootstrap completo, sin cambios)
+│   ├── tema.scss           (variables)
+│   ├── tema-mapas.scss     (mapas)
+│   └── selectivo.scss      (importación selectiva)
+└── css/                → lo que genera el compilador (no se edita a mano)
+----
+
+WARNING: `sass@1.77.8` y no la última: las versiones recientes de Sass necesitan un Node.js más nuevo (fallan con `ERR_REQUIRE_ESM`) y avisan de que `@import` se va a retirar.
+Bootstrap 5.3 usa `@import` en todas sus fuentes, así que saldrían cientos de avisos.
+
+==== Los scripts de `package.json`
+
+Los comandos largos se guardan con un nombre corto:
+
+[source,json]
+----
+{
+  "name": "tema-bootstrap",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bootstrap 5.3 compilado desde Sass con un tema propio",
+  "scripts": {
+    "css": "sass --load-path=node_modules --quiet-deps scss:css",
+    "css:min": "sass --load-path=node_modules --quiet-deps --style=compressed --no-source-map scss:css/min",
+    "vigilar": "sass --load-path=node_modules --quiet-deps --watch scss:css"
+  },
+  "dependencies": {
+    "bootstrap": "5.3.8"
+  },
+  "devDependencies": {
+    "sass": "1.77.8"
+  }
+}
+----
+
+[cols="2,3",options="header"]
+|===
+|Opción |Para qué
+|`scss:css` |Compila cada `.scss` de `scss/` en un `.css` de `css/` (los parciales no generan fichero)
+|`--load-path=node_modules` |Busca también en `node_modules`: así funciona `@import "bootstrap/scss/bootstrap"`
+|`--quiet-deps` |Calla los avisos del código de Bootstrap (no es nuestro)
+|`--watch` |Se queda esperando y recompila cada vez que se guarda un `.scss` (se para con Ctrl+C)
+|`--style=compressed` |CSS minimizado: sin espacios ni comentarios
+|`--no-source-map` |Sin el fichero `.map` (en producción no hace falta)
+|===
+
+==== Compilar
+
+Siempre desde la carpeta `sass/`:
+
+[source,bash]
+----
+npm run css        # todos los .scss de scss/ en css/, con su .map
+npm run vigilar    # lo mismo, y recompila al guardar
+npm run css:min    # minimizado, en css/min/, para publicar
+----
+
+Para un solo fichero se llama a Sass directamente con `npx`, que ejecuta el `sass` instalado en `node_modules`:
+
+[source,bash]
+----
+npx sass scss/ejemplo-sass.scss css/ejemplo-sass.css           # entrada y salida
+npx sass --watch scss/ejemplo-sass.scss css/ejemplo-sass.css   # y recompila al guardar
+npx sass scss/ejemplo-sass.scss                                # sin salida: el CSS sale en la terminal
+npx sass --load-path=node_modules --quiet-deps scss/tema.scss css/tema.css   # uno que importa Bootstrap
+----
+
+`ejemplo-sass.scss` no importa Bootstrap, así que no necesita `--load-path` ni `--quiet-deps`.
+
+En el HTML se enlaza el CSS compilado *en lugar de* `bootstrap.min.css`; el JavaScript de Bootstrap no cambia:
+
+[source,html]
+----
+<link href="sass/css/tema.css" rel="stylesheet">
+<script src="recursos/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+----
+
+[cols="2,3",options="header"]
+|===
+|Mensaje |Causa y solución
+|`'npm' no se reconoce como un comando` |Node.js no está instalado, o la terminal se abrió antes de instalarlo: abrir otra
+|`Can't find stylesheet to import` |Falta `--load-path=node_modules`, no se ha hecho `npm install`, o el comando no se lanza desde `sass/`
+|`Error [ERR_REQUIRE_ESM]` |Versión de Sass demasiado nueva para el Node.js instalado: `npm install --save-dev sass@1.77.8`
+|Muchos `Deprecation Warning` |Sass reciente con el código de Bootstrap 5.3: `--quiet-deps`, o `sass@1.77.8`
+|`Undefined function` o `Undefined variable` |Orden de los `@import`: `functions` antes que `variables`, y `variables` antes de usar sus mapas
+|Los cambios no se ven |No se ha recompilado, el HTML enlaza otro CSS, o la caché del navegador (Ctrl+F5)
+|===
+
+=== Compilar Bootstrap con variables propias
+
+Las fuentes de Bootstrap están en `node_modules/bootstrap/scss/`.
+Su `bootstrap.scss` solo importa las partes en orden: `_functions`, `_variables`, `_maps`, `_mixins`, `_root`, `_reboot`, `_buttons`, `_card`…
+Nuestro `scss/tema.scss` hace dos cosas: primero nuestras variables, después Bootstrap entero.
+
+[source,scss]
+----
+// Colores de la marca
+$primary:   #c2410c;
+$secondary: #334155;
+
+// Tipografía (la fuente se carga en el HTML desde Google Fonts)
+$font-family-sans-serif: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+$headings-font-weight:   700;
+
+// Esquinas más redondeadas
+$border-radius:    .75rem;
+$border-radius-sm: .5rem;
+$border-radius-lg: 1rem;
+
+// Enlaces sin subrayar
+$link-decoration: none;
+
+@import "bootstrap/scss/bootstrap";
+----
+
+==== `!default`: por qué nuestras variables van antes
+
+Todas las variables de Bootstrap llevan `!default`:
+
+[source,scss]
+----
+$primary: $blue !default;   // «vale $blue, salvo que ya tenga un valor»
+----
+
+Cuando Bootstrap llega a esa línea, `$primary` ya vale `#c2410c` y la respeta.
+Si nuestras variables fueran después, Bootstrap ya habría generado todo el CSS con las suyas.
+
+Ahora cambia *todo* lo que depende del color: `btn-primary` con su hover y su active, `btn-outline-primary`, `text-primary`, `bg-primary`, los enlaces (`$link-color: $primary`), el foco de los campos, el check marcado, `alert-primary`, `bg-primary-subtle`, `text-primary-emphasis`… y sus versiones del modo oscuro.
+Sass los calcula a partir de `$primary` con `tint-color()` y `shade-color()`.
+
+.Botones, texto, enlaces y `alert-primary` compilados con `tema.scss`
+image::12_variables_tema.png[Bootstrap compilado con variables propias]
+
+NOTE: El color del texto del botón (blanco o negro) lo elige `color-contrast()`: el que cumpla un contraste mínimo de 4.5 (`$min-contrast-ratio`) con el fondo.
+Por eso `btn-warning` lleva texto negro; un `$primary` demasiado claro también lo llevaría.
+
+TIP: Las variables que se pueden cambiar están en `node_modules/bootstrap/scss/_variables.scss` (unas 1500) y en la documentación de cada componente, apartado _Sass_.
+Nunca se edita nada dentro de `node_modules`: al actualizar Bootstrap se perdería.
+
+=== Los interruptores `$enable-*`
+
+Variables que valen `true` o `false` y activan o desactivan partes enteras de Bootstrap:
+
+[cols="2,1,3",options="header"]
+|===
+|Variable |Por defecto |Qué hace
+|`$enable-shadows` |`false` |Sombras en botones, campos, dropdowns…
+|`$enable-gradients` |`false` |Un degradado suave en botones, nav-pills activas, página activa de la paginación y elemento activo de un dropdown
+|`$enable-rounded` |`true` |Con `false`, todo con esquinas rectas
+|`$enable-dark-mode` |`true` |Con `false`, no se genera el modo oscuro (pesa menos)
+|`$enable-negative-margins` |`false` |Con `true`, existen `m-n1`…`m-n5`
+|`$enable-important-utilities` |`true` |Las utilidades llevan `!important`
+|`$enable-grid-classes`, `$enable-container-classes` |`true` |Generar o no `row`/`col-*` y `container-*`
+|`$enable-cssgrid` |`false` |Rejilla alternativa con CSS Grid (`.grid`, `.g-col-*`)
+|`$enable-rfs` |`true` |Tamaños de letra que se reducen en pantallas estrechas
+|`$enable-transitions`, `$enable-reduced-motion` |`true` |Animaciones, y respetar la preferencia de «reducir movimiento»
+|===
+
+El interruptor solo *enciende* el efecto; la intensidad la dan otras variables.
+Las de Bootstrap son tan suaves que apenas se notan, así que en `tema.scss` las subimos:
+
+[cols="2,3,2",options="header"]
+|===
+|Variable |Bootstrap |`tema.scss`
+|`$gradient` |Del 15 % de blanco arriba a nada abajo |45 %
+|`$btn-box-shadow` |Una línea clara arriba y una sombra de 1px al 7,5 % |Sombra de `.25rem` al 30 %
+|`$btn-active-box-shadow` |Sombra interior suave al pulsar |Más marcada
+|`$box-shadow-inset` |Sombra interior de los campos al 7,5 % (`--bs-box-shadow-inset`) |Al 20 %
+|===
+
+[source,scss]
+----
+$enable-shadows:   true;
+$enable-gradients: true;
+
+$gradient:              linear-gradient(180deg, rgba(#fff, .45), rgba(#fff, 0));
+$btn-box-shadow:        inset 0 1px 0 rgba(#fff, .35), 0 .25rem .5rem rgba(#000, .3);
+$btn-active-box-shadow: inset 0 3px 8px rgba(#000, .35);
+$box-shadow-inset:      inset 0 2px 4px rgba(#000, .2);
+
+@import "bootstrap/scss/bootstrap";
+----
+
+.Sin interruptores y con `$enable-gradients` y `$enable-shadows` (con las intensidades de `tema.scss`)
+image::12_enable.png[Interruptores enable-gradients y enable-shadows]
+
+NOTE: Las utilidades `bg-*` no llevan el degradado: para ellas existe siempre la clase `bg-gradient`.
+
+=== Mapas: `$theme-colors` y `$spacers`
+
+Muchas familias de clases salen de un mapa de Sass recorrido con `@each`:
+
+[cols="2,3",options="header"]
+|===
+|Mapa |Genera
+|`$theme-colors` |`btn-*`, `btn-outline-*`, `bg-*`, `text-*`, `border-*`, `text-bg-*`, `link-*`, `alert-*`, `list-group-item-*`… y las variables `--bs-{color}` y `--bs-{color}-rgb`
+|`$spacers` |`m-*`, `p-*`, `gap-*` y todas sus variantes (`mt-`, `px-`, `-md-`…)
+|`$grid-breakpoints`, `$container-max-widths` |Los breakpoints de todas las clases responsive y los anchos de `.container`
+|`$font-sizes` |`fs-1`…`fs-6`
+|===
+
+El problema: un mapa no se puede modificar antes de que exista.
+Si definimos `$theme-colors` antes de Bootstrap, *sustituye* al suyo entero: perderíamos primary, success, danger… salvo que los escribiéramos todos.
+Para *añadir* una entrada se importa Bootstrap por partes y se meten los cambios en medio (`scss/tema-mapas.scss`):
+
+[source,scss]
+----
+// 1. Funciones: las necesitan las variables (tint-color, shade-color...)
+@import "bootstrap/scss/functions";
+
+// 2. Nuestras variables, como en tema.scss
+$primary:   #c2410c;
+$secondary: #334155;
+$oferta:    #7e22ce;
+
+// 3. Las variables de Bootstrap: aquí se crean los mapas
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+
+// 4. Cambios en los mapas
+$theme-colors: map-merge($theme-colors, ("oferta": $oferta));
+$spacers:      map-merge($spacers, (6: $spacer * 5));
+
+// 5. Los mapas que Bootstrap calcula a partir de los anteriores
+@import "bootstrap/scss/maps";
+
+// 6. Los tonos -subtle y -emphasis (ver más abajo)
+// ...
+
+// 7. Bootstrap entero
+@import "bootstrap/scss/bootstrap";
+----
+
+En el paso 7 Bootstrap vuelve a importar `functions`, `variables` y `maps`, pero no pasa nada: todo lleva `!default`, así que respeta lo que ya tiene valor, incluidos nuestros mapas.
+
+[cols="2,3",options="header"]
+|===
+|Función |Qué hace
+|`map-merge(mapa, (clave: valor))` |Devuelve el mapa con la pareja añadida (o cambiada, si la clave ya existía)
+|`map-remove(mapa, "clave")` |Devuelve el mapa sin esa pareja
+|===
+
+Con una línea aparecen todas las clases del color, como si fuera de Bootstrap: `btn-oferta`, `btn-outline-oferta`, `bg-oferta`, `text-oferta`, `border-oferta`, `text-bg-oferta`, `link-oferta` y la variable `--bs-oferta`.
+En CSS, un solo botón nuevo eran trece variables escritas a mano.
+Y con la entrada `6` de `$spacers` (5rem) aparecen `m-6`, `p-6`, `mt-6`, `px-6`, `gap-6`… y las responsive: `mt-md-6`, `py-lg-6`…
+
+==== Los mapas de los tonos `-subtle` y `-emphasis`
+
+Las alertas, los list groups y las variables `--bs-*-text-emphasis`, `--bs-*-bg-subtle` y `--bs-*-border-subtle` no leen `$theme-colors`, sino otros tres mapas, y sus tres versiones para el modo oscuro.
+Y las utilidades sueltas (`bg-oferta-subtle`, `text-oferta-emphasis`, `border-oferta-subtle`) salen de otros tres.
+Se amplían en el paso 6, después de importar `maps`, calculando los tonos con las funciones de Bootstrap:
+
+[source,scss]
+----
+// Alerts, list groups y las variables --bs-*-subtle y --bs-*-emphasis
+$theme-colors-text:          map-merge($theme-colors-text,          ("oferta": shade-color($oferta, 60%)));
+$theme-colors-bg-subtle:     map-merge($theme-colors-bg-subtle,     ("oferta": tint-color($oferta, 80%)));
+$theme-colors-border-subtle: map-merge($theme-colors-border-subtle, ("oferta": tint-color($oferta, 60%)));
+
+// Lo mismo para el modo oscuro
+$theme-colors-text-dark:          map-merge($theme-colors-text-dark,          ("oferta": tint-color($oferta, 40%)));
+$theme-colors-bg-subtle-dark:     map-merge($theme-colors-bg-subtle-dark,     ("oferta": shade-color($oferta, 80%)));
+$theme-colors-border-subtle-dark: map-merge($theme-colors-border-subtle-dark, ("oferta": shade-color($oferta, 40%)));
+
+// Las utilidades bg-*-subtle, text-*-emphasis y border-*-subtle
+$utilities-bg-subtle:            map-merge($utilities-bg-subtle,            ("oferta-subtle": var(--#{$prefix}oferta-bg-subtle)));
+$utilities-text-emphasis-colors: map-merge($utilities-text-emphasis-colors, ("oferta-emphasis": var(--#{$prefix}oferta-text-emphasis)));
+$utilities-border-subtle:        map-merge($utilities-border-subtle,        ("oferta-subtle": var(--#{$prefix}oferta-border-subtle)));
+----
+
+[cols="2,3",options="header"]
+|===
+|Mapa |Genera
+|`$theme-colors-text`, `$theme-colors-bg-subtle`, `$theme-colors-border-subtle` |`--bs-{color}-text-emphasis`, `--bs-{color}-bg-subtle`, `--bs-{color}-border-subtle`, que usan `alert-*` y `list-group-item-*`
+|`$theme-colors-text-dark`, `$theme-colors-bg-subtle-dark`, `$theme-colors-border-subtle-dark` |Las mismas variables dentro de `[data-bs-theme=dark]`
+|`$utilities-bg-subtle`, `$utilities-text-emphasis-colors`, `$utilities-border-subtle` |`bg-{color}-subtle`, `text-{color}-emphasis`, `border-{color}-subtle`
+|===
+
+.`btn-oferta`, `text-bg-oferta`, `text-oferta`, `alert-oferta` y `p-5` frente al nuevo `p-6`
+image::12_mapas.png[Un color y un tamaño nuevos en los mapas]
+
+WARNING: Sin el paso 6, `btn-oferta` funcionaría, pero `alert-oferta` saldría sin colores.
+Es el punto flojo de Bootstrap 5.3: un color completo está repartido en muchos mapas.
+
+=== Importación selectiva
+
+`bootstrap.scss` importa unas cuarenta partes.
+Si una web no usa carruseles, modales ni tablas, su CSS viaja igualmente en cada visita.
+Con Sass se importan solo las partes necesarias, en el mismo orden que en `bootstrap.scss` (`scss/selectivo.scss`):
+
+[source,scss]
+----
+// Configuración: obligatoria siempre, no genera CSS por sí sola
+@import "bootstrap/scss/functions";
+
+$primary:   #c2410c;
+$secondary: #334155;
+$font-family-sans-serif: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+$border-radius: .75rem;
+
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+// Base: las variables --bs-* y Reboot
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/type";
+
+// Maquetación
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+
+// Componentes que usamos
+@import "bootstrap/scss/buttons";
+@import "bootstrap/scss/card";
+
+// Utilidades (m-*, p-*, d-*, text-*...)
+@import "bootstrap/scss/utilities/api";
+----
+
+[cols="1,3",options="header"]
+|===
+|Parte |Qué aporta
+|`functions`, `variables`, `variables-dark`, `maps`, `mixins`, `utilities` |La configuración; por sí sola no genera CSS
+|`root` |Las variables `--bs-*` (sin ella, casi nada funciona)
+|`reboot`, `type` |Los estilos de base de las etiquetas; encabezados, `display-*`, `lead`…
+|`containers`, `grid` |Contenedores y rejilla
+|`buttons`, `card` |Los componentes que usa la página
+|`utilities/api` |Genera `m-*`, `p-*`, `d-*`, `text-*`… a partir del mapa `$utilities`
+|===
+
+Lo que no se importa no existe: un `class="table"`, `class="form-control"` o `class="alert"` se queda sin estilo (la tabla, solo con lo que le da Reboot).
+
+WARNING: Algunas partes dependen de otras: los grupos de botones necesitan `buttons` y `button-group`; la navbar necesita `nav`; los dropdowns, además, el JavaScript.
+Cada componente lo indica en la documentación.
+
+Medido con `npm run css:min` (sin espacios ni comentarios) y comprimido con gzip, que es como lo envía un servidor web:
+
+[cols="2,1,1",options="header"]
+|===
+|CSS |Minimizado |Con gzip
+|Bootstrap completo |223 KB |30 KB
+|`selectivo.scss` |105 KB |15 KB
+|`selectivo.scss` sin `utilities/api` |38 KB |7 KB
+|===
+
+Lo que más pesa del CSS selectivo son las *utilidades*: cada familia con sus seis versiones responsive (miles de clases).
+También se pueden recortar, quitando entradas del mapa `$utilities` con la API de utilidades (sesión 4), o con los `$enable-*` (por ejemplo, `$enable-dark-mode: false`).
+
+=== Práctica
+
+Tema de la tienda (parte de la práctica guiada de la sesión):
+
+* En la carpeta `sass/`, `npm install` y `npm run vigilar`.
+* Crear `scss/mi-tema.scss` con la paleta de la marca (`$primary`, `$secondary`), una fuente de Google Fonts y esquinas propias.
+* Añadir el color `"oferta"` a `$theme-colors` (y a los mapas de los tonos `-subtle` y `-emphasis`) y usar `btn-oferta` y `text-bg-oferta` en las cards de productos.
+* Enlazar `sass/css/mi-tema.css` en la landing en lugar de `bootstrap.min.css`.
+* Comprobar el modo oscuro: los tonos `-subtle` y `-emphasis` también deben verse bien.
+* Opcional: una versión selectiva con solo lo que usa la landing, y comparar el tamaño con `npm run css:min`.
+
+.Un resultado posible, en pantalla ancha y en el móvil
+image::12_practica_lg.png[Práctica de tema propio en pantalla ancha]
+
+image::12_practica_xs.png[Práctica de tema propio en el móvil]
+
 == Referencias
 
 * https://getbootstrap.com/docs/5.3/getting-started/introduction/[Documentación oficial de Bootstrap 5.3]
@@ -3383,3 +5723,32 @@ image::08_practica_xs.png[Práctica de catálogo en el móvil]
 * https://getbootstrap.com/docs/5.3/utilities/position/[Position]
 * https://developer.mozilla.org/es/docs/Web/HTML/Element/table[El elemento <table> (MDN)]
 * https://icons.getbootstrap.com/[Bootstrap Icons]
+* https://getbootstrap.com/docs/5.3/getting-started/javascript/[JavaScript]
+* https://getbootstrap.com/docs/5.3/components/collapse/[Collapse]
+* https://getbootstrap.com/docs/5.3/components/dropdowns/[Dropdowns]
+* https://getbootstrap.com/docs/5.3/components/tooltips/[Tooltips]
+* https://popper.js.org/docs/v2/[Popper]
+* https://getbootstrap.com/docs/5.3/components/navbar/[Navbar]
+* https://getbootstrap.com/docs/5.3/components/modal/[Modal]
+* https://getbootstrap.com/docs/5.3/components/offcanvas/[Offcanvas]
+* https://getbootstrap.com/docs/5.3/components/navs-tabs/[Navs and tabs]
+* https://getbootstrap.com/docs/5.3/components/accordion/[Accordion]
+* https://getbootstrap.com/docs/5.3/components/carousel/[Carousel]
+* https://getbootstrap.com/docs/5.3/components/popovers/[Popovers]
+* https://getbootstrap.com/docs/5.3/components/toasts/[Toasts]
+* https://getbootstrap.com/docs/5.3/components/scrollspy/[Scrollspy]
+* https://getbootstrap.com/docs/5.3/helpers/position/[Position (sticky-top, fixed-top)]
+* https://getbootstrap.com/docs/5.3/customize/css-variables/[CSS variables]
+* https://getbootstrap.com/docs/5.3/utilities/background/[Background]
+* https://developer.mozilla.org/es/docs/Web/CSS/@media/prefers-color-scheme[prefers-color-scheme (MDN)]
+* https://developer.mozilla.org/es/docs/Web/CSS/color-scheme[color-scheme (MDN)]
+* https://developer.mozilla.org/es/docs/Web/API/Window/matchMedia[Window.matchMedia() (MDN)]
+* https://developer.mozilla.org/es/docs/Web/API/Window/localStorage[Window.localStorage (MDN)]
+* https://getbootstrap.com/docs/5.3/customize/overview/[Customize]
+* https://getbootstrap.com/docs/5.3/customize/sass/[Sass]
+* https://getbootstrap.com/docs/5.3/customize/options/[Options]
+* https://getbootstrap.com/docs/5.3/customize/optimize/[Optimize]
+* https://sass-lang.com/documentation/[Documentación de Sass]
+* https://sass-lang.com/install/[Instalar Sass]
+* https://docs.npmjs.com/cli/commands/npm-install[npm install]
+* https://nodejs.org/[Node.js]

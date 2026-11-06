@@ -500,9 +500,10 @@
         </div>
       </div>
       <div class="alert alert-info mb-0" role="alert">
-        <strong>Límite de las variables:</strong> <code>bg-primary</code> y <code>text-primary</code> leen <code>--bs-primary-rgb</code>, pero <code>.btn-primary</code>,
-        las alerts o los badges tienen el azul escrito en el CSS compilado. Para cambiar <code>primary</code> en todo hay que recompilar desde Sass con
-        <code>$primary</code>: es el punto siguiente.
+        <strong>Límite de las variables:</strong> <code>bg-primary</code>, <code>text-primary</code> y <code>text-bg-primary</code> (también en un badge) leen <code>--bs-primary-rgb</code>,
+        pero <code>.btn-primary</code>, el check marcado, la página activa de la paginación o la barra de progreso tienen el azul escrito en el CSS compilado,
+        y las alerts usan otras variables (<code>--bs-primary-bg-subtle</code>…) que no dependen de <code>--bs-primary-rgb</code>.
+        Para cambiar <code>primary</code> en todo hay que recompilar desde Sass con <code>$primary</code>: es el punto siguiente.
       </div>
     </section>
 

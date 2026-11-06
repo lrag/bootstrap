@@ -306,6 +306,145 @@
       </table>
     </div>
 
+    <!-- JAVASCRIPT -->
+    <h2 class="h4 mt-5">JavaScript</h2>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>JavaScript normal, sin jQuery</td><td>Todos los plugins dependen de jQuery, que se carga <strong>antes</strong> que el JavaScript de Bootstrap</td></tr>
+          <tr><td><code>bootstrap.bundle.min.js</code> (Bootstrap + Popper) o <code>bootstrap.min.js</code> (sin Popper)</td><td><code>bootstrap.js</code> o <code>bootstrap.min.js</code>, con todos los plugins; o cada plugin en su propio fichero <code>*.js</code>. No usa Popper: tooltips y popovers se colocan con el código del propio plugin (<code>placement</code> admite <code>auto</code>)</td></tr>
+          <tr><td><code>data-bs-toggle</code>, <code>data-bs-target</code>, <code>data-bs-dismiss</code></td><td><code>data-toggle</code>, <code>data-target</code>, <code>data-dismiss</code></td></tr>
+          <tr><td>Opciones en atributos <code>data-bs-{opción}</code> (<code>data-bs-placement</code>…)</td><td><span class="badge text-bg-success">Igual</span>, sin <code>bs</code>: <code>data-{opción}</code> (<code>data-placement</code>, <code>data-animation</code>…)</td></tr>
+          <tr><td>Instancia con <code>new bootstrap.Collapse(elemento, opciones)</code> o <code>bootstrap.Collapse.getOrCreateInstance(…)</code></td><td>Cada plugin es un método de jQuery: <code>$('#panel').collapse({ toggle: false })</code>; el constructor queda en <code>$.fn.collapse.Constructor</code></td></tr>
+          <tr><td>Métodos de la instancia: <code>panel.show()</code>, <code>modal.hide()</code>…</td><td>El nombre del método como cadena: <code>$('#panel').collapse('show')</code>, <code>$('#myModal').modal('show')</code> (si no existía, la crea y la muestra)</td></tr>
+          <tr><td><code>getInstance()</code> devuelve la instancia o <code>null</code></td><td>No existe: la instancia se guarda en los datos de jQuery del elemento (<code>.data()</code>)</td></tr>
+          <tr><td><code>dispose()</code> en todos los componentes</td><td>No existe: solo <code>.tooltip('destroy')</code> y <code>.popover('destroy')</code></td></tr>
+          <tr><td>Tooltip: <code>enable()</code> y <code>disable()</code></td><td>No documentados: el tooltip tiene <code>show</code>, <code>hide</code>, <code>toggle</code> y <code>destroy</code></td></tr>
+          <tr><td>Dropdown con opciones (<code>autoClose</code>, <code>offset</code>…)</td><td>Sin opciones: solo el método <code>.dropdown('toggle')</code></td></tr>
+          <tr><td>Tooltips y popovers: hay que crear la instancia, por rendimiento</td><td><span class="badge text-bg-success">Igual</span>: <code>$('[data-toggle="tooltip"]').tooltip()</code></td></tr>
+          <tr><td>Eventos <code>show</code> / <code>shown</code> / <code>hide</code> / <code>hidden</code> <code>.bs.componente</code>, escuchados con <code>addEventListener</code></td><td>Los mismos nombres (desde 3.0.0), escuchados con jQuery: <code>$('#myModal').on('show.bs.modal', function (e) { … })</code></td></tr>
+          <tr><td>Los eventos de «antes» se cancelan con <code>preventDefault()</code></td><td><span class="badge text-bg-success">Igual</span></td></tr>
+          <tr><td><code>close.bs.alert</code> / <code>closed.bs.alert</code>; <code>slide.bs.carousel</code> / <code>slid.bs.carousel</code></td><td><span class="badge text-bg-success">Igual</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- COMPONENTES INTERACTIVOS -->
+    <h2 class="h4 mt-5">Componentes interactivos</h2>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>navbar</code> + <code>bg-body-tertiary</code> (sin clase de fondo, transparente)</td><td><code>.navbar</code> + <code>.navbar-default</code> (gris <code>#f8f8f8</code> con borde) o <code>.navbar-inverse</code> (negra, <code>#222</code>); 50 px de alto mínimo y esquinas redondeadas desde 768 px</td></tr>
+          <tr><td>Navbar oscura: <code>data-bs-theme="dark"</code> + <code>bg-dark</code> (<code>navbar-dark</code> obsoleta en 5.3)</td><td><code>.navbar-inverse</code></td></tr>
+          <tr><td><code>navbar-expand-{bp}</code>: cada navbar elige en qué breakpoint se despliega</td><td>Un solo punto para todas: recogida por debajo de <strong>768 px</strong> y desplegada desde ahí (variable <code>@grid-float-breakpoint</code> de Less)</td></tr>
+          <tr><td><code>navbar-toggler</code> con un <code>span.navbar-toggler-icon</code> (las rayas son un SVG del CSS) y <code>aria-label</code></td><td><code>.navbar-toggle</code> con tres <code>span.icon-bar</code> (una por raya) y un <code>span.sr-only</code> con el texto</td></tr>
+          <tr><td>Marca y botón directamente en el <code>container-fluid</code></td><td>Marca y botón dentro de un <code>div.navbar-header</code></td></tr>
+          <tr><td><code>collapse navbar-collapse</code>, <code>navbar-brand</code>, <code>navbar-nav</code>, <code>navbar-text</code></td><td><span class="badge text-bg-success">Sí existen</span>; en <code>.navbar-nav</code> los enlaces son <code>li &gt; a</code> sin clase (<code>.active</code> en el <code>li</code>)</td></tr>
+          <tr><td><code>me-auto</code> / <code>ms-auto</code> en el <code>ul</code> (la navbar es flex)</td><td><code>.navbar-left</code> / <code>.navbar-right</code> (un <code>float</code>, desde 768 px)</td></tr>
+          <tr><td><code>form.d-flex</code> dentro de la navbar</td><td><code>form.navbar-form</code></td></tr>
+          <tr><td><code>fixed-top</code>, <code>fixed-bottom</code></td><td><code>.navbar-fixed-top</code>, <code>.navbar-fixed-bottom</code> (también con <code>padding-top</code> en el body)</td></tr>
+          <tr><td><code>sticky-top</code> (<code>position: sticky</code>)</td><td>No existe: el plugin <strong>Affix</strong> (<code>data-spy="affix"</code>) cambia a <code>position: fixed</code> con JavaScript; <code>.navbar-static-top</code> solo quita las esquinas y se va con el scroll</td></tr>
+          <tr><td>Dropdown colocado por <strong>Popper</strong>: le da la vuelta si no cabe</td><td>Sin Popper: <code>position: absolute; top: 100%</code>: siempre debajo (encima solo con <code>.dropup</code>)</td></tr>
+          <tr><td><code>dropdown-item</code> en cada opción; <code>active</code> y <code>disabled</code> en la opción</td><td><code>li &gt; a</code> sin clase; <code>.active</code> y <code>.disabled</code> en el <code>li</code></td></tr>
+          <tr><td><code>h6.dropdown-header</code>, <code>hr.dropdown-divider</code>, <code>dropdown-item-text</code></td><td><code>li.dropdown-header</code>, <code>li.divider</code> (con <code>role="separator"</code>); sin <code>-item-text</code></td></tr>
+          <tr><td>Flecha del <code>dropdown-toggle</code> dibujada por el CSS (<code>::after</code>)</td><td>Un <code>span.caret</code> dentro del botón, a mano</td></tr>
+          <tr><td><code>dropdown-toggle-split</code></td><td>No existe: el segundo botón es un <code>.dropdown-toggle</code> con solo el <code>span.caret</code></td></tr>
+          <tr><td><code>dropdown-menu-end</code>, <code>dropdown-menu-lg-end</code></td><td><code>.dropdown-menu-right</code> (y <code>.dropdown-menu-left</code>), sin versión responsive</td></tr>
+          <tr><td><code>dropup</code></td><td><span class="badge text-bg-success">Sí existe</span></td></tr>
+          <tr><td><code>dropend</code>, <code>dropstart</code>, <code>dropdown-center</code>, <code>dropup-center</code></td><td>No existen</td></tr>
+          <tr><td>Menú oscuro con <code>data-bs-theme="dark"</code></td><td>No existe</td></tr>
+          <tr><td>Abierto: clase <code>show</code> en el menú</td><td>Abierto: clase <code>.open</code> en el elemento padre</td></tr>
+          <tr><td><code>modal</code>, <code>modal-dialog</code>, <code>modal-content</code>, <code>modal-header</code>, <code>modal-body</code>, <code>modal-footer</code></td><td><span class="badge text-bg-success">Sí existen</span>; la X es un <code>button.close</code> con <code>data-dismiss="modal"</code>; abierto con la clase <code>.in</code> (no <code>show</code>)</td></tr>
+          <tr><td>Ancho por defecto 500 px; <code>modal-sm</code> 300 px, <code>modal-lg</code> 800 px, <code>modal-xl</code> 1140 px</td><td>Por defecto 600 px; <code>.modal-sm</code> 300 px, <code>.modal-lg</code> 900 px (desde 992 px); <strong>sin <code>-xl</code></strong></td></tr>
+          <tr><td><code>modal-dialog-centered</code>, <code>modal-dialog-scrollable</code></td><td>No existen: siempre arriba, y un modal largo hace scroll entero</td></tr>
+          <tr><td><code>modal-fullscreen</code>, <code>modal-fullscreen-{bp}-down</code></td><td>No existen</td></tr>
+          <tr><td><code>autofocus</code> no funciona en un modal: foco en <code>shown.bs.modal</code></td><td><span class="badge text-bg-success">Igual</span>, con jQuery: <code>$('#modal').on('shown.bs.modal', …)</code></td></tr>
+          <tr><td><code>offcanvas</code>, <code>offcanvas-start</code>/<code>-end</code>/<code>-top</code>/<code>-bottom</code>, <code>offcanvas-lg</code></td><td><strong>No existe</strong> el componente: un panel lateral necesitaba CSS y JavaScript propios</td></tr>
+          <tr><td><code>nav-tabs</code>, <code>nav-pills</code></td><td><span class="badge text-bg-success">Sí existen</span>, con <code>li &gt; a</code> sin clase y <code>.active</code> en el <code>li</code> (en Bootstrap 5, <code>nav-item</code> y <code>nav-link</code> con <code>active</code> en el enlace)</td></tr>
+          <tr><td><code>nav-underline</code></td><td>No existe (nuevo en 5.3)</td></tr>
+          <tr><td><code>nav-fill</code>, <code>nav-justified</code></td><td>Solo <code>.nav-justified</code>, y solo desde 768 px (por debajo, los enlaces se apilan)</td></tr>
+          <tr><td>Pills en columna: <code>flex-column</code></td><td><code>.nav-stacked</code></td></tr>
+          <tr><td>Pestaña: <code>button.nav-link</code> con <code>data-bs-toggle="tab"</code> y <code>data-bs-target</code></td><td><code>a</code> con <code>data-toggle="tab"</code> (o <code>"pill"</code>) y el panel en el <code>href</code></td></tr>
+          <tr><td><code>tab-pane fade show active</code></td><td><code>.tab-pane.fade.in.active</code></td></tr>
+          <tr><td><code>accordion</code>, <code>accordion-item</code>, <code>accordion-header</code>, <code>accordion-button</code> (con la flecha), <code>accordion-body</code></td><td>No existe: <code>.panel-group</code> con <code>.panel</code>, <code>.panel-heading</code> (un enlace con <code>data-toggle="collapse"</code>), <code>.panel-collapse.collapse</code> y <code>.panel-body</code>; sin flecha</td></tr>
+          <tr><td><code>data-bs-parent</code>: uno abierto a la vez</td><td><code>data-parent</code>; solo funciona con la estructura de <code>.panel</code></td></tr>
+          <tr><td>Collapse abierto: <code>collapse show</code></td><td><code>.collapse.in</code></td></tr>
+          <tr><td><code>accordion-flush</code></td><td>No existe</td></tr>
+          <tr><td><code>carousel-inner</code> &gt; <code>carousel-item</code></td><td><code>.carousel-inner</code> &gt; <code>.item</code></td></tr>
+          <tr><td><code>div.carousel-indicators</code> con <code>button</code> y <code>data-bs-slide-to</code></td><td><code>ol.carousel-indicators</code> con <code>li</code>, <code>data-target</code> y <code>data-slide-to</code></td></tr>
+          <tr><td><code>button.carousel-control-prev</code> con <code>span.carousel-control-prev-icon</code> (SVG)</td><td><code>a.left.carousel-control</code> con <code>href="#id"</code>, <code>data-slide="prev"</code> y un icono <code>span.glyphicon.glyphicon-chevron-left</code>; degradado oscuro en el lateral</td></tr>
+          <tr><td><code>data-bs-ride="carousel"</code>, <code>data-bs-interval</code> (5000 ms)</td><td><code>data-ride="carousel"</code>, <code>data-interval</code> (5000 ms)</td></tr>
+          <tr><td><code>data-bs-touch</code>: deslizar con el dedo</td><td>No hay opción táctil (opciones: <code>interval</code>, <code>pause</code>, <code>wrap</code> y <code>keyboard</code>)</td></tr>
+          <tr><td><code>carousel-fade</code></td><td>No existe: solo deslizamiento</td></tr>
+          <tr><td>Controles oscuros: <code>data-bs-theme="dark"</code></td><td>No existe</td></tr>
+          <tr><td><code>instancia.prev()</code>, <code>.next()</code>, <code>.to(2)</code></td><td><code>$('#id').carousel('prev')</code>, <code>.carousel('next')</code>, <code>.carousel(2)</code></td></tr>
+          <tr><td>Tooltips y popovers: hay que crearlos con JavaScript (<code>new bootstrap.Tooltip(…)</code>)</td><td><span class="badge text-bg-success">Igual</span>: también hay que activarlos (<code>$('[data-toggle="tooltip"]').tooltip()</code>)</td></tr>
+          <tr><td>Texto en <code>data-bs-title</code>; contenido en <code>data-bs-content</code>; colocados por Popper</td><td>Texto en el atributo <code>title</code>; contenido en <code>data-content</code>; sin Popper</td></tr>
+          <tr><td><code>toast</code>, <code>toast-header</code>, <code>toast-body</code>, <code>toast-container</code></td><td><strong>No existe</strong> el componente</td></tr>
+          <tr><td>Scrollspy con <strong>IntersectionObserver</strong>: el contenedor no necesita <code>position: relative</code></td><td><code>data-spy="scroll"</code> y <code>data-target</code>; el elemento espiado necesita <code>position: relative</code> y se ajusta con <code>data-offset</code> (10 px por defecto)</td></tr>
+          <tr><td>Menú de scrollspy: <code>nav</code>, <code>list-group</code>…</td><td>Tiene que ser un componente <code>.nav</code> de Bootstrap</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- MODO CLARO Y OSCURO -->
+    <h2 class="h4 mt-5">Modo claro y oscuro</h2>
+    <p>
+      En Bootstrap 3 no hay modos de color ni variables CSS (ver «Base y entorno»): todos los colores van escritos en el CSS compilado.
+      Una versión oscura de la página es una hoja de estilos aparte, o recompilar desde Less con otros valores.
+    </p>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>data-bs-theme="dark"</code> en una zona (una navbar, un pie, una card)</td><td>No existe: cada componente tiene sus colores fijos (<code>.dropdown-menu</code>, <code>.modal-content</code>, <code>.list-group-item</code>, <code>.form-control</code> y <code>.popover</code> con fondo <code>#fff</code>)</td></tr>
+          <tr><td><code>navbar</code> con <code>data-bs-theme="dark"</code> y <code>bg-dark</code></td><td><code>.navbar-inverse</code> (fondo <code>#222</code>): la única variante oscura de un componente; la normal es <code>.navbar-default</code> (<code>#f8f8f8</code>)</td></tr>
+          <tr><td>Dropdown, carrusel y botón de cerrar oscuros con <code>data-bs-theme="dark"</code></td><td>No hay variante oscura: <code>.close</code> es negro (<code>#000</code> con opacidad 0.2), sin versión blanca</td></tr>
+          <tr><td>Tooltip: sigue al modo de color</td><td><code>.tooltip-inner</code> siempre negro (<code>#000</code>) con texto blanco</td></tr>
+          <tr><td><code>bg-body</code>, <code>text-body</code>, <code>bg-body-tertiary</code>, <code>text-body-emphasis</code>, <code>text-body-secondary</code></td><td>No existen; tampoco <code>bg-white</code>, <code>bg-light</code>, <code>bg-dark</code> ni <code>text-dark</code></td></tr>
+          <tr><td><code>text-body-secondary</code> (sustituye a <code>text-muted</code>)</td><td><code>.text-muted</code>: gris fijo <code>#777</code></td></tr>
+          <tr><td><code>body</code>: <code>var(--bs-body-bg)</code> y <code>var(--bs-body-color)</code></td><td><code>body { color: #333; background-color: #fff }</code>, fijos</td></tr>
+          <tr><td>Cambiar un color en el navegador: <code>--bs-link-color</code>, <code>--bs-btn-bg</code>, <code>--bs-card-bg</code>…</td><td>Solo recompilando desde Less o sobrescribiendo cada regla con CSS propio</td></tr>
+          <tr><td><code>color-scheme: dark</code> en <code>[data-bs-theme=dark]</code>: barras de desplazamiento y controles nativos en oscuro</td><td>No usa <code>color-scheme</code></td></tr>
+          <tr><td>Modo automático con <code>prefers-color-scheme</code> (selector de tema con JavaScript)</td><td>No usa <code>prefers-color-scheme</code>: ninguna de sus media queries tiene que ver con el modo de color</td></tr>
+          <tr><td>Modos propios: <code>[data-bs-theme=sepia]</code> con las variables <code>--bs-*</code></td><td>No existe</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PERSONALIZACIÓN -->
+    <h2 class="h4 mt-5">Personalización</h2>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr><th scope="col">Bootstrap 5.3</th><th scope="col">Bootstrap 3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Variables CSS <code>--bs-*</code> en <code>:root</code> y en cada componente (<code>--bs-btn-bg</code>, <code>--bs-card-cap-bg</code>…): se redefinen en el navegador, sin compilar, incluso en un <code>style</code></td><td>No existen: todo está escrito en el CSS compilado. Sin compilar, solo se pueden sobrescribir las reglas una a una, con un selector igual o más específico</td></tr>
+          <tr><td>Redefinir <code>btn-primary</code> cambiando sus variables (<code>--bs-btn-bg</code>, <code>--bs-btn-hover-bg</code>…)</td><td>Reescribir las propiedades de cada estado (<code>.btn-primary:hover</code>, <code>:focus</code>, <code>:active</code>, <code>.active</code>, <code>.dropdown-toggle</code>…). El azul <code>#337ab7</code> aparece 25 veces en <code>bootstrap.css</code></td></tr>
+          <tr><td>Compilar con Sass desde npm: <code>npm install bootstrap sass</code> y el comando <code>sass</code></td><td>Compilar con Less: el código fuente traía Grunt (<code>grunt dist</code>) y el compilador <code>lessc</code>. Para Sass, el port oficial <code>bootstrap-sass</code>, en un repositorio y un paquete aparte</td></tr>
+          <tr><td>No hay personalizador en la web: se compila en local</td><td>Formulario <strong>Customize</strong> en getbootstrap.com: se marcaban los ficheros Less y los plugins de jQuery, se cambiaban las variables y se descargaba compilado (con un <code>config.json</code> para repetirlo). Se retiró en Bootstrap 4</td></tr>
+          <tr><td><code>$primary</code>, <code>$secondary</code>, <code>$success</code>…, <code>$link-color</code>, <code>$font-family-sans-serif</code>, <code>$border-radius</code></td><td><code>@brand-primary</code> (<code>darken(#428bca, 6.5%)</code>, es decir, <code>#337ab7</code>), <code>@brand-success</code>, <code>@brand-info</code>, <code>@brand-warning</code>, <code>@brand-danger</code>, <code>@gray-*</code>, <code>@link-color</code>, <code>@font-family-base</code>, <code>@border-radius-base</code>; <code>@font-size-base</code> en <code>px</code> (14 px)</td></tr>
+          <tr><td>Nuestras variables <strong>antes</strong> del <code>@import</code>: las de Bootstrap llevan <code>!default</code></td><td>En Less no hay <code>!default</code>: la última definición gana. Las variables propias van <strong>después</strong> de importar <code>bootstrap.less</code> (o se editaba <code>variables.less</code>)</td></tr>
+          <tr><td>Los colores de los derivados (hover, foco, <code>-subtle</code>, <code>-emphasis</code>, modo oscuro) se calculan con <code>tint-color()</code>, <code>shade-color()</code> y <code>color-contrast()</code></td><td>Con las funciones de Less (<code>darken()</code>, <code>lighten()</code>); el color del texto de cada botón es otra variable (<code>@btn-primary-color</code>), no se elige solo según el contraste</td></tr>
+          <tr><td>Interruptores <code>$enable-shadows</code>, <code>$enable-gradients</code>, <code>$enable-rounded</code>, <code>$enable-dark-mode</code>…</td><td>No existen. Las sombras y degradados venían en un CSS aparte y opcional, <code>bootstrap-theme.css</code> (<code>theme.less</code>), que se cargaba después de <code>bootstrap.css</code></td></tr>
+          <tr><td>Mapa <code>$theme-colors</code>: una entrada nueva genera <code>btn-oferta</code>, <code>bg-oferta</code>, <code>text-bg-oferta</code>, <code>alert-oferta</code>…</td><td>Sin mapas ni bucles: las clases de color están escritas una a una. Un color nuevo se hace a mano con los mixins de cada componente: <code>.btn-oferta { .button-variant(#fff; #7e22ce; darken(#7e22ce, 5%)); }</code>, <code>.alert-variant()</code>, <code>.label-variant()</code>, <code>.panel-variant()</code>…</td></tr>
+          <tr><td>Mapa <code>$spacers</code> para la escala de <code>m-*</code> y <code>p-*</code></td><td>No hay utilidades de espaciado (ni escala que ampliar)</td></tr>
+          <tr><td>API de utilidades (mapa <code>$utilities</code>) para crear o quitar utilidades</td><td>No existe</td></tr>
+          <tr><td>Importación selectiva: <code>functions</code>, <code>variables</code>, <code>maps</code>, <code>mixins</code>, <code>utilities</code> y después solo los componentes que se usan</td><td><span class="badge text-bg-success">Sí existe</span>: <code>bootstrap.less</code> solo importa <code>variables.less</code>, <code>mixins.less</code> y un fichero por parte (<code>normalize</code>, <code>grid</code>, <code>tables</code>, <code>forms</code>, <code>buttons</code>, <code>panels</code>…); se copia y se quitan líneas. El formulario Customize hacía lo mismo con casillas</td></tr>
+          <tr><td>Completo: 223 KB minimizado, 30 KB con gzip (selectivo con rejilla, botones, cards y utilidades: 105 KB y 15 KB)</td><td>Completo: unos 121 KB minimizado, unos 20 KB con gzip. Pesa menos porque no tiene utilidades, ni variables CSS, ni modo oscuro</td></tr>
+        </tbody>
+      </table>
+    </div>
+
     <!-- LO QUE SÍ FUNCIONA -->
     <h2 class="h4 mt-5">Lo que sí funciona igual</h2>
     <div class="alert alert-success mb-5">
@@ -316,6 +455,12 @@
       <code>text-center</code>, <code>text-uppercase</code>, <code>text-lowercase</code>, <code>text-capitalize</code>, <code>text-nowrap</code>,
       <code>text-primary</code>, <code>text-success</code>, <code>text-info</code>, <code>text-warning</code> y <code>text-danger</code> (con otros tonos),
       <code>text-muted</code>, <code>img-thumbnail</code>, <code>invisible</code>, <code>clearfix</code>,
+      <code>.navbar</code>, <code>.navbar-brand</code>, <code>.navbar-nav</code>, <code>.navbar-text</code>, <code>.navbar-collapse</code>, <code>.dropdown-menu</code>, <code>.dropup</code>, <code>.dropdown-header</code>,
+      <code>.modal</code>, <code>.modal-dialog</code>, <code>.modal-content</code>, <code>.modal-header</code>, <code>.modal-title</code>, <code>.modal-body</code>, <code>.modal-footer</code>, <code>.modal-sm</code>, <code>.modal-lg</code>,
+      <code>.nav</code>, <code>.nav-tabs</code>, <code>.nav-pills</code>, <code>.nav-justified</code>, <code>.tab-content</code>, <code>.tab-pane</code>, <code>.collapse</code>, <code>.fade</code>,
+      <code>.carousel</code>, <code>.carousel-inner</code>, <code>.carousel-indicators</code>, <code>.carousel-caption</code>,
+      los nombres de los eventos (<code>show.bs.modal</code>, <code>shown.bs.collapse</code>, <code>slid.bs.carousel</code>…) y su <code>preventDefault()</code>, las opciones como atributos <code>data-</code>,
+      que tooltips y popovers haya que activarlos con JavaScript,
       <code>box-sizing: border-box</code> en todos los elementos y las metas <code>charset</code> y <code>viewport</code>.
     </div>
   </div>
